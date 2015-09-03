@@ -3,7 +3,7 @@ package com.github.fishio;
 /**
  * Represents an object that can move.
  */
-public interface IMoving extends IPositional {
+public interface IMovable extends IPositional {
 	/**
 	 * Called every tick.
 	 */
