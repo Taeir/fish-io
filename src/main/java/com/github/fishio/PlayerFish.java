@@ -144,18 +144,6 @@ public class PlayerFish extends Entity implements TickListener {
 	}
 
 	@Override
-	public void preCollisions() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void preCleanup() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void postTick() {
 		// TODO Auto-generated method stub
 		
