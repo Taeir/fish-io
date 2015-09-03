@@ -86,7 +86,7 @@ public class PlayingField {
 	 * Creates the game thread.
 	 */
 	protected final void createGameThread() {
-		Duration dur = Duration.millis(1000 / getFPS());
+		Duration dur = Duration.millis(1000.0 / getFPS());
 		KeyFrame frame = new KeyFrame(dur, event -> {
 			//Call listeners pretick
 			preListeners();
