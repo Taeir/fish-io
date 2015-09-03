@@ -65,7 +65,7 @@ public class BoundingBox {
 	 * 		the x coordinate of the centre of this bounding box
 	 */
 	public double getCenterX() {
-		return (xmax - xmin) / 2;
+		return (xmax + xmin) / 2;
 	}
 	
 	/**
@@ -73,7 +73,7 @@ public class BoundingBox {
 	 * 		the y coordinate of the centre of this bounding box
 	 */
 	public double getCenterY() {
-		return (ymax - ymin) / 2;
+		return (ymax + ymin) / 2;
 	}
 	
 	/**
