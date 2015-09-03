@@ -21,17 +21,17 @@ public class PlayingField {
 	private static final int WINDOW_X = 1280;
 	private static final int WINDOW_Y = 720;
 	
-	private Scene surface;
-	private Group root;
-	private static Timeline gameThread;
+	private Timeline gameThread;
 	private int fps;
+	
 	private String title;
 	private Canvas canvas;
+	private Scene surface;
+	private Group root;
 	
 	private ArrayList<TickListener> listeners = new ArrayList<>();
 	private ArrayList<IDrawable> drawables = new ArrayList<>();
 	private ArrayList<Entity> entities = new ArrayList<>();
-	//private ConcurrentLinkedQueue<IDrawable> clq;
 	
 	/**
 	 * @param fps
@@ -88,7 +88,7 @@ public class PlayingField {
 	protected final void createGameThread() {
 		Duration dur = Duration.millis(1000 / getFPS());
 		KeyFrame frame = new KeyFrame(dur, event -> {
-		
+			//Call listeners pretick
 			preListeners();
 			
 			//Add new entities
@@ -103,6 +103,7 @@ public class PlayingField {
 			//Cleanup dead entities.
 			cleanupDead();
 			
+			//Call listeners posttick
 			postListeners();
 		}, new KeyValue[0]);
 		
@@ -163,7 +164,13 @@ public class PlayingField {
 	public void preListeners() {
 		//TODO Concurrency + try catch
 		for (TickListener tl : listeners) {
-			tl.preTick();
+			try {
+				tl.preTick();
+			} catch (Exception ex) {
+				//TODO Handle exception differently
+				System.out.println("Error in preTick!");
+				ex.printStackTrace();
+			}
 		}
 	}
 	
@@ -173,7 +180,13 @@ public class PlayingField {
 	public void postListeners() {
 		//TODO Concurrency + try catch
 		for (TickListener tl : listeners) {
-			tl.postTick();
+			try {
+				tl.postTick();
+			} catch (Exception ex) {
+				//TODO Handle exception differently
+				System.out.println("Error in postTick!");
+				ex.printStackTrace();
+			}
 		}
 	}
 	
@@ -250,6 +263,25 @@ public class PlayingField {
 		if (o instanceof Entity) {
 			entities.remove(o);
 		}
+	}
+	
+	/**
+	 * Clear this PlayingField.<br>
+	 * <br>
+	 * This removes all Entities and Drawables.
+	 */
+	public void clear() {
+		GraphicsContext gc = canvas.getGraphicsContext2D();
+		for (Entity e : entities) {
+			e.setDead();
+		}
+		
+		for (IDrawable d : drawables) {
+			d.drawDeath(gc);
+		}
+		
+		entities.clear();
+		drawables.clear();
 	}
 	
 	/**

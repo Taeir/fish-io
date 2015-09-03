@@ -16,8 +16,10 @@ public interface ICollidable {
 	boolean onCollide(ICollidable other);
 	
 	/**
+	 * The Collision Box is used to determine when one object collides with another object.
+	 * 
 	 * @return
-	 * 		the bounding box of this Collidable
+	 * 		the collision box of this ICollidable.
 	 */
 	BoundingBox getBoundingBox();
 	
@@ -27,5 +29,11 @@ public interface ICollidable {
 	 * @return
 	 * 		if this collidable collides with the given collidable.
 	 */
-	boolean doesCollides(ICollidable other);
+	default boolean doesCollides(ICollidable other) {
+		if (other == null) {
+			return false;
+		}
+		
+		return getBoundingBox().intersects(other.getBoundingBox());
+	}
 }
