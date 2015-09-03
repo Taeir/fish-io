@@ -16,18 +16,6 @@ public class ScreenWall implements ICollidable, IPositional {
 		//TODO set boundingbox?
 	}
 	
-	@Override
-	public double getX() {
-		//TODO
-		return 0;
-	}
-
-	@Override
-	public double getY() {
-		//TODO
-		return 0;
-	}
-	
 	/**
 	 * @return
 	 * 		the side of the screen this wall is at.
@@ -39,8 +27,8 @@ public class ScreenWall implements ICollidable, IPositional {
 	@Override
 	public boolean onCollide(ICollidable other) {
 		//TODO Collision detection
-		if (other instanceof IMoving) {
-			((IMoving) other).hitWall();
+		if (other instanceof IMovable) {
+			((IMovable) other).hitWall();
 		}
 		
 		return false;
@@ -49,11 +37,6 @@ public class ScreenWall implements ICollidable, IPositional {
 	@Override
 	public BoundingBox getBoundingBox() {
 		return bb;
-	}
-
-	@Override
-	public boolean doesCollides(ICollidable other) {
-		return false;
 	}
 
 }
