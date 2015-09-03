@@ -30,6 +30,38 @@ public class BoundingBox {
 	
 	/**
 	 * @return
+	 * 		the minimal x coordinate.
+	 */
+	public double getMinX() {
+		return xmin;
+	}
+	
+	/**
+	 * @return
+	 * 		the maximal x coordinate.
+	 */
+	public double getMaxX() {
+		return xmax;
+	}
+	
+	/**
+	 * @return
+	 * 		the minimal y coordinate.
+	 */
+	public double getMinY() {
+		return ymin;
+	}
+	
+	/**
+	 * @return
+	 * 		the maximal y coordinate.
+	 */
+	public double getMaxY() {
+		return ymax;
+	}
+	
+	/**
+	 * @return
 	 * 		the x coordinate of the centre of this bounding box
 	 */
 	public double getCenterX() {
