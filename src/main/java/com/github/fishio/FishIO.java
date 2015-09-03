@@ -25,6 +25,7 @@ public class FishIO extends Application {
 		primaryStage.setWidth(1280.0);
 		primaryStage.setHeight(720.0);
         primaryStage.show();
+        
 	}
 	
 	/**

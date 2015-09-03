@@ -3,6 +3,7 @@ package com.github.fishio.view;
 import com.github.fishio.FishIO;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
 /**
@@ -17,6 +18,8 @@ public class SinglePlayerController implements ScreenController {
 	
 	@FXML
 	private VBox deathScreen;
+	@FXML
+	private Label scoreField;
 	
 	@Override
 	public void setMainApp(FishIO mainApp) {
@@ -50,6 +53,7 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	public void restartGame() {
 		showDeathScreen(false);
+		scoreField.setText("score: 0");
 		//TODO - reset the map etc.
 	}
 	
