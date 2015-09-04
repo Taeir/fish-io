@@ -144,6 +144,13 @@ public class PlayerFish extends Entity implements TickListener {
 	}
 	
 	/**
+	 * @return the acceleration of the fish.
+	 */
+	public double getAcceleration() {
+		return ACCELERATION;
+	}
+	
+	/**
 	 * Sets the speed of the PlayerFish in the horizontal direction.
 	 * 
 	 * @param speedX
