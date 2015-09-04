@@ -62,7 +62,7 @@ public class TestPlayerFishAdjustXSpeed {
 				{false, false, -1.0, acc - 1.0},
 				{false, true, 1.0, 1.0 + acc},
 				{false, true, -1.0, -1.0 + 2 * acc},
-				{true, false, -1.0, -1.0 + acc},
+				{true, false, -1.0, -1.0 - acc},
 				{true, false, 1.0, 1.0 - 2 * acc},
 				{true, true, 0.0, 0.0},
 				{true, true, 1.0, 1.0 - acc},

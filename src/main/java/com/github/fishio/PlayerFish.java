@@ -77,8 +77,8 @@ public class PlayerFish extends Entity implements TickListener {
 	 */
 	@SuppressWarnings ("checkstyle:needbraces")
 	public void adjustXSpeed() {
-		if (leftPressed && -speedX > MAX_SPEED) speedX -= ACCELERATION;
-		if (rightPressed && speedX > MAX_SPEED) speedX += ACCELERATION;
+		if (leftPressed && -speedX < MAX_SPEED) speedX -= ACCELERATION;
+		if (rightPressed && speedX < MAX_SPEED) speedX += ACCELERATION;
 		
 		if (speedX < 0 && (!leftPressed || rightPressed)) speedX += ACCELERATION;
 		if (speedX > 0 && (!rightPressed || leftPressed)) speedX -= ACCELERATION;
