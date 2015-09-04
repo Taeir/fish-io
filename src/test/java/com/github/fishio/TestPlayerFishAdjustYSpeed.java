@@ -15,8 +15,8 @@ import org.junit.runners.Parameterized;
 import org.mockito.Mockito;
 
 /**
- * Tests the adjustXSpeed method in the PlayerFish class.
- * {@link PlayerFish#adjustXSpeed()}
+ * Tests the adjustYSpeed method in the PlayerFish class.
+ * {@link PlayerFish#adjustYSpeed()}
  */
 @RunWith(Parameterized.class)
 public class TestPlayerFishAdjustYSpeed {
