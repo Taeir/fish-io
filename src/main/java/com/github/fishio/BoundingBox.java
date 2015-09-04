@@ -101,7 +101,12 @@ public class BoundingBox {
 	 * 		the amount to move (speed).
 	 */
 	public void move(Direction dir, double amount) {
-		move(dir.getRadians(), amount);
+		Vec2d v = dir.getNormalVector();
+		
+		v.x *= amount;
+		v.y *= amount;
+		
+		move(v);
 	}
 	
 	/**
@@ -112,6 +117,7 @@ public class BoundingBox {
 	 * @param amount
 	 * 		the amount to move (speed).
 	 */
+	@Deprecated
 	public void move(double rad, double amount) {
 		double dx = Math.cos(rad);
 		double dy = Math.sin(rad);
@@ -124,6 +130,20 @@ public class BoundingBox {
 		v.x *= amount;
 		v.y *= amount;
 		
+		xmin += v.x;
+		xmax += v.x;
+		ymin += v.y;
+		ymax += v.y;
+	}
+	
+	/**
+	 * Moves this bounding box in the specified direction.
+	 * 
+	 * @param v
+	 * 		The direction the BoundingBox should move at.
+	 * 		The length of the vector is the speed.
+	 */
+	public void move(Vec2d v) {
 		xmin += v.x;
 		xmax += v.x;
 		ymin += v.y;

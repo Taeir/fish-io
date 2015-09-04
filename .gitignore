@@ -2,3 +2,5 @@ Thumbs.db
 
 /target
 .settings/
+
+.classpath
