@@ -129,6 +129,20 @@ public class BoundingBox {
 		ymin += v.y;
 		ymax += v.y;
 	}
+	
+	/**
+	 * Moves this bounding box in the specified direction.
+	 * 
+	 * @param v
+	 * 		The direction the BoundingBox should move at.
+	 * 		The length of the vector is the speed.
+	 */
+	public void move(Vec2d v) {
+		xmin += v.x;
+		xmax += v.x;
+		ymin += v.y;
+		ymax += v.y;
+	}
 
 	/**
 	 * @param other
