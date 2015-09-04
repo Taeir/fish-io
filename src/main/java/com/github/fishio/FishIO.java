@@ -1,8 +1,6 @@
 package com.github.fishio;
 
 import java.io.IOException;
-import java.net.URL;
-
 import com.github.fishio.view.ScreenController;
 
 import javafx.animation.FadeTransition;
