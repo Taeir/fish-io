@@ -132,6 +132,22 @@ public class TestBoundingBox {
 		assertEquals(3.0 + 0.5 * Math.sqrt(2), bb.getMaxX(), 0.0000001D);
 		assertEquals(4.0 + 0.5 * Math.sqrt(2), bb.getMaxY(), 0.0000001D);
 	}
+	
+	/**
+	 * Test for moving a bounding vox by vectors.
+	 * {@link BoundingBox#move(Vec2d)}
+	 */
+	@Test
+	public void testMoveVec2d() {
+		BoundingBox bb = new BoundingBox(1.0, 2.0, 3.0, 4.0);
+		
+		bb.move(new Vec2d(-5.3, 7.1));
+		
+		assertEquals(-4.3, bb.getMinX(), 0.0000001D);
+		assertEquals(9.1, bb.getMinY(), 0.0000001D);
+		assertEquals(-2.3, bb.getMaxX(), 0.0000001D);
+		assertEquals(11.1, bb.getMaxY(), 0.0000001D);
+	}
 
 //	@Test
 //	public void testIntersects1() {
