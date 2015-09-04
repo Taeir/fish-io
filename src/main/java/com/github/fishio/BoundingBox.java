@@ -112,6 +112,7 @@ public class BoundingBox {
 	 * @param amount
 	 * 		the amount to move (speed).
 	 */
+	@Deprecated
 	public void move(double rad, double amount) {
 		double dx = Math.cos(rad);
 		double dy = Math.sin(rad);
