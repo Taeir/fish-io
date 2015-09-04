@@ -101,7 +101,12 @@ public class BoundingBox {
 	 * 		the amount to move (speed).
 	 */
 	public void move(Direction dir, double amount) {
-		move(dir.getRadians(), amount);
+		Vec2d v = dir.getNormalVector();
+		
+		v.x *= amount;
+		v.y *= amount;
+		
+		move(v);
 	}
 	
 	/**
