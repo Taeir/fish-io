@@ -119,6 +119,7 @@ public class TestBoundingBox {
 	 * Test for moving a bounding box by radians.
 	 * {@link BoundingBox#move(double, double)}
 	 */
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testMoveDoubleDouble() {
 		BoundingBox bb = new BoundingBox(1.0, 2.0, 3.0, 4.0);
