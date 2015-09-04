@@ -1,9 +1,11 @@
 package com.github.fishio.view;
 
 import com.github.fishio.FishIO;
+import com.github.fishio.PlayingField;
 
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -17,18 +19,27 @@ import javafx.util.Duration;
 public class SinglePlayerController implements ScreenController {
 
 	private FishIO mainApp;
-	
+
+	@FXML
+	private Canvas gameCanvas;
 	@FXML
 	private VBox deathScreen;
 	@FXML
 	private Label scoreField;
-	
+
 	@Override
 	public void setMainApp(FishIO mainApp) {
 		this.mainApp = mainApp;
+
+		//setup the playing field
+		PlayingField pf = new PlayingField(30, "Fish.io Singleplayer");
+		pf.setCanvas(gameCanvas);
+		pf.show(mainApp.getPrimaryStage());		
+		pf.startGame();
+
 		showDeathScreen(true);
 	}
-	
+
 	/**
 	 * Set the visibility of the death screen.
 	 * 
@@ -39,20 +50,20 @@ public class SinglePlayerController implements ScreenController {
 		FadeTransition fade = new FadeTransition(Duration.millis(400), deathScreen);
 		if (visible) {
 			fade.setFromValue(0.0);
-		    fade.setToValue(1.0);
+			fade.setToValue(1.0);
 		} else {
 
-		    fade.setToValue(1.0);
+			fade.setToValue(1.0);
 			fade.setFromValue(0.0);
 		}
-		
 
-	    fade.play();
+
+		fade.play();
 		if (deathScreen.isVisible() != visible) {
 			deathScreen.setVisible(visible);
 		}
 	}
-	
+
 	/**
 	 * Opens the main menu.
 	 */
@@ -60,7 +71,7 @@ public class SinglePlayerController implements ScreenController {
 	public void backToMenu() {
 		mainApp.openMainMenu();
 	}
-	
+
 	/**
 	 * Restarts the game.
 	 */
@@ -70,5 +81,5 @@ public class SinglePlayerController implements ScreenController {
 		scoreField.setText("score: 0");
 		//TODO - reset the map etc.
 	}
-	
+
 }

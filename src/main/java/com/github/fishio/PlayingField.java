@@ -19,7 +19,7 @@ import javafx.util.Duration;
  */
 public class PlayingField {
 	private static final int WINDOW_X = 1280;
-	private static final int WINDOW_Y = 720;
+	private static final int WINDOW_Y = 670;
 	
 	private Timeline gameThread;
 	private int fps;
@@ -75,11 +75,11 @@ public class PlayingField {
 	 * Creates the canvas.
 	 */
 	protected final void createCanvas() {
-		canvas = new Canvas(1280, 720);
+		canvas = new Canvas(1280, 670);
 		root = new Group();
 		root.getChildren().add(canvas);
 		
-		surface = new Scene(root, 1280.0, 720.0);
+		surface = new Scene(root, 1280.0, 670.0);
 	}
 	
 	/**
@@ -302,5 +302,14 @@ public class PlayingField {
 	 */
 	public void unregisterListener(TickListener tl) {
 		listeners.remove(tl);
+	}
+	
+	/**
+	 * Replace the existing canvas with another one.
+	 * @param newCanvas
+	 * 			The new canvas.
+	 */
+	public void setCanvas(Canvas newCanvas) {
+		canvas = newCanvas;
 	}
 }
