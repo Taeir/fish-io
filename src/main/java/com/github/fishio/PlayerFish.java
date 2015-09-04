@@ -77,15 +77,11 @@ public class PlayerFish extends Entity implements TickListener {
 	 */
 	@SuppressWarnings ("checkstyle:needbraces")
 	public void adjustXSpeed() {
-		if (!leftPressed || !rightPressed) {
-			if (leftPressed && -speedX > MAX_SPEED) speedX -= ACCELERATION;
-			if (rightPressed && speedX > MAX_SPEED) speedX += ACCELERATION;
-			if (speedX < 0 && !leftPressed) speedX += ACCELERATION;
-			if (speedX > 0 && !rightPressed) speedX -= ACCELERATION;
-		} else {
-			if (speedX < 0) speedX += ACCELERATION;
-			if (speedX > 0) speedX -= ACCELERATION;
-		}
+		if (leftPressed && -speedX > MAX_SPEED) speedX -= ACCELERATION;
+		if (rightPressed && speedX > MAX_SPEED) speedX += ACCELERATION;
+		
+		if (speedX < 0 && (!leftPressed || rightPressed)) speedX += ACCELERATION;
+		if (speedX > 0 && (!rightPressed || leftPressed)) speedX -= ACCELERATION;
 	}
 	
 	/**
@@ -95,15 +91,11 @@ public class PlayerFish extends Entity implements TickListener {
 	 */
 	@SuppressWarnings ("checkstyle:needbraces")
 	public void adjustYSpeed() {
-		if (!downPressed || !upPressed) {
-			if (downPressed && -speedY > MAX_SPEED) speedY -= ACCELERATION;
-			if (upPressed && speedY > MAX_SPEED) speedY += ACCELERATION;
-			if (speedY < 0 && !downPressed) speedY += ACCELERATION;
-			if (speedY > 0 && !upPressed) speedY -= ACCELERATION;
-		} else {
-			if (speedY < 0) speedY += ACCELERATION;
-			if (speedY > 0) speedY -= ACCELERATION;
-		}
+		if (downPressed && -speedY > MAX_SPEED) speedY -= ACCELERATION;
+		if (upPressed && speedY > MAX_SPEED) speedY += ACCELERATION;
+		
+		if (speedY < 0 && (!downPressed || upPressed)) speedY += ACCELERATION;
+		if (speedY > 0 && (!upPressed || downPressed)) speedY -= ACCELERATION;
 	}
 	
 	/**
