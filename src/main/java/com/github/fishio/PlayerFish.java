@@ -140,7 +140,7 @@ public class PlayerFish extends Entity implements TickListener {
 		adjustXSpeed();
 		adjustYSpeed();
 		
-		getBoundingBox().move(getDirectionRad(), getSpeed());
+		getBoundingBox().move(new Vec2d(speedX, speedY));
 	}
 
 	@Override
