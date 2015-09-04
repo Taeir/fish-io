@@ -127,6 +127,66 @@ public class PlayerFish extends Entity implements TickListener {
 		return Math.sqrt(speedX * speedX + speedY * speedY);
 	}
 	
+	/**
+	 * @return the horizontal speed of the PlayerFish. A negative speed means
+	 * 		the fish is going left.
+	 */
+	public double getSpeedX() {
+		return speedX;
+	}
+	
+	/**
+	 * @return the vertical speed of the PlayerFish. A negative speed means
+	 * 		the fish is going down.
+	 */
+	public double getSpeedY() {
+		return speedY;
+	}
+	
+	/**
+	 * Sets whether the class believes if the 
+	 * up key is pressed or not. 
+	 * 
+	 * @param upPressed
+	 * 		Whether the up key is pressed or not.
+	 */
+	public void setUpPressed(boolean upPressed) {
+		this.upPressed = upPressed;
+	}
+	
+	/**
+	 * Sets whether the class believes if the 
+	 * down key is pressed or not. 
+	 * 
+	 * @param downPressed
+	 * 		Whether the down key is pressed or not.
+	 */
+	public void setDownPressed(boolean downPressed) {
+		this.downPressed = downPressed;
+	}
+	
+	/**
+	 * Sets whether the class believes if the 
+	 * left key is pressed or not. 
+	 * 
+	 * @param leftPressed
+	 * 		Whether the left key is pressed or not.
+	 */
+	public void setLeftPressed(boolean leftPressed) {
+		this.leftPressed = leftPressed;
+	}
+	
+	/**
+	 * Sets whether the class believes if the 
+	 * right key is pressed or not. 
+	 * 
+	 * @param rightPressed
+	 * 		Whether the right key is pressed or not.
+	 */
+	public void setRightPressed(boolean rightPressed) {
+		this.rightPressed = rightPressed;
+	}
+	
 	@Override
 	public void preTick() {
 		adjustXSpeed();
@@ -136,9 +196,6 @@ public class PlayerFish extends Entity implements TickListener {
 	}
 
 	@Override
-	public void postTick() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void postTick() { }
 	
 }
