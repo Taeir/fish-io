@@ -4,11 +4,13 @@ import java.io.IOException;
 
 import com.github.fishio.view.ScreenController;
 
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * Main application class.
@@ -21,7 +23,7 @@ public class FishIO extends Application {
 		this.primaryStage = primaryStage;
 		primaryStage.setTitle("Fish.io");
 		
-		loadScreen("view/mainMenu.fxml");
+		loadScreen("view/mainMenu.fxml", false);
 		primaryStage.setWidth(1280.0);
 		primaryStage.setHeight(720.0);
         primaryStage.show();
@@ -34,8 +36,10 @@ public class FishIO extends Application {
 	 * 
 	 * @param file
 	 * 			Filepath of the fxml file.
+	 * @param fadeIn
+	 * 			If true, fade in the new screen, else just show it.
 	 */
-	public void loadScreen(String file) {
+	public void loadScreen(String file, boolean fadeIn) {
 		FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource(file));
         
@@ -48,7 +52,15 @@ public class FishIO extends Application {
 			}
 			controller.setMainApp(this);
 
+			if (fadeIn) {
+				FadeTransition fade = new FadeTransition(Duration.millis(400), rootLayout);
+				fade.setFromValue(0.3);
+			    fade.setToValue(1.0);
+			    fade.play();
+			}		    
+			
 	        Scene scene = new Scene(rootLayout);
+	        
 	        primaryStage.setScene(scene);
 		} catch (IOException e) {
 			System.err.println("Error loading screen:" + file);
@@ -81,9 +93,9 @@ public class FishIO extends Application {
 	}
 	
 	/**
-	 * Open the main menu.
+	 * Open the main menu when in another screen.
 	 */
 	public void openMainMenu() {
-		loadScreen("view/mainMenu.fxml");
+		loadScreen("view/mainMenu.fxml", true);
 	}
 }

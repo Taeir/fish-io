@@ -24,7 +24,7 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void startSinglePlayer() {
-		mainApp.loadScreen("view/singlePlayer.fxml");
+		mainApp.loadScreen("view/singlePlayer.fxml", true);
 	}
 	
 	/**
