@@ -144,6 +144,26 @@ public class PlayerFish extends Entity implements TickListener {
 	}
 	
 	/**
+	 * Sets the speed of the PlayerFish in the horizontal direction.
+	 * 
+	 * @param speedX
+	 * 		the speed to set
+	 */
+	public void setSpeedX(double speedX) {
+		this.speedX = speedX;
+	}
+	
+	/**
+	 * Sets the speed of the PlayerFish in the vertical direction.
+	 * 
+	 * @param speedY
+	 * 		the speed to set
+	 */
+	public void setSpeedY(double speedY) {
+		this.speedY = speedY;
+	}
+	
+	/**
 	 * Sets whether the class believes if the 
 	 * up key is pressed or not. 
 	 * 
