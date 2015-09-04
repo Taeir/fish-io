@@ -7,6 +7,7 @@ import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -34,6 +35,7 @@ public class SinglePlayerController implements ScreenController {
 		//setup the playing field
 		PlayingField pf = new PlayingField(30, "Fish.io Singleplayer");
 		pf.setCanvas(gameCanvas);
+		pf.setBackground(new Image("background.png"));
 		pf.show(mainApp.getPrimaryStage());		
 		pf.startGame();
 

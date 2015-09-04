@@ -1,6 +1,7 @@
 package com.github.fishio;
 
 import java.io.IOException;
+import java.net.URL;
 
 import com.github.fishio.view.ScreenController;
 
@@ -17,21 +18,21 @@ import javafx.util.Duration;
  */
 public class FishIO extends Application {
 	private Stage primaryStage;
-	
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
 		primaryStage.setTitle("Fish.io");
-		
+
 		loadScreen("view/mainMenu.fxml", false);
 		primaryStage.setWidth(1280.0);
 		primaryStage.setHeight(720.0);
-        primaryStage.show();
-        
+		primaryStage.show();
+
 	}
-	
+
 	/**
-	 * Load a screen from an fxml-file. 
+	 * Load a screen from a fxml-file. 
 	 * This screen will replace the current screen
 	 * 
 	 * @param file
@@ -41,8 +42,8 @@ public class FishIO extends Application {
 	 */
 	public void loadScreen(String file, boolean fadeIn) {
 		FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(file));
-        
+		loader.setLocation(getClass().getResource(file));
+
 		try {
 			Pane rootLayout = (Pane) loader.load();
 			ScreenController controller = ((ScreenController) loader.getController());
@@ -55,18 +56,18 @@ public class FishIO extends Application {
 			if (fadeIn) {
 				FadeTransition fade = new FadeTransition(Duration.millis(400), rootLayout);
 				fade.setFromValue(0.3);
-			    fade.setToValue(1.0);
-			    fade.play();
+				fade.setToValue(1.0);
+				fade.play();
 			}		    
-			
-	        Scene scene = new Scene(rootLayout);
-	        
-	        primaryStage.setScene(scene);
+
+			Scene scene = new Scene(rootLayout);
+
+			primaryStage.setScene(scene);
 		} catch (IOException e) {
 			System.err.println("Error loading screen:" + file);
 			e.printStackTrace();
 		}
-        
+
 	}
 
 	/**
@@ -77,21 +78,21 @@ public class FishIO extends Application {
 	public static void main(String[] args) {
 		launch();
 	}
-	
-    /**
-     * Close the program.    
-     */
-    public void closeApplication() {
-    	this.primaryStage.close();
-    }
 
-    /**
-     * @return primaryStage
-     */
+	/**
+	 * Close the program.    
+	 */
+	public void closeApplication() {
+		this.primaryStage.close();
+	}
+
+	/**
+	 * @return primaryStage
+	 */
 	public Stage getPrimaryStage() {
 		return primaryStage;
 	}
-	
+
 	/**
 	 * Open the main menu when in another screen.
 	 */
