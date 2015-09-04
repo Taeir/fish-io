@@ -138,6 +138,16 @@ public class Vec2d {
 		final double lInv = 1 / l;
 		return new Vec2d(lInv * x, lInv * y);
 	}
+	
+	/**
+	 * @param other
+	 * 		a vector to add to this vector.
+	 * @return
+	 * 		the addition of this vector and other vector.
+	 */
+	public Vec2d add(Vec2d other) {
+		return new Vec2d(this.x + other.x, this.y + other.y);
+	}
 
 	@Override
 	public int hashCode() {
