@@ -61,7 +61,7 @@ public class Entity implements ICollidable, IPositional, IDrawable {
 		}
 		
 		//No sprite rendering
-		gc.setFill(Color.FUCHSIA);
+		gc.setFill(Color.RED);
 		gc.fillRect(getX(), getY(), getWidth(), getHeight());
 	}
 }
