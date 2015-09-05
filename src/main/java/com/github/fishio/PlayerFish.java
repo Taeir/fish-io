@@ -2,8 +2,9 @@ package com.github.fishio;
 
 import com.github.fishio.listeners.TickListener;
 
-import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 
 /**
  * Represents a fish that the user can control using
@@ -28,22 +29,21 @@ public class PlayerFish extends Entity implements TickListener {
 	 * The speed at which the speed of the fish increases /
 	 * decreases depending on what keys are pressed by the user.
 	 */
-	private static final double ACCELERATION = 0.01; //TODO find a nicer acceleration value
+	private static final double ACCELERATION = 0.25; //TODO find a nicer acceleration value
 	
-	private static final double MAX_SPEED = Integer.MAX_VALUE; //TODO find a nicer max speed value
+	private static final double MAX_SPEED = 10; //TODO find a nicer max speed value
 	
 	/**
 	 * @param bb
 	 * 		The (inital) bounding box of the PlayerFish
-	 * @param surface
+	 * @param stage
 	 * 		The scene in which the player fish is located at
 	 */
-	public PlayerFish(BoundingBox bb, Scene surface) {
+	public PlayerFish(BoundingBox bb, Stage stage) {
 		super(bb);
 		
-		surface.setOnKeyPressed(event -> {
+		stage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
 			KeyCode pressedKey = event.getCode();
-			
 			if (pressedKey == upKey) {
 				upPressed = true;
 			} else if (pressedKey == downKey) {
@@ -55,9 +55,8 @@ public class PlayerFish extends Entity implements TickListener {
 			}
 		});
 		
-		surface.setOnKeyReleased(event -> {
+		stage.addEventHandler(KeyEvent.KEY_RELEASED, event -> {
 			KeyCode releasedKey = event.getCode();
-			
 			if (releasedKey == upKey) {
 				upPressed = false;
 			} else if (releasedKey == downKey) {
@@ -218,7 +217,6 @@ public class PlayerFish extends Entity implements TickListener {
 	public void preTick() {
 		adjustXSpeed();
 		adjustYSpeed();
-		
 		getBoundingBox().move(new Vec2d(speedX, speedY));
 	}
 

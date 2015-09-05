@@ -16,10 +16,13 @@ import javafx.util.Duration;
  */
 public class FishIO extends Application {
 	private Stage primaryStage;
+	private static FishIO instance;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
+		instance = this;
+		
 		primaryStage.setTitle("Fish.io");
 
 		loadScreen("view/mainMenu.fxml", false);
@@ -96,5 +99,12 @@ public class FishIO extends Application {
 	 */
 	public void openMainMenu() {
 		loadScreen("view/mainMenu.fxml", true);
+	}
+	
+	/**
+	 * @return the instance of this application.
+	 */
+	public static FishIO getInstance() {
+		return instance;
 	}
 }

@@ -6,7 +6,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.Collection;
 
-import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,7 +25,7 @@ public class TestPlayerFishAdjustXSpeed {
 	private double expectedSpeedX;
 	
 	private static double acc = 
-			new PlayerFish(Mockito.mock(BoundingBox.class), Mockito.mock(Scene.class)).getAcceleration();
+			new PlayerFish(Mockito.mock(BoundingBox.class), Mockito.mock(Stage.class)).getAcceleration();
 	
 	/**
 	 * @param leftPressed
@@ -41,7 +41,7 @@ public class TestPlayerFishAdjustXSpeed {
 	public TestPlayerFishAdjustXSpeed(boolean leftPressed, boolean rightPressed, 
 			double speedX, double expectedSpeedX) {
 		
-		fish = new PlayerFish(Mockito.mock(BoundingBox.class), Mockito.mock(Scene.class));
+		fish = new PlayerFish(Mockito.mock(BoundingBox.class), Mockito.mock(Stage.class));
 	
 		fish.setLeftPressed(leftPressed);
 		fish.setRightPressed(rightPressed);
