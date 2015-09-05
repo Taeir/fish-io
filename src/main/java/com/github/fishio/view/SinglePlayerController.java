@@ -8,7 +8,6 @@ import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
@@ -30,8 +29,6 @@ public class SinglePlayerController implements ScreenController {
 	private VBox deathScreen;
 	@FXML
 	private Label scoreField;
-	@FXML
-	private Button btnPause;
 	
 	private PlayingField pf;
 
