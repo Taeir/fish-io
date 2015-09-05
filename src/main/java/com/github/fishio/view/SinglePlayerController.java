@@ -3,9 +3,12 @@ package com.github.fishio.view;
 import com.github.fishio.FishIO;
 import com.github.fishio.PlayingField;
 
+import javafx.animation.Animation.Status;
 import javafx.animation.FadeTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
@@ -27,16 +30,42 @@ public class SinglePlayerController implements ScreenController {
 	private VBox deathScreen;
 	@FXML
 	private Label scoreField;
+	@FXML
+	private Button btnPause;
+	
+	private PlayingField pf;
 
 	@Override
 	public void setMainApp(FishIO mainApp) {
 		this.mainApp = mainApp;
 		
 		//setup the playing field
-		PlayingField pf = new PlayingField(60, gameCanvas);
-		pf.setBackground(new Image("background.png"));
+		if (pf == null) {
+			pf = new PlayingField(60, gameCanvas);
+			pf.setBackground(new Image("background.png"));
+		}
+		
 		mainApp.getPrimaryStage().setTitle("Fish.io Singleplayer");
 		pf.startGame();
+	}
+	
+	/**
+	 * Called when the pause button is pressed.
+	 * 
+	 * @param event
+	 * 		the event of the user pressing the button.
+	 */
+	@FXML
+	public void onPause(ActionEvent event) {
+		if (pf == null) {
+			return;
+		}
+		
+		if (pf.getGameThread().getStatus() == Status.RUNNING) {
+			pf.stopGame();
+		} else {
+			pf.startGame();
+		}
 	}
 
 	/**
