@@ -41,6 +41,7 @@ public class SinglePlayerPlayingField extends PlayingField {
 				if (player.isDead()) {
 					screenController.showDeathScreen(true);
 					stopGame();
+					clear();
 				}
 			}
 		});
