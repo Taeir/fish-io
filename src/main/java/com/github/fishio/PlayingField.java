@@ -155,7 +155,8 @@ public class PlayingField {
 	 * Adds new entities.
 	 */
 	public void addEntities() {
-		entities = LevelBuilder.standardEntities();
+		EnemyFish eFish = LevelBuilder.randomizedFish(null);
+		add(eFish);
 	}
 	
 	/**

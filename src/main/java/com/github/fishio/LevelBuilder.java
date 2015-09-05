@@ -13,19 +13,19 @@ final class LevelBuilder {
 	 */
 	private LevelBuilder() {
 		//to prevent initiation
+		//TODO add assertion?
 	}
 	
 	/**
-	 * Create standard Entities.
-	 * @return a list of standard Entities
+	 * Creates a random EnemyFish, taking in account the current size of the player.
+	 * @param playerBox current Playerfish BoundingBox
+	 * @return random Enemyfish
 	 */
-	public static ArrayList<Entity> standardEntities() {
-		ArrayList<Entity> entityList = new ArrayList<>();
-		//TODO add PlayerFish
-		
+	public static EnemyFish randomizedFish(BoundingBox playerBox) {
+		//TODO add a random fish based on player current BoundingBox
 		//Adding randomized enemy fish.
-		entityList.add(new EnemyFish(new BoundingBox(0, 0, 10 , -10)));
-		return entityList;
+		EnemyFish eFish = new EnemyFish(new BoundingBox(0, 0, 100 , 100));
+		return eFish;
 	}
 	
 	/**
