@@ -67,5 +67,8 @@ public class EnemyFish extends Entity implements IMovable {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public void onCollide(ICollidable other) { }
 	
 }

@@ -34,6 +34,7 @@ public class PlayingField {
 	private ArrayList<IDrawable> drawables = new ArrayList<>();
 	private ArrayList<IMovable> movables = new ArrayList<>();
 	private ArrayList<Entity> entities = new ArrayList<>();
+	private ArrayList<ICollidable> collidables = new ArrayList<>();
 
 
 	private Image background;
@@ -197,7 +198,16 @@ public class PlayingField {
 	 * Checks for collisions.
 	 */
 	public void checkCollisions() {
-		//TODO
+		for (int i = 0; i < collidables.size() - 1; i++) {
+			for (int j = i + 1; j < collidables.size(); j++) {
+				ICollidable c1 = collidables.get(i);
+				ICollidable c2 = collidables.get(j);
+				if (c1 != c2 && c1.doesCollides(c2)) {
+					c1.onCollide(c2);
+					c2.onCollide(c1);
+				}
+			}
+		}
 	}
 
 	/**
@@ -372,6 +382,10 @@ public class PlayingField {
 
 		if (o instanceof Entity) {
 			entities.add((Entity) o);
+		}
+		
+		if (o instanceof ICollidable) {
+			collidables.add((ICollidable) o);
 		}
 	}
 

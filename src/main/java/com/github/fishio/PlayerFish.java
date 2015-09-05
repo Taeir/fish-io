@@ -206,5 +206,19 @@ public class PlayerFish extends Entity implements IMovable {
 	public boolean canMoveThroughWall() {
 		return false;
 	}
+
+	@Override
+	public void onCollide(ICollidable other) {
+		if (other instanceof EnemyFish) {
+			double tsize = this.getBoundingBox().getSize();
+			double osize = other.getBoundingBox().getSize();
+			
+			if (tsize > osize) {
+				((EnemyFish) other).setDead();
+			} else if (osize > tsize) {
+				this.setDead();
+			}
+		}
+	}
 	
 }

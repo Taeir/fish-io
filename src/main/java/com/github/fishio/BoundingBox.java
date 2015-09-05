@@ -154,7 +154,7 @@ public class BoundingBox {
 	 * @return the size (area) of the BoundingBox
 	 */
 	public double getSize() {
-		return xmax - xmin * ymax - ymin;
+		return getWidth() * getHeight();
 	}
 
 	/**

@@ -25,13 +25,11 @@ public class ScreenWall implements ICollidable, IPositional {
 	}
 
 	@Override
-	public boolean onCollide(ICollidable other) {
+	public void onCollide(ICollidable other) {
 		//TODO Collision detection
 		if (other instanceof IMovable) {
 			((IMovable) other).hitWall();
 		}
-		
-		return false;
 	}
 
 	@Override

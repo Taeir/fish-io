@@ -9,11 +9,8 @@ public interface ICollidable {
 	 * 
 	 * @param other
 	 * 		The collidable that we have collided with.
-	 * 
-	 * @return
-	 * 		?
 	 */
-	boolean onCollide(ICollidable other);
+	void onCollide(ICollidable other);
 	
 	/**
 	 * The Collision Box is used to determine when one object collides with another object.
