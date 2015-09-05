@@ -67,7 +67,6 @@ public class PlayingField {
 		PlayerFish fish = new PlayerFish(new BoundingBox(100, 150, 200, 200), 
 				FishIO.getInstance().getPrimaryStage());
 		add(fish);
-		registerGameListener(fish);
 
 		//count enemies
 		enemyCount = 0;
@@ -154,7 +153,7 @@ public class PlayingField {
 			//Call listeners pretick
 			preListeners(false);
 
-			//Move all entities
+			//Move all movables
 			moveMovables();
 
 			//Add new entities
@@ -236,7 +235,29 @@ public class PlayingField {
 	 */
 	public void moveMovables() {
 		for (IMovable m : movables) {
-			m.move();
+			m.preMove();
+			
+			BoundingBox box = m.getBoundingBox();
+			if (box.getMaxX() >= WINDOW_X || box.getMinX() <= 0
+					|| box.getMaxY() >= WINDOW_Y || box.getMinY() <= 0) {
+				m.hitWall();
+			}
+			
+			box.move(m.getSpeedVector());
+			
+			if (!m.canMoveThroughWall()) {
+				
+				if (box.getMaxX() > WINDOW_X) {
+					box.move(Direction.LEFT, box.getMaxX() - WINDOW_X);
+				} if (box.getMinX() < 0) {
+					box.move(Direction.RIGHT, -box.getMinX());
+				} if (box.getMaxY() > WINDOW_Y) {
+					box.move(Direction.UP, box.getMaxY() - WINDOW_Y);
+				} if (box.getMinY() < 0) {
+					box.move(Direction.DOWN, -box.getMinY());
+				}
+				
+			}
 		}
 	}
 
