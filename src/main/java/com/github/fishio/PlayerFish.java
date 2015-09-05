@@ -10,7 +10,7 @@ import javafx.stage.Stage;
  * Represents a fish that the user can control using
  * the keyboard.
  */
-public class PlayerFish extends Entity implements TickListener {
+public class PlayerFish extends Entity implements IMovable {
 	
 	private double speedX = 0;
 	private double speedY = 0;
@@ -95,35 +95,6 @@ public class PlayerFish extends Entity implements TickListener {
 		
 		if (speedY < 0 && (!downPressed || upPressed)) speedY += ACCELERATION;
 		if (speedY > 0 && (!upPressed || downPressed)) speedY -= ACCELERATION;
-	}
-	
-	/**
-	 * @return the direction in which the fish is moving (not the one it's facing).
-	 */
-	public double getDirectionRad() {
-		//If the fish only goes up or down
-		if (speedX == 0) {
-			if (speedY > 0) {
-				return 0.5 * Math.PI;
-			} else if (speedY < 0) {
-				return -0.5 * Math.PI;
-			} else {
-				//Edge case, there is no direction.
-				return -1;
-			}
-		}
-		
-		//All other rads can be calculated using arcTan(y/x)
-		return Math.atan(speedY / speedX);
-	}
-	
-	/**
-	 * @return the total speed of the fish in the direction
-	 * 		it is moving.
-	 */
-	public double getSpeed() {
-		//Calculated using Pythagoras
-		return Math.sqrt(speedX * speedX + speedY * speedY);
 	}
 	
 	/**
@@ -212,15 +183,25 @@ public class PlayerFish extends Entity implements TickListener {
 	public void setRightPressed(boolean rightPressed) {
 		this.rightPressed = rightPressed;
 	}
-	
+
 	@Override
-	public void preTick() {
-		adjustXSpeed();
-		adjustYSpeed();
-		getBoundingBox().move(new Vec2d(speedX, speedY));
+	public Vec2d getSpeedVector() {
+		return new Vec2d(speedX, speedY);
 	}
 
 	@Override
-	public void postTick() { }
+	public void setSpeedVector(Vec2d vector) {
+		speedX = vector.x;
+		speedY = vector.y;
+	}
+	
+	@Override
+	public void preMove() {
+		adjustXSpeed();
+		adjustYSpeed();
+	}
+
+	@Override
+	public void hitWall() { }
 	
 }

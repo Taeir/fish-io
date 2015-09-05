@@ -67,7 +67,6 @@ public class PlayingField {
 		PlayerFish fish = new PlayerFish(new BoundingBox(100, 150, 200, 200), 
 				FishIO.getInstance().getPrimaryStage());
 		add(fish);
-		registerGameListener(fish);
 
 		//count enemies
 		enemyCount = 0;
