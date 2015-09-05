@@ -70,9 +70,19 @@ public interface IMovable extends IPositional {
 	}
 	
 	/**
+	 * @return
+	 * 		true iff the object doesn't get blocked when
+	 * 		trying to move through walls.
+	 */
+	boolean canMoveThroughWall();
+	
+	/**
 	 * Called when collided with a wall.<br>
 	 * <br>
 	 * Can be used to turn around for example.
+	 * 
+	 * This method will be called AFTER preMove(), but
+	 * BEFORE the object actually moves.
 	 */
 	void hitWall();
 	

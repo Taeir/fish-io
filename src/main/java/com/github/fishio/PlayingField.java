@@ -236,7 +236,28 @@ public class PlayingField {
 	public void moveMovables() {
 		for (IMovable m : movables) {
 			m.preMove();
-			m.getBoundingBox().move(m.getSpeedVector());
+			
+			BoundingBox box = m.getBoundingBox();
+			if (box.getMaxX() >= WINDOW_X || box.getMinX() <= 0
+					|| box.getMaxY() >= WINDOW_Y || box.getMinY() <= 0) {
+				m.hitWall();
+			}
+			
+			box.move(m.getSpeedVector());
+			
+			if (!m.canMoveThroughWall()) {
+				
+				if (box.getMaxX() > WINDOW_X) {
+					box.move(Direction.LEFT, box.getMaxX() - WINDOW_X);
+				} if (box.getMinX() < 0) {
+					box.move(Direction.RIGHT, -box.getMinX());
+				} if (box.getMaxY() > WINDOW_Y) {
+					box.move(Direction.UP, box.getMaxY() - WINDOW_Y);
+				} if (box.getMinY() < 0) {
+					box.move(Direction.DOWN, -box.getMinY());
+				}
+				
+			}
 		}
 	}
 

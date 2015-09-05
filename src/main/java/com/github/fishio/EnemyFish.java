@@ -61,5 +61,11 @@ public class EnemyFish extends Entity implements IMovable {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public boolean canMoveThroughWall() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }

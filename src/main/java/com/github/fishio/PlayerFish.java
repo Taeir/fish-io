@@ -203,5 +203,10 @@ public class PlayerFish extends Entity implements IMovable {
 
 	@Override
 	public void hitWall() { }
+
+	@Override
+	public boolean canMoveThroughWall() {
+		return false;
+	}
 	
 }
