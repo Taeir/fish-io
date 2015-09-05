@@ -155,7 +155,7 @@ public class PlayingField {
 	 * Adds new entities.
 	 */
 	public void addEntities() {
-		//TODO
+		entities = LevelBuilder.standardEntities();
 	}
 	
 	/**
