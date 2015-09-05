@@ -16,8 +16,8 @@ import javafx.util.Duration;
  * Represents the PlayingField.
  */
 public class PlayingField {
-	private static final int WINDOW_X = 1280;
-	private static final int WINDOW_Y = 670;
+	static final int WINDOW_X = 1280;
+	static final int WINDOW_Y = 670;
 
 	private Timeline gameThread;
 	private int fps;
@@ -29,6 +29,8 @@ public class PlayingField {
 	private ArrayList<Entity> entities = new ArrayList<>();
 
 	private Image background;
+	private int enemyCount;
+	private final int enemyCountMax = 20;
 
 	/**
 	 * @param fps
@@ -52,7 +54,8 @@ public class PlayingField {
 		} else {
 			this.canvas = canvas;
 		}
-		
+		//count enemies
+		enemyCount = 0;
 		createGameThread();
 	}
 
@@ -171,8 +174,14 @@ public class PlayingField {
 	 * Adds new entities.
 	 */
 	public void addEntities() {
-		EnemyFish eFish = LevelBuilder.randomizedFish(null);
-		add(eFish);
+		
+		//add enemy entities
+		while (enemyCount <= enemyCountMax) {
+			//TODO add scalible enemyFish
+			EnemyFish eFish = LevelBuilder.randomizedFish(null);
+			add(eFish);
+			enemyCount++;
+		}
 	}
 
 	/**
