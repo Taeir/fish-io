@@ -8,22 +8,22 @@ import javafx.scene.paint.Color;
  * This class contains all methods concerning enemy fish on the screen.
  */
 public class EnemyFish extends Entity implements IMovable {
-	//private double vx;
-	//private double vy;
+	private double vx;
+	private double vy;
 	private Color color;
 	
 	/**
 	 * Main constructor of enemy fish.
 	 * @param b Bounding box of enemy fish.
 	 * @param colour color of the enemy fish.
+	 * @param startvx starting speed in x direction
+	 * @param startvy starting speed in y direction
 	 */
-	public EnemyFish(BoundingBox b, Color colour) {
-		//, double startvx, double startvy
-		//* @param bb Bounding box of enemy fish.
+	public EnemyFish(BoundingBox b, Color colour, double startvx, double startvy) {
 		super(b);
 		color = colour;
-		//vx = startvx;
-		//vy = startvy;
+		vx = startvx;
+		vy = startvy;
 	}
 	
 	@Override
@@ -41,7 +41,7 @@ public class EnemyFish extends Entity implements IMovable {
 	@Override
 	public Vec2d getSpeedVector() {
 		// TODO Auto-generated method stub
-		return new Vec2d(0, 0);
+		return new Vec2d(vx, vy);
 	}
 
 	@Override
@@ -50,10 +50,12 @@ public class EnemyFish extends Entity implements IMovable {
 		
 	}
 
+	/**
+	 * Enemy fish should die for now if they hit the wall;
+	 */
 	@Override
 	public void hitWall() {
-		// TODO Auto-generated method stub
-		
+		setDead();
 	}
 
 	@Override
@@ -64,8 +66,7 @@ public class EnemyFish extends Entity implements IMovable {
 
 	@Override
 	public boolean canMoveThroughWall() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	
 }
