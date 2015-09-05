@@ -1,5 +1,7 @@
 package com.github.fishio;
 
+import java.util.ArrayList;
+
 import com.github.fishio.listeners.TickListener;
 import com.github.fishio.view.SinglePlayerController;
 
@@ -42,6 +44,13 @@ public class SinglePlayerPlayingField extends PlayingField {
 				}
 			}
 		});
+	}
+
+	@Override
+	public ArrayList<PlayerFish> getPlayers() {
+		ArrayList<PlayerFish> res = new ArrayList<>();
+		res.add(player);
+		return res;
 	}
 
 }

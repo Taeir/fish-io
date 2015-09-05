@@ -22,7 +22,6 @@ public abstract class PlayingField {
 	public static final int WINDOW_Y = 670;
 	public static final double GAME_TPS = 60;
 
-
 	private Timeline gameThread;
 	private Timeline renderThread;
 	private int fps;
@@ -217,6 +216,7 @@ public abstract class PlayingField {
 
 		for (Entity e : tbr) {
 			remove(e);
+			enemyCount--;
 		}
 	}
 
@@ -228,11 +228,16 @@ public abstract class PlayingField {
 		//add enemy entities
 		while (enemyCount <= enemyCountMax) {
 			//TODO add scalible enemyFish
-			EnemyFish eFish = LevelBuilder.randomizedFish(null);
+			EnemyFish eFish = LevelBuilder.randomizedFish(getPlayers().get(0).getBoundingBox());
 			add(eFish);
 			enemyCount++;
 		}
 	}
+	
+	/**
+	 * @return all the players in this field.
+	 */
+	public abstract ArrayList<PlayerFish> getPlayers();
 
 	/**
 	 * Moves Movable items.
