@@ -20,7 +20,7 @@ public interface TickListener {
 //	void preCleanup();
 	
 	/**
-	 * Called at the end of a tick, after rendering, collisions checkin, and cleaning up dead entities.
+	 * Called at the end of a tick, after rendering, collisions checking, and cleaning up dead entities.
 	 */
 	void postTick();
 }
