@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.github.fishio.listeners.TickListener;
 
+import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -16,17 +17,24 @@ import javafx.util.Duration;
  * Represents the PlayingField.
  */
 public class PlayingField {
+
 	static final int WINDOW_X = 1280;
 	static final int WINDOW_Y = 670;
+	public static final double GAME_TPS = 60;
+
 
 	private Timeline gameThread;
+	private Timeline renderThread;
 	private int fps;
 
 	private Canvas canvas;
 
-	private ArrayList<TickListener> listeners = new ArrayList<>();
+	private ArrayList<TickListener> gameListeners = new ArrayList<>();
+	private ArrayList<TickListener> renderListeners = new ArrayList<>();
 	private ArrayList<IDrawable> drawables = new ArrayList<>();
+	private ArrayList<IMovable> movables = new ArrayList<>();
 	private ArrayList<Entity> entities = new ArrayList<>();
+	
 
 	private Image background;
 	private int enemyCount;
@@ -57,6 +65,7 @@ public class PlayingField {
 		//count enemies
 		enemyCount = 0;
 		createGameThread();
+		createRenderThread();
 	}
 
 	/**
@@ -65,6 +74,27 @@ public class PlayingField {
 	 */
 	public int getFPS() {
 		return fps;
+	}
+	
+	/**
+	 * Sets the (target) framerate for the render thread in
+	 * frames per second.
+	 * 
+	 * @param fps
+	 * 		the new framerate
+	 */
+	public void setFPS(int fps) {
+		this.fps = fps;
+		
+		Timeline oldRenderThread = renderThread;
+		createRenderThread();
+		
+		//If render thread was running, start the new one and stop the old one.
+		if (oldRenderThread.getStatus() == Status.RUNNING) {
+			renderThread.play();
+			oldRenderThread.stop();
+		}
+		
 	}
 
 	/**
@@ -96,22 +126,45 @@ public class PlayingField {
 			canvas = c;
 		}
 	}
+	
+	/**
+	 * Creates the rendering thread.
+	 */
+	protected final void createRenderThread() {
+		Duration dur = Duration.millis(1000.0 / getFPS());
+
+		KeyFrame frame = new KeyFrame(dur, event -> {
+			//Call listeners pretick
+			preListeners(true);
+
+			//Re-render items
+			redraw();
+
+			//Call listeners posttick
+			postListeners(true);
+		}, new KeyValue[0]);
+
+		Timeline tl = new Timeline(frame);
+		tl.setCycleCount(-1);
+
+		renderThread = tl;
+	}
 
 	/**
 	 * Creates the game thread.
 	 */
 	protected final void createGameThread() {
-		Duration dur = Duration.millis(1000.0 / getFPS());
+		Duration dur = Duration.millis(1000.0 / GAME_TPS);
 
 		KeyFrame frame = new KeyFrame(dur, event -> {
 			//Call listeners pretick
-			preListeners();
+			preListeners(false);
+			
+			//Move all entities
+			moveMovables();
 
 			//Add new entities
 			addEntities();
-
-			//Re-render items
-			redraw();
 
 			//Check for collisions
 			checkCollisions();
@@ -120,7 +173,7 @@ public class PlayingField {
 			cleanupDead();
 
 			//Call listeners posttick
-			postListeners();
+			postListeners(false);
 		}, new KeyValue[0]);
 
 		Timeline tl = new Timeline(frame);
@@ -183,13 +236,33 @@ public class PlayingField {
 			enemyCount++;
 		}
 	}
+	
+	/**
+	 * Moves Movable items.
+	 */
+	public void moveMovables() {
+		for (IMovable m : movables) {
+			m.move();
+		}
+	}
 
 	/**
 	 * Calls all listeners pre tick.
+	 * 
+	 * @param render
+	 * 		if true, calls the render listeners.
+	 * 		if false, calls the game listeners.
 	 */
-	public void preListeners() {
-		//TODO Concurrency + try catch
-		for (TickListener tl : listeners) {
+	public void preListeners(boolean render) {
+		ArrayList<TickListener> list;
+		if (render) {
+			list = renderListeners;
+		} else {
+			list = gameListeners;
+		}
+		
+		//TODO Concurrency
+		for (TickListener tl : list) {
 			try {
 				tl.preTick();
 			} catch (Exception ex) {
@@ -202,10 +275,21 @@ public class PlayingField {
 
 	/**
 	 * Calls all listeners post tick.
+	 * 
+	 * @param render
+	 * 		if true, calls the render listeners.
+	 * 		if false, calls the game listeners.
 	 */
-	public void postListeners() {
-		//TODO Concurrency + try catch
-		for (TickListener tl : listeners) {
+	public void postListeners(boolean render) {
+		ArrayList<TickListener> list;
+		if (render) {
+			list = renderListeners;
+		} else {
+			list = gameListeners;
+		}
+		
+		//TODO Concurrency
+		for (TickListener tl : list) {
 			try {
 				tl.postTick();
 			} catch (Exception ex) {
@@ -214,6 +298,14 @@ public class PlayingField {
 				ex.printStackTrace();
 			}
 		}
+	}
+	
+	/**
+	 * @return
+	 * 		the renderthread.
+	 */
+	public Timeline getRenderThread() {
+		return renderThread;
 	}
 
 	/**
@@ -228,15 +320,16 @@ public class PlayingField {
 	 * Starts the game.
 	 */
 	public void startGame() {
+		renderThread.play();
 		gameThread.play();
 	}
 
 	/**
-	 * Stops the game.
+	 * Stops (pauses) the game.
 	 */
 	public void stopGame() {
 		gameThread.stop();
-		//gameThread.pause();
+		renderThread.stop();
 	}
 	
 	/**
@@ -257,6 +350,10 @@ public class PlayingField {
 		if (o instanceof IDrawable) {
 			drawables.add((IDrawable) o);
 		}
+		
+		if (o instanceof IMovable) {
+			movables.add((IMovable) o);
+		}
 
 		if (o instanceof Entity) {
 			entities.add((Entity) o);
@@ -272,6 +369,10 @@ public class PlayingField {
 	public void remove(Object o) {
 		if (o instanceof IDrawable) {
 			drawables.remove(o);
+		}
+		
+		if (o instanceof IMovable) {
+			movables.remove(o);
 		}
 
 		if (o instanceof Entity) {
@@ -299,23 +400,43 @@ public class PlayingField {
 	}
 
 	/**
-	 * Registers the given TickListener.
+	 * Registers the given TickListener for the game thread.
 	 * 
 	 * @param tl
 	 * 		the TickListener to register.
 	 */
-	public void registerListener(TickListener tl) {
-		listeners.add(tl);
+	public void registerGameListener(TickListener tl) {
+		gameListeners.add(tl);
 	}
 
 	/**
-	 * Unregisters the given TickListener.
+	 * Unregisters the given TickListener from the game thread.
 	 * 
 	 * @param tl
 	 * 		the TickListener to unregister.
 	 */
-	public void unregisterListener(TickListener tl) {
-		listeners.remove(tl);
+	public void unregisterGameListener(TickListener tl) {
+		gameListeners.remove(tl);
+	}
+	
+	/**
+	 * Registers the given TickListener for the render thread.
+	 * 
+	 * @param tl
+	 * 		the TickListener to register.
+	 */
+	public void registerRenderListener(TickListener tl) {
+		gameListeners.add(tl);
+	}
+
+	/**
+	 * Unregisters the given TickListener from the render thread.
+	 * 
+	 * @param tl
+	 * 		the TickListener to unregister.
+	 */
+	public void unregisterRenderListener(TickListener tl) {
+		gameListeners.remove(tl);
 	}
 
 	/**
