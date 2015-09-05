@@ -39,6 +39,7 @@ public class PlayingField {
 	private Image background;
 	private int enemyCount;
 	private final int enemyCountMax = 20;
+	private PlayerFish pFish;
 
 	/**
 	 * @param fps
@@ -66,6 +67,7 @@ public class PlayingField {
 		//Adding a (temporary) playerFish
 		PlayerFish fish = new PlayerFish(new BoundingBox(100, 150, 200, 200), 
 				FishIO.getInstance().getPrimaryStage());
+		pFish = fish;
 		add(fish);
 
 		//count enemies
@@ -213,6 +215,7 @@ public class PlayingField {
 
 		for (Entity e : tbr) {
 			remove(e);
+			enemyCount--;
 		}
 	}
 

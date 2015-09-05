@@ -10,12 +10,19 @@ import javafx.scene.paint.Color;
 final class LevelBuilder {
 	
 	//Fish statistics
+	
+	//size
 	public static final int MAXFISHWIDTH = 200;
 	public static final double FISHWIDTHHEIGHTRATIO = 0.75;
 	public static final double MINFISHWIDTH = 8;
 	public static final double MINFISHHEIGTH = MINFISHWIDTH * FISHWIDTHHEIGHTRATIO;
+	
+	//color
 	public static final int RGBNUMBER = 255;
+	
+	//movement
 	public static final double MAXEFISHSPEED = 7;
+	public static final double MINEFISHSPEED = 1;
 	
 	/**
 	 * Private constructor to prevent initiation.
@@ -38,8 +45,8 @@ final class LevelBuilder {
 		double width   = MAXFISHWIDTH * Math.random();
 		double height  = FISHWIDTHHEIGHTRATIO * width * Math.random();
 		
-		double vx = Math.random() * 2 * MAXEFISHSPEED - MAXEFISHSPEED;
-		double vy = Math.random() * 2 * MAXEFISHSPEED - MAXEFISHSPEED;
+		double vx = randomSpeed();
+		double vy = randomSpeed();
 				
 		
 		//Check for decent properties
@@ -74,9 +81,26 @@ final class LevelBuilder {
 		return new Vec2d(xPos, yPos);
 	}
 	
+	/**
+	 * Create a random rgb color.
+	 * @return random color.
+	 */
 	private static Color randomColor() {
 		return Color.rgb((int) (Math.random() * RGBNUMBER), 
 				(int) (Math.random() * RGBNUMBER), 
 				(int) (Math.random() * RGBNUMBER));
+	}
+	
+	private static double randomSpeed() {
+		double speed = Math.random() * 2 * MAXEFISHSPEED - MAXEFISHSPEED;
+		
+		//check if speed is not too slow
+		if (speed < 0 ){
+			speed = Math.min(speed, -1.0);
+		} else {
+			speed = Math.min(speed, 1.0);
+		}
+		
+		return speed;
 	}
 }
