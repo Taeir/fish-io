@@ -146,8 +146,8 @@ public class BoundingBox {
 	public void move(Vec2d v) {
 		xmin += v.x;
 		xmax += v.x;
-		ymin -= v.y;
-		ymax -= v.y;
+		ymin += v.y;
+		ymax += v.y;
 	}
 
 	/**
