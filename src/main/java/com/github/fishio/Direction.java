@@ -6,9 +6,9 @@ package com.github.fishio;
  */
 public enum Direction {
 	RIGHT(0, new Vec2d(1, 0)),
-	UP(0.5 * Math.PI, new Vec2d(0, -1)),
+	UP(0.5 * Math.PI, new Vec2d(0, 1)),
 	LEFT(Math.PI, new Vec2d(-1, 0)),
-	DOWN(1.5 * Math.PI, new Vec2d(0, 1));
+	DOWN(1.5 * Math.PI, new Vec2d(0, -1));
 	
 	private final double rad;
 	private final Vec2d normalVector;
