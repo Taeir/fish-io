@@ -51,7 +51,7 @@ public class EnemyFish extends Entity implements IMovable {
 	}
 
 	/**
-	 * Enemy fish should die for now if they hit the wall;
+	 * Enemy fish should die for now if they hit the wall.
 	 */
 	@Override
 	public void hitWall() {

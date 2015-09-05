@@ -227,7 +227,7 @@ public class PlayingField {
 		//add enemy entities
 		while (enemyCount <= enemyCountMax) {
 			//TODO add scalible enemyFish
-			EnemyFish eFish = LevelBuilder.randomizedFish(null);
+			EnemyFish eFish = LevelBuilder.randomizedFish(pFish.getBoundingBox());
 			add(eFish);
 			enemyCount++;
 		}
