@@ -15,7 +15,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
                <image>
-                  <Image url="@img/logo.png" />
+                  <Image url="logo.png" />
                </image>
             </ImageView>
             <FlowPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="144.0" prefWidth="250.0" vgap="10.0">
