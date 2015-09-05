@@ -1,44 +1,47 @@
 package com.github.fishio;
 
 import java.io.IOException;
-
 import com.github.fishio.view.ScreenController;
 
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * Main application class.
  */
 public class FishIO extends Application {
 	private Stage primaryStage;
-	
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
 		primaryStage.setTitle("Fish.io");
-		
-		loadScreen("view/mainMenu.fxml");
+
+		loadScreen("view/mainMenu.fxml", false);
 		primaryStage.setWidth(1280.0);
 		primaryStage.setHeight(720.0);
-        primaryStage.show();
-        
+		primaryStage.show();
+
 	}
-	
+
 	/**
-	 * Load a screen from an fxml-file. 
+	 * Load a screen from a fxml-file. 
 	 * This screen will replace the current screen
 	 * 
 	 * @param file
 	 * 			Filepath of the fxml file.
+	 * @param fadeIn
+	 * 			If true, fade in the new screen, else just show it.
 	 */
-	public void loadScreen(String file) {
+	public void loadScreen(String file, boolean fadeIn) {
 		FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource(file));
-        
+		loader.setLocation(getClass().getResource(file));
+
 		try {
 			Pane rootLayout = (Pane) loader.load();
 			ScreenController controller = ((ScreenController) loader.getController());
@@ -48,13 +51,21 @@ public class FishIO extends Application {
 			}
 			controller.setMainApp(this);
 
-	        Scene scene = new Scene(rootLayout);
-	        primaryStage.setScene(scene);
+			if (fadeIn) {
+				FadeTransition fade = new FadeTransition(Duration.millis(400), rootLayout);
+				fade.setFromValue(0.3);
+				fade.setToValue(1.0);
+				fade.play();
+			}		    
+
+			Scene scene = new Scene(rootLayout);
+
+			primaryStage.setScene(scene);
 		} catch (IOException e) {
 			System.err.println("Error loading screen:" + file);
 			e.printStackTrace();
 		}
-        
+
 	}
 
 	/**
@@ -65,25 +76,25 @@ public class FishIO extends Application {
 	public static void main(String[] args) {
 		launch();
 	}
-	
-    /**
-     * Close the program.    
-     */
-    public void closeApplication() {
-    	this.primaryStage.close();
-    }
 
-    /**
-     * @return primaryStage
-     */
+	/**
+	 * Close the program.    
+	 */
+	public void closeApplication() {
+		this.primaryStage.close();
+	}
+
+	/**
+	 * @return primaryStage
+	 */
 	public Stage getPrimaryStage() {
 		return primaryStage;
 	}
-	
+
 	/**
-	 * Open the main menu.
+	 * Open the main menu when in another screen.
 	 */
 	public void openMainMenu() {
-		loadScreen("view/mainMenu.fxml");
+		loadScreen("view/mainMenu.fxml", true);
 	}
 }
