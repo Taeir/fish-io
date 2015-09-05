@@ -156,6 +156,28 @@ public class BoundingBox {
 	public double getSize() {
 		return getWidth() * getHeight();
 	}
+	
+	/**
+	 * Increases the size (area) of the fish without
+	 * affecting the width/height (shape stays the same).
+	 * 
+	 * @param size
+	 * 		The size to increase the current size with.
+	 */
+	public void increaseSize(double size) {
+		double w = getWidth();
+		double h = getHeight();
+		double c = w / h;
+		
+		double b = Math.sqrt((w * h + size) / c) - h;
+		double a = c * (h + b) - w;
+		
+		xmax += 0.5 * a;
+		xmin -= 0.5 * a;
+		
+		ymax += 0.5 * b;
+		ymin -= 0.5 * b;
+	}
 
 	/**
 	 * @param other

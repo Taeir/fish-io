@@ -210,11 +210,18 @@ public class PlayerFish extends Entity implements IMovable {
 	@Override
 	public void onCollide(ICollidable other) {
 		if (other instanceof EnemyFish) {
+			
+			EnemyFish fish = (EnemyFish) other;
+			if (fish.isDead()) {
+				return;
+			}
+			
 			double tsize = this.getBoundingBox().getSize();
 			double osize = other.getBoundingBox().getSize();
 			
 			if (tsize > osize) {
-				((EnemyFish) other).setDead();
+				fish.setDead();
+				getBoundingBox().increaseSize(osize);
 			} else if (osize > tsize) {
 				this.setDead();
 			}
