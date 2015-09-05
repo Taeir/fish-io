@@ -1,5 +1,7 @@
 package com.github.fishio;
 
+import java.util.Random;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -57,10 +59,21 @@ public class EnemyFish extends Entity implements IMovable {
 	public void hitWall() {
 		setDead();
 	}
-
+	
+	/**
+	 * Enemy fish sometimes change their movement speed.
+	 * Only change one of their movement directions so the change looks more realistic.
+	 */
 	@Override
 	public void preMove() {
-		// TODO Auto-generated method stub
+		if (Math.random() < 0.01) {
+			//Only change one direction
+			if (Math.random() <= 0.5) {
+				vy = LevelBuilder.randomSpeed();
+			} else {
+				vx = LevelBuilder.randomSpeed();
+			}
+		}
 		
 	}
 

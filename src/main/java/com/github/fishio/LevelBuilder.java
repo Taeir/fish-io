@@ -115,7 +115,7 @@ final class LevelBuilder {
 				(int) (Math.random() * RGB_NUMBER));
 	}
 	
-	private static double randomSpeed() {
+	public static double randomSpeed() {
 		double speed = Math.random() * 2 * MAX_EFISH_SPEED - MAX_EFISH_SPEED;
 		
 		//check if speed is not too slow
