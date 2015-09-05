@@ -53,6 +53,12 @@ public class PlayingField {
 			this.canvas = canvas;
 		}
 		
+		//Adding a (temporary) playerFish
+		PlayerFish fish = new PlayerFish(new BoundingBox(100, 150, 200, 200), 
+				FishIO.getInstance().getPrimaryStage());
+		add(fish);
+		registerListener(fish);
+		
 		createGameThread();
 	}
 
