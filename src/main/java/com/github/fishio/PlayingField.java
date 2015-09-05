@@ -19,7 +19,7 @@ import javafx.util.Duration;
 public class PlayingField {
 	private static final int WINDOW_X = 1280;
 	private static final int WINDOW_Y = 670;
-	public static final double GAME_TPS = 100;
+	public static final double GAME_TPS = 60;
 
 	private Timeline gameThread;
 	private Timeline renderThread;
