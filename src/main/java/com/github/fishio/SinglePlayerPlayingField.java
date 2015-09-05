@@ -10,7 +10,6 @@ import javafx.scene.canvas.Canvas;
  */
 public class SinglePlayerPlayingField extends PlayingField {
 
-	private SinglePlayerController screenController;
 	private PlayerFish player;
 	
 	/**
@@ -23,8 +22,6 @@ public class SinglePlayerPlayingField extends PlayingField {
 	 */
 	public SinglePlayerPlayingField(int fps, Canvas canvas, SinglePlayerController screenController) {
 		super(fps, canvas);
-		
-		this.screenController = screenController;
 		
 		//Adding the playerFish
 		player = new PlayerFish(new BoundingBox(100, 150, 200, 200), 
