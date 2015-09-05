@@ -1,7 +1,5 @@
 package com.github.fishio;
 
-import com.github.fishio.listeners.TickListener;
-
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;

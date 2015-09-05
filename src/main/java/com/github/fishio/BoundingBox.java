@@ -149,6 +149,13 @@ public class BoundingBox {
 		ymin -= v.y;
 		ymax -= v.y;
 	}
+	
+	/**
+	 * @return the size (area) of the BoundingBox
+	 */
+	public double getSize() {
+		return xmax - xmin * ymax - ymin;
+	}
 
 	/**
 	 * @param other
