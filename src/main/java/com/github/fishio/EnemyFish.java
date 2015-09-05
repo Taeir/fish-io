@@ -39,43 +39,25 @@ public class EnemyFish extends Entity implements IMovable {
 	}
 
 	@Override
-	public void move() {
-		//TODO
-		
-	}
-
-	@Override
-	public Direction getDirection() {
+	public Vec2d getSpeedVector() {
 		// TODO Auto-generated method stub
-		return null;
+		return new Vec2d(0, 0);
 	}
 
 	@Override
-	public double getRadDirection() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setRadDirection(double rad) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public double getSpeed() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setSpeed(double speed) {
+	public void setSpeedVector(Vec2d vector) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void hitWall() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void preMove() {
 		// TODO Auto-generated method stub
 		
 	}

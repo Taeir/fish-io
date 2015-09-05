@@ -154,7 +154,7 @@ public class PlayingField {
 			//Call listeners pretick
 			preListeners(false);
 
-			//Move all entities
+			//Move all movables
 			moveMovables();
 
 			//Add new entities
@@ -236,7 +236,8 @@ public class PlayingField {
 	 */
 	public void moveMovables() {
 		for (IMovable m : movables) {
-			m.move();
+			m.preMove();
+			m.getBoundingBox().move(m.getSpeedVector());
 		}
 	}
 
