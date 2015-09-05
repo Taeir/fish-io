@@ -16,7 +16,7 @@ import javafx.util.Duration;
 /**
  * Represents the PlayingField.
  */
-public class PlayingField {
+public abstract class PlayingField {
 
 	public static final int WINDOW_X = 1280;
 	public static final int WINDOW_Y = 670;
@@ -35,8 +35,7 @@ public class PlayingField {
 	private ArrayList<IMovable> movables = new ArrayList<>();
 	private ArrayList<Entity> entities = new ArrayList<>();
 	private ArrayList<ICollidable> collidables = new ArrayList<>();
-
-
+	
 	private Image background;
 	private int enemyCount;
 	private final int enemyCountMax = 20;
@@ -63,11 +62,6 @@ public class PlayingField {
 		} else {
 			this.canvas = canvas;
 		}
-
-		//Adding a (temporary) playerFish
-		PlayerFish fish = new PlayerFish(new BoundingBox(100, 150, 200, 200), 
-				FishIO.getInstance().getPrimaryStage());
-		add(fish);
 
 		//count enemies
 		enemyCount = 0;
