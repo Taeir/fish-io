@@ -12,21 +12,21 @@ import javafx.fxml.FXML;
  */
 public class MainMenuController implements ScreenController {
 	private FishIO mainApp;
-	
+
 	@Override
 	public void setMainApp(FishIO mainApp) {
 		this.mainApp = mainApp;
 	}
-	
+
 	/**
 	 * Start a singleplayer game.
 	 * This Method is called when pressing the menu button.
 	 */
 	@FXML
 	public void startSinglePlayer() {
-		mainApp.loadScreen("view/singlePlayer.fxml");
+		mainApp.loadScreen("view/singlePlayer.fxml", true);
 	}
-	
+
 	/**
 	 * Start a multiplayer game.
 	 * This Method is called when pressing the menu button.
@@ -35,7 +35,7 @@ public class MainMenuController implements ScreenController {
 	public void startMultiplayer() {
 		//TODO (not now)
 	}
-	
+
 	/**
 	 * Load a custom/story level
 	 * This Method is called when pressing the menu button.
@@ -44,7 +44,7 @@ public class MainMenuController implements ScreenController {
 	public void loadLevel() {
 		//TODO (not now)
 	}
-	
+
 	/**
 	 * Show the highscore screen.
 	 * This Method is called when pressing the menu button.
@@ -53,7 +53,7 @@ public class MainMenuController implements ScreenController {
 	public void showHighScores() {
 		//TODO (not now)
 	}
-	
+
 	/**
 	 * Show the achievements screen.
 	 * This Method is called when pressing the menu button.
@@ -62,7 +62,7 @@ public class MainMenuController implements ScreenController {
 	public void showAchievements() {
 		//TODO (not now)
 	}
-	
+
 	/**
 	 * Show the statistics screen.
 	 * This Method is called when pressing the menu button.
@@ -71,7 +71,7 @@ public class MainMenuController implements ScreenController {
 	public void showStatistics() {
 		//TODO (not now)
 	}
-	
+
 	/**
 	 * Show the game settings.
 	 * This Method is called when pressing the menu button.
@@ -80,7 +80,7 @@ public class MainMenuController implements ScreenController {
 	public void showSettings() {
 		//TODO (not now)
 	}
-	
+
 	/**
 	 * Show the help screen.
 	 * This Method is called when pressing the menu button.
@@ -89,7 +89,7 @@ public class MainMenuController implements ScreenController {
 	public void showHelp() {
 		//TODO (not now)
 	}
-	
+
 	/**
 	 * Exit the application.
 	 * This Method is called when pressing the menu button.
@@ -98,5 +98,5 @@ public class MainMenuController implements ScreenController {
 	public void exitGame() {
 		mainApp.closeApplication();
 	}
-	
+
 }

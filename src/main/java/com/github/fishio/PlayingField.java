@@ -7,11 +7,9 @@ import com.github.fishio.listeners.TickListener;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.stage.Stage;
+import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 /**
@@ -19,34 +17,45 @@ import javafx.util.Duration;
  */
 public class PlayingField {
 	private static final int WINDOW_X = 1280;
-	private static final int WINDOW_Y = 720;
-	
+	private static final int WINDOW_Y = 670;
+
 	private Timeline gameThread;
 	private int fps;
-	
-	private String title;
+
 	private Canvas canvas;
-	private Scene surface;
-	private Group root;
-	
+
 	private ArrayList<TickListener> listeners = new ArrayList<>();
 	private ArrayList<IDrawable> drawables = new ArrayList<>();
 	private ArrayList<Entity> entities = new ArrayList<>();
+
+	private Image background;
+
+	/**
+	 * @param fps
+	 * 		the (target) framerate.
+	 */
+	public PlayingField(int fps) {
+		this(fps, null);
+	}
 	
 	/**
 	 * @param fps
 	 * 		the (target) framerate.
-	 * @param title
-	 * 		the title of the window.
+	 * @param canvas
+	 * 		the canvas to use, can be <code>null</code> to create one.
 	 */
-	public PlayingField(int fps, String title) {
+	public PlayingField(int fps, Canvas canvas) {
 		this.fps = fps;
-		this.title = title;
+
+		if (canvas == null) {
+			this.canvas = new Canvas(1280, 670);
+		} else {
+			this.canvas = canvas;
+		}
 		
-		createCanvas();
 		createGameThread();
 	}
-	
+
 	/**
 	 * @return
 	 * 		the (target) framerate in frames per second.
@@ -54,7 +63,7 @@ public class PlayingField {
 	public int getFPS() {
 		return fps;
 	}
-	
+
 	/**
 	 * @return
 	 * 		the width of the field.
@@ -62,7 +71,7 @@ public class PlayingField {
 	public int getWidth() {
 		return WINDOW_X;
 	}
-	
+
 	/**
 	 * @return
 	 * 		the height of the field.
@@ -70,71 +79,78 @@ public class PlayingField {
 	public int getHeigth() {
 		return WINDOW_Y;
 	}
-	
+
 	/**
 	 * Creates the canvas.
+	 * 
+	 * @param c
+	 * 		the canvas to use. If <code>null</code>, a canvas is created.
 	 */
-	protected final void createCanvas() {
-		canvas = new Canvas(1280, 720);
-		root = new Group();
-		root.getChildren().add(canvas);
-		
-		surface = new Scene(root, 1280.0, 720.0);
+	protected final void createCanvas(Canvas c) {
+		if (c == null) {
+			canvas = new Canvas(1280, 670);
+		} else {
+			canvas = c;
+		}
 	}
-	
+
 	/**
 	 * Creates the game thread.
 	 */
 	protected final void createGameThread() {
 		Duration dur = Duration.millis(1000.0 / getFPS());
+
 		KeyFrame frame = new KeyFrame(dur, event -> {
 			//Call listeners pretick
 			preListeners();
-			
+
 			//Add new entities
 			addEntities();
-			
+
 			//Re-render items
 			redraw();
-			
+
 			//Check for collisions
 			checkCollisions();
-			
+
 			//Cleanup dead entities.
 			cleanupDead();
-			
+
 			//Call listeners posttick
 			postListeners();
 		}, new KeyValue[0]);
-		
+
 		Timeline tl = new Timeline(frame);
 		tl.setCycleCount(-1);
-		
+
 		gameThread = tl;
 	}
-	
+
 	/**
 	 * Called to redraw the screen.
 	 */
 	public void redraw() {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
-		
+
 		//Clear screen
 		gc.clearRect(0, 0, WINDOW_X, WINDOW_Y);
-		
+
+		//draw background image
+		gc.drawImage(background, 0, 0);
+
 		//Render all drawables
 		for (IDrawable d : drawables) {
 			d.render(gc);
 		}
 	}
-	
+
 	/**
 	 * Checks for collisions.
 	 */
 	public void checkCollisions() {
 		//TODO
 	}
-	
+
 	/**
 	 * Cleans up dead entities.
 	 */
@@ -145,12 +161,12 @@ public class PlayingField {
 				tbr.add(e);
 			}
 		}
-		
+
 		for (Entity e : tbr) {
 			remove(e);
 		}
 	}
-	
+
 	/**
 	 * Adds new entities.
 	 */
@@ -158,7 +174,7 @@ public class PlayingField {
 		EnemyFish eFish = LevelBuilder.randomizedFish(null);
 		add(eFish);
 	}
-	
+
 	/**
 	 * Calls all listeners pre tick.
 	 */
@@ -174,7 +190,7 @@ public class PlayingField {
 			}
 		}
 	}
-	
+
 	/**
 	 * Calls all listeners post tick.
 	 */
@@ -190,19 +206,7 @@ public class PlayingField {
 			}
 		}
 	}
-	
-	/**
-	 * Shows this Playing Field on the given stage.
-	 * 
-	 * @param stage
-	 * 		the stage to show this PlayingField on.
-	 */
-	public void show(Stage stage) {
-		stage.setTitle(title);
-		stage.setScene(surface);
-		stage.show();
-	}
-	
+
 	/**
 	 * @return
 	 * 		the gamethread.
@@ -210,14 +214,14 @@ public class PlayingField {
 	public Timeline getGameThread() {
 		return gameThread;
 	}
-	
+
 	/**
 	 * Starts the game.
 	 */
 	public void startGame() {
 		gameThread.play();
 	}
-	
+
 	/**
 	 * Stops the game.
 	 */
@@ -228,12 +232,12 @@ public class PlayingField {
 	
 	/**
 	 * @return
-	 * 		the root node where the canvas is drawn on.
+	 * 		the canvas that is the PlayingField.
 	 */
-	public Group getRootNode() {
-		return root;
+	public Canvas getCanvas() {
+		return canvas;
 	}
-	
+
 	/**
 	 * Adds the given object to this Playing Field.
 	 * 
@@ -244,12 +248,12 @@ public class PlayingField {
 		if (o instanceof IDrawable) {
 			drawables.add((IDrawable) o);
 		}
-		
+
 		if (o instanceof Entity) {
 			entities.add((Entity) o);
 		}
 	}
-	
+
 	/**
 	 * Removes the given object from this playing field.
 	 * 
@@ -260,12 +264,12 @@ public class PlayingField {
 		if (o instanceof IDrawable) {
 			drawables.remove(o);
 		}
-		
+
 		if (o instanceof Entity) {
 			entities.remove(o);
 		}
 	}
-	
+
 	/**
 	 * Clear this PlayingField.<br>
 	 * <br>
@@ -276,15 +280,15 @@ public class PlayingField {
 		for (Entity e : entities) {
 			e.setDead();
 		}
-		
+
 		for (IDrawable d : drawables) {
 			d.drawDeath(gc);
 		}
-		
+
 		entities.clear();
 		drawables.clear();
 	}
-	
+
 	/**
 	 * Registers the given TickListener.
 	 * 
@@ -294,7 +298,7 @@ public class PlayingField {
 	public void registerListener(TickListener tl) {
 		listeners.add(tl);
 	}
-	
+
 	/**
 	 * Unregisters the given TickListener.
 	 * 
@@ -303,5 +307,19 @@ public class PlayingField {
 	 */
 	public void unregisterListener(TickListener tl) {
 		listeners.remove(tl);
+	}
+
+	/**
+	 * Set the background image of the level.
+	 * @param image
+	 * 			The background image.
+	 */
+	public void setBackground(Image image) {
+		if (image.isError()) {
+			System.err.println("Error loading the new background!\nUsing old one instead");
+			return;
+		}
+		background = image;
+
 	}
 }
