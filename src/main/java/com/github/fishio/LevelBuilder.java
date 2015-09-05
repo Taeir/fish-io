@@ -9,12 +9,23 @@ import javafx.scene.paint.Color;
  */
 final class LevelBuilder {
 	
-	//Fish statistics
-	private static final int MAXFISHWIDTH = 200;
-	private static final double FISHWIDTHHEIGHTRATIO = 0.75;
-	private static final double MINFISHWIDTH = 8;
-	private static final double MINFISHHEIGTH = MINFISHWIDTH * FISHWIDTHHEIGHTRATIO;
-	private static final int RGBNUMBER = 255;
+	// Fish statistics
+	
+	// size
+	public static final int MAX_FISH_WIDTH = 200;
+	public static final double FISH_WIDTH_HEIGHT_RATIO = 0.75;
+	public static final double MIN_FISH_WIDTH = 8;
+	public static final double MIN_FISH_HEIGTH = MIN_FISH_WIDTH * FISH_WIDTH_HEIGHT_RATIO;
+	
+	// color
+	public static final int RGB_NUMBER = 255;
+	
+	// movement
+	public static final double MAX_EFISH_SPEED = 4;
+	public static final double MIN_EFISH_SPEED = 1;
+	
+	// safe spawn area.
+	public static final double SAFE_RADIUS = 100;
 	
 	/**
 	 * Private constructor to prevent initiation.
@@ -33,19 +44,22 @@ final class LevelBuilder {
 		//TODO add a random fish based on player current BoundingBox
 		
 		//randomize fish properties 
-		Vec2d position = randomPosition();
-		double width   = MAXFISHWIDTH * Math.random();
-		double height  = FISHWIDTHHEIGHTRATIO * width * Math.random();
-		Color color = Color.rgb((int) (Math.random() * RGBNUMBER), 
-				(int) (Math.random() * RGBNUMBER), 
-				(int) (Math.random() * RGBNUMBER));
+		double width   = MAX_FISH_WIDTH * Math.random();
+		double height  = FISH_WIDTH_HEIGHT_RATIO * width * Math.random();
+		width = Math.max(MIN_FISH_WIDTH, width);
+		height = Math.max(MIN_FISH_HEIGTH, height);
+		
+		Vec2d position = randomPosition(playerBox, width, height);
+		
+		double vx = randomSpeed();
+		double vy = randomSpeed();
+				
 		
 		//Check for decent properties
-		width = Math.max(MINFISHWIDTH, width);
-		height = Math.max(MINFISHHEIGTH, height);
+		
 		
 		EnemyFish eFish = new EnemyFish(new BoundingBox(position.x, position.y, 
-				position.x + width , position.y + height), color);
+				position.x + width , position.y + height), randomColor() , vx, vy);
 		return eFish;
 	}
 	
@@ -60,15 +74,57 @@ final class LevelBuilder {
 	}
 	
 	/**
-	 * Returns a random position as a Vec2d.
+	 * Returns a random position as a Vec2d. 
+	 * Makes sure that no fish can spawn near the player when player is still small.
 	 * @return random position as a Vec2.
 	 */
-	private static Vec2d randomPosition() {
-		int maxX = PlayingField.WINDOW_X;
-		int maxY = PlayingField.WINDOW_Y;
+	private static Vec2d randomPosition(BoundingBox playerBox, double width, double height) {		
 		
-		double xPos = maxX * Math.random();
-		double yPos = maxY * Math.random();
-		return new Vec2d(xPos, yPos);
+		//TODO Better spawn position calculation
+		/*
+		Random rand = new Random();
+		double minXpb = playerBox.getMinX() - SAFERADIUS;
+		double minYpb = playerBox.getMinY() + SAFERADIUS;
+		double maxXpb = playerBox.getMaxX() + SAFERADIUS;
+		double maxYpb = playerBox.getMaxY() - SAFERADIUS;
+		
+		double xPos;
+		double yPos;
+		
+		// Check in which of the pairs of quadrant on the screen the fish will spawn
+		if (rand.nextBoolean()) {
+			// left bottom quadrant
+			xPos = rand.nextDouble() * (minXpb - width);
+			yPos = rand.nextDouble() * (PlayingField.WINDOW_Y - minYpb + height) + minYpb;
+		} else {
+			// right top quadrant
+			xPos = rand.nextDouble() * (PlayingField.WINDOW_X - maxXpb) + maxXpb;
+			yPos = rand.nextDouble() * (maxYpb - height);
+		}*/
+		
+		return new Vec2d(Math.random() * PlayingField.WINDOW_X , Math.random() * PlayingField.WINDOW_Y);
+	}
+	
+	/**
+	 * Create a random rgb color.
+	 * @return random color.
+	 */
+	private static Color randomColor() {
+		return Color.rgb((int) (Math.random() * RGB_NUMBER), 
+				(int) (Math.random() * RGB_NUMBER), 
+				(int) (Math.random() * RGB_NUMBER));
+	}
+	
+	public static double randomSpeed() {
+		double speed = Math.random() * 2 * MAX_EFISH_SPEED - MAX_EFISH_SPEED;
+		
+		//check if speed is not too slow
+		if (speed < 0) {
+			speed = Math.min(speed, -1.0);
+		} else {
+			speed = Math.min(speed, 1.0);
+		}
+		
+		return speed;
 	}
 }
