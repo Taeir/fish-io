@@ -31,15 +31,12 @@ public class SinglePlayerController implements ScreenController {
 	@Override
 	public void setMainApp(FishIO mainApp) {
 		this.mainApp = mainApp;
-
+		
 		//setup the playing field
-		PlayingField pf = new PlayingField(30, "Fish.io Singleplayer");
-		pf.setCanvas(gameCanvas);
+		PlayingField pf = new PlayingField(60, gameCanvas);
 		pf.setBackground(new Image("background.png"));
-		pf.show(mainApp.getPrimaryStage());		
+		mainApp.getPrimaryStage().setTitle("Fish.io Singleplayer");
 		pf.startGame();
-
-		showDeathScreen(true);
 	}
 
 	/**

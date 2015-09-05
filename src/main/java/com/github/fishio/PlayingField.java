@@ -7,12 +7,9 @@ import com.github.fishio.listeners.TickListener;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
@@ -25,10 +22,7 @@ public class PlayingField {
 	private Timeline gameThread;
 	private int fps;
 
-	private String title;
 	private Canvas canvas;
-	private Scene surface;
-	private Group root;
 
 	private ArrayList<TickListener> listeners = new ArrayList<>();
 	private ArrayList<IDrawable> drawables = new ArrayList<>();
@@ -39,14 +33,26 @@ public class PlayingField {
 	/**
 	 * @param fps
 	 * 		the (target) framerate.
-	 * @param title
-	 * 		the title of the window.
 	 */
-	public PlayingField(int fps, String title) {
+	public PlayingField(int fps) {
+		this(fps, null);
+	}
+	
+	/**
+	 * @param fps
+	 * 		the (target) framerate.
+	 * @param canvas
+	 * 		the canvas to use, can be <code>null</code> to create one.
+	 */
+	public PlayingField(int fps, Canvas canvas) {
 		this.fps = fps;
-		this.title = title;
 
-		createCanvas();
+		if (canvas == null) {
+			this.canvas = new Canvas(1280, 670);
+		} else {
+			this.canvas = canvas;
+		}
+		
 		createGameThread();
 	}
 
@@ -76,13 +82,16 @@ public class PlayingField {
 
 	/**
 	 * Creates the canvas.
+	 * 
+	 * @param c
+	 * 		the canvas to use. If <code>null</code>, a canvas is created.
 	 */
-	protected final void createCanvas() {
-		canvas = new Canvas(1280, 670);
-		root = new Group();
-		root.getChildren().add(canvas);
-
-		surface = new Scene(root, 1280.0, 670.0);
+	protected final void createCanvas(Canvas c) {
+		if (c == null) {
+			canvas = new Canvas(1280, 670);
+		} else {
+			canvas = c;
+		}
 	}
 
 	/**
@@ -90,6 +99,7 @@ public class PlayingField {
 	 */
 	protected final void createGameThread() {
 		Duration dur = Duration.millis(1000.0 / getFPS());
+
 		KeyFrame frame = new KeyFrame(dur, event -> {
 			//Call listeners pretick
 			preListeners();
@@ -197,18 +207,6 @@ public class PlayingField {
 	}
 
 	/**
-	 * Shows this Playing Field on the given stage.
-	 * 
-	 * @param stage
-	 * 		the stage to show this PlayingField on.
-	 */
-	public void show(Stage stage) {
-		stage.setTitle(title);
-		stage.setScene(surface);
-		stage.show();
-	}
-
-	/**
 	 * @return
 	 * 		the gamethread.
 	 */
@@ -230,13 +228,13 @@ public class PlayingField {
 		gameThread.stop();
 		//gameThread.pause();
 	}
-
+	
 	/**
 	 * @return
-	 * 		the root node where the canvas is drawn on.
+	 * 		the canvas that is the PlayingField.
 	 */
-	public Group getRootNode() {
-		return root;
+	public Canvas getCanvas() {
+		return canvas;
 	}
 
 	/**
@@ -308,15 +306,6 @@ public class PlayingField {
 	 */
 	public void unregisterListener(TickListener tl) {
 		listeners.remove(tl);
-	}
-
-	/**
-	 * Replace the existing canvas with another one.
-	 * @param newCanvas
-	 * 			The new canvas.
-	 */
-	public void setCanvas(Canvas newCanvas) {
-		canvas = newCanvas;
 	}
 
 	/**
