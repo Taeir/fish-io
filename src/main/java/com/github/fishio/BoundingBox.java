@@ -164,7 +164,14 @@ public class BoundingBox {
 	 * 		if this bounding box collides with the given Bounding Box.
 	 */
 	public boolean intersects(BoundingBox other) {
-		//TODO Collision detection
+		
+		if (this.xmin + this.getWidth() > other.xmin
+				&& this.xmin < other.xmin + other.getWidth()
+				&& this.ymin + this.getHeight() > other.ymin
+				&& this.ymin < other.ymin + other.getHeight()) {
+			return true;
+		}
+		
 		return false;
 	}
 	
