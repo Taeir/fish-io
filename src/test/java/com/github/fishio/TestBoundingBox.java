@@ -110,9 +110,9 @@ public class TestBoundingBox {
 		
 		bb.move(Direction.UP, 1.0);
 		assertEquals(1.0, bb.getMinX(), 0.0000001D);
-		assertEquals(3.0, bb.getMinY(), 0.0000001D);
+		assertEquals(1.0, bb.getMinY(), 0.0000001D);
 		assertEquals(3.0, bb.getMaxX(), 0.0000001D);
-		assertEquals(5.0, bb.getMaxY(), 0.0000001D);
+		assertEquals(3.0, bb.getMaxY(), 0.0000001D);
 	}
 
 	/**
@@ -144,9 +144,9 @@ public class TestBoundingBox {
 		bb.move(new Vec2d(-5.3, 7.1));
 		
 		assertEquals(-4.3, bb.getMinX(), 0.0000001D);
-		assertEquals(9.1, bb.getMinY(), 0.0000001D);
+		assertEquals(-5.1, bb.getMinY(), 0.0000001D);
 		assertEquals(-2.3, bb.getMaxX(), 0.0000001D);
-		assertEquals(11.1, bb.getMaxY(), 0.0000001D);
+		assertEquals(-3.1, bb.getMaxY(), 0.0000001D);
 	}
 
 //	@Test

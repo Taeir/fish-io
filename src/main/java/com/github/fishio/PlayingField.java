@@ -18,8 +18,8 @@ import javafx.util.Duration;
  */
 public class PlayingField {
 
-	static final int WINDOW_X = 1280;
-	static final int WINDOW_Y = 670;
+	public static final int WINDOW_X = 1280;
+	public static final int WINDOW_Y = 670;
 	public static final double GAME_TPS = 60;
 
 
@@ -34,7 +34,7 @@ public class PlayingField {
 	private ArrayList<IDrawable> drawables = new ArrayList<>();
 	private ArrayList<IMovable> movables = new ArrayList<>();
 	private ArrayList<Entity> entities = new ArrayList<>();
-	
+
 
 	private Image background;
 	private int enemyCount;
@@ -47,7 +47,7 @@ public class PlayingField {
 	public PlayingField(int fps) {
 		this(fps, null);
 	}
-	
+
 	/**
 	 * @param fps
 	 * 		the (target) framerate.
@@ -58,12 +58,20 @@ public class PlayingField {
 		this.fps = fps;
 
 		if (canvas == null) {
-			this.canvas = new Canvas(1280, 670);
+			this.canvas = new Canvas(WINDOW_X, WINDOW_Y);
 		} else {
 			this.canvas = canvas;
 		}
+
+		//Adding a (temporary) playerFish
+		PlayerFish fish = new PlayerFish(new BoundingBox(100, 150, 200, 200), 
+				FishIO.getInstance().getPrimaryStage());
+		add(fish);
+		registerGameListener(fish);
+
 		//count enemies
 		enemyCount = 0;
+
 		createGameThread();
 		createRenderThread();
 	}
@@ -75,7 +83,7 @@ public class PlayingField {
 	public int getFPS() {
 		return fps;
 	}
-	
+
 	/**
 	 * Sets the (target) framerate for the render thread in
 	 * frames per second.
@@ -85,16 +93,16 @@ public class PlayingField {
 	 */
 	public void setFPS(int fps) {
 		this.fps = fps;
-		
+
 		Timeline oldRenderThread = renderThread;
 		createRenderThread();
-		
+
 		//If render thread was running, start the new one and stop the old one.
 		if (oldRenderThread.getStatus() == Status.RUNNING) {
 			renderThread.play();
 			oldRenderThread.stop();
 		}
-		
+
 	}
 
 	/**
@@ -113,20 +121,6 @@ public class PlayingField {
 		return WINDOW_Y;
 	}
 
-	/**
-	 * Creates the canvas.
-	 * 
-	 * @param c
-	 * 		the canvas to use. If <code>null</code>, a canvas is created.
-	 */
-	protected final void createCanvas(Canvas c) {
-		if (c == null) {
-			canvas = new Canvas(1280, 670);
-		} else {
-			canvas = c;
-		}
-	}
-	
 	/**
 	 * Creates the rendering thread.
 	 */
@@ -159,7 +153,7 @@ public class PlayingField {
 		KeyFrame frame = new KeyFrame(dur, event -> {
 			//Call listeners pretick
 			preListeners(false);
-			
+
 			//Move all entities
 			moveMovables();
 
@@ -227,7 +221,7 @@ public class PlayingField {
 	 * Adds new entities.
 	 */
 	public void addEntities() {
-		
+
 		//add enemy entities
 		while (enemyCount <= enemyCountMax) {
 			//TODO add scalible enemyFish
@@ -236,7 +230,7 @@ public class PlayingField {
 			enemyCount++;
 		}
 	}
-	
+
 	/**
 	 * Moves Movable items.
 	 */
@@ -260,7 +254,7 @@ public class PlayingField {
 		} else {
 			list = gameListeners;
 		}
-		
+
 		//TODO Concurrency
 		for (TickListener tl : list) {
 			try {
@@ -287,7 +281,7 @@ public class PlayingField {
 		} else {
 			list = gameListeners;
 		}
-		
+
 		//TODO Concurrency
 		for (TickListener tl : list) {
 			try {
@@ -299,7 +293,7 @@ public class PlayingField {
 			}
 		}
 	}
-	
+
 	/**
 	 * @return
 	 * 		the renderthread.
@@ -331,7 +325,7 @@ public class PlayingField {
 		gameThread.stop();
 		renderThread.stop();
 	}
-	
+
 	/**
 	 * @return
 	 * 		the canvas that is the PlayingField.
@@ -350,7 +344,7 @@ public class PlayingField {
 		if (o instanceof IDrawable) {
 			drawables.add((IDrawable) o);
 		}
-		
+
 		if (o instanceof IMovable) {
 			movables.add((IMovable) o);
 		}
@@ -370,7 +364,7 @@ public class PlayingField {
 		if (o instanceof IDrawable) {
 			drawables.remove(o);
 		}
-		
+
 		if (o instanceof IMovable) {
 			movables.remove(o);
 		}
@@ -397,6 +391,7 @@ public class PlayingField {
 
 		entities.clear();
 		drawables.clear();
+		movables.clear();
 	}
 
 	/**
@@ -418,7 +413,7 @@ public class PlayingField {
 	public void unregisterGameListener(TickListener tl) {
 		gameListeners.remove(tl);
 	}
-	
+
 	/**
 	 * Registers the given TickListener for the render thread.
 	 * 
@@ -449,7 +444,7 @@ public class PlayingField {
 			System.err.println("Error loading the new background!\nUsing old one instead");
 			return;
 		}
-		background = image;
 
+		background = image;
 	}
 }
