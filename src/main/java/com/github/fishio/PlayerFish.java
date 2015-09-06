@@ -27,9 +27,9 @@ public class PlayerFish extends Entity implements IMovable {
 	 * The speed at which the speed of the fish increases /
 	 * decreases depending on what keys are pressed by the user.
 	 */
-	private static final double ACCELERATION = 0.25; //TODO find a nicer acceleration value
+	private static final double ACCELERATION = 0.35; //TODO find a nicer acceleration value
 	
-	private static final double MAX_SPEED = 5; //TODO find a nicer max speed value
+	private static final double MAX_SPEED = 6; //TODO find a nicer max speed value
 	
 	private static final double GROWTH_SPEED = 100;
 	
