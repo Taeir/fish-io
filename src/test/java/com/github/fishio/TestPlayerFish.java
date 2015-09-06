@@ -20,7 +20,7 @@ public class TestPlayerFish {
 	 */
 	@Before
 	public void setUp() {
-		pf = new PlayerFish(Mockito.mock(BoundingBox.class), Mockito.mock(Stage.class));
+		pf = Mockito.spy(new PlayerFish(Mockito.mock(BoundingBox.class), Mockito.mock(Stage.class)));
 	}
 	
 	/**
@@ -42,6 +42,17 @@ public class TestPlayerFish {
 		pf.setSpeedVector(new Vec2d(3.0, 5.0));
 		
 		assertEquals(new Vec2d(3.0, 5.0), pf.getSpeedVector());
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#preMove()}.
+	 */
+	@Test
+	public void testPreMove() {
+		pf.preMove();
+		
+		Mockito.verify(pf).adjustXSpeed();
+		Mockito.verify(pf).adjustYSpeed();
 	}
 	
 }
