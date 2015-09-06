@@ -204,10 +204,8 @@ public class BoundingBox {
 	 */
 	public boolean intersects(BoundingBox other) {
 		
-		if (this.xmin + this.getWidth() > other.xmin
-				&& this.xmin < other.xmin + other.getWidth()
-				&& this.ymin + this.getHeight() > other.ymin
-				&& this.ymin < other.ymin + other.getHeight()) {
+		if (this.xmax > other.xmin && this.xmin < other.xmax
+				&& this.ymax > other.ymin && this.ymin < other.ymax) {
 			return true;
 		}
 		
