@@ -9,7 +9,7 @@ public interface IPositional {
 	 * 		the (centre) x coordinate of this object.
 	 */
 	default double getX() {
-		return getBoundingBox().getCenterX();
+		return getBoundingBox().getMinX();
 	}
 	
 	/**
@@ -17,7 +17,7 @@ public interface IPositional {
 	 * 		the (centre) y coordinate of this object.
 	 */
 	default double getY() {
-		return getBoundingBox().getCenterY();
+		return getBoundingBox().getMinY();
 	}
 	
 	/**

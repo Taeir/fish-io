@@ -1,7 +1,5 @@
 package com.github.fishio;
 
-import com.github.fishio.listeners.TickListener;
-
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -207,6 +205,27 @@ public class PlayerFish extends Entity implements IMovable {
 	@Override
 	public boolean canMoveThroughWall() {
 		return false;
+	}
+
+	@Override
+	public void onCollide(ICollidable other) {
+		if (other instanceof EnemyFish) {
+			
+			EnemyFish fish = (EnemyFish) other;
+			if (fish.isDead()) {
+				return;
+			}
+			
+			double tsize = this.getBoundingBox().getSize();
+			double osize = other.getBoundingBox().getSize();
+			
+			if (tsize > osize) {
+				fish.setDead();
+				getBoundingBox().increaseSize(osize);
+			} else if (osize > tsize) {
+				this.setDead();
+			}
+		}
 	}
 	
 }

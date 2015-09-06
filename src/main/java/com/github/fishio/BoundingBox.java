@@ -149,6 +149,35 @@ public class BoundingBox {
 		ymin -= v.y;
 		ymax -= v.y;
 	}
+	
+	/**
+	 * @return the size (area) of the BoundingBox
+	 */
+	public double getSize() {
+		return getWidth() * getHeight();
+	}
+	
+	/**
+	 * Increases the size (area) of the fish without
+	 * affecting the width/height (shape stays the same).
+	 * 
+	 * @param size
+	 * 		The size to increase the current size with.
+	 */
+	public void increaseSize(double size) {
+		double w = getWidth();
+		double h = getHeight();
+		double c = w / h;
+		
+		double b = Math.sqrt((w * h + size) / c) - h;
+		double a = c * (h + b) - w;
+		
+		xmax += 0.5 * a;
+		xmin -= 0.5 * a;
+		
+		ymax += 0.5 * b;
+		ymin -= 0.5 * b;
+	}
 
 	/**
 	 * @param other
@@ -157,7 +186,14 @@ public class BoundingBox {
 	 * 		if this bounding box collides with the given Bounding Box.
 	 */
 	public boolean intersects(BoundingBox other) {
-		//TODO Collision detection
+		
+		if (this.xmin + this.getWidth() > other.xmin
+				&& this.xmin < other.xmin + other.getWidth()
+				&& this.ymin + this.getHeight() > other.ymin
+				&& this.ymin < other.ymin + other.getHeight()) {
+			return true;
+		}
+		
 		return false;
 	}
 	

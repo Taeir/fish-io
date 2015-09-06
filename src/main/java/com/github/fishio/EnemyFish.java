@@ -81,5 +81,8 @@ public class EnemyFish extends Entity implements IMovable {
 	public boolean canMoveThroughWall() {
 		return true;
 	}
+
+	@Override
+	public void onCollide(ICollidable other) { }
 	
 }

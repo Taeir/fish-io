@@ -16,12 +16,11 @@ import javafx.util.Duration;
 /**
  * Represents the PlayingField.
  */
-public class PlayingField {
+public abstract class PlayingField {
 
 	public static final int WINDOW_X = 1280;
 	public static final int WINDOW_Y = 670;
 	public static final double GAME_TPS = 60;
-
 
 	private Timeline gameThread;
 	private Timeline renderThread;
@@ -34,12 +33,11 @@ public class PlayingField {
 	private ArrayList<IDrawable> drawables = new ArrayList<>();
 	private ArrayList<IMovable> movables = new ArrayList<>();
 	private ArrayList<Entity> entities = new ArrayList<>();
-
-
+	private ArrayList<ICollidable> collidables = new ArrayList<>();
+	
 	private Image background;
 	private int enemyCount;
 	private final int enemyCountMax = 20;
-	private PlayerFish pFish;
 
 	/**
 	 * @param fps
@@ -63,12 +61,6 @@ public class PlayingField {
 		} else {
 			this.canvas = canvas;
 		}
-
-		//Adding a (temporary) playerFish
-		PlayerFish fish = new PlayerFish(new BoundingBox(100, 150, 200, 200), 
-				FishIO.getInstance().getPrimaryStage());
-		pFish = fish;
-		add(fish);
 
 		//count enemies
 		enemyCount = 0;
@@ -199,7 +191,16 @@ public class PlayingField {
 	 * Checks for collisions.
 	 */
 	public void checkCollisions() {
-		//TODO
+		for (int i = 0; i < collidables.size() - 1; i++) {
+			for (int j = i + 1; j < collidables.size(); j++) {
+				ICollidable c1 = collidables.get(i);
+				ICollidable c2 = collidables.get(j);
+				if (c1 != c2 && c1.doesCollides(c2)) {
+					c1.onCollide(c2);
+					c2.onCollide(c1);
+				}
+			}
+		}
 	}
 
 	/**
@@ -227,11 +228,16 @@ public class PlayingField {
 		//add enemy entities
 		while (enemyCount <= enemyCountMax) {
 			//TODO add scalible enemyFish
-			EnemyFish eFish = LevelBuilder.randomizedFish(pFish.getBoundingBox());
+			EnemyFish eFish = LevelBuilder.randomizedFish(getPlayers().get(0).getBoundingBox());
 			add(eFish);
 			enemyCount++;
 		}
 	}
+	
+	/**
+	 * @return all the players in this field.
+	 */
+	public abstract ArrayList<PlayerFish> getPlayers();
 
 	/**
 	 * Moves Movable items.
@@ -375,6 +381,10 @@ public class PlayingField {
 
 		if (o instanceof Entity) {
 			entities.add((Entity) o);
+		}
+		
+		if (o instanceof ICollidable) {
+			collidables.add((ICollidable) o);
 		}
 	}
 

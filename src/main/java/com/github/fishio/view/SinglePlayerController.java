@@ -2,6 +2,7 @@ package com.github.fishio.view;
 
 import com.github.fishio.FishIO;
 import com.github.fishio.PlayingField;
+import com.github.fishio.SinglePlayerPlayingField;
 
 import javafx.animation.Animation.Status;
 import javafx.animation.FadeTransition;
@@ -37,10 +38,8 @@ public class SinglePlayerController implements ScreenController {
 		this.mainApp = mainApp;
 		
 		//setup the playing field
-		if (pf == null) {
-			pf = new PlayingField(60, gameCanvas);
-			pf.setBackground(new Image("background.png"));
-		}
+		pf = new SinglePlayerPlayingField(60, gameCanvas, this);
+		pf.setBackground(new Image("background.png"));
 		
 		mainApp.getPrimaryStage().setTitle("Fish.io Singleplayer");
 		pf.startGame();

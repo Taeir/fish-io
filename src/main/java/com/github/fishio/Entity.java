@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 /**
  * Represents an entity in the game.
  */
-public class Entity implements ICollidable, IPositional, IDrawable {
+public abstract class Entity implements ICollidable, IPositional, IDrawable {
 	private boolean dead;
 	private BoundingBox bb;
 	
@@ -19,14 +19,7 @@ public class Entity implements ICollidable, IPositional, IDrawable {
 	}
 	
 	@Override
-	public boolean onCollide(ICollidable other) {
-		if (dead) {
-			return false;
-		}
-		
-		//TODO
-		return false;
-	}
+	public abstract void onCollide(ICollidable other);
 	
 	/**
 	 * @return
