@@ -58,7 +58,7 @@ public class EnemyFish extends Entity implements IMovable {
 	public void hitWall() {
 		setDead();
 	}
-	
+
 	/**
 	 * Enemy fish sometimes change their movement speed.
 	 * Only change one of their movement directions so the change looks more realistic.
@@ -88,7 +88,7 @@ public class EnemyFish extends Entity implements IMovable {
 		} else {
 			vx = Math.min(-minSpeed, Math.max(vx, -maxSpeed));
 		}
-		
+
 		if (vy > 0) {
 			vy = Math.max(minSpeed, Math.min(vy, maxSpeed));
 		} else {

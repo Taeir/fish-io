@@ -152,7 +152,7 @@ public abstract class PlayingField {
 
 			//Add new entities
 			addEntities();
-			
+
 			//Check for collisions
 			checkCollisions();
 
@@ -248,9 +248,9 @@ public abstract class PlayingField {
 
 			BoundingBox box = m.getBoundingBox();
 			if (box.getMaxX() >= WINDOW_X + box.getWidth() + 1
-				|| box.getMinX() <= 0 - box.getWidth() - 1
-				|| box.getMaxY() >= WINDOW_Y + box.getHeight() + 1
-				|| box.getMinY() <= 0 - box.getHeight() - 1) {
+					|| box.getMinX() <= 0 - box.getWidth() - 1
+					|| box.getMaxY() >= WINDOW_Y + box.getHeight() + 1
+					|| box.getMinY() <= 0 - box.getHeight() - 1) {
 				m.hitWall();
 			}
 
