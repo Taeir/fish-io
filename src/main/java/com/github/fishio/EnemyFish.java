@@ -1,7 +1,5 @@
 package com.github.fishio;
 
-import java.util.Random;
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -13,7 +11,7 @@ public class EnemyFish extends Entity implements IMovable {
 	private double vx;
 	private double vy;
 	private Color color;
-	
+
 	/**
 	 * Main constructor of enemy fish.
 	 * @param b Bounding box of enemy fish.
@@ -27,14 +25,14 @@ public class EnemyFish extends Entity implements IMovable {
 		vx = startvx;
 		vy = startvy;
 	}
-	
+
 	@Override
 	public void render(GraphicsContext gc) {
 		//Don't render if dead.
 		if (isDead()) {
 			return;
 		}
-		
+
 		//No sprite rendering
 		gc.setFill(color);
 		gc.fillRect(getX(), getY(), getWidth(), getHeight());
@@ -49,7 +47,7 @@ public class EnemyFish extends Entity implements IMovable {
 	@Override
 	public void setSpeedVector(Vec2d vector) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/**
@@ -62,7 +60,7 @@ public class EnemyFish extends Entity implements IMovable {
 			setDead();
 		}
 	}
-	
+
 	/**
 	 * Check if the bounding box is moving towards the center.
 	 * <br><b>NOTE: this method assumes the box collides with a screen wall!</b>
@@ -71,11 +69,11 @@ public class EnemyFish extends Entity implements IMovable {
 	 */
 	private boolean movingToCenter() {
 		BoundingBox b = getBoundingBox();
-		
+
 		return (b.getMinX() <= 0 && vx > 0) 				//left wall
-				|| (b.getMinY() <= 0 && vy > 0)				//top wall
-				|| (b.getMaxX() > b.getWidth() && vx < 0)	//right wall
-				|| (b.getMaxY() > b.getWidth() && vy < 0);	//bottom wall
+				|| (b.getMaxY() <= 0 && vy > 0)				//top wall
+				|| (b.getMaxX() >= b.getWidth() && vx < 0)	//right wall
+				|| (b.getMinY() >= b.getWidth() && vy < 0);	//bottom wall
 	}
 
 	/**
@@ -92,7 +90,7 @@ public class EnemyFish extends Entity implements IMovable {
 				vx = LevelBuilder.randomSpeed();
 			}
 		}
-		
+
 	}
 
 	@Override
@@ -102,5 +100,5 @@ public class EnemyFish extends Entity implements IMovable {
 
 	@Override
 	public void onCollide(ICollidable other) { }
-	
+
 }
