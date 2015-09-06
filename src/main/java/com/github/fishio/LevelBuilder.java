@@ -1,7 +1,10 @@
 package com.github.fishio;
 
 import java.util.ArrayList;
+import java.util.Random;
+
 import javafx.scene.paint.Color;
+
 
 /**
  * The LevelBuilder is an utility class for creating levels. 
@@ -9,6 +12,8 @@ import javafx.scene.paint.Color;
  */
 final class LevelBuilder {
 
+	private static Random rand = new Random();
+	
 	// Fish statistics
 
 	// size
@@ -45,7 +50,7 @@ final class LevelBuilder {
 		double vx = 0.0, vy = 0.0;
 		Vec2d position = null;
 		//pick a side
-		switch ((int) (Math.random() * 4.0)) {
+		switch (rand.nextInt(5)) {
 		case 0: 	// left
 			position = new Vec2d(-width, Math.random() * PlayingField.WINDOW_Y);
 			vx = Math.abs(randomSpeed());
@@ -91,9 +96,9 @@ final class LevelBuilder {
 	 * @return random color.
 	 */
 	private static Color randomColor() {
-		return Color.rgb((int) (Math.random() * RGB_NUMBER), 
-				(int) (Math.random() * RGB_NUMBER), 
-				(int) (Math.random() * RGB_NUMBER));
+		return Color.rgb(rand.nextInt(RGB_NUMBER - 1), 
+				rand.nextInt(RGB_NUMBER - 1), 
+				rand.nextInt(RGB_NUMBER - 1));
 	}
 
 	/**

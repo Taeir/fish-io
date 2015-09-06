@@ -31,6 +31,8 @@ public class PlayerFish extends Entity implements IMovable {
 	
 	private static final double MAX_SPEED = 5; //TODO find a nicer max speed value
 	
+	private static final double GROWTH_SPEED = 100;
+	
 	/**
 	 * @param bb
 	 * 		The (inital) bounding box of the PlayerFish
@@ -181,6 +183,14 @@ public class PlayerFish extends Entity implements IMovable {
 	public void setRightPressed(boolean rightPressed) {
 		this.rightPressed = rightPressed;
 	}
+	
+	/**
+	 * @return
+	 * 		The rate at which the PlayerFish grows.
+	 */
+	public double getGrowthSpeed() {
+		return GROWTH_SPEED;
+	}
 
 	@Override
 	public Vec2d getSpeedVector() {
@@ -221,7 +231,8 @@ public class PlayerFish extends Entity implements IMovable {
 			
 			if (tsize > osize) {
 				fish.setDead();
-				getBoundingBox().increaseSize(Math.pow(osize, 0.9));
+				double dSize = Math.pow(GROWTH_SPEED * osize / tsize, 0.9);
+				getBoundingBox().increaseSize(dSize);
 			} else if (osize > tsize) {
 				this.setDead();
 			}

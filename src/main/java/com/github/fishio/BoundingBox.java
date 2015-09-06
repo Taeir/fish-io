@@ -98,7 +98,7 @@ public class BoundingBox {
 	 * 		the width of this Bounding Box.
 	 */
 	public double getWidth() {
-		return (xmax - xmin);
+		return xmax - xmin;
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class BoundingBox {
 	 * 		the height of this Bounding Box.
 	 */
 	public double getHeight() {
-		return (ymax - ymin);
+		return ymax - ymin;
 	}
 
 	/**
