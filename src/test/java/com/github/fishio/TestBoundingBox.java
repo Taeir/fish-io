@@ -202,6 +202,21 @@ public class TestBoundingBox {
 		
 		assertEquals(15.0, bb.getSize(), 0.0000001D);
 	}
+	
+	/**
+	 * Test for {@link BoundingBox#increaseSize(double)}.
+	 */
+	@Test
+	public void testIncreaseSize() {
+		BoundingBox bb = new BoundingBox(1.0, 1.0, 3.0, 2.0);
+		
+		bb.increaseSize(10.0);
+		
+		assertEquals(0.0, bb.getMinX(), 0000001D);
+		assertEquals(0.0, bb.getMinY(), 0000001D);
+		assertEquals(4.0, bb.getMaxX(), 0000001D);
+		assertEquals(3.0, bb.getMaxY(), 0000001D);
+	}
 
 	/**
 	 * Test for {@link BoundingBox#equals(Object)} with null (false).
