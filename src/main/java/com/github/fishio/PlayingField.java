@@ -37,7 +37,7 @@ public abstract class PlayingField {
 
 	private Image background;
 	private int enemyCount;
-	private final int enemyCountMax = 20;
+	private final int enemyCountMax = 10;
 
 	/**
 	 * @param fps
@@ -152,7 +152,7 @@ public abstract class PlayingField {
 
 			//Add new entities
 			addEntities();
-
+			
 			//Check for collisions
 			checkCollisions();
 
@@ -226,7 +226,7 @@ public abstract class PlayingField {
 	public void addEntities() {
 
 		//add enemy entities
-		while (enemyCount <= enemyCountMax) {
+		while (enemyCount < enemyCountMax) {
 			//TODO add scalible enemyFish
 			EnemyFish eFish = LevelBuilder.randomizedFish();
 			add(eFish);
@@ -247,8 +247,10 @@ public abstract class PlayingField {
 			m.preMove();
 
 			BoundingBox box = m.getBoundingBox();
-			if (box.getMaxX() >= WINDOW_X || box.getMinX() <= 0
-					|| box.getMaxY() >= WINDOW_Y || box.getMinY() <= 0) {
+			if (box.getMaxX() >= WINDOW_X + box.getWidth() + 1
+				|| box.getMinX() <= 0 - box.getWidth() - 1
+				|| box.getMaxY() >= WINDOW_Y + box.getHeight() + 1
+				|| box.getMinY() <= 0 - box.getHeight() - 1) {
 				m.hitWall();
 			}
 

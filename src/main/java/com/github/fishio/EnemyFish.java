@@ -8,8 +8,8 @@ import javafx.scene.paint.Color;
  * This class contains all methods concerning enemy fish on the screen.
  */
 public class EnemyFish extends Entity implements IMovable {
-	private double vx;
-	private double vy;
+	public double vx;
+	public double vy;
 	private Color color;
 
 	/**
@@ -56,40 +56,23 @@ public class EnemyFish extends Entity implements IMovable {
 	 */
 	@Override
 	public void hitWall() {
-		if (!movingToCenter()) {
-			setDead();
-		}
+		setDead();
 	}
-
-	/**
-	 * Check if the bounding box is moving towards the center.
-	 * <br><b>NOTE: this method assumes the box collides with a screen wall!</b>
-	 * @return true if the fish is moving towards the screen side of the wall,
-	 * 			else otherwise.
-	 */
-	private boolean movingToCenter() {
-		BoundingBox b = getBoundingBox();
-
-		return (b.getMinX() <= 0 && vx > 0) 				//left wall
-				|| (b.getMaxY() <= 0 && vy > 0)				//top wall
-				|| (b.getMaxX() >= b.getWidth() && vx < 0)	//right wall
-				|| (b.getMinY() >= b.getWidth() && vy < 0);	//bottom wall
-	}
-
+	
 	/**
 	 * Enemy fish sometimes change their movement speed.
 	 * Only change one of their movement directions so the change looks more realistic.
 	 */
 	@Override
 	public void preMove() {
-		if (Math.random() < 0.01) {
-			//Only change one direction
-			if (Math.random() <= 0.5) {
-				vy = LevelBuilder.randomSpeed();
-			} else {
-				vx = LevelBuilder.randomSpeed();
-			}
-		}
+//		if (Math.random() < 0.01) {
+//			//Only change one direction
+//			if (Math.random() <= 0.5) {
+//				vy = vy + vy * (Math.random() - 0.5);
+//			} else {
+//				vx = vx + vx * (Math.random() - 0.5);
+//			}
+//		}
 
 	}
 
