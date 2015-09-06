@@ -65,15 +65,35 @@ public class EnemyFish extends Entity implements IMovable {
 	 */
 	@Override
 	public void preMove() {
-//		if (Math.random() < 0.01) {
-//			//Only change one direction
-//			if (Math.random() <= 0.5) {
-//				vy = vy + vy * (Math.random() - 0.5);
-//			} else {
-//				vx = vx + vx * (Math.random() - 0.5);
-//			}
-//		}
+		if (Math.random() < 0.1) {
+			//Only change one direction
+			if (Math.random() <= 0.5) {
+				vy = vy + vy * (Math.random() - 0.5);
+			} else {
+				vx = vx + vx * (Math.random() - 0.5);
+			}
+			limitSpeed();
+		}
 
+	}
+
+	/**
+	 * Limits the speed of the fish to a minimum and maximum value.
+	 */
+	private void limitSpeed() {
+		double minSpeed = 1;
+		double maxSpeed = 5;
+		if (vx > 0) {
+			vx = Math.max(minSpeed, Math.min(vx, maxSpeed));
+		} else {
+			vx = Math.min(-minSpeed, Math.max(vx, -maxSpeed));
+		}
+		
+		if (vy > 0) {
+			vy = Math.max(minSpeed, Math.min(vy, maxSpeed));
+		} else {
+			vy = Math.min(-minSpeed, Math.max(vy, -maxSpeed));
+		}		
 	}
 
 	@Override
