@@ -8,7 +8,7 @@ public class BoundingBox {
 	private double ymin;
 	private double xmax;
 	private double ymax;
-	
+
 	/**
 	 * Creates a new Bounding Box with the given coordinates.
 	 * 
@@ -27,7 +27,7 @@ public class BoundingBox {
 		this.xmax = xmax;
 		this.ymax = ymax;
 	}
-	
+
 	/**
 	 * Creates a new Bounding Box with the given size and center.
 	 * 
@@ -44,7 +44,7 @@ public class BoundingBox {
 		this.xmax = position.x + 0.5 * width;
 		this.ymax = position.y + 0.5 * height;
 	}
-	
+
 	/**
 	 * @return
 	 * 		the minimal x coordinate.
@@ -52,7 +52,7 @@ public class BoundingBox {
 	public double getMinX() {
 		return xmin;
 	}
-	
+
 	/**
 	 * @return
 	 * 		the maximal x coordinate.
@@ -60,7 +60,7 @@ public class BoundingBox {
 	public double getMaxX() {
 		return xmax;
 	}
-	
+
 	/**
 	 * @return
 	 * 		the minimal y coordinate.
@@ -68,7 +68,7 @@ public class BoundingBox {
 	public double getMinY() {
 		return ymin;
 	}
-	
+
 	/**
 	 * @return
 	 * 		the maximal y coordinate.
@@ -76,7 +76,7 @@ public class BoundingBox {
 	public double getMaxY() {
 		return ymax;
 	}
-	
+
 	/**
 	 * @return
 	 * 		the x coordinate of the centre of this bounding box
@@ -84,7 +84,7 @@ public class BoundingBox {
 	public double getCenterX() {
 		return (xmax + xmin) / 2;
 	}
-	
+
 	/**
 	 * @return
 	 * 		the y coordinate of the centre of this bounding box
@@ -92,7 +92,7 @@ public class BoundingBox {
 	public double getCenterY() {
 		return (ymax + ymin) / 2;
 	}
-	
+
 	/**
 	 * @return
 	 * 		the width of this Bounding Box.
@@ -100,7 +100,7 @@ public class BoundingBox {
 	public double getWidth() {
 		return (xmax - xmin);
 	}
-	
+
 	/**
 	 * @return
 	 * 		the height of this Bounding Box.
@@ -108,7 +108,7 @@ public class BoundingBox {
 	public double getHeight() {
 		return (ymax - ymin);
 	}
-	
+
 	/**
 	 * Moves this bounding box in the specified direction.
 	 * 
@@ -119,13 +119,13 @@ public class BoundingBox {
 	 */
 	public void move(Direction dir, double amount) {
 		Vec2d v = dir.getNormalVector();
-		
+
 		v.x *= amount;
 		v.y *= amount;
-		
+
 		move(v);
 	}
-	
+
 	/**
 	 * Move this bounding box in the specified direction.
 	 * 
@@ -138,21 +138,21 @@ public class BoundingBox {
 	public void move(double rad, double amount) {
 		double dx = Math.cos(rad);
 		double dy = Math.sin(rad);
-		
+
 		Vec2d v = new Vec2d(dx, dy);
 		if (v.lengthSquared() > 0) {
 			v = v.normalize();
 		}
-		
+
 		v.x *= amount;
 		v.y *= amount;
-		
+
 		xmin += v.x;
 		xmax += v.x;
 		ymin += v.y;
 		ymax += v.y;
 	}
-	
+
 	/**
 	 * Moves this bounding box in the specified direction.
 	 * 
@@ -166,14 +166,14 @@ public class BoundingBox {
 		ymin -= v.y;
 		ymax -= v.y;
 	}
-	
+
 	/**
 	 * @return the size (area) of the BoundingBox
 	 */
 	public double getSize() {
 		return getWidth() * getHeight();
 	}
-	
+
 	/**
 	 * Increases the size (area) of the fish without
 	 * affecting the width/height (shape stays the same).
@@ -185,13 +185,13 @@ public class BoundingBox {
 		double w = getWidth();
 		double h = getHeight();
 		double c = w / h;
-		
+
 		double b = Math.sqrt((w * h + size) / c) - h;
 		double a = c * (h + b) - w;
-		
+
 		xmax += 0.5 * a;
 		xmin -= 0.5 * a;
-		
+
 		ymax += 0.5 * b;
 		ymin -= 0.5 * b;
 	}
@@ -203,15 +203,16 @@ public class BoundingBox {
 	 * 		if this bounding box collides with the given Bounding Box.
 	 */
 	public boolean intersects(BoundingBox other) {
-		
-		if (this.xmax > other.xmin && this.xmin < other.xmax
-				&& this.ymax > other.ymin && this.ymin < other.ymax) {
+		if (this.xmin + this.getWidth() > other.xmin
+				&& this.xmin < other.xmin + other.getWidth()
+				&& this.ymin + this.getHeight() > other.ymin
+				&& this.ymin < other.ymin + other.getHeight()) {
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -251,5 +252,5 @@ public class BoundingBox {
 		}
 		return true;
 	}
-	
+
 }

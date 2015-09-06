@@ -88,7 +88,7 @@ public class EnemyFish extends Entity implements IMovable {
 		} else {
 			vx = Math.min(-minSpeed, Math.max(vx, -maxSpeed));
 		}
-		
+
 		if (vy > 0) {
 			vy = Math.max(minSpeed, Math.min(vy, maxSpeed));
 		} else {
