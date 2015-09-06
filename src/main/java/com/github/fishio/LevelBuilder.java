@@ -17,8 +17,6 @@ final class LevelBuilder {
 	// Fish statistics
 
 	// size
-	public static final int MAX_FISH_WIDTH = 200;
-	public static final int MIN_FISH_WIDTH = 8;
 	public static final double MIN_FISH_WIDTH_HEIGHT_RATIO = 1.5;
 	public static final double MAX_FISH_WIDTH_HEIGHT_RATIO = 3.5;
 
@@ -40,14 +38,21 @@ final class LevelBuilder {
 	/**
 	 * Creates a random EnemyFish..
 	 * This fish will spawn outside the screen and always move towards the inside.
+	 * @param bb
+	 * 		A Bounding Box which decides about what size the fish will have.
 	 * @return random Enemyfish
 	 */
-	public static EnemyFish randomizedFish() {
+	public static EnemyFish randomizedFish(BoundingBox bb) {
 		//randomize fish properties 
-		double width   = rand.nextInt(MAX_FISH_WIDTH - MIN_FISH_WIDTH + 1) + MIN_FISH_WIDTH;
-		double minHeight = width / MAX_FISH_WIDTH_HEIGHT_RATIO;
-		double maxHeight = width / MIN_FISH_WIDTH_HEIGHT_RATIO;
-		double height  = rand.nextInt((int) (maxHeight - minHeight) + 1) + minHeight;
+		int minSize = (int) (bb.getSize() * 0.5);
+		int maxSize = (int) (bb.getSize() * 2.5);
+		
+		int size = rand.nextInt(maxSize - minSize + 1) + minSize;
+		double ratio = rand.nextDouble() * (MAX_FISH_WIDTH_HEIGHT_RATIO - MIN_FISH_WIDTH_HEIGHT_RATIO) 
+				+ MIN_FISH_WIDTH_HEIGHT_RATIO;
+		
+		double width = Math.sqrt(size * ratio);
+		double height = size / width;
 
 		double vx = 0.0, vy = 0.0;
 		Vec2d position = null;
