@@ -291,7 +291,7 @@ public abstract class PlayingField {
 				tl.preTick();
 			} catch (Exception ex) {
 				//TODO Handle exception differently
-				System.out.println("Error in preTick!");
+				System.err.println("Error in preTick!");
 				ex.printStackTrace();
 			}
 		}
@@ -318,7 +318,7 @@ public abstract class PlayingField {
 				tl.postTick();
 			} catch (Exception ex) {
 				//TODO Handle exception differently
-				System.out.println("Error in postTick!");
+				System.err.println("Error in postTick!");
 				ex.printStackTrace();
 			}
 		}
