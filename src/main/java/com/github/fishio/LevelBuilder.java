@@ -18,9 +18,9 @@ final class LevelBuilder {
 
 	// size
 	public static final int MAX_FISH_WIDTH = 200;
-	public static final double FISH_WIDTH_HEIGHT_RATIO = 0.75;
-	public static final double MIN_FISH_WIDTH = 8;
-	public static final double MIN_FISH_HEIGTH = MIN_FISH_WIDTH * FISH_WIDTH_HEIGHT_RATIO;
+	public static final int MIN_FISH_WIDTH = 8;
+	public static final double MIN_FISH_WIDTH_HEIGHT_RATIO = 1.5;
+	public static final double MAX_FISH_WIDTH_HEIGHT_RATIO = 3.5;
 
 	// color
 	public static final int RGB_NUMBER = 255;
@@ -44,8 +44,10 @@ final class LevelBuilder {
 	 */
 	public static EnemyFish randomizedFish() {
 		//randomize fish properties 
-		double width   = Math.max(MIN_FISH_WIDTH, MAX_FISH_WIDTH * Math.random());
-		double height  = Math.max(MIN_FISH_HEIGTH, FISH_WIDTH_HEIGHT_RATIO * width * Math.random());
+		double width   = rand.nextInt(MAX_FISH_WIDTH - MIN_FISH_WIDTH + 1) + MIN_FISH_WIDTH;
+		double minHeight = width / MAX_FISH_WIDTH_HEIGHT_RATIO;
+		double maxHeight = width / MIN_FISH_WIDTH_HEIGHT_RATIO;
+		double height  = rand.nextInt((int) (maxHeight - minHeight) + 1) + minHeight;
 
 		double vx = 0.0, vy = 0.0;
 		Vec2d position = null;
