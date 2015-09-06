@@ -192,30 +192,16 @@ public class TestBoundingBox {
 		assertEquals(-2.3, bb.getMaxX(), 0.0000001D);
 		assertEquals(-3.1, bb.getMaxY(), 0.0000001D);
 	}
-
-//	@Test
-//	public void testIntersects1() {
-//		BoundingBox bb1 = new BoundingBox(0.0, 0.0, 4.0, 4.0);
-//		BoundingBox bb2 = new BoundingBox(0.0, 0.0, 4.0, 4.0);
-//		
-//		assertTrue(bb1.intersects(bb2));
-//	}
-//	
-//	@Test
-//	public void testIntersects2() {
-//		BoundingBox bb1 = new BoundingBox(0.0, 0.0, 4.0, 4.0);
-//		BoundingBox bb2 = new BoundingBox(2.0, 2.0, 4.0, 4.0);
-//		
-//		assertTrue(bb1.intersects(bb2));
-//	}
-//	
-//	@Test
-//	public void testIntersects3() {
-//		BoundingBox bb1 = new BoundingBox(0.0, 0.0, 2.0, 2.0);
-//		BoundingBox bb2 = new BoundingBox(3.0, 3.0, 5.0, 5.0);
-//		
-//		assertFalse(bb1.intersects(bb2));
-//	}
+	
+	/**
+	 * Test for {@link BoundingBox#getSize()}.
+	 */
+	@Test
+	public void testGetSize() {
+		BoundingBox bb = new BoundingBox(new Vec2d(5.0, 5.0), 3.0, 5.0);
+		
+		assertEquals(15.0, bb.getSize(), 0.0000001D);
+	}
 
 	/**
 	 * Test for {@link BoundingBox#equals(Object)} with null (false).
