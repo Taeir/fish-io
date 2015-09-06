@@ -8,25 +8,22 @@ import javafx.scene.paint.Color;
  * This class contains a standard level to be created.
  */
 final class LevelBuilder {
-	
+
 	// Fish statistics
-	
+
 	// size
 	public static final int MAX_FISH_WIDTH = 200;
 	public static final double FISH_WIDTH_HEIGHT_RATIO = 0.75;
 	public static final double MIN_FISH_WIDTH = 8;
 	public static final double MIN_FISH_HEIGTH = MIN_FISH_WIDTH * FISH_WIDTH_HEIGHT_RATIO;
-	
+
 	// color
 	public static final int RGB_NUMBER = 255;
-	
+
 	// movement
 	public static final double MAX_EFISH_SPEED = 4;
 	public static final double MIN_EFISH_SPEED = 1;
-	
-	// safe spawn area.
-	public static final double SAFE_RADIUS = 100;
-	
+
 	/**
 	 * Private constructor to prevent initiation.
 	 */
@@ -34,35 +31,51 @@ final class LevelBuilder {
 		//to prevent initiation
 		//TODO add assertion?
 	}
-	
+
 	/**
-	 * Creates a random EnemyFish, taking in account the current size of the player.
-	 * @param playerBox current Playerfish BoundingBox
+	 * Creates a random EnemyFish..
+	 * This fish will spawn outside the screen and always move towards the inside.
 	 * @return random Enemyfish
 	 */
-	public static EnemyFish randomizedFish(BoundingBox playerBox) {
-		//TODO add a random fish based on player current BoundingBox
-		
+	public static EnemyFish randomizedFish() {
 		//randomize fish properties 
-		double width   = MAX_FISH_WIDTH * Math.random();
-		double height  = FISH_WIDTH_HEIGHT_RATIO * width * Math.random();
-		width = Math.max(MIN_FISH_WIDTH, width);
-		height = Math.max(MIN_FISH_HEIGTH, height);
-		
-		Vec2d position = randomPosition(playerBox, width, height);
-		
-		double vx = randomSpeed();
-		double vy = randomSpeed();
-				
-		
-		//Check for decent properties
-		
-		
+		double width   = Math.max(MIN_FISH_WIDTH, MAX_FISH_WIDTH * Math.random());
+		double height  = Math.max(MIN_FISH_HEIGTH, FISH_WIDTH_HEIGHT_RATIO * width * Math.random());
+
+		double vx = 0.0, vy = 0.0;
+		Vec2d position = null;
+		//pick a side
+		switch ((int) (Math.random() * 4.0)) {
+		case 0: 	// left
+			position = new Vec2d(-width, Math.random() * PlayingField.WINDOW_Y);
+			vx = Math.abs(randomSpeed());
+			vy = randomSpeed();
+			break;
+		case 1: 	// top
+			position = new Vec2d(Math.random() * PlayingField.WINDOW_X, -height);
+			vx = randomSpeed();
+			vy = Math.abs(randomSpeed());
+			break;
+		case 2: 	// right
+			position = new Vec2d(PlayingField.WINDOW_X + width, Math.random() * PlayingField.WINDOW_Y);
+			vx = -Math.abs(randomSpeed());
+			vy = randomSpeed();
+			break;
+		default: 	// bottom
+			position = new Vec2d(Math.random() * PlayingField.WINDOW_X, PlayingField.WINDOW_Y + height);
+			vx = randomSpeed();
+			vy = -Math.abs(randomSpeed());
+			break;
+		}
+
 		EnemyFish eFish = new EnemyFish(new BoundingBox(position.x, position.y, 
 				position.x + width , position.y + height), randomColor() , vx, vy);
+
+		//TODO Check for decent properties
+		//eFish.checkProperties()
 		return eFish;
 	}
-	
+
 	/**
 	 * Load level Entities from specified String from file.
 	 * @param str name of level
@@ -72,39 +85,7 @@ final class LevelBuilder {
 		//TODO for campaign purposes
 		return null;
 	}
-	
-	/**
-	 * Returns a random position as a Vec2d. 
-	 * Makes sure that no fish can spawn near the player when player is still small.
-	 * @return random position as a Vec2.
-	 */
-	private static Vec2d randomPosition(BoundingBox playerBox, double width, double height) {		
-		
-		//TODO Better spawn position calculation
-		/*
-		Random rand = new Random();
-		double minXpb = playerBox.getMinX() - SAFERADIUS;
-		double minYpb = playerBox.getMinY() + SAFERADIUS;
-		double maxXpb = playerBox.getMaxX() + SAFERADIUS;
-		double maxYpb = playerBox.getMaxY() - SAFERADIUS;
-		
-		double xPos;
-		double yPos;
-		
-		// Check in which of the pairs of quadrant on the screen the fish will spawn
-		if (rand.nextBoolean()) {
-			// left bottom quadrant
-			xPos = rand.nextDouble() * (minXpb - width);
-			yPos = rand.nextDouble() * (PlayingField.WINDOW_Y - minYpb + height) + minYpb;
-		} else {
-			// right top quadrant
-			xPos = rand.nextDouble() * (PlayingField.WINDOW_X - maxXpb) + maxXpb;
-			yPos = rand.nextDouble() * (maxYpb - height);
-		}*/
-		
-		return new Vec2d(Math.random() * PlayingField.WINDOW_X , Math.random() * PlayingField.WINDOW_Y);
-	}
-	
+
 	/**
 	 * Create a random rgb color.
 	 * @return random color.
@@ -114,17 +95,21 @@ final class LevelBuilder {
 				(int) (Math.random() * RGB_NUMBER), 
 				(int) (Math.random() * RGB_NUMBER));
 	}
-	
+
+	/**
+	 * Creates a random speed for a fish.
+	 * @return a random speed between 1 and MAX_EFISH_SPEED or between -1 and -MAX_FISH_SPEED
+	 */
 	public static double randomSpeed() {
-		double speed = Math.random() * 2 * MAX_EFISH_SPEED - MAX_EFISH_SPEED;
-		
+		double speed = (Math.random() * 2 - 1) * MAX_EFISH_SPEED;
+
 		//check if speed is not too slow
 		if (speed < 0) {
 			speed = Math.min(speed, -1.0);
 		} else {
-			speed = Math.min(speed, 1.0);
+			speed = Math.max(speed, 1.0);
 		}
-		
+
 		return speed;
 	}
 }
