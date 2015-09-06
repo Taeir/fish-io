@@ -73,7 +73,6 @@ public class TestBoundingBoxIntersects {
 	 */
 	@Test
 	public void test() {
-		System.out.println((0.0 > 0.0));
 		assertEquals(expected, bb2.intersects(bb1));
 		assertEquals(expected, bb1.intersects(bb2));
 	}
