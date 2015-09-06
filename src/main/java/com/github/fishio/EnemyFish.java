@@ -56,27 +56,10 @@ public class EnemyFish extends Entity implements IMovable {
 	 */
 	@Override
 	public void hitWall() {
-		if (!movingToCenter()) {
 			setDead();
 		}
-	}
 
-	/**
-	 * Check if the bounding box is moving towards the center.
-	 * <br><b>NOTE: this method assumes the box collides with a screen wall!</b>
-	 * @return true if the fish is moving towards the screen side of the wall,
-	 * 			else otherwise.
-	 */
-	private boolean movingToCenter() {
-		BoundingBox b = getBoundingBox();
-
-		return (b.getMinX() <= 0 && vx > 0) 				//left wall
-				|| (b.getMaxY() <= 0 && vy > 0)				//top wall
-				|| (b.getMaxX() >= b.getWidth() && vx < 0)	//right wall
-				|| (b.getMinY() >= b.getWidth() && vy < 0);	//bottom wall
-	}
-
-	/**
+		/**
 	 * Enemy fish sometimes change their movement speed.
 	 * Only change one of their movement directions so the change looks more realistic.
 	 */
