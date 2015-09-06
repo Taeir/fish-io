@@ -183,6 +183,14 @@ public class PlayerFish extends Entity implements IMovable {
 	public void setRightPressed(boolean rightPressed) {
 		this.rightPressed = rightPressed;
 	}
+	
+	/**
+	 * @return
+	 * 		The rate at which the PlayerFish grows.
+	 */
+	public double getGrowthSpeed() {
+		return GROWTH_SPEED;
+	}
 
 	@Override
 	public Vec2d getSpeedVector() {
