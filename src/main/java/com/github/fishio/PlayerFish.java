@@ -29,7 +29,7 @@ public class PlayerFish extends Entity implements IMovable {
 	 */
 	private static final double ACCELERATION = 0.25; //TODO find a nicer acceleration value
 	
-	private static final double MAX_SPEED = 10; //TODO find a nicer max speed value
+	private static final double MAX_SPEED = 5; //TODO find a nicer max speed value
 	
 	/**
 	 * @param bb
