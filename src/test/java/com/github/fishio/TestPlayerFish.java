@@ -117,8 +117,6 @@ public class TestPlayerFish {
 	}
 	
 	/**
-	 * Tests {@link PlayerFish#canMoveThroughWall()}
-	 * using a same sized EnemyFish to collide with.
 	 */
 	@Test
 	public void testCollideWithSameSizeEnemyFish() {
@@ -129,6 +127,22 @@ public class TestPlayerFish {
 		pf.onCollide(ef);
 		
 		Mockito.verify(ef, never()).setDead();
+		Mockito.verify(pf, never()).setDead();
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#canMoveThroughWall()}
+	 * using a dead EnemyFish.
+	 */
+	@Test
+	public void testCollideWithDeadEnemyFish() {
+		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(BoundingBox.class), 
+				Color.ALICEBLUE, 0.0, 0.0));
+		when(ef.getBoundingBox().getSize()).thenReturn(5.1);
+		ef.setDead();
+
+		pf.onCollide(ef);
+		
 		Mockito.verify(pf, never()).setDead();
 	}
 }
