@@ -1,7 +1,5 @@
 package com.github.fishio;
 
-import java.util.Random;
-
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -10,10 +8,10 @@ import javafx.scene.paint.Color;
  * This class contains all methods concerning enemy fish on the screen.
  */
 public class EnemyFish extends Entity implements IMovable {
-	private double vx;
-	private double vy;
+	public double vx;
+	public double vy;
 	private Color color;
-	
+
 	/**
 	 * Main constructor of enemy fish.
 	 * @param b Bounding box of enemy fish.
@@ -27,14 +25,14 @@ public class EnemyFish extends Entity implements IMovable {
 		vx = startvx;
 		vy = startvy;
 	}
-	
+
 	@Override
 	public void render(GraphicsContext gc) {
 		//Don't render if dead.
 		if (isDead()) {
 			return;
 		}
-		
+
 		//No sprite rendering
 		gc.setFill(color);
 		gc.fillRect(getX(), getY(), getWidth(), getHeight());
@@ -49,32 +47,53 @@ public class EnemyFish extends Entity implements IMovable {
 	@Override
 	public void setSpeedVector(Vec2d vector) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/**
-	 * Enemy fish should die for now if they hit the wall.
+	 * Enemy fish should die if they hit the wall from the inside.
+	 * Otherwise do nothing
 	 */
 	@Override
 	public void hitWall() {
-		setDead();
-	}
-	
-	/**
+			setDead();
+		}
+
+	/** 
 	 * Enemy fish sometimes change their movement speed.
 	 * Only change one of their movement directions so the change looks more realistic.
 	 */
 	@Override
 	public void preMove() {
-		if (Math.random() < 0.01) {
+		if (Math.random() < 0.1) {
 			//Only change one direction
 			if (Math.random() <= 0.5) {
-				vy = LevelBuilder.randomSpeed();
+				vy = vy + vy * (Math.random() - 0.5);
 			} else {
-				vx = LevelBuilder.randomSpeed();
+				vx = vx + vx * (Math.random() - 0.5);
 			}
+			limitSpeed();
 		}
-		
+
+	}
+
+	/**
+	 * Limits the speed of the fish to a minimum and maximum value.
+	 */
+	private void limitSpeed() {
+		double minSpeed = 1;
+		double maxSpeed = 5;
+		if (vx > 0) {
+			vx = Math.max(minSpeed, Math.min(vx, maxSpeed));
+		} else {
+			vx = Math.min(-minSpeed, Math.max(vx, -maxSpeed));
+		}
+
+		if (vy > 0) {
+			vy = Math.max(minSpeed, Math.min(vy, maxSpeed));
+		} else {
+			vy = Math.min(-minSpeed, Math.max(vy, -maxSpeed));
+		}		
 	}
 
 	@Override
@@ -84,5 +103,5 @@ public class EnemyFish extends Entity implements IMovable {
 
 	@Override
 	public void onCollide(ICollidable other) { }
-	
+
 }

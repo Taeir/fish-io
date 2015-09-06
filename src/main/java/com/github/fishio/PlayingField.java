@@ -34,10 +34,10 @@ public abstract class PlayingField {
 	private ArrayList<IMovable> movables = new ArrayList<>();
 	private ArrayList<Entity> entities = new ArrayList<>();
 	private ArrayList<ICollidable> collidables = new ArrayList<>();
-	
+
 	private Image background;
 	private int enemyCount;
-	private final int enemyCountMax = 20;
+	private final int enemyCountMax = 10;
 
 	/**
 	 * @param fps
@@ -226,14 +226,14 @@ public abstract class PlayingField {
 	public void addEntities() {
 
 		//add enemy entities
-		while (enemyCount <= enemyCountMax) {
+		while (enemyCount < enemyCountMax) {
 			//TODO add scalible enemyFish
-			EnemyFish eFish = LevelBuilder.randomizedFish(getPlayers().get(0).getBoundingBox());
+			EnemyFish eFish = LevelBuilder.randomizedFish();
 			add(eFish);
 			enemyCount++;
 		}
 	}
-	
+
 	/**
 	 * @return all the players in this field.
 	 */
@@ -245,17 +245,19 @@ public abstract class PlayingField {
 	public void moveMovables() {
 		for (IMovable m : movables) {
 			m.preMove();
-			
+
 			BoundingBox box = m.getBoundingBox();
-			if (box.getMaxX() >= WINDOW_X || box.getMinX() <= 0
-					|| box.getMaxY() >= WINDOW_Y || box.getMinY() <= 0) {
+			if (box.getMaxX() >= WINDOW_X + box.getWidth() + 1
+					|| box.getMinX() <= 0 - box.getWidth() - 1
+					|| box.getMaxY() >= WINDOW_Y + box.getHeight() + 1
+					|| box.getMinY() <= 0 - box.getHeight() - 1) {
 				m.hitWall();
 			}
-			
+
 			box.move(m.getSpeedVector());
-			
+
 			if (!m.canMoveThroughWall()) {
-				
+
 				if (box.getMaxX() > WINDOW_X) {
 					box.move(Direction.LEFT, box.getMaxX() - WINDOW_X);
 				} if (box.getMinX() < 0) {
@@ -265,7 +267,7 @@ public abstract class PlayingField {
 				} if (box.getMinY() < 0) {
 					box.move(Direction.DOWN, -box.getMinY());
 				}
-				
+
 			}
 		}
 	}
@@ -382,7 +384,7 @@ public abstract class PlayingField {
 		if (o instanceof Entity) {
 			entities.add((Entity) o);
 		}
-		
+
 		if (o instanceof ICollidable) {
 			collidables.add((ICollidable) o);
 		}

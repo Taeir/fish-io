@@ -26,7 +26,7 @@ public class SinglePlayerPlayingField extends PlayingField {
 		super(fps, canvas);
 		
 		//Adding the playerFish
-		player = new PlayerFish(new BoundingBox(new Vec2d(640, 335), 100, 64), 
+		player = new PlayerFish(new BoundingBox(new Vec2d(640, 335), 20, 15), 
 				FishIO.getInstance().getPrimaryStage());
 		add(player);
 		
