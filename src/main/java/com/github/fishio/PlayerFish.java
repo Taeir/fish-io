@@ -233,7 +233,6 @@ public class PlayerFish extends Entity implements IMovable {
 				fish.setDead();
 				double dSize = Math.pow(GROWTH_SPEED * osize / tsize, 0.9);
 				getBoundingBox().increaseSize(dSize);
-				System.out.println("Size increased by: " + dSize + ", current size: " + getBoundingBox().getSize());
 			} else if (osize > tsize) {
 				this.setDead();
 			}
