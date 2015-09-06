@@ -8,8 +8,8 @@ import javafx.scene.paint.Color;
  * This class contains all methods concerning enemy fish on the screen.
  */
 public class EnemyFish extends Entity implements IMovable {
-	private double vx;
-	private double vy;
+	public double vx;
+	public double vy;
 	private Color color;
 
 	/**
@@ -59,20 +59,20 @@ public class EnemyFish extends Entity implements IMovable {
 			setDead();
 		}
 
-		/**
+	/** 
 	 * Enemy fish sometimes change their movement speed.
 	 * Only change one of their movement directions so the change looks more realistic.
 	 */
 	@Override
 	public void preMove() {
-		if (Math.random() < 0.01) {
-			//Only change one direction
-			if (Math.random() <= 0.5) {
-				vy = LevelBuilder.randomSpeed();
-			} else {
-				vx = LevelBuilder.randomSpeed();
-			}
-		}
+//		if (Math.random() < 0.01) {
+//			//Only change one direction
+//			if (Math.random() <= 0.5) {
+//				vy = vy + vy * (Math.random() - 0.5);
+//			} else {
+//				vx = vx + vx * (Math.random() - 0.5);
+//			}
+//		}
 
 	}
 

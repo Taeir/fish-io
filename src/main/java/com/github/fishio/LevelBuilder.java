@@ -54,7 +54,7 @@ final class LevelBuilder {
 		case 1: 	// top
 			position = new Vec2d(Math.random() * PlayingField.WINDOW_X, -height);
 			vx = randomSpeed();
-			vy = Math.abs(randomSpeed());
+			vy = -Math.abs(randomSpeed());
 			break;
 		case 2: 	// right
 			position = new Vec2d(PlayingField.WINDOW_X + width, Math.random() * PlayingField.WINDOW_Y);
@@ -64,7 +64,7 @@ final class LevelBuilder {
 		default: 	// bottom
 			position = new Vec2d(Math.random() * PlayingField.WINDOW_X, PlayingField.WINDOW_Y + height);
 			vx = randomSpeed();
-			vy = -Math.abs(randomSpeed());
+			vy = Math.abs(randomSpeed());
 			break;
 		}
 
