@@ -93,6 +93,7 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void backToMenu() {
+		pf.stopGame();
 		mainApp.openMainMenu();
 	}
 
@@ -103,7 +104,13 @@ public class SinglePlayerController implements ScreenController {
 	public void restartGame() {
 		showDeathScreen(false);
 		scoreField.setText("score: 0");
-		//TODO - reset the map etc.
+		
+		//Reset the map
+		pf.stopGame();
+		pf = new SinglePlayerPlayingField(60, gameCanvas, this);
+		pf.setBackground(new Image("background.png"));
+		
+		pf.startGame();
 	}
 
 }

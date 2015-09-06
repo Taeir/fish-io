@@ -29,6 +29,23 @@ public class BoundingBox {
 	}
 	
 	/**
+	 * Creates a new Bounding Box with the given size and center.
+	 * 
+	 * @param position
+	 * 		the position of the center
+	 * @param width
+	 * 		the width of the box
+	 * @param height
+	 * 		the height of the box
+	 */
+	public BoundingBox(Vec2d position, double width, double height) {
+		this.xmin = position.x - 0.5 * width;
+		this.ymin = position.y - 0.5 * height;
+		this.xmax = position.x + 0.5 * width;
+		this.ymax = position.y + 0.5 * height;
+	}
+	
+	/**
 	 * @return
 	 * 		the minimal x coordinate.
 	 */
