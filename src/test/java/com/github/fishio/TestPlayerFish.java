@@ -1,6 +1,7 @@
 package com.github.fishio;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import javafx.stage.Stage;
 
 import org.junit.Before;
@@ -55,4 +56,11 @@ public class TestPlayerFish {
 		Mockito.verify(pf).adjustYSpeed();
 	}
 	
+	/**
+	 * Tests {@link PlayerFish#canMoveThroughWall()}.
+	 */
+	@Test
+	public void testCanMoveThroughWall() {
+		assertFalse(pf.canMoveThroughWall());
+	}
 }
