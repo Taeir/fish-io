@@ -44,7 +44,7 @@ final class LevelBuilder {
 
 		int size = rand.nextInt(maxSize - minSize + 1) + minSize;
 		Image sprite = getRandomSprite();
-		double ratio = sprite.getHeight() / sprite.getHeight();
+		double ratio = sprite.getWidth() / sprite.getHeight();
 		double width = Math.sqrt(size * ratio);
 		double height = size / width;
 
