@@ -90,7 +90,7 @@ public class PlayerFish extends Entity implements IMovable {
 		if (vx < 0 && (!leftPressed || rightPressed)) vx += ACCELERATION;
 		if (vx > 0 && (!rightPressed || leftPressed)) vx -= ACCELERATION;
 		
-		if (vx < 0.1 && vx > -0.1) vx = 0;	// stop is speed is too slow
+		if (vx < 0.1 && vx > -0.1) vx = 0;	// stop if speed is too slow
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class PlayerFish extends Entity implements IMovable {
 		if (vy < 0 && (!downPressed || upPressed)) vy += ACCELERATION;
 		if (vy > 0 && (!upPressed || downPressed)) vy -= ACCELERATION;
 		
-		if (vy < 0.1 && vy > -0.1) vy = 0;	// stop is speed is too slow
+		if (vy < 0.1 && vy > -0.1) vy = 0;	// stop if speed is too slow
 	}
 
 	/**
