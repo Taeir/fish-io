@@ -10,8 +10,8 @@ import javafx.stage.Stage;
  */
 public class PlayerFish extends Entity implements IMovable {
 	
-	private double speedX = 0;
-	private double speedY = 0;
+	private int speedX = 0;
+	private int speedY = 0;
 	
 	private boolean upPressed;
 	private boolean downPressed;
@@ -27,11 +27,11 @@ public class PlayerFish extends Entity implements IMovable {
 	 * The speed at which the speed of the fish increases /
 	 * decreases depending on what keys are pressed by the user.
 	 */
-	private static final double ACCELERATION = 0.25; //TODO find a nicer acceleration value
+	private static final int ACCELERATION = 35; //TODO find a nicer acceleration value
 	
-	private static final double MAX_SPEED = 5; //TODO find a nicer max speed value
+	private static final double MAX_SPEED = 600; //TODO find a nicer max speed value
 	
-	private static final double GROWTH_SPEED = 100;
+	private static final double GROWTH_SPEED = 150;
 	
 	/**
 	 * @param bb
@@ -102,7 +102,7 @@ public class PlayerFish extends Entity implements IMovable {
 	 * 		the fish is going left.
 	 */
 	public double getSpeedX() {
-		return speedX;
+		return speedX / 100.0;
 	}
 	
 	/**
@@ -110,14 +110,14 @@ public class PlayerFish extends Entity implements IMovable {
 	 * 		the fish is going down.
 	 */
 	public double getSpeedY() {
-		return speedY;
+		return speedY / 100.0;
 	}
 	
 	/**
 	 * @return the acceleration of the fish.
 	 */
 	public double getAcceleration() {
-		return ACCELERATION;
+		return ACCELERATION / 100.0;
 	}
 	
 	/**
@@ -127,7 +127,7 @@ public class PlayerFish extends Entity implements IMovable {
 	 * 		the speed to set
 	 */
 	public void setSpeedX(double speedX) {
-		this.speedX = speedX;
+		this.speedX = (int) (100 * speedX);
 	}
 	
 	/**
@@ -137,7 +137,7 @@ public class PlayerFish extends Entity implements IMovable {
 	 * 		the speed to set
 	 */
 	public void setSpeedY(double speedY) {
-		this.speedY = speedY;
+		this.speedY = (int) (100 * speedY);
 	}
 	
 	/**
@@ -194,13 +194,13 @@ public class PlayerFish extends Entity implements IMovable {
 
 	@Override
 	public Vec2d getSpeedVector() {
-		return new Vec2d(speedX, speedY);
+		return new Vec2d(getSpeedX(), getSpeedY());
 	}
 
 	@Override
 	public void setSpeedVector(Vec2d vector) {
-		speedX = vector.x;
-		speedY = vector.y;
+		speedX = (int) (100 * vector.x);
+		speedY = (int) (100 * vector.y);
 	}
 	
 	@Override
