@@ -214,7 +214,7 @@ public class TestVec2d {
 	@Test
 	public void testtoString() {
 		Vec2d vec1 = new Vec2d(6, 5);
-		String represent = new String("Vec2d [x=6.0, y=5.0]");
+		String represent = "Vec2d [x=6.0, y=5.0]";
 		assertEquals(represent, vec1.toString());
 	}
 }
