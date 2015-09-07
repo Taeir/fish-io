@@ -104,7 +104,7 @@ public class SplashScreenController implements ScreenController {
 	private void endSplash() {
 		if (run) { //do only once
 			run = false;
-			mainApp.loadScreen("view/mainMenu.fxml", true);	
+			mainApp.loadScreen("view/mainMenu.fxml", 1000);	
 		}
 	}
 

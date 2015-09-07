@@ -25,7 +25,7 @@ public class FishIO extends Application {
 		
 		primaryStage.setTitle("Fish.io");
 
-		loadScreen("view/splashScreen.fxml", false);
+		loadScreen("view/splashScreen.fxml", 0);
 		primaryStage.setWidth(1280.0);
 		primaryStage.setHeight(720.0);
 		primaryStage.show();
@@ -38,10 +38,10 @@ public class FishIO extends Application {
 	 * 
 	 * @param file
 	 * 			Filepath of the fxml file.
-	 * @param fadeIn
+	 * @param length > 0
 	 * 			If true, fade in the new screen, else just show it.
 	 */
-	public void loadScreen(String file, boolean fadeIn) {
+	public void loadScreen(String file, int length) {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource(file));
 
@@ -53,9 +53,9 @@ public class FishIO extends Application {
 				return;
 			}
 			
-			if (fadeIn) {
-				FadeTransition fade = new FadeTransition(Duration.millis(400), rootLayout);
-				fade.setFromValue(0.3);
+			if (length > 0) {
+				FadeTransition fade = new FadeTransition(Duration.millis(length), rootLayout);
+				fade.setFromValue(0.0);
 				fade.setToValue(1.0);
 				fade.play();
 			}		    
@@ -98,7 +98,7 @@ public class FishIO extends Application {
 	 * Open the main menu when in another screen.
 	 */
 	public void openMainMenu() {
-		loadScreen("view/mainMenu.fxml", true);
+		loadScreen("view/mainMenu.fxml", 400);
 	}
 	
 	/**
