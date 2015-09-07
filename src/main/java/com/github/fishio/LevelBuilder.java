@@ -13,14 +13,14 @@ import javafx.scene.image.Image;
 final class LevelBuilder {
 
 	private static Random rand = new Random();
-	
+
 	// Fish statistics
 
 	// movement
 	public static final double MAX_EFISH_SPEED = 4;
 	public static final double MIN_EFISH_SPEED = 1;
-	
-	private static final int NUMBER_OF_ENEMY_SPRITES = 28;
+
+	private static Image[] enemySpriteList;
 
 	/**
 	 * Private constructor to prevent initiation.
@@ -41,7 +41,7 @@ final class LevelBuilder {
 		//randomize fish properties 
 		int minSize = (int) (bb.getSize() * 0.5);
 		int maxSize = (int) (bb.getSize() * 2.5);
-		
+
 		int size = rand.nextInt(maxSize - minSize + 1) + minSize;
 		Image sprite = getRandomSprite();
 		double ratio = sprite.getHeight() / sprite.getHeight();
@@ -83,8 +83,8 @@ final class LevelBuilder {
 	}
 
 	private static Image getRandomSprite() {
-		int i = (int) (Math.random() * NUMBER_OF_ENEMY_SPRITES);
-		return new Image("sprites/fish/fish" + i + ".png");
+		int i = (int) (Math.random() * enemySpriteList.length);
+		return enemySpriteList[i];
 	}
 
 	/**
@@ -112,5 +112,19 @@ final class LevelBuilder {
 		}
 
 		return speed;
+	}
+
+	/**
+	 * Preload all the enemy fish sprites.
+	 */
+	public static void preLoadSprites() {
+		if (enemySpriteList != null) {
+			return;
+		}
+		enemySpriteList = new Image[28];
+		for (int i = 0; i < 28; i++) {
+			enemySpriteList[i] = new Image("sprites/fish/fish" + i + ".png");
+		}
+		
 	}
 }

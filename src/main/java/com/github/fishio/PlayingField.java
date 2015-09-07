@@ -54,6 +54,7 @@ public abstract class PlayingField {
 	 * 		the canvas to use, can be <code>null</code> to create one.
 	 */
 	public PlayingField(int fps, Canvas canvas) {
+		LevelBuilder.preLoadSprites();
 		this.fps = fps;
 
 		if (canvas == null) {

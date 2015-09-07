@@ -30,21 +30,21 @@ public class SinglePlayerController implements ScreenController {
 	private VBox deathScreen;
 	@FXML
 	private Label scoreField;
-	
+
 	private PlayingField pf;
 
 	@Override
 	public void setMainApp(FishIO mainApp) {
 		this.mainApp = mainApp;
-		
+
 		//setup the playing field
 		pf = new SinglePlayerPlayingField(60, gameCanvas, this);
 		pf.setBackground(new Image("background.png"));
-		
+
 		mainApp.getPrimaryStage().setTitle("Fish.io Singleplayer");
 		pf.startGame();
 	}
-	
+
 	/**
 	 * Called when the pause button is pressed.
 	 * 
@@ -56,7 +56,7 @@ public class SinglePlayerController implements ScreenController {
 		if (pf == null) {
 			return;
 		}
-		
+
 		if (pf.getGameThread().getStatus() == Status.RUNNING) {
 			pf.stopGame();
 		} else {
@@ -104,12 +104,12 @@ public class SinglePlayerController implements ScreenController {
 	public void restartGame() {
 		showDeathScreen(false);
 		scoreField.setText("score: 0");
-		
+
 		//Reset the map
 		pf.stopGame();
 		pf = new SinglePlayerPlayingField(60, gameCanvas, this);
 		pf.setBackground(new Image("background.png"));
-		
+
 		pf.startGame();
 	}
 
