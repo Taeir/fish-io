@@ -25,7 +25,7 @@ public class FishIO extends Application {
 		
 		primaryStage.setTitle("Fish.io");
 
-		loadScreen("view/mainMenu.fxml", false);
+		loadScreen("view/splashScreen.fxml", false);
 		primaryStage.setWidth(1280.0);
 		primaryStage.setHeight(720.0);
 		primaryStage.show();
