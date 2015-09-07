@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -89,7 +90,7 @@ public class TestPlayerFish {
 	@Test
 	public void testCollideWithLargerEnemyFish() {
 		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(BoundingBox.class), 
-				Color.ALICEBLUE, 0.0, 0.0));
+				null, 0.0, 0.0));
 		when(ef.getBoundingBox().getSize()).thenReturn(5.1);
 		
 		pf.onCollide(ef);
@@ -105,7 +106,7 @@ public class TestPlayerFish {
 	@Test
 	public void testCollideWithSmallerEnemyFish() {
 		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(BoundingBox.class), 
-				Color.ALICEBLUE, 0.0, 0.0));
+				null, 0.0, 0.0));
 		when(ef.getBoundingBox().getSize()).thenReturn(4.9);
 		BoundingBox bb = pf.getBoundingBox();
 		
@@ -121,7 +122,7 @@ public class TestPlayerFish {
 	@Test
 	public void testCollideWithSameSizeEnemyFish() {
 		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(BoundingBox.class), 
-				Color.ALICEBLUE, 0.0, 0.0));
+				null, 0.0, 0.0));
 		when(ef.getBoundingBox().getSize()).thenReturn(5.0);
 
 		pf.onCollide(ef);
@@ -137,7 +138,7 @@ public class TestPlayerFish {
 	@Test
 	public void testCollideWithDeadEnemyFish() {
 		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(BoundingBox.class), 
-				Color.ALICEBLUE, 0.0, 0.0));
+				null, 0.0, 0.0));
 		when(ef.getBoundingBox().getSize()).thenReturn(5.1);
 		ef.setDead();
 

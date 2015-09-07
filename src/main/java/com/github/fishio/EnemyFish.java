@@ -1,7 +1,7 @@
 package com.github.fishio;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
 /**
  * Enemy Fish class.
@@ -10,18 +10,18 @@ import javafx.scene.paint.Color;
 public class EnemyFish extends Entity implements IMovable {
 	private double vx;
 	private double vy;
-	private Color color;
+	private Image sprite;
 
 	/**
 	 * Main constructor of enemy fish.
 	 * @param b Bounding box of enemy fish.
-	 * @param colour color of the enemy fish.
+	 * @param sprite sprite of the enemy fish
 	 * @param startvx starting speed in x direction
 	 * @param startvy starting speed in y direction
 	 */
-	public EnemyFish(BoundingBox b, Color colour, double startvx, double startvy) {
+	public EnemyFish(BoundingBox b, Image sprite, double startvx, double startvy) {
 		super(b);
-		color = colour;
+		this.sprite = sprite;
 		vx = startvx;
 		vy = startvy;
 	}
@@ -32,10 +32,11 @@ public class EnemyFish extends Entity implements IMovable {
 		if (isDead()) {
 			return;
 		}
-
-		//No sprite rendering
-		gc.setFill(color);
-		gc.fillRect(getX(), getY(), getWidth(), getHeight());
+		if (vx >= 0) {
+			gc.drawImage(sprite, getX(), getY(), getWidth(), getHeight());
+		} else {
+			gc.drawImage(sprite, getX() + getWidth(), getY(), -getWidth(), getHeight());
+		}		
 	}
 
 	@Override

@@ -3,7 +3,7 @@ package com.github.fishio;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
 
 /**
@@ -16,16 +16,11 @@ final class LevelBuilder {
 	
 	// Fish statistics
 
-	// size
-	public static final double MIN_FISH_WIDTH_HEIGHT_RATIO = 1.5;
-	public static final double MAX_FISH_WIDTH_HEIGHT_RATIO = 3.5;
-
-	// color
-	public static final int RGB_NUMBER = 255;
-
 	// movement
 	public static final double MAX_EFISH_SPEED = 4;
 	public static final double MIN_EFISH_SPEED = 1;
+	
+	private static final int NUMBER_OF_ENEMY_SPRITES = 28;
 
 	/**
 	 * Private constructor to prevent initiation.
@@ -48,9 +43,8 @@ final class LevelBuilder {
 		int maxSize = (int) (bb.getSize() * 2.5);
 		
 		int size = rand.nextInt(maxSize - minSize + 1) + minSize;
-		double ratio = rand.nextDouble() * (MAX_FISH_WIDTH_HEIGHT_RATIO - MIN_FISH_WIDTH_HEIGHT_RATIO) 
-				+ MIN_FISH_WIDTH_HEIGHT_RATIO;
-		
+		Image sprite = getRandomSprite();
+		double ratio = sprite.getHeight() / sprite.getHeight();
 		double width = Math.sqrt(size * ratio);
 		double height = size / width;
 
@@ -81,11 +75,16 @@ final class LevelBuilder {
 		}
 
 		EnemyFish eFish = new EnemyFish(new BoundingBox(position.x, position.y, 
-				position.x + width , position.y + height), randomColor() , vx, vy);
+				position.x + width , position.y + height), sprite , vx, vy);
 
 		//TODO Check for decent properties
 		//eFish.checkProperties()
 		return eFish;
+	}
+
+	private static Image getRandomSprite() {
+		int i = (int) (Math.random() * NUMBER_OF_ENEMY_SPRITES);
+		return new Image("sprites/fish/fish" + i + ".png");
 	}
 
 	/**
@@ -96,16 +95,6 @@ final class LevelBuilder {
 	public static ArrayList<Entity> loadEntities(String str) {
 		//TODO for campaign purposes
 		return null;
-	}
-
-	/**
-	 * Create a random rgb color.
-	 * @return random color.
-	 */
-	private static Color randomColor() {
-		return Color.rgb(rand.nextInt(RGB_NUMBER - 1), 
-				rand.nextInt(RGB_NUMBER - 1), 
-				rand.nextInt(RGB_NUMBER - 1));
 	}
 
 	/**
