@@ -6,6 +6,7 @@ import com.github.fishio.listeners.TickListener;
 import com.github.fishio.view.SinglePlayerController;
 
 import javafx.scene.canvas.Canvas;
+import javafx.scene.image.Image;
 
 /**
  * Represents a playing field designed for single player.
@@ -27,7 +28,7 @@ public class SinglePlayerPlayingField extends PlayingField {
 		
 		//Adding the playerFish
 		player = new PlayerFish(new BoundingBox(new Vec2d(640, 335), 30, 15), 
-				FishIO.getInstance().getPrimaryStage());
+				FishIO.getInstance().getPrimaryStage(), new Image("sprites/fish/playerFish.png"));
 		add(player);
 		
 		//Checking if the playerFish died

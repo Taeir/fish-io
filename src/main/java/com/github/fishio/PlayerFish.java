@@ -1,5 +1,7 @@
 package com.github.fishio;
 
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -9,39 +11,45 @@ import javafx.stage.Stage;
  * the keyboard.
  */
 public class PlayerFish extends Entity implements IMovable {
-	
-	private int speedX = 0;
-	private int speedY = 0;
-	
+
+	private int vx = 0;
+	private int vy = 0;
+
 	private boolean upPressed;
 	private boolean downPressed;
 	private boolean leftPressed;
 	private boolean rightPressed;
-	
+
 	private KeyCode upKey = KeyCode.UP;
 	private KeyCode downKey = KeyCode.DOWN;
 	private KeyCode leftKey = KeyCode.LEFT;
 	private KeyCode rightKey = KeyCode.RIGHT;
-	
+
+	private Image sprite;
+
 	/**
 	 * The speed at which the speed of the fish increases /
 	 * decreases depending on what keys are pressed by the user.
 	 */
 	private static final int ACCELERATION = 35; //TODO find a nicer acceleration value
-	
+
 	private static final double MAX_SPEED = 600; //TODO find a nicer max speed value
-	
+
 	private static final double GROWTH_SPEED = 150;
-	
+
 	/**
 	 * @param bb
 	 * 		The (inital) bounding box of the PlayerFish
 	 * @param stage
 	 * 		The scene in which the player fish is located at
+	 * @param sprite
+	 * 		The sprite of the player fish
 	 */
-	public PlayerFish(BoundingBox bb, Stage stage) {
-		super(bb);
-		
+	public PlayerFish(BoundingBox bb, Stage stage, Image sprite) {
+		super(bb);		
+
+		this.sprite = sprite;
+
 		stage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
 			KeyCode pressedKey = event.getCode();
 			if (pressedKey == upKey) {
@@ -54,7 +62,7 @@ public class PlayerFish extends Entity implements IMovable {
 				rightPressed = true;
 			}
 		});
-		
+
 		stage.addEventHandler(KeyEvent.KEY_RELEASED, event -> {
 			KeyCode releasedKey = event.getCode();
 			if (releasedKey == upKey) {
@@ -76,13 +84,13 @@ public class PlayerFish extends Entity implements IMovable {
 	 */
 	@SuppressWarnings ("checkstyle:needbraces")
 	public void adjustXSpeed() {
-		if (leftPressed && -speedX < MAX_SPEED) speedX -= ACCELERATION;
-		if (rightPressed && speedX < MAX_SPEED) speedX += ACCELERATION;
-		
-		if (speedX < 0 && (!leftPressed || rightPressed)) speedX += ACCELERATION;
-		if (speedX > 0 && (!rightPressed || leftPressed)) speedX -= ACCELERATION;
+		if (leftPressed && -vx < MAX_SPEED) vx -= ACCELERATION;
+		if (rightPressed && vx < MAX_SPEED) vx += ACCELERATION;
+
+		if (vx < 0 && (!leftPressed || rightPressed)) vx += ACCELERATION;
+		if (vx > 0 && (!rightPressed || leftPressed)) vx -= ACCELERATION;
 	}
-	
+
 	/**
 	 * Increases or decreases the speed of the fish in the
 	 * vertical direction, depending on which keys are currently
@@ -90,36 +98,36 @@ public class PlayerFish extends Entity implements IMovable {
 	 */
 	@SuppressWarnings ("checkstyle:needbraces")
 	public void adjustYSpeed() {
-		if (downPressed && -speedY < MAX_SPEED) speedY -= ACCELERATION;
-		if (upPressed && speedY < MAX_SPEED) speedY += ACCELERATION;
-		
-		if (speedY < 0 && (!downPressed || upPressed)) speedY += ACCELERATION;
-		if (speedY > 0 && (!upPressed || downPressed)) speedY -= ACCELERATION;
+		if (downPressed && -vy < MAX_SPEED) vy -= ACCELERATION;
+		if (upPressed && vy < MAX_SPEED) vy += ACCELERATION;
+
+		if (vy < 0 && (!downPressed || upPressed)) vy += ACCELERATION;
+		if (vy > 0 && (!upPressed || downPressed)) vy -= ACCELERATION;
 	}
-	
+
 	/**
 	 * @return the horizontal speed of the PlayerFish. A negative speed means
 	 * 		the fish is going left.
 	 */
 	public double getSpeedX() {
-		return speedX / 100.0;
+		return vx / 100.0;
 	}
-	
+
 	/**
 	 * @return the vertical speed of the PlayerFish. A negative speed means
 	 * 		the fish is going down.
 	 */
 	public double getSpeedY() {
-		return speedY / 100.0;
+		return vy / 100.0;
 	}
-	
+
 	/**
 	 * @return the acceleration of the fish.
 	 */
 	public double getAcceleration() {
 		return ACCELERATION / 100.0;
 	}
-	
+
 	/**
 	 * Sets the speed of the PlayerFish in the horizontal direction.
 	 * 
@@ -127,9 +135,9 @@ public class PlayerFish extends Entity implements IMovable {
 	 * 		the speed to set
 	 */
 	public void setSpeedX(double speedX) {
-		this.speedX = (int) (100 * speedX);
+		this.vx = (int) (100 * speedX);
 	}
-	
+
 	/**
 	 * Sets the speed of the PlayerFish in the vertical direction.
 	 * 
@@ -137,9 +145,9 @@ public class PlayerFish extends Entity implements IMovable {
 	 * 		the speed to set
 	 */
 	public void setSpeedY(double speedY) {
-		this.speedY = (int) (100 * speedY);
+		this.vy = (int) (100 * speedY);
 	}
-	
+
 	/**
 	 * Sets whether the class believes if the 
 	 * up key is pressed or not. 
@@ -150,7 +158,7 @@ public class PlayerFish extends Entity implements IMovable {
 	public void setUpPressed(boolean upPressed) {
 		this.upPressed = upPressed;
 	}
-	
+
 	/**
 	 * Sets whether the class believes if the 
 	 * down key is pressed or not. 
@@ -161,7 +169,7 @@ public class PlayerFish extends Entity implements IMovable {
 	public void setDownPressed(boolean downPressed) {
 		this.downPressed = downPressed;
 	}
-	
+
 	/**
 	 * Sets whether the class believes if the 
 	 * left key is pressed or not. 
@@ -172,7 +180,7 @@ public class PlayerFish extends Entity implements IMovable {
 	public void setLeftPressed(boolean leftPressed) {
 		this.leftPressed = leftPressed;
 	}
-	
+
 	/**
 	 * Sets whether the class believes if the 
 	 * right key is pressed or not. 
@@ -183,7 +191,7 @@ public class PlayerFish extends Entity implements IMovable {
 	public void setRightPressed(boolean rightPressed) {
 		this.rightPressed = rightPressed;
 	}
-	
+
 	/**
 	 * @return
 	 * 		The rate at which the PlayerFish grows.
@@ -199,10 +207,10 @@ public class PlayerFish extends Entity implements IMovable {
 
 	@Override
 	public void setSpeedVector(Vec2d vector) {
-		speedX = (int) (100 * vector.x);
-		speedY = (int) (100 * vector.y);
+		vx = (int) (100 * vector.x);
+		vy = (int) (100 * vector.y);
 	}
-	
+
 	@Override
 	public void preMove() {
 		adjustXSpeed();
@@ -220,15 +228,15 @@ public class PlayerFish extends Entity implements IMovable {
 	@Override
 	public void onCollide(ICollidable other) {
 		if (other instanceof EnemyFish) {
-			
+
 			EnemyFish fish = (EnemyFish) other;
 			if (fish.isDead()) {
 				return;
 			}
-			
+
 			double tsize = this.getBoundingBox().getSize();
 			double osize = other.getBoundingBox().getSize();
-			
+
 			if (tsize > osize) {
 				fish.setDead();
 				double dSize = Math.pow(GROWTH_SPEED * osize / tsize, 0.9);
@@ -238,5 +246,18 @@ public class PlayerFish extends Entity implements IMovable {
 			}
 		}
 	}
-	
+
+	@Override
+	public void render(GraphicsContext gc) {
+		//Don't render if dead.
+		if (isDead()) {
+			return;
+		}
+		if (vx >= 0) {
+			gc.drawImage(sprite, getX(), getY(), getWidth(), getHeight());
+		} else {
+			gc.drawImage(sprite, getX() + getWidth(), getY(), -getWidth(), getHeight());
+		}		
+	}
+
 }
