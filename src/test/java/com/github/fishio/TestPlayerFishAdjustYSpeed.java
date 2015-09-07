@@ -25,7 +25,7 @@ public class TestPlayerFishAdjustYSpeed {
 	private double expectedSpeedY;
 	
 	private static double acc = 
-			new PlayerFish(Mockito.mock(BoundingBox.class), Mockito.mock(Stage.class)).getAcceleration();
+			new PlayerFish(Mockito.mock(BoundingBox.class), Mockito.mock(Stage.class), null).getAcceleration();
 	
 	/**
 	 * @param upPressed
@@ -41,7 +41,7 @@ public class TestPlayerFishAdjustYSpeed {
 	public TestPlayerFishAdjustYSpeed(boolean upPressed, boolean downPressed, 
 			double speedY, double expectedSpeedY) {
 		
-		fish = new PlayerFish(Mockito.mock(BoundingBox.class), Mockito.mock(Stage.class));
+		fish = new PlayerFish(Mockito.mock(BoundingBox.class), Mockito.mock(Stage.class), null);
 	
 		fish.setUpPressed(upPressed);
 		fish.setDownPressed(downPressed);

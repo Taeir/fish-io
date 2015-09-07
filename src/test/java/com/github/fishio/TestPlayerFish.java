@@ -24,7 +24,7 @@ public class TestPlayerFish {
 	 */
 	@Before
 	public void setUp() {
-		pf = Mockito.spy(new PlayerFish(Mockito.mock(BoundingBox.class), Mockito.mock(Stage.class)));
+		pf = Mockito.spy(new PlayerFish(Mockito.mock(BoundingBox.class), Mockito.mock(Stage.class), null));
 		when(pf.getBoundingBox().getSize()).thenReturn(5.0);
 	}
 	
@@ -74,7 +74,7 @@ public class TestPlayerFish {
 	 */
 	@Test
 	public void testCollideWithOtherPlayerFish() {
-		PlayerFish pf2 = Mockito.spy(new PlayerFish(Mockito.mock(BoundingBox.class), Mockito.mock(Stage.class)));
+		PlayerFish pf2 = Mockito.spy(new PlayerFish(Mockito.mock(BoundingBox.class), Mockito.mock(Stage.class), null));
 		
 		pf.onCollide(pf2);
 		
