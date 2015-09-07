@@ -5,13 +5,20 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.layout.HBox;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import com.github.fishio.FishIO;
 
-public class SplashScreenController implements ScreenController{
+/**
+ * The splashScreenController class manages the splash screens.
+ * Firstly it shows the company/group name and after that the name of the game. 
+ * 
+ * @author Chiel Bruin
+ * @since 07-09-2015
+ */
+public class SplashScreenController implements ScreenController {
 
 	// Reference to the main application.
 	private FishIO mainApp;
@@ -20,11 +27,19 @@ public class SplashScreenController implements ScreenController{
 	@FXML
 	private VBox game;
 
-	//private boolean run = true;
+	private boolean run = true;
 
 	@Override
 	public void setMainApp(FishIO mainApp) {
 		this.mainApp = mainApp;	
+
+		mainApp.getPrimaryStage().getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				event.consume();
+				endSplash();          
+			}        
+		});
 
 		showSplash(company, new EventHandler<ActionEvent>() {
 
@@ -37,8 +52,7 @@ public class SplashScreenController implements ScreenController{
 					@Override
 					public void handle(ActionEvent event) {
 						event.consume();
-						mainApp.loadScreen("view/mainMenu.fxml", true);
-
+						endSplash();
 					}
 				},  2000, 3000, 1700);
 
@@ -75,13 +89,23 @@ public class SplashScreenController implements ScreenController{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
+
 		element.setVisible(true);
 
 		fadeOut.setFromValue(1.0);
 		fadeOut.setToValue(0.0);
 		fadeOut.setDelay(Duration.millis(duration));		
 		fadeOut.setOnFinished(finishEvent);
+	}
+
+	/**
+	 * Ends the splash screen and opens the menu.
+	 */
+	private void endSplash() {
+		if (run) { //do only once
+			run = false;
+			mainApp.loadScreen("view/mainMenu.fxml", true);	
+		}
 	}
 
 }

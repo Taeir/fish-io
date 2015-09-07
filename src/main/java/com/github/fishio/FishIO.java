@@ -52,8 +52,7 @@ public class FishIO extends Application {
 				System.err.println("Screen controller not found for " + file);
 				return;
 			}
-			controller.setMainApp(this);
-
+			
 			if (fadeIn) {
 				FadeTransition fade = new FadeTransition(Duration.millis(400), rootLayout);
 				fade.setFromValue(0.3);
@@ -62,8 +61,9 @@ public class FishIO extends Application {
 			}		    
 
 			Scene scene = new Scene(rootLayout);
-
 			primaryStage.setScene(scene);
+			
+			controller.setMainApp(this);
 		} catch (IOException e) {
 			System.err.println("Error loading screen:" + file);
 			e.printStackTrace();
