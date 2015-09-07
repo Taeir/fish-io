@@ -110,15 +110,12 @@ public class TestVec2d {
 	/**
 	 * Test for {@link Vec2d#normalize()} in the case of an exception.
 	 */
-	@Test
+	@Test (expected = ArithmeticException.class)
 	public void testnormalizeException() {
 		Vec2d vec1 = new Vec2d();
-		try {
-			vec1.normalize();
+		if (vec1.normalize() == new Vec2d()) {
 			fail();
-		} catch (Exception e) {
 		}
-		
 	}
 
 	/**

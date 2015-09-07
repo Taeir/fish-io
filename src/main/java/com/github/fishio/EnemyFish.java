@@ -8,8 +8,8 @@ import javafx.scene.paint.Color;
  * This class contains all methods concerning enemy fish on the screen.
  */
 public class EnemyFish extends Entity implements IMovable {
-	public double vx;
-	public double vy;
+	private double vx;
+	private double vy;
 	private Color color;
 
 	/**
@@ -40,14 +40,13 @@ public class EnemyFish extends Entity implements IMovable {
 
 	@Override
 	public Vec2d getSpeedVector() {
-		// TODO Auto-generated method stub
 		return new Vec2d(vx, vy);
 	}
 
 	@Override
 	public void setSpeedVector(Vec2d vector) {
-		// TODO Auto-generated method stub
-
+		vx = vector.x;
+		vy = vector.y;
 	}
 
 	/**

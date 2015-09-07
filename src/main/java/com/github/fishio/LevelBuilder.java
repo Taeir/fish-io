@@ -1,7 +1,10 @@
 package com.github.fishio;
 
 import java.util.ArrayList;
+import java.util.Random;
+
 import javafx.scene.paint.Color;
+
 
 /**
  * The LevelBuilder is an utility class for creating levels. 
@@ -9,13 +12,13 @@ import javafx.scene.paint.Color;
  */
 final class LevelBuilder {
 
+	private static Random rand = new Random();
+	
 	// Fish statistics
 
 	// size
-	public static final int MAX_FISH_WIDTH = 200;
-	public static final double FISH_WIDTH_HEIGHT_RATIO = 0.75;
-	public static final double MIN_FISH_WIDTH = 8;
-	public static final double MIN_FISH_HEIGTH = MIN_FISH_WIDTH * FISH_WIDTH_HEIGHT_RATIO;
+	public static final double MIN_FISH_WIDTH_HEIGHT_RATIO = 1.5;
+	public static final double MAX_FISH_WIDTH_HEIGHT_RATIO = 3.5;
 
 	// color
 	public static final int RGB_NUMBER = 255;
@@ -35,17 +38,26 @@ final class LevelBuilder {
 	/**
 	 * Creates a random EnemyFish..
 	 * This fish will spawn outside the screen and always move towards the inside.
+	 * @param bb
+	 * 		A Bounding Box which decides about what size the fish will have.
 	 * @return random Enemyfish
 	 */
-	public static EnemyFish randomizedFish() {
+	public static EnemyFish randomizedFish(BoundingBox bb) {
 		//randomize fish properties 
-		double width   = Math.max(MIN_FISH_WIDTH, MAX_FISH_WIDTH * Math.random());
-		double height  = Math.max(MIN_FISH_HEIGTH, FISH_WIDTH_HEIGHT_RATIO * width * Math.random());
+		int minSize = (int) (bb.getSize() * 0.5);
+		int maxSize = (int) (bb.getSize() * 2.5);
+		
+		int size = rand.nextInt(maxSize - minSize + 1) + minSize;
+		double ratio = rand.nextDouble() * (MAX_FISH_WIDTH_HEIGHT_RATIO - MIN_FISH_WIDTH_HEIGHT_RATIO) 
+				+ MIN_FISH_WIDTH_HEIGHT_RATIO;
+		
+		double width = Math.sqrt(size * ratio);
+		double height = size / width;
 
 		double vx = 0.0, vy = 0.0;
 		Vec2d position = null;
 		//pick a side
-		switch ((int) (Math.random() * 4.0)) {
+		switch (rand.nextInt(5)) {
 		case 0: 	// left
 			position = new Vec2d(-width, Math.random() * PlayingField.WINDOW_Y);
 			vx = Math.abs(randomSpeed());
@@ -91,9 +103,9 @@ final class LevelBuilder {
 	 * @return random color.
 	 */
 	private static Color randomColor() {
-		return Color.rgb((int) (Math.random() * RGB_NUMBER), 
-				(int) (Math.random() * RGB_NUMBER), 
-				(int) (Math.random() * RGB_NUMBER));
+		return Color.rgb(rand.nextInt(RGB_NUMBER - 1), 
+				rand.nextInt(RGB_NUMBER - 1), 
+				rand.nextInt(RGB_NUMBER - 1));
 	}
 
 	/**

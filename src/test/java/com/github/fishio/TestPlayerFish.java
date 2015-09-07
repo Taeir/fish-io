@@ -113,7 +113,7 @@ public class TestPlayerFish {
 		
 		Mockito.verify(ef).setDead();
 		Mockito.verify(pf, never()).setDead();
-		Mockito.verify(bb).increaseSize(Math.pow(4.9, 0.9));
+		Mockito.verify(bb).increaseSize(Math.pow(pf.getGrowthSpeed() * 4.9 / 5.0, 0.9));
 	}
 	
 	/**

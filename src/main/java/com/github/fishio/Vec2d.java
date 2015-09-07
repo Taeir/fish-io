@@ -157,7 +157,7 @@ public class Vec2d {
 		}
 
 		Vec2d other = (Vec2d) obj;
-		return (x == other.x) && (y == other.y);
+		return x == other.x && y == other.y;
 	}
 
 	@Override

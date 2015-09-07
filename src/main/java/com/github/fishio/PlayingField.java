@@ -37,7 +37,7 @@ public abstract class PlayingField {
 
 	private Image background;
 	private int enemyCount;
-	private final int enemyCountMax = 10;
+	private static final int MAX_ENEMY_COUNT = 10;
 
 	/**
 	 * @param fps
@@ -226,9 +226,9 @@ public abstract class PlayingField {
 	public void addEntities() {
 
 		//add enemy entities
-		while (enemyCount < enemyCountMax) {
+		while (enemyCount < MAX_ENEMY_COUNT) {
 			//TODO add scalible enemyFish
-			EnemyFish eFish = LevelBuilder.randomizedFish();
+			EnemyFish eFish = LevelBuilder.randomizedFish(getPlayers().get(0).getBoundingBox());
 			add(eFish);
 			enemyCount++;
 		}
