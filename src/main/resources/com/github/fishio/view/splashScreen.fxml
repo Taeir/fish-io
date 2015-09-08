@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <StackPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.fishio.view.SplashScreenController">
    <children>
       <ImageView pickOnBounds="true" preserveRatio="true">
@@ -20,7 +19,7 @@
             <ColorAdjust contrast="-0.44" />
          </effect>
       </ImageView>
-      <VBox fx:id="company" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="850.0" visible="false">
+      <VBox fx:id="company" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" visible="false">
          <children>
             <Label text="A game by">
                <font>
@@ -34,10 +33,10 @@
                <children>
                   <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="sprites/starfish.png" />
+                        <Image url="sprites/float.png" />
                      </image>
                   </ImageView>
-                  <Label text="&lt;teamname&gt;">
+                  <Label text="The Fishermen">
                      <font>
                         <Font name="System Bold" size="87.0" />
                      </font>
@@ -58,16 +57,16 @@
             </HBox>
          </children>
       </VBox>
-      <VBox fx:id="game" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="850.0" visible="false" StackPane.alignment="CENTER">
+      <VBox fx:id="game" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" visible="false" StackPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="150.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="300.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="logo.png" />
                </image>
             </ImageView>
-            <Label text="&lt;Slogan here&gt;">
+            <Label fx:id="slogan" text="Not even squidding!">
                <font>
-                  <Font name="System Bold" size="87.0" />
+                  <Font name="System Bold" size="64.0" />
                </font>
                <padding>
                   <Insets left="20.0" top="20.0" />
