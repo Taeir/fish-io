@@ -14,13 +14,12 @@ import org.junit.Test;
  */
 public class TestEnemyFish {
 	/**
-	 * Test for @link {@link EnemyFish#getSpeedVector()}.
+	 * Test for {@link EnemyFish#getSpeedVector()}.
 	 *
 	 * 
 	 */
 	@Test
-	public void testgetSpeedVector()
-	{
+	public void testgetSpeedVector() {
 		BoundingBox bb1 = new BoundingBox(1.0, 2.0, 3.0, 4.0);
 		EnemyFish enemy1 = new EnemyFish(bb1, null, 3.0, 5.0);
 		Vec2d vec1 = new Vec2d(3.0, 5.0);
@@ -32,8 +31,7 @@ public class TestEnemyFish {
 	 * Test for {@link EnemyFish#setSpeedVector(Vec2d)}.
 	 */
 	@Test
-	public void testsetSpeedVector()
-	{
+	public void testsetSpeedVector() {
 		BoundingBox bb1 = new BoundingBox(1.0, 2.0, 3.0, 4.0);
 		EnemyFish enemy1 = new EnemyFish(bb1, null, 3.0, 5.0);
 		
@@ -48,8 +46,7 @@ public class TestEnemyFish {
 	 * Test for {@link EnemyFish#hitWall()}.
 	 */
 	@Test
-	public void testhitWall()
-	{
+	public void testhitWall() {
 		BoundingBox bb1 = new BoundingBox(1.0, 2.0, 3.0, 4.0);
 		EnemyFish enemy1 = new EnemyFish(bb1, null, 3.0, 5.0);
 		enemy1.hitWall();
@@ -60,8 +57,7 @@ public class TestEnemyFish {
 	 * Test for {@link EnemyFish#canMoveThroughWall()}.
 	 */
 	@Test
-	public void testcanMoveThroughWall()
-	{
+	public void testcanMoveThroughWall() {
 		BoundingBox bb1 = new BoundingBox(1.0, 2.0, 3.0, 4.0);
 		EnemyFish enemy1 = new EnemyFish(bb1, null, 3.0, 5.0);
 		assertTrue(enemy1.canMoveThroughWall());
@@ -71,8 +67,7 @@ public class TestEnemyFish {
 	 * Test for {@link EnemyFish#doesCollides(ICollidable)}.
 	 */
 	@Test
-	public void testdoesCollides()
-	{
+	public void testdoesCollides() {
 		BoundingBox bb1 = new BoundingBox(1.0, 2.0, 3.0, 4.0);
 		EnemyFish enemy1 = new EnemyFish(bb1, null, 3.0, 5.0);
 		ICollidable col1 = new EnemyFish(bb1, null, 5.0, 8.0);
