@@ -245,13 +245,22 @@ public abstract class PlayingField {
 	public void moveMovables() {
 		for (IMovable m : movables) {
 			m.preMove();
-
+			
 			BoundingBox box = m.getBoundingBox();
-			if (box.getMaxX() >= WINDOW_X + box.getWidth() + 1
-					|| box.getMinX() <= 0 - box.getWidth() - 1
-					|| box.getMaxY() >= WINDOW_Y + box.getHeight() + 1
-					|| box.getMinY() <= 0 - box.getHeight() - 1) {
-				m.hitWall();
+			if (m instanceof PlayerFish) {	// prevent playerfish from leaving the screen
+				if (box.getMaxX() >= WINDOW_X
+						|| box.getMinX() <= 0
+						|| box.getMaxY() >= WINDOW_Y
+						|| box.getMinY() <= 0) {
+					m.hitWall();
+				}
+			} else {
+				if (box.getMaxX() >= WINDOW_X + box.getWidth() + 1
+						|| box.getMinX() <= -1 - box.getWidth()
+						|| box.getMaxY() >= WINDOW_Y + box.getHeight() + 1
+						|| box.getMinY() <= 0 - box.getHeight() - 1) {
+					m.hitWall();
+				}
 			}
 
 			box.move(m.getSpeedVector());
