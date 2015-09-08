@@ -5,4 +5,5 @@ Thumbs.db
 
 .classpath
 .project
+.pmd
 /bin/
