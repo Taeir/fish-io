@@ -1,6 +1,5 @@
 package com.github.fishio;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import javafx.scene.image.Image;
@@ -35,7 +34,6 @@ public final class LevelBuilder {
 	 */
 	private LevelBuilder() {
 		//to prevent initiation
-		//TODO add assertion?
 	}
 
 	/**
@@ -96,23 +94,13 @@ public final class LevelBuilder {
 	}
 
 	/**
-	 * Load level Entities from specified String from file.
-	 * @param str name of level
-	 * @return a list of specified Entities
-	 */
-	public static ArrayList<Entity> loadEntities(String str) {
-		//TODO for campaign purposes
-		return null;
-	}
-
-	/**
 	 * Creates a random speed for a fish.
 	 * @return a random speed between 1 and MAX_EFISH_SPEED or between -1 and -MAX_FISH_SPEED
 	 */
 	public static double randomSpeed() {
 		double speed = (Math.random() * 2 - 1) * MAX_EFISH_SPEED;
 
-		//check if speed is not too slow
+		// Check if speed is not too slow
 		if (speed < 0) {
 			speed = Math.min(speed, -1.0);
 		} else {
