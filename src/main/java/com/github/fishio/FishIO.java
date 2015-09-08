@@ -20,8 +20,9 @@ public class FishIO extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		this.primaryStage = primaryStage;
 		instance = this;
+		
+		this.primaryStage = primaryStage;
 		
 		primaryStage.setTitle("Fish.io");
 
@@ -38,8 +39,8 @@ public class FishIO extends Application {
 	 * 
 	 * @param file
 	 * 			Filepath of the fxml file.
-	 * @param length > 0
-	 * 			If true, fade in the new screen, else just show it.
+	 * @param length
+	 * 			If &gt; 0, fade in the new screen, else just show it.
 	 */
 	public void loadScreen(String file, int length) {
 		FXMLLoader loader = new FXMLLoader();
