@@ -15,6 +15,9 @@ public class PlayerFish extends Entity implements IMovable {
 	private double vx = 0;
 	private double vy = 0;
 
+	/**
+	 * These factors have values for whether each of the arrow keys is pressed.
+	 */
 	private boolean upPressed;
 	private boolean downPressed;
 	private boolean leftPressed;
@@ -39,12 +42,14 @@ public class PlayerFish extends Entity implements IMovable {
 	private static final double FISH_EAT_THRESHOLD = 1.2;
 
 	/**
+	 * Creates the Player fish which the user will be able to control.
+	 * 
 	 * @param bb
-	 * 		The (inital) bounding box of the PlayerFish
+	 *            The (inital) bounding box of the PlayerFish
 	 * @param stage
-	 * 		The scene in which the player fish is located at
+	 *            The scene in which the player fish is located at
 	 * @param sprite
-	 * 		The sprite of the player fish
+	 *            The sprite of the player fish
 	 */
 	public PlayerFish(BoundingBox bb, Stage stage, Image sprite) {
 		super(bb);		
@@ -111,22 +116,28 @@ public class PlayerFish extends Entity implements IMovable {
 	}
 
 	/**
+	 * Gives the horizontal speed of the Player Fish.
+	 * 
 	 * @return the horizontal speed of the PlayerFish. A negative speed means
-	 * 		the fish is going left.
+	 *         the fish is going left.
 	 */
 	public double getSpeedX() {
 		return vx;
 	}
 
 	/**
-	 * @return the vertical speed of the PlayerFish. A negative speed means
-	 * 		the fish is going down.
+	 * Gives the vertical speed of the Player Fish.
+	 * 
+	 * @return the vertical speed of the PlayerFish. A negative speed means the
+	 *         fish is going down.
 	 */
 	public double getSpeedY() {
 		return vy;
 	}
 
 	/**
+	 * Gives the acceleration the Player Fish has.
+	 * 
 	 * @return the acceleration of the fish.
 	 */
 	public double getAcceleration() {
@@ -134,10 +145,10 @@ public class PlayerFish extends Entity implements IMovable {
 	}
 
 	/**
-	 * Sets the speed of the PlayerFish in the horizontal direction.
+	 * Sets the speed of the Player Fish in the horizontal direction.
 	 * 
 	 * @param speedX
-	 * 		the speed to set
+	 *            the speed to set
 	 */
 	public void setSpeedX(double speedX) {
 		this.vx = speedX;
@@ -198,8 +209,9 @@ public class PlayerFish extends Entity implements IMovable {
 	}
 
 	/**
-	 * @return
-	 * 		The rate at which the PlayerFish grows.
+	 * Gives back the growth rate of the Player Fish.
+	 * 
+	 * @return The rate at which the PlayerFish grows.
 	 */
 	public double getGrowthSpeed() {
 		return GROWTH_SPEED;
