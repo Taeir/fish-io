@@ -3,14 +3,7 @@ package com.github.fishio;
 /**
  * Class to represent an (Axis Aligned) Bounding Box.
  */
-/**
- * @author Jesse
- *
- */
-/**
- * @author Jesse
- *		
- */
+
 public class BoundingBox {
 	private double xmin;
 	private double ymin;
