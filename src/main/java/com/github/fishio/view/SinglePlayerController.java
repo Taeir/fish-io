@@ -5,9 +5,9 @@ import com.github.fishio.PlayingField;
 import com.github.fishio.Preloader;
 import com.github.fishio.SinglePlayerPlayingField;
 
-import javafx.animation.Animation.Status;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -53,11 +53,7 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void onPause(ActionEvent event) {
-		if (pf == null) {
-			return;
-		}
-
-		if (pf.getGameThread().getStatus() == Status.RUNNING) {
+		if (pf.isRunning()) {
 			pf.stopGame();
 		} else {
 			pf.startGame();
@@ -69,22 +65,56 @@ public class SinglePlayerController implements ScreenController {
 	 * 
 	 * @param visible
 	 * 			Boolean to indicate if the screen is visible.
+	 * @param onDone
+	 * 			will be called after the death screen has been shown.
+	 * 			Can be <code>null</code>.
 	 */
-	public void showDeathScreen(boolean visible) {
-		FadeTransition fade = new FadeTransition(Duration.millis(400), deathScreen);
-		if (visible) {
-			fade.setFromValue(0.0);
-			fade.setToValue(1.0);
-		} else {
-			fade.setToValue(1.0);
-			fade.setFromValue(0.0);
+	public void showDeathScreen(boolean visible, EventHandler<ActionEvent> onDone) {
+		if (visible && deathScreen.isVisible() && deathScreen.getOpacity() == 1.0) {
+			if (onDone != null) {
+				onDone.handle(new ActionEvent());
+			}
+			return;
+		} else if (!visible && !deathScreen.isVisible()) {
+			if (onDone != null) {
+				onDone.handle(new ActionEvent());
+			}
+			return;
 		}
-
-		fade.play();
 		
-		if (deathScreen.isVisible() != visible) {
-			deathScreen.setVisible(visible);
+		FadeTransition fade = new FadeTransition(Duration.millis(400), deathScreen);
+		
+		if (visible) {
+			//Show deathscreen fully transparent and fade it in
+			deathScreen.setOpacity(0.0);
+			deathScreen.setVisible(true);
+			
+			fade.setFromValue(0.0);
+			fade.setToValue(1.0);
+			
+			if (onDone != null) {
+				fade.setOnFinished(onDone);
+			}
+		} else {
+			//Show deathscreen fully visible and fade it out
+			deathScreen.setOpacity(1.0);
+			deathScreen.setVisible(true);
+			
+			fade.setFromValue(1.0);
+			fade.setToValue(0.0);
+			
+			//Hide deathscreen when animation is done.
+			fade.setOnFinished(event -> {
+				deathScreen.setVisible(false);
+				
+				if (onDone != null) {
+					onDone.handle(event);
+				}
+			});
 		}
+		
+		//Start animation
+		fade.play();
 	}
 
 	/**
@@ -107,9 +137,11 @@ public class SinglePlayerController implements ScreenController {
 		pf.stopGame();
 		pf.clear();
 		
-		showDeathScreen(false);
-
-		pf.startGame();
+		//Start the render thread (it takes some time to appear).
+		pf.getRenderThread().play();
+		
+		//Hide the deathscreen. When the animation is done, start the game thread.
+		showDeathScreen(false, event -> pf.getGameThread().play());
 	}
 
 }

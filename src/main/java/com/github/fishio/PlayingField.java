@@ -357,6 +357,14 @@ public abstract class PlayingField {
 		gameThread.stop();
 		renderThread.stop();
 	}
+	
+	/**
+	 * @return
+	 * 		if the game is running or not (stopped / paused)
+	 */
+	public boolean isRunning() {
+		return gameThread.getStatus() == Status.RUNNING;
+	}
 
 	/**
 	 * @return

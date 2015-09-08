@@ -36,8 +36,12 @@ public class SinglePlayerPlayingField extends PlayingField {
 			@Override
 			public void postTick() {
 				if (player.isDead()) {
-					stopGame();
-					screenController.showDeathScreen(true);
+					//Stop the game thread.
+					getGameThread().stop();
+					
+					//Stop the render thread after the animation is done.
+					//This is in order to prevent the rendering from stopping prematurely.
+					screenController.showDeathScreen(true, event -> getRenderThread().stop());
 				}
 			}
 		});

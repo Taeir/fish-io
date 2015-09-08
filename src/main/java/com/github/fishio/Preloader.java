@@ -54,32 +54,60 @@ public final class Preloader {
 	 */
 	public static void preloadImages() {
 		Thread thread = new Thread(() -> {
-			getImageOrLoad("background.png");
-			getImageOrLoad("logo.png");
+			tryPreLoad("background.png");
+			tryPreLoad("logo.png");
 			
 			//Load fish sprites
-			getImageOrLoad("sprites/fish/playerFish.png");
+			tryPreLoad("sprites/fish/playerFish.png");
 			for (int i = 0; i < 29; i++) {
-				getImageOrLoad("sprites/fish/fish" + i + ".png");
+				tryPreLoad("sprites/fish/fish" + i + ".png");
 			}
 			
-			getImageOrLoad("sprites/fish/special/barrelFish.png");
-			getImageOrLoad("sprites/fish/special/clownFish1.png");
-			getImageOrLoad("sprites/fish/special/clownFish2.png");
-			getImageOrLoad("sprites/fish/special/jellyfish.png");
-			getImageOrLoad("sprites/fish/special/submarine.png");
-			getImageOrLoad("sprites/fish/special/swordfish.png");
-			getImageOrLoad("sprites/fish/special/turtle.png");
+			tryPreLoad("sprites/fish/special/barrelFish.png");
+			tryPreLoad("sprites/fish/special/clownFish1.png");
+			tryPreLoad("sprites/fish/special/clownFish2.png");
+			tryPreLoad("sprites/fish/special/jellyfish.png");
+			tryPreLoad("sprites/fish/special/submarine.png");
+			tryPreLoad("sprites/fish/special/swordfish.png");
+			tryPreLoad("sprites/fish/special/turtle.png");
 			
-			getImageOrLoad("sprites/anchor1.png");
-			getImageOrLoad("sprites/anchor2.png");
-			getImageOrLoad("sprites/fishingPole.png");
-			getImageOrLoad("sprites/float.png");
-			getImageOrLoad("sprites/seaweed1.png");
-			getImageOrLoad("sprites/starfish.png");
+			tryPreLoad("sprites/anchor1.png");
+			tryPreLoad("sprites/anchor2.png");
+			tryPreLoad("sprites/fishingPole.png");
+			tryPreLoad("sprites/float.png");
+			tryPreLoad("sprites/seaweed1.png");
+			tryPreLoad("sprites/starfish.png");
 		});
 		
 		thread.start();
+	}
+	
+	/**
+	 * Attempts to preload an image.<br>
+	 * <br>
+	 * If loading the image causes an Exception, an error message is output to System.err.
+	 * 
+	 * @param file
+	 * 		the file of the image.
+	 */
+	private static void tryPreLoad(String file) {
+		synchronized (IMAGES) {
+			if (IMAGES.containsKey(file)) {
+				return;
+			}
+		}
+		
+		Image image;
+		try {
+			image = new Image(file);
+		} catch (Exception ex) {
+			System.err.println("Error while trying to load image " + file);
+			return;
+		}
+		
+		synchronized (IMAGES) {
+			IMAGES.put(file, image);
+		}
 	}
 	
 	/**
@@ -87,7 +115,7 @@ public final class Preloader {
 	 * If it is not loaded, it loads the Image.
 	 * 
 	 * @param file
-	 * 		the file containing the Image.
+	 * 		the file of the Image.
 	 * 
 	 * @return
 	 * 		the image

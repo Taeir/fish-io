@@ -33,7 +33,7 @@
             <Canvas fx:id="gameCanvas" height="670.0" width="1280.0" />
          </children>
       </VBox>
-      <VBox fx:id="deathScreen" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.85" prefHeight="300.0" prefWidth="250.0" spacing="5.0" style="-fx-background-color: #AAAAFF;" visible="false">
+      <VBox fx:id="deathScreen" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="250.0" spacing="5.0" style="-fx-background-color: #AAAAFF;" visible="false">
          <children>
             <Label text="You died!">
                <font>
