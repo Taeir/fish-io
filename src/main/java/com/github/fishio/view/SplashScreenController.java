@@ -31,7 +31,9 @@ public class SplashScreenController implements ScreenController {
 	private Label slogan;
 	
 	private String[] slogans = {"Not even squidding!", "Krilling it!"
-		, "this game is brill-iant!", "In cod we trust!"};
+		, "This game is brill-iant!", "In cod we trust!", "Dolphinitely a great game!"
+		, "Any fin is possible!", "Seariously the best game ever!"
+		, "Don't leave it to salmon else!"};
 
 	private boolean run = true;
 
