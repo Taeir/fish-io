@@ -16,12 +16,15 @@ public class SinglePlayerPlayingField extends PlayingField {
 	private PlayerFish player;
 	
 	/**
+	 * Creates the playing field for a single player.
+	 * 
 	 * @param fps
-	 * 		the (target) framerate.
+	 *            the (target) framerate.
 	 * @param canvas
-	 * 		the canvas to use, can be <code>null</code> to create one.
+	 *            the canvas to use, can be <code>null</code> to create one.
 	 * @param screenController
-	 * 		the screenController on which this playing field is located on.
+	 *            the screenController on which this playing field is located
+	 *            on.
 	 */
 	public SinglePlayerPlayingField(int fps, Canvas canvas, SinglePlayerController screenController) {
 		super(fps, canvas);
