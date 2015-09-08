@@ -40,18 +40,22 @@ public abstract class PlayingField {
 	private static final int MAX_ENEMY_COUNT = 10;
 
 	/**
+	 * Creates the playing field with a set framerate.
+	 * 
 	 * @param fps
-	 * 		the (target) framerate.
+	 *            the (target) framerate.
 	 */
 	public PlayingField(int fps) {
 		this(fps, null);
 	}
 
 	/**
+	 * Creates the playing field with a set framerate and canvas.
+	 * 
 	 * @param fps
-	 * 		the (target) framerate.
+	 *            the (target) framerate.
 	 * @param canvas
-	 * 		the canvas to use, can be <code>null</code> to create one.
+	 *            the canvas to use, can be <code>null</code> to create one.
 	 */
 	public PlayingField(int fps, Canvas canvas) {
 		this.fps = fps;
@@ -70,8 +74,9 @@ public abstract class PlayingField {
 	}
 
 	/**
-	 * @return
-	 * 		the (target) framerate in frames per second.
+	 * Gives back the framerate of the playing field.
+	 * 
+	 * @return the (target) framerate in frames per second.
 	 */
 	public int getFPS() {
 		return fps;
@@ -99,16 +104,18 @@ public abstract class PlayingField {
 	}
 
 	/**
-	 * @return
-	 * 		the width of the field.
+	 * Gives back the width of the field.
+	 * 
+	 * @return the width of the field.
 	 */
 	public int getWidth() {
 		return WINDOW_X;
 	}
 
 	/**
-	 * @return
-	 * 		the height of the field.
+	 * Gives back the height of the field.
+	 * 
+	 * @return the height of the field.
 	 */
 	public int getHeigth() {
 		return WINDOW_Y;
@@ -235,6 +242,8 @@ public abstract class PlayingField {
 	}
 
 	/**
+	 * Gives back the different players in the field.
+	 * 
 	 * @return all the players in this field.
 	 */
 	public abstract ArrayList<PlayerFish> getPlayers();
@@ -336,16 +345,18 @@ public abstract class PlayingField {
 	}
 
 	/**
-	 * @return
-	 * 		the renderthread.
+	 * Gives back the renderthread.
+	 * 
+	 * @return the renderthread.
 	 */
 	public Timeline getRenderThread() {
 		return renderThread;
 	}
 
 	/**
-	 * @return
-	 * 		the gamethread.
+	 * Returns the gamethread.
+	 * 
+	 * @return the gamethread.
 	 */
 	public Timeline getGameThread() {
 		return gameThread;
@@ -368,8 +379,9 @@ public abstract class PlayingField {
 	}
 
 	/**
-	 * @return
-	 * 		the canvas that is the PlayingField.
+	 * Gives back the canvas of the Playing Field.
+	 * 
+	 * @return the canvas that is the PlayingField.
 	 */
 	public Canvas getCanvas() {
 		return canvas;
