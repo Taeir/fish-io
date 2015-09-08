@@ -239,7 +239,7 @@ public class PlayerFish extends Entity implements IMovable {
 			}
 
 			double tsize = this.getBoundingBox().getSize();
-			double osize = other.getBoundingBox().getSize();
+			double osize = fish.getBoundingBox().getSize();
 
 			if (tsize > osize) {
 				fish.setDead();

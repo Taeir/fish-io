@@ -38,7 +38,7 @@ public class FishIO extends Application {
 	 * 
 	 * @param file
 	 * 			Filepath of the fxml file.
-	 * @param length > 0
+	 * @param length
 	 * 			If true, fade in the new screen, else just show it.
 	 */
 	public void loadScreen(String file, int length) {
