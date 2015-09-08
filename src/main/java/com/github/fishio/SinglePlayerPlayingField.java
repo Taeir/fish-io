@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import com.github.fishio.listeners.TickListener;
 import com.github.fishio.view.SinglePlayerController;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 
@@ -33,6 +35,10 @@ public class SinglePlayerPlayingField extends PlayingField {
 		player = new PlayerFish(new BoundingBox(new Vec2d(640, 335), 30, 15), 
 				FishIO.getInstance().getPrimaryStage(), new Image("sprites/fish/playerFish.png"));
 		add(player);
+	
+		player.scoreProperty().addListener((observable, oldValue, newValue) -> {
+			screenController.updateScoreDisplay(newValue.intValue());
+		});
 		
 		//Checking if the playerFish died
 		registerGameListener(new TickListener() {

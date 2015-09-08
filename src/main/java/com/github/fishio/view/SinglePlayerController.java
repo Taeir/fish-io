@@ -30,6 +30,8 @@ public class SinglePlayerController implements ScreenController {
 	private VBox deathScreen;
 	@FXML
 	private Label scoreField;
+	@FXML
+	private Label endScore;
 
 	private PlayingField pf;
 
@@ -103,14 +105,24 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	public void restartGame() {
 		showDeathScreen(false);
-		scoreField.setText("score: 0");
-
+		
 		//Reset the map
 		pf.stopGame();
 		pf = new SinglePlayerPlayingField(60, gameCanvas, this);
 		pf.setBackground(new Image("background.png"));
 
 		pf.startGame();
+	}
+	
+	/**
+	 * Update the displayed score.
+	 * 
+	 * @param score
+	 * 			the new score to be displayed on the screen.
+	 */
+	public void updateScoreDisplay(int score) {
+		scoreField.setText("score:" + score);
+		endScore.setText("score: " + score + " points");
 	}
 
 }

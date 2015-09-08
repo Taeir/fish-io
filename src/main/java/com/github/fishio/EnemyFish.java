@@ -8,6 +8,9 @@ import javafx.scene.image.Image;
  * enemy fish on the screen.
  */
 public class EnemyFish extends Entity implements IMovable {
+	
+	private static final double DIRECTION_CHANGE_CHANCE = 0.1;
+	
 	private double vx;
 	private double vy;
 	private Image sprite;
@@ -57,12 +60,11 @@ public class EnemyFish extends Entity implements IMovable {
 
 	/**
 	 * Enemy fish should die if they hit the wall from the inside.
-	 * Otherwise do nothing
 	 */
 	@Override
 	public void hitWall() {
 			setDead();
-		}
+	}
 
 	/** 
 	 * Enemy fish sometimes change their movement speed.
@@ -70,7 +72,7 @@ public class EnemyFish extends Entity implements IMovable {
 	 */
 	@Override
 	public void preMove() {
-		if (Math.random() < 0.1) {
+		if (Math.random() < DIRECTION_CHANGE_CHANCE) {
 			//Only change one direction
 			if (Math.random() <= 0.5) {
 				vy = vy + vy * (Math.random() - 0.5);
@@ -87,7 +89,6 @@ public class EnemyFish extends Entity implements IMovable {
 	 * are retrieved from the LevelBuilder class.
 	 */
 	private void limitSpeed() {
-		
 		if (vx > 0) {
 			vx = Math.max(LevelBuilder.MIN_EFISH_SPEED, Math.min(vx, LevelBuilder.MAX_EFISH_SPEED));
 		} else {

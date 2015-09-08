@@ -1,5 +1,6 @@
 package com.github.fishio;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -29,6 +30,8 @@ public class PlayerFish extends Entity implements IMovable {
 	private KeyCode rightKey = KeyCode.RIGHT;
 
 	private Image sprite;
+	
+	private SimpleIntegerProperty score = new SimpleIntegerProperty(0);
 
 	/**
 	 * The speed at which the speed of the fish increases /
@@ -38,7 +41,7 @@ public class PlayerFish extends Entity implements IMovable {
 
 	private static final double MAX_SPEED = 4; //TODO find a nicer max speed value
 
-	private static final double GROWTH_SPEED = 1.50;
+	private static final double GROWTH_SPEED = 2.5;
 	private static final double FISH_EAT_THRESHOLD = 1.2;
 
 	/**
@@ -256,12 +259,33 @@ public class PlayerFish extends Entity implements IMovable {
 
 			if (tsize > osize * FISH_EAT_THRESHOLD) {
 				fish.setDead();
+				this.addPoints((int) (osize / 200));
 				double dSize = Math.pow(GROWTH_SPEED * osize / tsize, 0.9);
 				getBoundingBox().increaseSize(dSize);
 			} else if (osize > tsize * FISH_EAT_THRESHOLD) {
 				this.setDead();
 			}
 		}
+	}
+
+	/**
+	 * Add points to the fish' score.
+	 * 
+	 * @param points
+	 * 			points to add to the score.
+	 */
+	private void addPoints(int points) {
+		score.set(points + score.intValue());
+	}
+	
+	/**
+	 * Getter for the score property.
+	 * 
+	 * @return
+	 * 		the score
+	 */
+	public SimpleIntegerProperty scoreProperty() {
+		return score;		
 	}
 
 	@Override
