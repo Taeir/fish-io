@@ -4,8 +4,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 /**
- * Enemy Fish class.
- * This class contains all methods concerning enemy fish on the screen.
+ * EnemyFish class. This class contains all methods concerning non-player or
+ * enemy fish on the screen.
  */
 public class EnemyFish extends Entity implements IMovable {
 	
@@ -16,11 +16,16 @@ public class EnemyFish extends Entity implements IMovable {
 	private Image sprite;
 
 	/**
-	 * Main constructor of enemy fish.
-	 * @param b Bounding box of enemy fish.
-	 * @param sprite sprite of the enemy fish
-	 * @param startvx starting speed in x direction
-	 * @param startvy starting speed in y direction
+	 * Main constructor of the enemy fish.
+	 * 
+	 * @param b
+	 *            Bounding box of enemy fish object.
+	 * @param sprite
+	 *            Sprite of the enemy fish object.
+	 * @param startvx
+	 *            Starting speed of the enemy fish object in the x direction.
+	 * @param startvy
+	 *            Starting speed of the enemy fish object in the y direction.
 	 */
 	public EnemyFish(BoundingBox b, Image sprite, double startvx, double startvy) {
 		super(b);
@@ -80,7 +85,8 @@ public class EnemyFish extends Entity implements IMovable {
 	}
 
 	/**
-	 * Limits the speed of the fish to a minimum and maximum value.
+	 * Limits the speed of the fish to a minimum and maximum value. These values
+	 * are retrieved from the LevelBuilder class.
 	 */
 	private void limitSpeed() {
 		if (vx > 0) {

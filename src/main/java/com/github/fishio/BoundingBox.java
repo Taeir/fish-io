@@ -3,6 +3,7 @@ package com.github.fishio;
 /**
  * Class to represent an (Axis Aligned) Bounding Box.
  */
+
 public class BoundingBox {
 	private double xmin;
 	private double ymin;
@@ -32,11 +33,11 @@ public class BoundingBox {
 	 * Creates a new Bounding Box with the given size and center.
 	 * 
 	 * @param position
-	 * 		the position of the center
+	 *            the position of the center of the box.
 	 * @param width
-	 * 		the width of the box
+	 *            the width of the box along the length of the fish.
 	 * @param height
-	 * 		the height of the box
+	 *            the height of the box along the height of the fish.
 	 */
 	public BoundingBox(Vec2d position, double width, double height) {
 		this.xmin = position.x - 0.5 * width;
@@ -46,64 +47,76 @@ public class BoundingBox {
 	}
 
 	/**
-	 * @return
-	 * 		the minimal x coordinate.
+	 * A method which gives back the minimal x coordinate of the Bounding Box.
+	 * 
+	 * @return the minimal x coordinate.
 	 */
 	public double getMinX() {
 		return xmin;
 	}
 
 	/**
-	 * @return
-	 * 		the maximal x coordinate.
+	 * A method which gives back the maximal x coordinate of the Bounding Box.
+	 * 
+	 * @return the maximal x coordinate.
 	 */
 	public double getMaxX() {
 		return xmax;
 	}
 
 	/**
-	 * @return
-	 * 		the minimal y coordinate.
+	 * A method which gives back the minimal y coordinate of the Bounding Box.
+	 * 
+	 * @return the minimal y coordinate.
 	 */
 	public double getMinY() {
 		return ymin;
 	}
 
 	/**
-	 * @return
-	 * 		the maximal y coordinate.
+	 * A method which gives back the maximal y coordinate of the Bounding Box.
+	 * 
+	 * @return the maximal y coordinate.
 	 */
 	public double getMaxY() {
 		return ymax;
 	}
 
 	/**
-	 * @return
-	 * 		the x coordinate of the centre of this bounding box
+	 * A method which returns the x coordinate of the centre of the Bounding
+	 * Box.
+	 * 
+	 * @return the x coordinate of the centre of this bounding box
 	 */
 	public double getCenterX() {
 		return (xmax + xmin) / 2;
 	}
 
 	/**
-	 * @return
-	 * 		the y coordinate of the centre of this bounding box
+	 * A method which returns the y coordinate of the centre of the Bounding
+	 * Box.
+	 * 
+	 * @return the y coordinate of the centre of this bounding box
 	 */
 	public double getCenterY() {
 		return (ymax + ymin) / 2;
 	}
 
 	/**
-	 * @return
-	 * 		the width of this Bounding Box.
+	 * A method which gives the width of the bounding box. The width is given
+	 * along the length of the fish.
+	 * 
+	 * @return the width of this Bounding Box.
 	 */
 	public double getWidth() {
 		return xmax - xmin;
 	}
 
 	/**
-	 * @return
-	 * 		the height of this Bounding Box.
+	 * A method which gives the height of the bounding box. The height is given
+	 * along the height of the fish.
+	 * 
+	 * @return the height of this Bounding Box.
 	 */
 	public double getHeight() {
 		return ymax - ymin;
@@ -113,9 +126,9 @@ public class BoundingBox {
 	 * Moves this bounding box in the specified direction.
 	 * 
 	 * @param dir
-	 * 		the direction to move in.
+	 *            the vector which specifies the direction to move in.
 	 * @param amount
-	 * 		the amount to move (speed).
+	 *            the amount to move (speed).
 	 */
 	public void move(Direction dir, double amount) {
 		Vec2d v = dir.getNormalVector();
@@ -127,12 +140,12 @@ public class BoundingBox {
 	}
 
 	/**
-	 * Move this bounding box in the specified direction.
+	 * Move this Bounding Box in the specified direction.
 	 * 
 	 * @param rad
-	 * 		the radians of the direction to move in.
+	 *            the radians of the direction to move in.
 	 * @param amount
-	 * 		the amount to move (speed).
+	 *            the amount to move (speed).
 	 */
 	@Deprecated
 	public void move(double rad, double amount) {
@@ -154,11 +167,11 @@ public class BoundingBox {
 	}
 
 	/**
-	 * Moves this bounding box in the specified direction.
+	 * Moves this Bounding Box in the specified direction.
 	 * 
 	 * @param v
-	 * 		The direction the BoundingBox should move at.
-	 * 		The length of the vector is the speed.
+	 *            The vector which specifies the direction the Bounding Box
+	 *            should move at. The length of the vector is the speed.
 	 */
 	public void move(Vec2d v) {
 		xmin += v.x;
@@ -168,7 +181,9 @@ public class BoundingBox {
 	}
 
 	/**
-	 * @return the size (area) of the BoundingBox
+	 * Method which returns the area or size of the Bounding Box.
+	 * 
+	 * @return the size (width times height) of the BoundingBox
 	 */
 	public double getSize() {
 		return getWidth() * getHeight();
@@ -197,10 +212,13 @@ public class BoundingBox {
 	}
 
 	/**
+	 * Performs a few checks to find out whether the Bounding Box has any
+	 * overlap with another Bounding Box.
+	 * 
 	 * @param other
-	 * 		the bounding box to check with.
-	 * @return
-	 * 		if this bounding box collides with the given Bounding Box.
+	 *            the other bounding box to check with.
+	 * @return true if this bounding box collides with the given Bounding Box,
+	 *         false if not.
 	 */
 	public boolean intersects(BoundingBox other) {
 		if (this.xmin + this.getWidth() > other.xmin
@@ -212,6 +230,7 @@ public class BoundingBox {
 
 		return false;
 	}
+
 
 	@Override
 	public int hashCode() {

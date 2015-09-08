@@ -1,7 +1,7 @@
 package com.github.fishio;
 
 /**
- * Represents an object that can be collided with.
+ * This class represents an object that can be collided with.
  */
 public interface ICollidable {
 	/**
@@ -21,10 +21,12 @@ public interface ICollidable {
 	BoundingBox getBoundingBox();
 	
 	/**
+	 * This method checks whether the collidable object collides with the given
+	 * collidable.
+	 * 
 	 * @param other
-	 * 		the Collidable to check.
-	 * @return
-	 * 		if this collidable collides with the given collidable.
+	 *            the Collidable to check.
+	 * @return if this collidable collides with the given collidable.
 	 */
 	default boolean doesCollides(ICollidable other) {
 		if (other == null) {

@@ -17,10 +17,12 @@ public class Vec2d {
 	public Vec2d() { }
 
 	/**
+	 * Creates a new vector with input x and y.
+	 * 
 	 * @param x
-	 * 		the x coordinate of the vector.
+	 *            the x coordinate of the vector.
 	 * @param y
-	 * 		the y coordinate of the vector.
+	 *            the y coordinate of the vector.
 	 */
 	public Vec2d(double x, double y) {
 		this.x = x;
@@ -70,10 +72,11 @@ public class Vec2d {
 	}
 
 	/**
+	 * Calculates the squared distance of the vector with another vector.
+	 * 
 	 * @param v
-	 * 		the vector to calculate the distance to.
-	 * @return
-	 * 		the squared distance to the given vector.
+	 *            the vector to calculate the distance to.
+	 * @return the squared distance to the given vector.
 	 */
 	public double distanceSquared(Vec2d v) {
 		final double vx = v.x - this.x;
@@ -82,12 +85,14 @@ public class Vec2d {
 	}
 
 	/**
+	 * Returns the distance between two vectors with the difference between the
+	 * x-coordinates and y-coordinates given.
+	 * 
 	 * @param vx
-	 * 		the x of the point.
+	 *            the distance between the x-coordinates of two vectors.
 	 * @param vy
-	 * 		the y of the point.
-	 * @return
-	 * 		the distance to the given point.
+	 *            the distance between the y-coordinates of two vectors.
+	 * @return the distance to the given point.
 	 */
 	public double distance(double vx, double vy) {
 		vx -= x;
@@ -96,10 +101,11 @@ public class Vec2d {
 	}
 
 	/**
+	 * Returns the distance between the vector and another vector.
+	 * 
 	 * @param v
-	 * 		the vector to calculate the distance to.
-	 * @return
-	 * 		the distance to the given vector.
+	 *            the vector to calculate the distance to.
+	 * @return the distance to the given vector.
 	 */
 	public double distance(Vec2d v) {
 		final double vx = v.x - this.x;
@@ -108,26 +114,29 @@ public class Vec2d {
 	}
 
 	/**
-	 * @return
-	 * 		the squared length of this vector.
+	 * Gives back the length of the vector squared.
+	 * 
+	 * @return the squared length of this vector.
 	 */
 	public double lengthSquared() {
 		return this.x * this.x + this.y * this.y;
 	}
 
 	/**
-	 * @return
-	 * 		the length of this vector.
+	 * Gives back the length of the vector.
+	 * 
+	 * @return the length of this vector.
 	 */
 	public double length() {
 		return Math.sqrt(lengthSquared()); 
 	}
 
 	/**
-	 * @return
-	 * 		a new vector that is normalized.
+	 * Normalizes a vector.
+	 * 
+	 * @return a new vector that is normalized.
 	 * @throws ArithmeticException
-	 * 		if the length of this vector is 0.
+	 *             if the length of this vector is 0.
 	 */
 	public Vec2d normalize() {
 		double l = length();

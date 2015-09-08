@@ -6,11 +6,11 @@ package com.github.fishio;
 public interface IMovable extends IPositional {
 
 	/**
-	 * @return
-	 * 		the direction this object is moving in with
-	 * 		the length of the vector being the speed of the object.
-	 * 		Example: speedVector (0, 2) means the object is moving
-	 * 		up with speed 2.
+	 * Gets the speedVector of the object.
+	 * 
+	 * @return the direction this object is moving in with the length of the
+	 *         vector being the speed of the object. Example: speedVector (0, 2)
+	 *         means the object is moving up with speed 2.
 	 */
 	Vec2d getSpeedVector();
 	
@@ -41,16 +41,19 @@ public interface IMovable extends IPositional {
 	
 	/**
 	 * Sets the direction this object is moving in.
+	 * 
 	 * @param dir
-	 * 		the new direction.
+	 *            the new direction.
 	 */
 	default void setDirection(Direction dir) {
 		setDirection(dir.getNormalVector());
 	}
 	
 	/**
-	 * @return
-	 * 		The speed of this object.
+	 * Gives back the speed of the object, defined by the length of the
+	 * SpeedVector.
+	 * 
+	 * @return The speed of this object.
 	 */
 	default double getSpeed() {
 		return getSpeedVector().length();
@@ -70,9 +73,10 @@ public interface IMovable extends IPositional {
 	}
 	
 	/**
-	 * @return
-	 * 		true iff the object doesn't get blocked when
-	 * 		trying to move through walls.
+	 * Allows the object to move through the walls.
+	 * 
+	 * @return true iff the object doesn't get blocked when trying to move
+	 *         through walls.
 	 */
 	boolean canMoveThroughWall();
 	

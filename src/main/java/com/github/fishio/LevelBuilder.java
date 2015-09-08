@@ -16,6 +16,9 @@ public final class LevelBuilder {
 	// Fish statistics
 
 	// movement
+	/**
+	 * The minimal and maximal speed the enemy fish can move are specified here.
+	 */
 	public static final double MAX_EFISH_SPEED = 4;
 	public static final double MIN_EFISH_SPEED = 1;
 
@@ -37,10 +40,12 @@ public final class LevelBuilder {
 	}
 
 	/**
-	 * Creates a random EnemyFish..
-	 * This fish will spawn outside the screen and always move towards the inside.
+	 * Creates a random EnemyFish. This fish will get a sprite and always spawn
+	 * outside the screen and always move towards the inside.
+	 * 
 	 * @param bb
-	 * 		A Bounding Box which decides about what size the fish will have.
+	 *            A Bounding Box which decides about what size the fish will
+	 *            have.
 	 * @return random Enemyfish
 	 */
 	public static EnemyFish randomizedFish(BoundingBox bb) {
@@ -94,8 +99,11 @@ public final class LevelBuilder {
 	}
 
 	/**
-	 * Creates a random speed for a fish.
-	 * @return a random speed between 1 and MAX_EFISH_SPEED or between -1 and -MAX_FISH_SPEED
+	 * Creates a random speed for an enemy fish.
+	 * 
+	 * @return
+	 * 			a random speed between 1 and MAX_EFISH_SPEED or between -1 and
+	 * 			-MAX_FISH_SPEED
 	 */
 	public static double randomSpeed() {
 		double speed = (Math.random() * 2 - 1) * MAX_EFISH_SPEED;

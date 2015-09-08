@@ -1,6 +1,7 @@
 package com.github.fishio;
 
 import java.io.IOException;
+
 import com.github.fishio.view.ScreenController;
 
 import javafx.animation.FadeTransition;
@@ -34,13 +35,13 @@ public class FishIO extends Application {
 	}
 
 	/**
-	 * Load a screen from a fxml-file. 
-	 * This screen will replace the current screen
+	 * Load a screen from a fxml-file. This screen will replace the current
+	 * screen
 	 * 
 	 * @param file
-	 * 			Filepath of the fxml file.
+	 *            File path of the fxml file.
 	 * @param length
-	 * 			If &gt; 0, fade in the new screen, else just show it.
+	 *            If &gt; 0, fade in the new screen, else just show it.
 	 */
 	public void loadScreen(String file, int length) {
 		FXMLLoader loader = new FXMLLoader();
@@ -82,13 +83,15 @@ public class FishIO extends Application {
 	}
 
 	/**
-	 * Close the program.    
+	 * Closes the program.
 	 */
 	public void closeApplication() {
 		this.primaryStage.close();
 	}
 
 	/**
+	 * This method returns the Primary Stage.
+	 * 
 	 * @return primaryStage
 	 */
 	public Stage getPrimaryStage() {
@@ -103,6 +106,8 @@ public class FishIO extends Application {
 	}
 	
 	/**
+	 * Returns the instance parameter of the class.
+	 * 
 	 * @return the instance of this application.
 	 */
 	public static FishIO getInstance() {
