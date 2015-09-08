@@ -96,7 +96,6 @@ public abstract class PlayingField {
 			renderThread.play();
 			oldRenderThread.stop();
 		}
-
 	}
 
 	/**
