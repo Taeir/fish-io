@@ -27,7 +27,6 @@ final class LevelBuilder {
 	 */
 	private LevelBuilder() {
 		//to prevent initiation
-		//TODO add assertion?
 	}
 
 	/**
