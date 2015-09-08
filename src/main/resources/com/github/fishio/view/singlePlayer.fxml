@@ -14,7 +14,7 @@
          <children>
             <HBox maxHeight="50.0" maxWidth="1.7976931348623157E308" minHeight="50.0" minWidth="640.0" nodeOrientation="RIGHT_TO_LEFT" spacing="10.0" style="-fx-background-color: #AAAAAA;">
                <children>
-                  <Label fx:id="scoreField" alignment="TOP_LEFT" text="score: 1234">
+                  <Label fx:id="scoreField" alignment="TOP_LEFT" text="score: 0">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -40,7 +40,7 @@
                   <Font size="31.0" />
                </font>
             </Label>
-            <Label text="score: 12345 points" />
+            <Label fx:id="endScore" text="score: 0 points" />
             <Button minWidth="100.0" mnemonicParsing="false" onAction="#restartGame" text="Restart">
                <VBox.margin>
                   <Insets top="50.0" />
