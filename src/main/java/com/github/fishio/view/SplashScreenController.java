@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -26,12 +27,19 @@ public class SplashScreenController implements ScreenController {
 	private VBox company;
 	@FXML
 	private VBox game;
+	@FXML
+	private Label slogan;
+	
+	private String[] slogans = {"Not even squidding!", "Krilling it!"
+		, "this game is brill-iant!", "In cod we trust!"};
 
 	private boolean run = true;
 
 	@Override
 	public void setMainApp(FishIO mainApp) {
-		this.mainApp = mainApp;	
+		this.mainApp = mainApp;
+		
+		slogan.setText(slogans[(int) (Math.random() * slogans.length)]);
 
 		mainApp.getPrimaryStage().getScene().setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
