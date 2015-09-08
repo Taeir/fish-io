@@ -1,8 +1,10 @@
 package com.github.fishio.view;
 
 import com.github.fishio.FishIO;
+import com.github.fishio.Preloader;
 
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 
 /**
  * The controller class for the main menu.
@@ -11,12 +13,11 @@ import javafx.fxml.FXML;
  * @since 03-09-2015
  */
 public class MainMenuController implements ScreenController {
-	private FishIO mainApp;
-
 	@Override
-	public void setMainApp(FishIO mainApp) {
-		this.mainApp = mainApp;
-	}
+	public void init(Scene scene) { }
+	
+	@Override
+	public void onSwitchTo() { }
 
 	/**
 	 * Start a singleplayer game.
@@ -24,7 +25,7 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void startSinglePlayer() {
-		mainApp.loadScreen("view/singlePlayer.fxml", 400);
+		Preloader.switchTo("singlePlayer", 400);
 	}
 
 	/**
@@ -96,7 +97,7 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void exitGame() {
-		mainApp.closeApplication();
+		FishIO.getInstance().closeApplication();
 	}
 
 }

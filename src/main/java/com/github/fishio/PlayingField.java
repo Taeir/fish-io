@@ -408,6 +408,10 @@ public abstract class PlayingField {
 		if (o instanceof Entity) {
 			entities.remove(o);
 		}
+		
+		if (o instanceof ICollidable) {
+			collidables.remove(o);
+		}
 	}
 
 	/**
@@ -428,6 +432,9 @@ public abstract class PlayingField {
 		entities.clear();
 		drawables.clear();
 		movables.clear();
+		collidables.clear();
+		
+		enemyCount = 0;
 	}
 
 	/**

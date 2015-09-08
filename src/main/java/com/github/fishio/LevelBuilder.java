@@ -19,16 +19,11 @@ public final class LevelBuilder {
 	// movement
 	public static final double MAX_EFISH_SPEED = 4;
 	public static final double MIN_EFISH_SPEED = 1;
-
-	private static Image[] enemySpriteList;
 	
-	static {
-		//Preload all the enemy fish sprites.
-		enemySpriteList = new Image[28];
-		for (int i = 0; i < 28; i++) {
-			enemySpriteList[i] = new Image("sprites/fish/fish" + i + ".png");
-		}
-	}
+	/**
+	 * The amount of fish sprites that we have.
+	 */
+	public static final int FISH_SPRITES = 28;
 
 	/**
 	 * Private constructor to prevent initiation.
@@ -90,9 +85,13 @@ public final class LevelBuilder {
 		return eFish;
 	}
 
+	/**
+	 * @return
+	 * 		a random fish sprite.
+	 */
 	private static Image getRandomSprite() {
-		int i = (int) (Math.random() * enemySpriteList.length);
-		return enemySpriteList[i];
+		final int i = rand.nextInt(FISH_SPRITES);
+		return Preloader.getImageOrLoad("sprites/fish/fish" + i + ".png");
 	}
 
 	/**

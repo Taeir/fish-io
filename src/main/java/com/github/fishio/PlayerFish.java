@@ -257,6 +257,7 @@ public class PlayerFish extends Entity implements IMovable {
 		if (isDead()) {
 			return;
 		}
+		
 		if (vx >= 0) {
 			gc.drawImage(sprite, getX(), getY(), getWidth(), getHeight());
 		} else {

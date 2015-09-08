@@ -2,15 +2,16 @@ package com.github.fishio.view;
 
 import com.github.fishio.FishIO;
 import com.github.fishio.PlayingField;
+import com.github.fishio.Preloader;
 import com.github.fishio.SinglePlayerPlayingField;
 
 import javafx.animation.Animation.Status;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -22,8 +23,6 @@ import javafx.util.Duration;
  */
 public class SinglePlayerController implements ScreenController {
 
-	private FishIO mainApp;
-
 	@FXML
 	private Canvas gameCanvas;
 	@FXML
@@ -34,14 +33,15 @@ public class SinglePlayerController implements ScreenController {
 	private PlayingField pf;
 
 	@Override
-	public void setMainApp(FishIO mainApp) {
-		this.mainApp = mainApp;
-
+	public void init(Scene scene) {
 		//setup the playing field
 		pf = new SinglePlayerPlayingField(60, gameCanvas, this);
-		pf.setBackground(new Image("background.png"));
-
-		mainApp.getPrimaryStage().setTitle("Fish.io Singleplayer");
+		pf.setBackground(Preloader.getImageOrLoad("background.png"));
+	}
+	
+	@Override
+	public void onSwitchTo() {
+		FishIO.getInstance().getPrimaryStage().setTitle("Fish.io Singleplayer");
 		pf.startGame();
 	}
 
@@ -76,13 +76,12 @@ public class SinglePlayerController implements ScreenController {
 			fade.setFromValue(0.0);
 			fade.setToValue(1.0);
 		} else {
-
 			fade.setToValue(1.0);
 			fade.setFromValue(0.0);
 		}
 
-
 		fade.play();
+		
 		if (deathScreen.isVisible() != visible) {
 			deathScreen.setVisible(visible);
 		}
@@ -94,7 +93,7 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	public void backToMenu() {
 		pf.stopGame();
-		mainApp.openMainMenu();
+		FishIO.getInstance().openMainMenu();
 	}
 
 	/**
@@ -102,13 +101,13 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void restartGame() {
-		showDeathScreen(false);
 		scoreField.setText("score: 0");
 
-		//Reset the map
+		//Stop the game, clear all items, and start it again.
 		pf.stopGame();
-		pf = new SinglePlayerPlayingField(60, gameCanvas, this);
-		pf.setBackground(new Image("background.png"));
+		pf.clear();
+		
+		showDeathScreen(false);
 
 		pf.startGame();
 	}
