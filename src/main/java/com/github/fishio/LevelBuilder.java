@@ -10,7 +10,7 @@ import javafx.scene.image.Image;
  * The LevelBuilder is an utility class for creating levels. 
  * This class contains a standard level to be created.
  */
-final class LevelBuilder {
+public final class LevelBuilder {
 
 	private static Random rand = new Random();
 
@@ -21,6 +21,14 @@ final class LevelBuilder {
 	public static final double MIN_EFISH_SPEED = 1;
 
 	private static Image[] enemySpriteList;
+	
+	static {
+		//Preload all the enemy fish sprites.
+		enemySpriteList = new Image[28];
+		for (int i = 0; i < 28; i++) {
+			enemySpriteList[i] = new Image("sprites/fish/fish" + i + ".png");
+		}
+	}
 
 	/**
 	 * Private constructor to prevent initiation.
@@ -112,19 +120,5 @@ final class LevelBuilder {
 		}
 
 		return speed;
-	}
-
-	/**
-	 * Preload all the enemy fish sprites.
-	 */
-	public static void preLoadSprites() {
-		if (enemySpriteList != null) {
-			return;
-		}
-		enemySpriteList = new Image[28];
-		for (int i = 0; i < 28; i++) {
-			enemySpriteList[i] = new Image("sprites/fish/fish" + i + ".png");
-		}
-		
 	}
 }
