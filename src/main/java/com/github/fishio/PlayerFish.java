@@ -12,8 +12,8 @@ import javafx.stage.Stage;
  */
 public class PlayerFish extends Entity implements IMovable {
 
-	private int vx = 0;
-	private int vy = 0;
+	private double vx = 0;
+	private double vy = 0;
 
 	private boolean upPressed;
 	private boolean downPressed;
@@ -31,11 +31,11 @@ public class PlayerFish extends Entity implements IMovable {
 	 * The speed at which the speed of the fish increases /
 	 * decreases depending on what keys are pressed by the user.
 	 */
-	private static final int ACCELERATION = 35; //TODO find a nicer acceleration value
+	private static final double ACCELERATION = 0.1; //TODO find a nicer acceleration value
 
-	private static final double MAX_SPEED = 600; //TODO find a nicer max speed value
+	private static final double MAX_SPEED = 4; //TODO find a nicer max speed value
 
-	private static final double GROWTH_SPEED = 150;
+	private static final double GROWTH_SPEED = 1.50;
 
 	/**
 	 * @param bb
@@ -89,6 +89,8 @@ public class PlayerFish extends Entity implements IMovable {
 
 		if (vx < 0 && (!leftPressed || rightPressed)) vx += ACCELERATION;
 		if (vx > 0 && (!rightPressed || leftPressed)) vx -= ACCELERATION;
+		
+		if (vx < 0.1 && vx > -0.1) vx = 0;	// stop if speed is too slow
 	}
 
 	/**
@@ -103,6 +105,8 @@ public class PlayerFish extends Entity implements IMovable {
 
 		if (vy < 0 && (!downPressed || upPressed)) vy += ACCELERATION;
 		if (vy > 0 && (!upPressed || downPressed)) vy -= ACCELERATION;
+		
+		if (vy < 0.1 && vy > -0.1) vy = 0;	// stop if speed is too slow
 	}
 
 	/**
@@ -110,7 +114,7 @@ public class PlayerFish extends Entity implements IMovable {
 	 * 		the fish is going left.
 	 */
 	public double getSpeedX() {
-		return vx / 100.0;
+		return vx;
 	}
 
 	/**
@@ -118,14 +122,14 @@ public class PlayerFish extends Entity implements IMovable {
 	 * 		the fish is going down.
 	 */
 	public double getSpeedY() {
-		return vy / 100.0;
+		return vy;
 	}
 
 	/**
 	 * @return the acceleration of the fish.
 	 */
 	public double getAcceleration() {
-		return ACCELERATION / 100.0;
+		return ACCELERATION;
 	}
 
 	/**
@@ -135,7 +139,7 @@ public class PlayerFish extends Entity implements IMovable {
 	 * 		the speed to set
 	 */
 	public void setSpeedX(double speedX) {
-		this.vx = (int) (100 * speedX);
+		this.vx = speedX;
 	}
 
 	/**
@@ -145,7 +149,7 @@ public class PlayerFish extends Entity implements IMovable {
 	 * 		the speed to set
 	 */
 	public void setSpeedY(double speedY) {
-		this.vy = (int) (100 * speedY);
+		this.vy = speedY;
 	}
 
 	/**
@@ -207,8 +211,8 @@ public class PlayerFish extends Entity implements IMovable {
 
 	@Override
 	public void setSpeedVector(Vec2d vector) {
-		vx = (int) (100 * vector.x);
-		vy = (int) (100 * vector.y);
+		vx = vector.x;
+		vy = vector.y;
 	}
 
 	@Override
