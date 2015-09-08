@@ -24,7 +24,7 @@ public class TestPlayerFish {
 	@Before
 	public void setUp() {
 		pf = Mockito.spy(new PlayerFish(Mockito.mock(BoundingBox.class), Mockito.mock(Stage.class), null));
-		when(pf.getBoundingBox().getSize()).thenReturn(5.0);
+		when(pf.getBoundingArea().getSize()).thenReturn(5.0);
 	}
 	
 	/**
@@ -89,7 +89,7 @@ public class TestPlayerFish {
 	public void testCollideWithLargerEnemyFish() {
 		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(BoundingBox.class), 
 				null, 0.0, 0.0));
-		when(ef.getBoundingBox().getSize()).thenReturn(6.1);
+		when(ef.getBoundingArea().getSize()).thenReturn(6.1);
 		
 		pf.onCollide(ef);
 		
@@ -105,8 +105,8 @@ public class TestPlayerFish {
 	public void testCollideWithSmallerEnemyFish() {
 		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(BoundingBox.class), 
 				null, 0.0, 0.0));
-		when(ef.getBoundingBox().getSize()).thenReturn(3.9);
-		BoundingBox bb = pf.getBoundingBox();
+		when(ef.getBoundingArea().getSize()).thenReturn(3.9);
+		IBoundingArea bb = pf.getBoundingArea();
 		
 		pf.onCollide(ef);
 		
@@ -121,7 +121,7 @@ public class TestPlayerFish {
 	public void testCollideWithSameSizeEnemyFish() {
 		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(BoundingBox.class), 
 				null, 0.0, 0.0));
-		when(ef.getBoundingBox().getSize()).thenReturn(5.0);
+		when(ef.getBoundingArea().getSize()).thenReturn(5.0);
 
 		pf.onCollide(ef);
 		
@@ -137,7 +137,7 @@ public class TestPlayerFish {
 	public void testCollideWithDeadEnemyFish() {
 		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(BoundingBox.class), 
 				null, 0.0, 0.0));
-		when(ef.getBoundingBox().getSize()).thenReturn(5.1);
+		when(ef.getBoundingArea().getSize()).thenReturn(5.1);
 		ef.setDead();
 
 		pf.onCollide(ef);

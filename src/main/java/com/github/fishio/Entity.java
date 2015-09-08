@@ -8,16 +8,16 @@ import javafx.scene.paint.Color;
  */
 public abstract class Entity implements ICollidable, IPositional, IDrawable {
 	private boolean dead;
-	private BoundingBox bb;
+	private IBoundingArea ba;
 	
 	/**
-	 * This constructor creates a Bounding Box entity in the game.
+	 * This constructor creates an entity in the game.
 	 * 
-	 * @param bb
-	 *            the bounding box of this Entity
+	 * @param ba
+	 *            the bounding area of this Entity
 	 */
-	public Entity(BoundingBox bb) {
-		this.bb = bb;
+	public Entity(IBoundingArea ba) {
+		this.ba = ba;
 	}
 	
 	@Override
@@ -40,8 +40,8 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable {
 	}
 	
 	@Override
-	public BoundingBox getBoundingBox() {
-		return bb;
+	public IBoundingArea getBoundingArea() {
+		return ba;
 	}
 	
 	@Override

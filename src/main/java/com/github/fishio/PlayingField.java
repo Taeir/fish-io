@@ -234,7 +234,7 @@ public abstract class PlayingField {
 		//add enemy entities
 		while (enemyCount < MAX_ENEMY_COUNT) {
 			//TODO add scalible enemyFish
-			EnemyFish eFish = LevelBuilder.randomizedFish(getPlayers().get(0).getBoundingBox());
+			EnemyFish eFish = LevelBuilder.randomizedFish(getPlayers().get(0).getBoundingArea());
 			add(eFish);
 			enemyCount++;
 		}
@@ -254,7 +254,7 @@ public abstract class PlayingField {
 		for (IMovable m : movables) {
 			m.preMove();
 			
-			BoundingBox box = m.getBoundingBox();
+			IBoundingArea box = m.getBoundingArea();
 			if (m instanceof PlayerFish) {	// prevent playerfish from leaving the screen
 				if (box.getMaxX() >= WINDOW_X
 						|| box.getMinX() <= 0

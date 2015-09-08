@@ -54,7 +54,7 @@ public class PlayerFish extends Entity implements IMovable {
 	 * @param sprite
 	 *            The sprite of the player fish
 	 */
-	public PlayerFish(BoundingBox bb, Stage stage, Image sprite) {
+	public PlayerFish(IBoundingArea bb, Stage stage, Image sprite) {
 		super(bb);		
 
 		this.sprite = sprite;
@@ -248,20 +248,19 @@ public class PlayerFish extends Entity implements IMovable {
 	@Override
 	public void onCollide(ICollidable other) {
 		if (other instanceof EnemyFish) {
-
 			EnemyFish fish = (EnemyFish) other;
 			if (fish.isDead()) {
 				return;
 			}
 
-			double tsize = this.getBoundingBox().getSize();
-			double osize = fish.getBoundingBox().getSize();
+			double tsize = this.getBoundingArea().getSize();
+			double osize = fish.getBoundingArea().getSize();
 
 			if (tsize > osize * FISH_EAT_THRESHOLD) {
 				fish.setDead();
 				this.addPoints((int) (osize / 200));
 				double dSize = Math.pow(GROWTH_SPEED * osize / tsize, 0.9);
-				getBoundingBox().increaseSize(dSize);
+				getBoundingArea().increaseSize(dSize);
 			} else if (osize > tsize * FISH_EAT_THRESHOLD) {
 				this.setDead();
 			}

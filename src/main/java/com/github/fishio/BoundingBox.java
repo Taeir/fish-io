@@ -4,7 +4,7 @@ package com.github.fishio;
  * Class to represent an (Axis Aligned) Bounding Box.
  */
 
-public class BoundingBox {
+public class BoundingBox implements IBoundingArea {
 	private double xmin;
 	private double ymin;
 	private double xmax;
@@ -213,21 +213,27 @@ public class BoundingBox {
 
 	/**
 	 * Performs a few checks to find out whether the Bounding Box has any
-	 * overlap with another Bounding Box.
+	 * overlap with an IBoundingAres object.
 	 * 
 	 * @param other
-	 *            the other bounding box to check with.
-	 * @return true if this bounding box collides with the given Bounding Box,
+	 *            the boundingArea to check with.
+	 * @return true if this bounding box collides with the given BoundingArea,
 	 *         false if not.
 	 */
-	public boolean intersects(BoundingBox other) {
-		if (this.xmin + this.getWidth() > other.xmin
-				&& this.xmin < other.xmin + other.getWidth()
-				&& this.ymin + this.getHeight() > other.ymin
-				&& this.ymin < other.ymin + other.getHeight()) {
-			return true;
+	public boolean intersects(IBoundingArea other) {
+		if (other instanceof BoundingBox) {
+			BoundingBox obb = (BoundingBox) other;
+			
+			return this.xmin + this.getWidth() > obb.xmin
+					&& this.xmin < obb.xmin + obb.getWidth()
+					&& this.ymin + this.getHeight() > obb.ymin
+					&& this.ymin < obb.ymin + obb.getHeight();
 		}
-
+		
+		/*if (other instanceof CollisionMask) {
+			return false; //TODO
+		}*/
+		
 		return false;
 	}
 
@@ -270,6 +276,11 @@ public class BoundingBox {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public double getRotation() {
+		return 0;	//TODO (maybe)
 	}
 
 }

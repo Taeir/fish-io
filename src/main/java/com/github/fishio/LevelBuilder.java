@@ -48,10 +48,10 @@ public final class LevelBuilder {
 	 *            have.
 	 * @return random Enemyfish
 	 */
-	public static EnemyFish randomizedFish(BoundingBox bb) {
+	public static EnemyFish randomizedFish(IBoundingArea ba) {
 		//randomize fish properties 
-		int minSize = (int) (bb.getSize() * 0.5);
-		int maxSize = (int) (bb.getSize() * 2.5);
+		int minSize = (int) (ba.getSize() * 0.5);
+		int maxSize = (int) (ba.getSize() * 2.5);
 
 		int size = rand.nextInt(maxSize - minSize + 1) + minSize;
 		Image sprite = getRandomSprite();

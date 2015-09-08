@@ -18,7 +18,7 @@ public interface ICollidable {
 	 * @return
 	 * 		the collision box of this ICollidable.
 	 */
-	BoundingBox getBoundingBox();
+	IBoundingArea getBoundingArea();
 	
 	/**
 	 * This method checks whether the collidable object collides with the given
@@ -33,6 +33,6 @@ public interface ICollidable {
 			return false;
 		}
 		
-		return getBoundingBox().intersects(other.getBoundingBox());
+		return getBoundingArea().intersects(other.getBoundingArea());
 	}
 }
