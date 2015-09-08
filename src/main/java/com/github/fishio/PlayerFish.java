@@ -36,6 +36,7 @@ public class PlayerFish extends Entity implements IMovable {
 	private static final double MAX_SPEED = 4; //TODO find a nicer max speed value
 
 	private static final double GROWTH_SPEED = 1.50;
+	private static final double FISH_EAT_THRESHOLD = 1.2;
 
 	/**
 	 * @param bb
@@ -241,11 +242,11 @@ public class PlayerFish extends Entity implements IMovable {
 			double tsize = this.getBoundingBox().getSize();
 			double osize = fish.getBoundingBox().getSize();
 
-			if (tsize > osize) {
+			if (tsize > osize * FISH_EAT_THRESHOLD) {
 				fish.setDead();
 				double dSize = Math.pow(GROWTH_SPEED * osize / tsize, 0.9);
 				getBoundingBox().increaseSize(dSize);
-			} else if (osize > tsize) {
+			} else if (osize > tsize * FISH_EAT_THRESHOLD) {
 				this.setDead();
 			}
 		}
