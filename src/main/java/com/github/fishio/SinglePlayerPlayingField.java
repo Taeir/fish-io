@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import com.github.fishio.listeners.TickListener;
 import com.github.fishio.view.SinglePlayerController;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 

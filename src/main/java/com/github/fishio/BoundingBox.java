@@ -4,7 +4,7 @@ package com.github.fishio;
  * Class to represent an (Axis Aligned) Bounding Box.
  */
 
-public class BoundingBox implements IBoundingArea {
+public class BoundingBox implements ICollisionArea {
 	private double xmin;
 	private double ymin;
 	private double xmax;
@@ -46,97 +46,44 @@ public class BoundingBox implements IBoundingArea {
 		this.ymax = position.y + 0.5 * height;
 	}
 
-	/**
-	 * A method which gives back the minimal x coordinate of the Bounding Box.
-	 * 
-	 * @return the minimal x coordinate.
-	 */
+	@Override
 	public double getMinX() {
 		return xmin;
 	}
 
-	/**
-	 * A method which gives back the maximal x coordinate of the Bounding Box.
-	 * 
-	 * @return the maximal x coordinate.
-	 */
+	@Override
 	public double getMaxX() {
 		return xmax;
 	}
 
-	/**
-	 * A method which gives back the minimal y coordinate of the Bounding Box.
-	 * 
-	 * @return the minimal y coordinate.
-	 */
+	@Override
 	public double getMinY() {
 		return ymin;
 	}
 
-	/**
-	 * A method which gives back the maximal y coordinate of the Bounding Box.
-	 * 
-	 * @return the maximal y coordinate.
-	 */
+	@Override
 	public double getMaxY() {
 		return ymax;
 	}
 
-	/**
-	 * A method which returns the x coordinate of the centre of the Bounding
-	 * Box.
-	 * 
-	 * @return the x coordinate of the centre of this bounding box
-	 */
+	@Override
 	public double getCenterX() {
 		return (xmax + xmin) / 2;
 	}
 
-	/**
-	 * A method which returns the y coordinate of the centre of the Bounding
-	 * Box.
-	 * 
-	 * @return the y coordinate of the centre of this bounding box
-	 */
+	@Override
 	public double getCenterY() {
 		return (ymax + ymin) / 2;
 	}
 
-	/**
-	 * A method which gives the width of the bounding box. The width is given
-	 * along the length of the fish.
-	 * 
-	 * @return the width of this Bounding Box.
-	 */
+	@Override
 	public double getWidth() {
 		return xmax - xmin;
 	}
 
-	/**
-	 * A method which gives the height of the bounding box. The height is given
-	 * along the height of the fish.
-	 * 
-	 * @return the height of this Bounding Box.
-	 */
+	@Override
 	public double getHeight() {
 		return ymax - ymin;
-	}
-
-	/**
-	 * Moves this bounding box in the specified direction.
-	 * 
-	 * @param dir
-	 *            the vector which specifies the direction to move in.
-	 * @param amount
-	 *            the amount to move (speed).
-	 */
-	public void move(Direction dir, double amount) {
-		Vec2d v = dir.getNormalVector();
-
-		v.x *= amount;
-		v.y *= amount;
-
-		move(v);
 	}
 
 	/**
@@ -166,13 +113,7 @@ public class BoundingBox implements IBoundingArea {
 		ymax += v.y;
 	}
 
-	/**
-	 * Moves this Bounding Box in the specified direction.
-	 * 
-	 * @param v
-	 *            The vector which specifies the direction the Bounding Box
-	 *            should move at. The length of the vector is the speed.
-	 */
+	@Override
 	public void move(Vec2d v) {
 		xmin += v.x;
 		xmax += v.x;
@@ -180,22 +121,12 @@ public class BoundingBox implements IBoundingArea {
 		ymax -= v.y;
 	}
 
-	/**
-	 * Method which returns the area or size of the Bounding Box.
-	 * 
-	 * @return the size (width times height) of the BoundingBox
-	 */
+	@Override
 	public double getSize() {
 		return getWidth() * getHeight();
 	}
 
-	/**
-	 * Increases the size (area) of the fish without
-	 * affecting the width/height (shape stays the same).
-	 * 
-	 * @param size
-	 * 		The size to increase the current size with.
-	 */
+	@Override
 	public void increaseSize(double size) {
 		double w = getWidth();
 		double h = getHeight();
@@ -211,30 +142,12 @@ public class BoundingBox implements IBoundingArea {
 		ymin -= 0.5 * b;
 	}
 
-	/**
-	 * Performs a few checks to find out whether the Bounding Box has any
-	 * overlap with an IBoundingAres object.
-	 * 
-	 * @param other
-	 *            the boundingArea to check with.
-	 * @return true if this bounding box collides with the given BoundingArea,
-	 *         false if not.
-	 */
-	public boolean intersects(IBoundingArea other) {
-		if (other instanceof BoundingBox) {
-			BoundingBox obb = (BoundingBox) other;
-			
-			return this.xmin + this.getWidth() > obb.xmin
-					&& this.xmin < obb.xmin + obb.getWidth()
-					&& this.ymin + this.getHeight() > obb.ymin
-					&& this.ymin < obb.ymin + obb.getHeight();
-		}
-		
-		/*if (other instanceof CollisionMask) {
-			return false; //TODO
-		}*/
-		
-		return false;
+	@Override
+	public boolean intersects(ICollisionArea other) {		
+		return this.xmin + this.getWidth() > other.getMinX()
+				&& this.xmin < other.getMinX() + other.getWidth()
+				&& this.ymin + this.getHeight() > other.getMinY()
+				&& this.ymin < other.getMinY() + other.getHeight();
 	}
 
 

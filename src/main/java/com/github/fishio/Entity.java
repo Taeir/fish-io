@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
  */
 public abstract class Entity implements ICollidable, IPositional, IDrawable {
 	private boolean dead;
-	private IBoundingArea ba;
+	private ICollisionArea ba;
 	
 	/**
 	 * This constructor creates an entity in the game.
@@ -16,7 +16,7 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable {
 	 * @param ba
 	 *            the bounding area of this Entity
 	 */
-	public Entity(IBoundingArea ba) {
+	public Entity(ICollisionArea ba) {
 		this.ba = ba;
 	}
 	
@@ -40,7 +40,7 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable {
 	}
 	
 	@Override
-	public IBoundingArea getBoundingArea() {
+	public ICollisionArea getBoundingArea() {
 		return ba;
 	}
 	

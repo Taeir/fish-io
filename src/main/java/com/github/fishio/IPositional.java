@@ -46,5 +46,5 @@ public interface IPositional {
 	 * @return
 	 * 		a BoundingBox representing the position of this object.
 	 */
-	IBoundingArea getBoundingArea();
+	ICollisionArea getBoundingArea();
 }

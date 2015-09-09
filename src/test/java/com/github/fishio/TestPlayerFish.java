@@ -106,7 +106,7 @@ public class TestPlayerFish {
 		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(BoundingBox.class), 
 				null, 0.0, 0.0));
 		when(ef.getBoundingArea().getSize()).thenReturn(3.9);
-		IBoundingArea bb = pf.getBoundingArea();
+		ICollisionArea bb = pf.getBoundingArea();
 		
 		pf.onCollide(ef);
 		

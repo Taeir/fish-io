@@ -54,7 +54,7 @@ public class PlayerFish extends Entity implements IMovable {
 	 * @param sprite
 	 *            The sprite of the player fish
 	 */
-	public PlayerFish(IBoundingArea bb, Stage stage, Image sprite) {
+	public PlayerFish(ICollisionArea bb, Stage stage, Image sprite) {
 		super(bb);		
 
 		this.sprite = sprite;

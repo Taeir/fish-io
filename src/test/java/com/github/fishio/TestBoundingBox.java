@@ -146,20 +146,6 @@ public class TestBoundingBox {
 	}
 
 	/**
-	 * Test for {@link BoundingBox#move(Direction, double)}.
-	 */
-	@Test
-	public void testMoveDirectionDouble() {
-		BoundingBox bb = new BoundingBox(1.0, 2.0, 3.0, 4.0);
-		
-		bb.move(Direction.UP, 1.0);
-		assertEquals(1.0, bb.getMinX(), 0.0000001D);
-		assertEquals(1.0, bb.getMinY(), 0.0000001D);
-		assertEquals(3.0, bb.getMaxX(), 0.0000001D);
-		assertEquals(3.0, bb.getMaxY(), 0.0000001D);
-	}
-
-	/**
 	 * Test for moving a bounding box by radians.
 	 * {@link BoundingBox#move(double, double)}
 	 */

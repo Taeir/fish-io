@@ -18,7 +18,7 @@ public interface ICollidable {
 	 * @return
 	 * 		the collision box of this ICollidable.
 	 */
-	IBoundingArea getBoundingArea();
+	ICollisionArea getBoundingArea();
 	
 	/**
 	 * This method checks whether the collidable object collides with the given

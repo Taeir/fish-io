@@ -254,7 +254,7 @@ public abstract class PlayingField {
 		for (IMovable m : movables) {
 			m.preMove();
 			
-			IBoundingArea box = m.getBoundingArea();
+			ICollisionArea box = m.getBoundingArea();
 			if (m instanceof PlayerFish) {	// prevent playerfish from leaving the screen
 				if (box.getMaxX() >= WINDOW_X
 						|| box.getMinX() <= 0
@@ -276,13 +276,13 @@ public abstract class PlayingField {
 			if (!m.canMoveThroughWall()) {
 
 				if (box.getMaxX() > WINDOW_X) {
-					box.move(Direction.LEFT, box.getMaxX() - WINDOW_X);
+					box.move(new Vec2d(-(box.getMaxX() - WINDOW_X), 0));
 				} if (box.getMinX() < 0) {
-					box.move(Direction.RIGHT, -box.getMinX());
+					box.move(new Vec2d(-box.getMinX(), 0));
 				} if (box.getMaxY() > WINDOW_Y) {
-					box.move(Direction.UP, box.getMaxY() - WINDOW_Y);
+					box.move(new Vec2d(0, box.getMaxY() - WINDOW_Y));
 				} if (box.getMinY() < 0) {
-					box.move(Direction.DOWN, -box.getMinY());
+					box.move(new Vec2d(0, box.getMinY()));
 				}
 
 			}

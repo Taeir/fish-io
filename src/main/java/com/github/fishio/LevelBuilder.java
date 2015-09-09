@@ -43,12 +43,12 @@ public final class LevelBuilder {
 	 * Creates a random EnemyFish. This fish will get a sprite and always spawn
 	 * outside the screen and always move towards the inside.
 	 * 
-	 * @param bb
-	 *            A Bounding Box which decides about what size the fish will
+	 * @param ba
+	 *            A Bounding Area which decides about what size the fish will
 	 *            have.
 	 * @return random Enemyfish
 	 */
-	public static EnemyFish randomizedFish(IBoundingArea ba) {
+	public static EnemyFish randomizedFish(ICollisionArea ba) {
 		//randomize fish properties 
 		int minSize = (int) (ba.getSize() * 0.5);
 		int maxSize = (int) (ba.getSize() * 2.5);
