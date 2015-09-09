@@ -40,18 +40,22 @@ public abstract class PlayingField {
 	private static final int MAX_ENEMY_COUNT = 10;
 
 	/**
+	 * Creates the playing field with a set framerate.
+	 * 
 	 * @param fps
-	 * 		the (target) framerate.
+	 *            the (target) framerate.
 	 */
 	public PlayingField(int fps) {
 		this(fps, null);
 	}
 
 	/**
+	 * Creates the playing field with a set framerate and canvas.
+	 * 
 	 * @param fps
-	 * 		the (target) framerate.
+	 *            the (target) framerate.
 	 * @param canvas
-	 * 		the canvas to use, can be <code>null</code> to create one.
+	 *            the canvas to use, can be <code>null</code> to create one.
 	 */
 	public PlayingField(int fps, Canvas canvas) {
 		this.fps = fps;
@@ -70,8 +74,9 @@ public abstract class PlayingField {
 	}
 
 	/**
-	 * @return
-	 * 		the (target) framerate in frames per second.
+	 * Gives back the framerate of the playing field.
+	 * 
+	 * @return the (target) framerate in frames per second.
 	 */
 	public int getFPS() {
 		return fps;
@@ -95,20 +100,21 @@ public abstract class PlayingField {
 			renderThread.play();
 			oldRenderThread.stop();
 		}
-
 	}
 
 	/**
-	 * @return
-	 * 		the width of the field.
+	 * Gives back the width of the field.
+	 * 
+	 * @return the width of the field.
 	 */
 	public int getWidth() {
 		return WINDOW_X;
 	}
 
 	/**
-	 * @return
-	 * 		the height of the field.
+	 * Gives back the height of the field.
+	 * 
+	 * @return the height of the field.
 	 */
 	public int getHeigth() {
 		return WINDOW_Y;
@@ -235,6 +241,8 @@ public abstract class PlayingField {
 	}
 
 	/**
+	 * Gives back the different players in the field.
+	 * 
 	 * @return all the players in this field.
 	 */
 	public abstract ArrayList<PlayerFish> getPlayers();
@@ -245,13 +253,22 @@ public abstract class PlayingField {
 	public void moveMovables() {
 		for (IMovable m : movables) {
 			m.preMove();
-
+			
 			BoundingBox box = m.getBoundingBox();
-			if (box.getMaxX() >= WINDOW_X + box.getWidth() + 1
-					|| box.getMinX() <= 0 - box.getWidth() - 1
-					|| box.getMaxY() >= WINDOW_Y + box.getHeight() + 1
-					|| box.getMinY() <= 0 - box.getHeight() - 1) {
-				m.hitWall();
+			if (m instanceof PlayerFish) {	// prevent playerfish from leaving the screen
+				if (box.getMaxX() >= WINDOW_X
+						|| box.getMinX() <= 0
+						|| box.getMaxY() >= WINDOW_Y
+						|| box.getMinY() <= 0) {
+					m.hitWall();
+				}
+			} else {
+				if (box.getMaxX() >= WINDOW_X + box.getWidth() + 1
+						|| box.getMinX() <= -1 - box.getWidth()
+						|| box.getMaxY() >= WINDOW_Y + box.getHeight() + 1
+						|| box.getMinY() <= 0 - box.getHeight() - 1) {
+					m.hitWall();
+				}
 			}
 
 			box.move(m.getSpeedVector());
@@ -327,16 +344,18 @@ public abstract class PlayingField {
 	}
 
 	/**
-	 * @return
-	 * 		the renderthread.
+	 * Gives back the renderthread.
+	 * 
+	 * @return the renderthread.
 	 */
 	public Timeline getRenderThread() {
 		return renderThread;
 	}
 
 	/**
-	 * @return
-	 * 		the gamethread.
+	 * Returns the gamethread.
+	 * 
+	 * @return the gamethread.
 	 */
 	public Timeline getGameThread() {
 		return gameThread;
@@ -367,8 +386,9 @@ public abstract class PlayingField {
 	}
 
 	/**
-	 * @return
-	 * 		the canvas that is the PlayingField.
+	 * Gives back the canvas of the Playing Field.
+	 * 
+	 * @return the canvas that is the PlayingField.
 	 */
 	public Canvas getCanvas() {
 		return canvas;

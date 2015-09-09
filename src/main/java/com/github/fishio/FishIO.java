@@ -40,13 +40,15 @@ public class FishIO extends Application {
 	}
 
 	/**
-	 * Close the program.    
+	 * Closes the program.
 	 */
 	public void closeApplication() {
 		this.primaryStage.close();
 	}
 
 	/**
+	 * This method returns the Primary Stage.
+	 * 
 	 * @return primaryStage
 	 */
 	public Stage getPrimaryStage() {
@@ -61,6 +63,8 @@ public class FishIO extends Application {
 	}
 	
 	/**
+	 * Returns the instance parameter of the class.
+	 * 
 	 * @return the instance of this application.
 	 */
 	public static FishIO getInstance() {

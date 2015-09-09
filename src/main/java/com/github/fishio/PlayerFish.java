@@ -1,5 +1,6 @@
 package com.github.fishio;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -15,6 +16,9 @@ public class PlayerFish extends Entity implements IMovable {
 	private double vx;
 	private double vy;
 
+	/**
+	 * These factors have values for whether each of the arrow keys is pressed.
+	 */
 	private boolean upPressed;
 	private boolean downPressed;
 	private boolean leftPressed;
@@ -26,6 +30,8 @@ public class PlayerFish extends Entity implements IMovable {
 	private static final KeyCode KEY_RIGHT = KeyCode.RIGHT;
 
 	private Image sprite;
+	
+	private SimpleIntegerProperty score = new SimpleIntegerProperty(0);
 
 	/**
 	 * The speed at which the speed of the fish increases /
@@ -35,15 +41,18 @@ public class PlayerFish extends Entity implements IMovable {
 
 	private static final double MAX_SPEED = 4; //TODO find a nicer max speed value
 
-	private static final double GROWTH_SPEED = 1.50;
+	private static final double GROWTH_SPEED = 2.5;
+	private static final double FISH_EAT_THRESHOLD = 1.2;
 
 	/**
+	 * Creates the Player fish which the user will be able to control.
+	 * 
 	 * @param bb
-	 * 		The (inital) bounding box of the PlayerFish
+	 *            The (inital) bounding box of the PlayerFish
 	 * @param stage
-	 * 		The scene in which the player fish is located at
+	 *            The scene in which the player fish is located at
 	 * @param sprite
-	 * 		The sprite of the player fish
+	 *            The sprite of the player fish
 	 */
 	public PlayerFish(BoundingBox bb, Stage stage, Image sprite) {
 		super(bb);		
@@ -127,22 +136,28 @@ public class PlayerFish extends Entity implements IMovable {
 	}
 
 	/**
+	 * Gives the horizontal speed of the Player Fish.
+	 * 
 	 * @return the horizontal speed of the PlayerFish. A negative speed means
-	 * 		the fish is going left.
+	 *         the fish is going left.
 	 */
 	public double getSpeedX() {
 		return vx;
 	}
 
 	/**
-	 * @return the vertical speed of the PlayerFish. A negative speed means
-	 * 		the fish is going down.
+	 * Gives the vertical speed of the Player Fish.
+	 * 
+	 * @return the vertical speed of the PlayerFish. A negative speed means the
+	 *         fish is going down.
 	 */
 	public double getSpeedY() {
 		return vy;
 	}
 
 	/**
+	 * Gives the acceleration the Player Fish has.
+	 * 
 	 * @return the acceleration of the fish.
 	 */
 	public double getAcceleration() {
@@ -150,10 +165,10 @@ public class PlayerFish extends Entity implements IMovable {
 	}
 
 	/**
-	 * Sets the speed of the PlayerFish in the horizontal direction.
+	 * Sets the speed of the Player Fish in the horizontal direction.
 	 * 
 	 * @param speedX
-	 * 		the speed to set
+	 *            the speed to set
 	 */
 	public void setSpeedX(double speedX) {
 		this.vx = speedX;
@@ -214,8 +229,9 @@ public class PlayerFish extends Entity implements IMovable {
 	}
 
 	/**
-	 * @return
-	 * 		The rate at which the PlayerFish grows.
+	 * Gives back the growth rate of the Player Fish.
+	 * 
+	 * @return The rate at which the PlayerFish grows.
 	 */
 	public double getGrowthSpeed() {
 		return GROWTH_SPEED;
@@ -256,16 +272,37 @@ public class PlayerFish extends Entity implements IMovable {
 			}
 
 			double tsize = this.getBoundingBox().getSize();
-			double osize = other.getBoundingBox().getSize();
+			double osize = fish.getBoundingBox().getSize();
 
-			if (tsize > osize) {
+			if (tsize > osize * FISH_EAT_THRESHOLD) {
 				fish.setDead();
+				this.addPoints((int) (osize / 200));
 				double dSize = Math.pow(GROWTH_SPEED * osize / tsize, 0.9);
 				getBoundingBox().increaseSize(dSize);
-			} else if (osize > tsize) {
+			} else if (osize > tsize * FISH_EAT_THRESHOLD) {
 				this.setDead();
 			}
 		}
+	}
+
+	/**
+	 * Add points to the fish' score.
+	 * 
+	 * @param points
+	 * 			points to add to the score.
+	 */
+	private void addPoints(int points) {
+		score.set(points + score.intValue());
+	}
+	
+	/**
+	 * Getter for the score property.
+	 * 
+	 * @return
+	 * 		the score
+	 */
+	public SimpleIntegerProperty scoreProperty() {
+		return score;		
 	}
 
 	@Override

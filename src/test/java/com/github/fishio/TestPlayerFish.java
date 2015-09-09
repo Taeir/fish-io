@@ -89,7 +89,7 @@ public class TestPlayerFish {
 	public void testCollideWithLargerEnemyFish() {
 		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(BoundingBox.class), 
 				null, 0.0, 0.0));
-		when(ef.getBoundingBox().getSize()).thenReturn(5.1);
+		when(ef.getBoundingBox().getSize()).thenReturn(6.1);
 		
 		pf.onCollide(ef);
 		
@@ -105,14 +105,14 @@ public class TestPlayerFish {
 	public void testCollideWithSmallerEnemyFish() {
 		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(BoundingBox.class), 
 				null, 0.0, 0.0));
-		when(ef.getBoundingBox().getSize()).thenReturn(4.9);
+		when(ef.getBoundingBox().getSize()).thenReturn(3.9);
 		BoundingBox bb = pf.getBoundingBox();
 		
 		pf.onCollide(ef);
 		
 		Mockito.verify(ef).setDead();
 		Mockito.verify(pf, never()).setDead();
-		Mockito.verify(bb).increaseSize(Math.pow(pf.getGrowthSpeed() * 4.9 / 5.0, 0.9));
+		Mockito.verify(bb).increaseSize(Math.pow(pf.getGrowthSpeed() * 3.9 / 5.0, 0.9));
 	}
 	
 	/**

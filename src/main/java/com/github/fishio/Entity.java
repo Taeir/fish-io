@@ -11,8 +11,10 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable {
 	private BoundingBox bb;
 	
 	/**
+	 * This constructor creates a Bounding Box entity in the game.
+	 * 
 	 * @param bb
-	 * 		the bounding box of this Entity
+	 *            the bounding box of this Entity
 	 */
 	public Entity(BoundingBox bb) {
 		this.bb = bb;
@@ -22,15 +24,16 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable {
 	public abstract void onCollide(ICollidable other);
 	
 	/**
-	 * @return
-	 * 		if the Entity is dead or not.
+	 * This method checks whether the entity is dead or not.
+	 * 
+	 * @return if the Entity is dead or not.
 	 */
 	public boolean isDead() {
 		return dead;
 	}
 	
 	/**
-	 * Mark this Entity as dead.
+	 * Marks this Entity as dead.
 	 */
 	public void setDead() {
 		dead = true;

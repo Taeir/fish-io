@@ -14,10 +14,12 @@ public enum Direction {
 	private final Vec2d normalVector;
 	
 	/**
+	 * Constructor which creates a Direction object.
+	 * 
 	 * @param rad
-	 * 		the radian rotation this Direction represents.
+	 *            the radian rotation this Direction represents.
 	 * @param normalVector
-	 * 		the normalized vector corresponding to the Direction. 
+	 *            the normalized vector corresponding to the Direction.
 	 */
 	Direction(double rad, Vec2d normalVector) {
 		this.rad = rad;
@@ -25,16 +27,18 @@ public enum Direction {
 	}
 	
 	/**
-	 * @return
-	 * 		the radian rotation corresponding to this Direction.
+	 * Method which gives back the radian rotation of the Direction object.
+	 * 
+	 * @return the radian rotation corresponding to this Direction.
 	 */
 	public double getRadians() {
 		return this.rad;
 	}
 	
 	/**
-	 * @return
-	 * 		the normalized vector corresponding to the Direction. 
+	 * Method which gives back the normalized vector of the Direction object.
+	 * 
+	 * @return the normalized vector corresponding to the Direction.
 	 */
 	public Vec2d getNormalVector() {
 		return new Vec2d(normalVector);

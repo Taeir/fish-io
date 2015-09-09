@@ -4,20 +4,28 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 /**
- * Enemy Fish class.
- * This class contains all methods concerning enemy fish on the screen.
+ * EnemyFish class. This class contains all methods concerning non-player or
+ * enemy fish on the screen.
  */
 public class EnemyFish extends Entity implements IMovable {
+	
+	private static final double DIRECTION_CHANGE_CHANCE = 0.1;
+	
 	private double vx;
 	private double vy;
 	private Image sprite;
 
 	/**
-	 * Main constructor of enemy fish.
-	 * @param b Bounding box of enemy fish.
-	 * @param sprite sprite of the enemy fish
-	 * @param startvx starting speed in x direction
-	 * @param startvy starting speed in y direction
+	 * Main constructor of the enemy fish.
+	 * 
+	 * @param b
+	 *            Bounding box of enemy fish object.
+	 * @param sprite
+	 *            Sprite of the enemy fish object.
+	 * @param startvx
+	 *            Starting speed of the enemy fish object in the x direction.
+	 * @param startvy
+	 *            Starting speed of the enemy fish object in the y direction.
 	 */
 	public EnemyFish(BoundingBox b, Image sprite, double startvx, double startvy) {
 		super(b);
@@ -52,12 +60,11 @@ public class EnemyFish extends Entity implements IMovable {
 
 	/**
 	 * Enemy fish should die if they hit the wall from the inside.
-	 * Otherwise do nothing
 	 */
 	@Override
 	public void hitWall() {
 			setDead();
-		}
+	}
 
 	/** 
 	 * Enemy fish sometimes change their movement speed.
@@ -65,7 +72,7 @@ public class EnemyFish extends Entity implements IMovable {
 	 */
 	@Override
 	public void preMove() {
-		if (Math.random() < 0.1) {
+		if (Math.random() < DIRECTION_CHANGE_CHANCE) {
 			//Only change one direction
 			if (Math.random() <= 0.5) {
 				vy = vy + vy * (Math.random() - 0.5);
@@ -78,21 +85,20 @@ public class EnemyFish extends Entity implements IMovable {
 	}
 
 	/**
-	 * Limits the speed of the fish to a minimum and maximum value.
+	 * Limits the speed of the fish to a minimum and maximum value. These values
+	 * are retrieved from the LevelBuilder class.
 	 */
 	private void limitSpeed() {
-		double minSpeed = 1;
-		double maxSpeed = 5;
 		if (vx > 0) {
-			vx = Math.max(minSpeed, Math.min(vx, maxSpeed));
+			vx = Math.max(LevelBuilder.MIN_EFISH_SPEED, Math.min(vx, LevelBuilder.MAX_EFISH_SPEED));
 		} else {
-			vx = Math.min(-minSpeed, Math.max(vx, -maxSpeed));
+			vx = Math.min(-LevelBuilder.MIN_EFISH_SPEED, Math.max(vx, -LevelBuilder.MAX_EFISH_SPEED));
 		}
 
 		if (vy > 0) {
-			vy = Math.max(minSpeed, Math.min(vy, maxSpeed));
+			vy = Math.max(LevelBuilder.MIN_EFISH_SPEED, Math.min(vy, LevelBuilder.MAX_EFISH_SPEED));
 		} else {
-			vy = Math.min(-minSpeed, Math.max(vy, -maxSpeed));
+			vy = Math.min(-LevelBuilder.MIN_EFISH_SPEED, Math.max(vy, -LevelBuilder.MAX_EFISH_SPEED));
 		}		
 	}
 

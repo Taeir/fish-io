@@ -5,32 +5,36 @@ package com.github.fishio;
  */
 public interface IPositional {
 	/**
-	 * @return
-	 * 		the (centre) x coordinate of this object.
+	 * Gives back the minimal x coordinate of the positional object.
+	 * 
+	 * @return the minimal x coordinate of this object.
 	 */
 	default double getX() {
 		return getBoundingBox().getMinX();
 	}
 	
 	/**
-	 * @return
-	 * 		the (centre) y coordinate of this object.
+	 * Gives back the minimal y coordinate of the positional object.
+	 * 
+	 * @return the minimal y coordinate of this object.
 	 */
 	default double getY() {
 		return getBoundingBox().getMinY();
 	}
 	
 	/**
-	 * @return
-	 * 		the width of this object.
+	 * Gives back the width of the positional object.
+	 * 
+	 * @return the width of this object.
 	 */
 	default double getWidth() {
 		return getBoundingBox().getWidth();
 	}
 	
 	/**
-	 * @return
-	 * 		the height of this object.
+	 * Gives back the height of this object.
+	 * 
+	 * @return the height of this object.
 	 */
 	default double getHeight() {
 		return getBoundingBox().getHeight();

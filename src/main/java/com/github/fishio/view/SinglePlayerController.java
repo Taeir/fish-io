@@ -29,6 +29,8 @@ public class SinglePlayerController implements ScreenController {
 	private VBox deathScreen;
 	@FXML
 	private Label scoreField;
+	@FXML
+	private Label endScore;
 
 	private PlayingField pf;
 
@@ -131,8 +133,6 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void restartGame() {
-		scoreField.setText("score: 0");
-
 		//Stop the game, clear all items, and start it again.
 		pf.stopGame();
 		pf.clear();
@@ -142,6 +142,17 @@ public class SinglePlayerController implements ScreenController {
 		
 		//Hide the deathscreen. When the animation is done, start the game thread.
 		showDeathScreen(false, event -> pf.getGameThread().play());
+	}
+	
+	/**
+	 * Update the displayed score.
+	 * 
+	 * @param score
+	 * 			the new score to be displayed on the screen.
+	 */
+	public void updateScoreDisplay(int score) {
+		scoreField.setText("score:" + score);
+		endScore.setText("score: " + score + " points");
 	}
 
 }
