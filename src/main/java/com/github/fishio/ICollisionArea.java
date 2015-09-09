@@ -102,8 +102,19 @@ public interface ICollisionArea {
 	void move(Vec2d speedVector);
 	
 	/**
+	 * Calculates and sets the rotation of a  IMovable object.
+	 * 
+	 * @param m
+	 * 		the movable that has this collisionArea
+	 * 
 	 * @return
 	 * 		the rotation of the boundingArea.
+	 */
+	double setRotation(IMovable m);
+	
+	/**
+	 * @return
+	 * 		the rotation of the boundingArea in degrees.
 	 */
 	double getRotation();
 }

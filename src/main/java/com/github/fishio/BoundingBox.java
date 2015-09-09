@@ -5,11 +5,11 @@ package com.github.fishio;
  */
 
 public class BoundingBox implements ICollisionArea {
-	private double xmin;
-	private double ymin;
-	private double xmax;
-	private double ymax;
-
+	private Vec2d center;
+	private double height;
+	private double width;
+	private double rotation;
+	
 	/**
 	 * Creates a new Bounding Box with the given coordinates.
 	 * 
@@ -23,10 +23,10 @@ public class BoundingBox implements ICollisionArea {
 	 * 		the largest y coordinate
 	 */
 	public BoundingBox(double xmin, double ymin, double xmax, double ymax) {
-		this.xmin = xmin;
-		this.ymin = ymin;
-		this.xmax = xmax;
-		this.ymax = ymax;
+		this.width = xmax - xmin;
+		this.height = ymax - ymin;
+		this.center = new Vec2d(xmin + 0.5 * width, ymin + 0.5 * height);
+		this.rotation = 0;
 	}
 
 	/**
@@ -40,50 +40,50 @@ public class BoundingBox implements ICollisionArea {
 	 *            the height of the box along the height of the fish.
 	 */
 	public BoundingBox(Vec2d position, double width, double height) {
-		this.xmin = position.x - 0.5 * width;
-		this.ymin = position.y - 0.5 * height;
-		this.xmax = position.x + 0.5 * width;
-		this.ymax = position.y + 0.5 * height;
+		this.center = position;
+		this.width = width;
+		this.height = height;
+		this.rotation = 0;
 	}
 
 	@Override
 	public double getMinX() {
-		return xmin;
+		return center.x - 0.5 * width;
 	}
 
 	@Override
 	public double getMaxX() {
-		return xmax;
+		return center.x + 0.5 * width;
 	}
 
 	@Override
 	public double getMinY() {
-		return ymin;
+		return center.y - 0.5 * height;
 	}
 
 	@Override
 	public double getMaxY() {
-		return ymax;
+		return center.y + 0.5 * height;
 	}
 
 	@Override
 	public double getCenterX() {
-		return (xmax + xmin) / 2;
+		return center.x;
 	}
 
 	@Override
 	public double getCenterY() {
-		return (ymax + ymin) / 2;
+		return center.y;
 	}
 
 	@Override
 	public double getWidth() {
-		return xmax - xmin;
+		return width;
 	}
 
 	@Override
 	public double getHeight() {
-		return ymax - ymin;
+		return height;
 	}
 
 	/**
@@ -107,18 +107,13 @@ public class BoundingBox implements ICollisionArea {
 		v.x *= amount;
 		v.y *= amount;
 
-		xmin += v.x;
-		xmax += v.x;
-		ymin += v.y;
-		ymax += v.y;
+		center.add(v);
 	}
 
 	@Override
 	public void move(Vec2d v) {
-		xmin += v.x;
-		xmax += v.x;
-		ymin -= v.y;
-		ymax -= v.y;
+		v.y = -v.y;
+		center.add(v);
 	}
 
 	@Override
@@ -135,34 +130,63 @@ public class BoundingBox implements ICollisionArea {
 		double b = Math.sqrt((w * h + size) / c) - h;
 		double a = c * (h + b) - w;
 
-		xmax += 0.5 * a;
-		xmin -= 0.5 * a;
-
-		ymax += 0.5 * b;
-		ymin -= 0.5 * b;
+		width += a;
+		height += b;
 	}
 
 	@Override
-	public boolean intersects(ICollisionArea other) {		
-		return this.xmin + this.getWidth() > other.getMinX()
-				&& this.xmin < other.getMinX() + other.getWidth()
-				&& this.ymin + this.getHeight() > other.getMinY()
-				&& this.ymin < other.getMinY() + other.getHeight();
+	public boolean intersects(ICollisionArea other) {
+		double xmin = getMinX();
+		double ymin = getMinY();
+		
+		if (xmin + this.getWidth() > other.getMinX()
+				&& xmin < other.getMinX() + other.getWidth()
+				&& ymin + this.getHeight() > other.getMinY()
+				&& ymin < other.getMinY() + other.getHeight()) {
+			return true;
+		}
+
+		return false;
 	}
 
+
+	@Override
+	public double setRotation(IMovable m) {
+		Vec2d sv = m.getSpeedVector();
+		if (sv.x != 0) {
+			rotation = 360 - Math.toDegrees(Math.atan(sv.y / sv.x));
+		} else {
+			if (sv.y > 0) {
+				rotation = 270;
+			} else if (sv.y < 0) {
+				rotation = 90;
+			} else {
+				rotation = 0;
+			}
+		}		
+		return rotation;
+	}
+	
+	@Override
+	public double getRotation() {
+		return rotation;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		if (center == null) {
+			result *= prime;
+		} else {
+			result = prime * result + center.hashCode();
+		}
 		long temp;
-		temp = Double.doubleToLongBits(xmax);
+		temp = Double.doubleToLongBits(height);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(xmin);
+		temp = Double.doubleToLongBits(rotation);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(ymax);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(ymin);
+		temp = Double.doubleToLongBits(width);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
@@ -176,24 +200,24 @@ public class BoundingBox implements ICollisionArea {
 			return false;
 		}
 		BoundingBox other = (BoundingBox) obj;
-		if (Double.doubleToLongBits(xmax) != Double.doubleToLongBits(other.xmax)) {
+		if (center == null) {
+			if (other.center != null) {
+				return false;
+			}
+		} else if (!center.equals(other.center)) {
 			return false;
 		}
-		if (Double.doubleToLongBits(xmin) != Double.doubleToLongBits(other.xmin)) {
+		if (Double.doubleToLongBits(height) != Double.doubleToLongBits(other.height)) {
 			return false;
 		}
-		if (Double.doubleToLongBits(ymax) != Double.doubleToLongBits(other.ymax)) {
+		if (Double.doubleToLongBits(rotation) != Double.doubleToLongBits(other.rotation)) {
 			return false;
 		}
-		if (Double.doubleToLongBits(ymin) != Double.doubleToLongBits(other.ymin)) {
+		if (Double.doubleToLongBits(width) != Double.doubleToLongBits(other.width)) {
 			return false;
 		}
 		return true;
 	}
 
-	@Override
-	public double getRotation() {
-		return 0;	//TODO (maybe)
-	}
-
+	
 }

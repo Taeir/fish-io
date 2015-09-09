@@ -30,7 +30,7 @@ public class PlayerFish extends Entity implements IMovable {
 	private KeyCode rightKey = KeyCode.RIGHT;
 
 	private Image sprite;
-	
+
 	private SimpleIntegerProperty score = new SimpleIntegerProperty(0);
 
 	/**
@@ -98,7 +98,7 @@ public class PlayerFish extends Entity implements IMovable {
 
 		if (vx < 0 && (!leftPressed || rightPressed)) vx += ACCELERATION;
 		if (vx > 0 && (!rightPressed || leftPressed)) vx -= ACCELERATION;
-		
+
 		if (vx < 0.1 && vx > -0.1) vx = 0;	// stop if speed is too slow
 	}
 
@@ -114,7 +114,7 @@ public class PlayerFish extends Entity implements IMovable {
 
 		if (vy < 0 && (!downPressed || upPressed)) vy += ACCELERATION;
 		if (vy > 0 && (!upPressed || downPressed)) vy -= ACCELERATION;
-		
+
 		if (vy < 0.1 && vy > -0.1) vy = 0;	// stop if speed is too slow
 	}
 
@@ -276,7 +276,7 @@ public class PlayerFish extends Entity implements IMovable {
 	private void addPoints(int points) {
 		score.set(points + score.intValue());
 	}
-	
+
 	/**
 	 * Getter for the score property.
 	 * 
@@ -293,11 +293,12 @@ public class PlayerFish extends Entity implements IMovable {
 		if (isDead()) {
 			return;
 		}
+		getBoundingArea().setRotation(this); //update rotation;
 		if (vx >= 0) {
-			gc.drawImage(sprite, getX(), getY(), getWidth(), getHeight());
+			drawRotatedImage(gc, sprite, getBoundingArea(), false);
 		} else {
-			gc.drawImage(sprite, getX() + getWidth(), getY(), -getWidth(), getHeight());
-		}		
+			drawRotatedImage(gc, sprite, getBoundingArea(), true);
+		}	
 	}
 
 }

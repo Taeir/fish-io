@@ -15,6 +15,8 @@ public class CollisionMask implements ICollisionArea {
 	private double width;
 	private double height;
 	
+	private double rotation;
+	
 	private double size;
 	
 	private boolean[][] data;
@@ -36,6 +38,7 @@ public class CollisionMask implements ICollisionArea {
 		this.width = width;
 		this.height = height;
 		
+		rotation = 0;
 		this.size = width * height;
 		
 		this.data = data;
@@ -81,22 +84,22 @@ public class CollisionMask implements ICollisionArea {
 
 	@Override
 	public double getMinX() {
-		return center.x - 0.5 * width;
+		return center.x - 0.5 * width; //TODO use rotation
 	}
 
 	@Override
 	public double getMaxX() {
-		return center.x + 0.5 * width;
+		return center.x + 0.5 * width; //TODO use rotation
 	}
 
 	@Override
 	public double getMinY() {
-		return center.y - 0.5 * height;
+		return center.y - 0.5 * height; //TODO use rotation
 	}
 
 	@Override
 	public double getMaxY() {
-		return center.y + 0.5 * height;
+		return center.y + 0.5 * height; //TODO use rotation
 	}
 
 	@Override
@@ -126,7 +129,12 @@ public class CollisionMask implements ICollisionArea {
 
 	@Override
 	public void increaseSize(double delta) {
-		// TODO Auto-generated method stub
+		double w = getWidth();
+		double h = getHeight();
+		double c = w / h;
+
+		width = Math.sqrt((w * h + size) / c) - h;
+		height = c * (h + width) - w;
 	}
 
 	@Override
@@ -135,8 +143,13 @@ public class CollisionMask implements ICollisionArea {
 	}
 
 	@Override
+	public double setRotation(IMovable m) {
+		return rotation;
+	}
+	
+	@Override
 	public double getRotation() {
-		return 0; //TODO (maybe)
+		return rotation;
 	}
 	
 	/**
