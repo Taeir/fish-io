@@ -1,6 +1,7 @@
 package com.github.fishio.gui;
 
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
 
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -97,11 +98,30 @@ public class GuiTest extends ApplicationTest {
 	}
 	
 	/**
+	 * Sleeps for the given amount of milliseconds.<br>
+	 * <br>
+	 * If an InterruptedException is thrown from the sleep method, {@link org.junit.Assert#fail()} is called.
+	 * 
+	 * @param ms
+	 * 		the amount of milliseconds to sleep for.
+	 */
+	public void sleepFail(long ms) {
+		try {
+			Thread.sleep(100L);
+		} catch (InterruptedException ex) {
+			fail();
+		}
+	}
+	
+	/**
 	 * Skips the splash screen.
 	 */
 	public void skipSplash() {
 		//Press a key to skip the splash
 		press(KeyCode.SPACE);
+		
+		//Sleep for 100 milliseconds to fix travis builds.
+		sleepFail(100L);
 		
 		//Assert that we are now on the main screen.
 		assertSame(mainScene, getCurrentScene());

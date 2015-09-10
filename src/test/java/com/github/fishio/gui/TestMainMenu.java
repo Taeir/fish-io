@@ -2,7 +2,6 @@ package com.github.fishio.gui;
 
 import static org.junit.Assert.assertTrue;
 
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
 import org.junit.Test;
