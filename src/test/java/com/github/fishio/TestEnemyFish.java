@@ -8,9 +8,6 @@ import org.junit.Test;
 
 /**
  * This class tests the EnemyFish class.
- * 
- * @author Jesse Arens
- * 		
  */
 public class TestEnemyFish {
 	/**
@@ -67,7 +64,7 @@ public class TestEnemyFish {
 	 * Test for {@link EnemyFish#doesCollides(ICollidable)}.
 	 */
 	@Test
-	public void testdoesCollides() {
+	public void testonCollide() {
 		BoundingBox bb1 = new BoundingBox(1.0, 2.0, 3.0, 4.0);
 		EnemyFish enemy1 = new EnemyFish(bb1, null, 3.0, 5.0);
 		ICollidable col1 = new EnemyFish(bb1, null, 5.0, 8.0);
@@ -75,6 +72,89 @@ public class TestEnemyFish {
 		assertFalse(enemy1.isDead());
 	}
 	
-	// TODO:
-	// Testrender, Testlimitspeed.
+	/**
+	 * Test for {@link EnemyFish#limitVx()} with vx > 0 and vx >
+	 * MAX_EFISH_SPEED.
+	 */
+	@Test
+	public void testlimitVx1() {
+		BoundingBox bb1 = new BoundingBox(1.0, 2.0, 3.0, 4.0);
+		EnemyFish enemy1 = new EnemyFish(bb1, null, 3.0, 5.0);
+		Vec2d vec1 = new Vec2d(LevelBuilder.MAX_EFISH_SPEED + 1, 2);
+		enemy1.setSpeedVector(vec1);
+		enemy1.limitVx();
+		assertEquals(LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
+	}
+	
+	/**
+	 * Test for {@link EnemyFish#limitVx()} with vx &lt; 0 and vx &lt; minus
+	 * MAX_EFISH_SPEED.
+	 */
+	@Test
+	public void testlimitVx2() {
+		BoundingBox bb1 = new BoundingBox(1.0, 2.0, 3.0, 4.0);
+		EnemyFish enemy1 = new EnemyFish(bb1, null, 3.0, 5.0);
+		Vec2d vec1 = new Vec2d(-LevelBuilder.MAX_EFISH_SPEED - 1, 2);
+		enemy1.setSpeedVector(vec1);
+		enemy1.limitVx();
+		assertEquals(-LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
+	}
+	
+	/**
+	 * Test for {@link EnemyFish#limitVy()} with vy > 0 and vy >
+	 * MIN_EFISH_SPEED.
+	 */
+	@Test
+	public void testlimitVy1() {
+		BoundingBox bb1 = new BoundingBox(1.0, 2.0, 3.0, 4.0);
+		EnemyFish enemy1 = new EnemyFish(bb1, null, 3.0, 5.0);
+		Vec2d vec1 = new Vec2d(2, LevelBuilder.MAX_EFISH_SPEED + 1);
+		enemy1.setSpeedVector(vec1);
+		enemy1.limitVy();
+		assertEquals(LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
+	}
+	
+	/**
+	 * Test for {@link EnemyFish#limitVy()} with vy &lt; 0 and vy &lt;
+	 * MIN_EFISH_SPEED.
+	 */
+	@Test
+	public void testlimitVy2() {
+		BoundingBox bb1 = new BoundingBox(1.0, 2.0, 3.0, 4.0);
+		EnemyFish enemy1 = new EnemyFish(bb1, null, 3.0, 5.0);
+		Vec2d vec1 = new Vec2d(2, -LevelBuilder.MAX_EFISH_SPEED - 1);
+		enemy1.setSpeedVector(vec1);
+		enemy1.limitVy();
+		assertEquals(-LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
+	}
+	
+	/**
+	 * Test for {@link EnemyFish#limitSpeed()} with vx and vy > 0 and
+	 * MAX_EFISH_SPEED.
+	 */
+	@Test
+	public void testlimitSpeed1() {
+		BoundingBox bb1 = new BoundingBox(1.0, 2.0, 3.0, 4.0);
+		EnemyFish enemy1 = new EnemyFish(bb1, null, 3.0, 5.0);
+		Vec2d vec1 = new Vec2d(LevelBuilder.MAX_EFISH_SPEED + 1, LevelBuilder.MAX_EFISH_SPEED + 1);
+		enemy1.setSpeedVector(vec1);
+		enemy1.limitSpeed();
+		assertEquals(LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
+		assertEquals(LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
+	}
+	
+	/**
+	 * Test for {@link EnemyFish#limitSpeed()} with vx and vy &lt; 0 and minus
+	 * MAX_EFISH_SPEED.
+	 */
+	@Test
+	public void testlimitSpeed2() {
+		BoundingBox bb1 = new BoundingBox(1.0, 2.0, 3.0, 4.0);
+		EnemyFish enemy1 = new EnemyFish(bb1, null, 3.0, 5.0);
+		Vec2d vec1 = new Vec2d(-LevelBuilder.MAX_EFISH_SPEED - 1, -LevelBuilder.MAX_EFISH_SPEED - 1);
+		enemy1.setSpeedVector(vec1);
+		enemy1.limitSpeed();
+		assertEquals(-LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
+		assertEquals(-LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
+	}
 }
