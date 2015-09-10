@@ -30,7 +30,7 @@ public class PlayerFish extends Entity implements IMovable {
 	private static final KeyCode KEY_RIGHT = KeyCode.RIGHT;
 
 	private Image sprite;
-	
+
 	private SimpleIntegerProperty score = new SimpleIntegerProperty(0);
 
 	/**
@@ -54,7 +54,7 @@ public class PlayerFish extends Entity implements IMovable {
 	 * @param sprite
 	 *            The sprite of the player fish
 	 */
-	public PlayerFish(BoundingBox bb, Stage stage, Image sprite) {
+	public PlayerFish(ICollisionArea bb, Stage stage, Image sprite) {
 		super(bb);		
 
 		this.sprite = sprite;
@@ -104,7 +104,7 @@ public class PlayerFish extends Entity implements IMovable {
 		} else if (vx > 0 && (!rightPressed || leftPressed)) {
 			vx -= ACCELERATION;
 		}
-		
+
 		if (vx < 0.1 && vx > -0.1) {
 			vx = 0;	// stop if speed is too slow
 		}
@@ -119,7 +119,7 @@ public class PlayerFish extends Entity implements IMovable {
 		if (downPressed && -vy < MAX_SPEED) {
 			vy -= ACCELERATION;
 		}
-		
+
 		if (upPressed && vy < MAX_SPEED) {
 			vy += ACCELERATION;
 		}
@@ -129,7 +129,7 @@ public class PlayerFish extends Entity implements IMovable {
 		} else if (vy > 0 && (!upPressed || downPressed)) {
 			vy -= ACCELERATION;
 		}
-		
+
 		if (vy < 0.1 && vy > -0.1) {
 			vy = 0;	// stop if speed is too slow
 		}
@@ -265,20 +265,19 @@ public class PlayerFish extends Entity implements IMovable {
 	@Override
 	public void onCollide(ICollidable other) {
 		if (other instanceof EnemyFish) {
-
 			EnemyFish fish = (EnemyFish) other;
 			if (fish.isDead()) {
 				return;
 			}
 
-			double tsize = this.getBoundingBox().getSize();
-			double osize = fish.getBoundingBox().getSize();
+			double tsize = this.getBoundingArea().getSize();
+			double osize = fish.getBoundingArea().getSize();
 
 			if (tsize > osize * FISH_EAT_THRESHOLD) {
 				fish.setDead();
 				this.addPoints((int) (osize / 200));
 				double dSize = Math.pow(GROWTH_SPEED * osize / tsize, 0.9);
-				getBoundingBox().increaseSize(dSize);
+				getBoundingArea().increaseSize(dSize);
 			} else if (osize > tsize * FISH_EAT_THRESHOLD) {
 				this.setDead();
 			}
@@ -294,7 +293,7 @@ public class PlayerFish extends Entity implements IMovable {
 	private void addPoints(int points) {
 		score.set(points + score.intValue());
 	}
-	
+
 	/**
 	 * Getter for the score property.
 	 * 
@@ -311,12 +310,13 @@ public class PlayerFish extends Entity implements IMovable {
 		if (isDead()) {
 			return;
 		}
-		
+		getBoundingArea().setRotation(this); //update rotation;
+
 		if (vx >= 0) {
-			gc.drawImage(sprite, getX(), getY(), getWidth(), getHeight());
+			drawRotatedImage(gc, sprite, getBoundingArea(), false);
 		} else {
-			gc.drawImage(sprite, getX() + getWidth(), getY(), -getWidth(), getHeight());
-		}		
+			drawRotatedImage(gc, sprite, getBoundingArea(), true);
+		}	
 	}
 
 }

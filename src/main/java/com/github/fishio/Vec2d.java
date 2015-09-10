@@ -173,4 +173,14 @@ public class Vec2d {
 	public String toString() {
 		return "Vec2d [x=" + x + ", y=" + y + "]";
 	}
+
+	/**
+	 * Add a vector to this vector.
+	 * @param vector
+	 * 		The vector to add.
+	 */
+	public void add(Vec2d vector) {
+		x += vector.x;
+		y += vector.y;
+	}
 }

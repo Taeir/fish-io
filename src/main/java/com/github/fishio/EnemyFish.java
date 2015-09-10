@@ -8,9 +8,9 @@ import javafx.scene.image.Image;
  * enemy fish on the screen.
  */
 public class EnemyFish extends Entity implements IMovable {
-	
+
 	private static final double DIRECTION_CHANGE_CHANCE = 0.1;
-	
+
 	private double vx;
 	private double vy;
 	private Image sprite;
@@ -40,11 +40,12 @@ public class EnemyFish extends Entity implements IMovable {
 		if (isDead()) {
 			return;
 		}
+		getBoundingArea().setRotation(this);	//update rotation
 		if (vx >= 0) {
-			gc.drawImage(sprite, getX(), getY(), getWidth(), getHeight());
+			drawRotatedImage(gc, sprite, getBoundingArea(), false);
 		} else {
-			gc.drawImage(sprite, getX() + getWidth(), getY(), -getWidth(), getHeight());
-		}		
+			drawRotatedImage(gc, sprite, getBoundingArea(), true);
+		}
 	}
 
 	@Override
@@ -63,7 +64,7 @@ public class EnemyFish extends Entity implements IMovable {
 	 */
 	@Override
 	public void hitWall() {
-			setDead();
+		setDead();
 	}
 
 	/** 

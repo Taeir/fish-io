@@ -10,7 +10,7 @@ public interface IPositional {
 	 * @return the minimal x coordinate of this object.
 	 */
 	default double getX() {
-		return getBoundingBox().getMinX();
+		return Math.min(getBoundingArea().getTopLeft().x, getBoundingArea().getBottomLeft().x);
 	}
 	
 	/**
@@ -19,7 +19,7 @@ public interface IPositional {
 	 * @return the minimal y coordinate of this object.
 	 */
 	default double getY() {
-		return getBoundingBox().getMinY();
+		return Math.min(getBoundingArea().getTopLeft().y, getBoundingArea().getTopRight().y);
 	}
 	
 	/**
@@ -28,7 +28,7 @@ public interface IPositional {
 	 * @return the width of this object.
 	 */
 	default double getWidth() {
-		return getBoundingBox().getWidth();
+		return getBoundingArea().getWidth();
 	}
 	
 	/**
@@ -37,7 +37,7 @@ public interface IPositional {
 	 * @return the height of this object.
 	 */
 	default double getHeight() {
-		return getBoundingBox().getHeight();
+		return getBoundingArea().getHeight();
 	}
 	
 	/**
@@ -46,5 +46,5 @@ public interface IPositional {
 	 * @return
 	 * 		a BoundingBox representing the position of this object.
 	 */
-	BoundingBox getBoundingBox();
+	ICollisionArea getBoundingArea();
 }

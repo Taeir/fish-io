@@ -4,12 +4,12 @@ package com.github.fishio;
  * Class to represent an (Axis Aligned) Bounding Box.
  */
 
-public class BoundingBox {
-	private double xmin;
-	private double ymin;
-	private double xmax;
-	private double ymax;
-
+public class BoundingBox implements ICollisionArea {
+	private Vec2d center;
+	private double height;
+	private double width;
+	private double rotation;
+	
 	/**
 	 * Creates a new Bounding Box with the given coordinates.
 	 * 
@@ -23,10 +23,10 @@ public class BoundingBox {
 	 * 		the largest y coordinate
 	 */
 	public BoundingBox(double xmin, double ymin, double xmax, double ymax) {
-		this.xmin = xmin;
-		this.ymin = ymin;
-		this.xmax = xmax;
-		this.ymax = ymax;
+		this.width = xmax - xmin;
+		this.height = ymax - ymin;
+		this.center = new Vec2d(xmin + 0.5 * width, ymin + 0.5 * height);
+		this.rotation = 0;
 	}
 
 	/**
@@ -40,103 +40,50 @@ public class BoundingBox {
 	 *            the height of the box along the height of the fish.
 	 */
 	public BoundingBox(Vec2d position, double width, double height) {
-		this.xmin = position.x - 0.5 * width;
-		this.ymin = position.y - 0.5 * height;
-		this.xmax = position.x + 0.5 * width;
-		this.ymax = position.y + 0.5 * height;
+		this.center = position;
+		this.width = width;
+		this.height = height;
+		this.rotation = 0;
 	}
 
-	/**
-	 * A method which gives back the minimal x coordinate of the Bounding Box.
-	 * 
-	 * @return the minimal x coordinate.
-	 */
-	public double getMinX() {
-		return xmin;
+	@Override
+	public Vec2d getTopLeft() {
+		return new Vec2d(center.x - 0.5 * width, center.y - 0.5 * height);
 	}
 
-	/**
-	 * A method which gives back the maximal x coordinate of the Bounding Box.
-	 * 
-	 * @return the maximal x coordinate.
-	 */
-	public double getMaxX() {
-		return xmax;
+	@Override
+	public Vec2d getTopRight() {
+		return new Vec2d(center.x + 0.5 * width, center.y - 0.5 * height);
 	}
 
-	/**
-	 * A method which gives back the minimal y coordinate of the Bounding Box.
-	 * 
-	 * @return the minimal y coordinate.
-	 */
-	public double getMinY() {
-		return ymin;
+	@Override
+	public Vec2d getBottomLeft() {
+		return new Vec2d(center.x - 0.5 * width, center.y + 0.5 * height);
 	}
 
-	/**
-	 * A method which gives back the maximal y coordinate of the Bounding Box.
-	 * 
-	 * @return the maximal y coordinate.
-	 */
-	public double getMaxY() {
-		return ymax;
+	@Override
+	public Vec2d getBottomRight() {
+		return new Vec2d(center.x + 0.5 * width, center.y + 0.5 * height);
 	}
 
-	/**
-	 * A method which returns the x coordinate of the centre of the Bounding
-	 * Box.
-	 * 
-	 * @return the x coordinate of the centre of this bounding box
-	 */
+	@Override
 	public double getCenterX() {
-		return (xmax + xmin) / 2;
+		return center.x;
 	}
 
-	/**
-	 * A method which returns the y coordinate of the centre of the Bounding
-	 * Box.
-	 * 
-	 * @return the y coordinate of the centre of this bounding box
-	 */
+	@Override
 	public double getCenterY() {
-		return (ymax + ymin) / 2;
+		return center.y;
 	}
 
-	/**
-	 * A method which gives the width of the bounding box. The width is given
-	 * along the length of the fish.
-	 * 
-	 * @return the width of this Bounding Box.
-	 */
+	@Override
 	public double getWidth() {
-		return xmax - xmin;
+		return width;
 	}
 
-	/**
-	 * A method which gives the height of the bounding box. The height is given
-	 * along the height of the fish.
-	 * 
-	 * @return the height of this Bounding Box.
-	 */
+	@Override
 	public double getHeight() {
-		return ymax - ymin;
-	}
-
-	/**
-	 * Moves this bounding box in the specified direction.
-	 * 
-	 * @param dir
-	 *            the vector which specifies the direction to move in.
-	 * @param amount
-	 *            the amount to move (speed).
-	 */
-	public void move(Direction dir, double amount) {
-		Vec2d v = dir.getNormalVector();
-
-		v.x *= amount;
-		v.y *= amount;
-
-		move(v);
+		return height;
 	}
 
 	/**
@@ -160,42 +107,21 @@ public class BoundingBox {
 		v.x *= amount;
 		v.y *= amount;
 
-		xmin += v.x;
-		xmax += v.x;
-		ymin += v.y;
-		ymax += v.y;
+		center.add(v);
 	}
 
-	/**
-	 * Moves this Bounding Box in the specified direction.
-	 * 
-	 * @param v
-	 *            The vector which specifies the direction the Bounding Box
-	 *            should move at. The length of the vector is the speed.
-	 */
+	@Override
 	public void move(Vec2d v) {
-		xmin += v.x;
-		xmax += v.x;
-		ymin -= v.y;
-		ymax -= v.y;
+		v.y = -v.y;
+		center.add(v);
 	}
 
-	/**
-	 * Method which returns the area or size of the Bounding Box.
-	 * 
-	 * @return the size (width times height) of the BoundingBox
-	 */
+	@Override
 	public double getSize() {
 		return getWidth() * getHeight();
 	}
 
-	/**
-	 * Increases the size (area) of the fish without
-	 * affecting the width/height (shape stays the same).
-	 * 
-	 * @param size
-	 * 		The size to increase the current size with.
-	 */
+	@Override
 	public void increaseSize(double size) {
 		double w = getWidth();
 		double h = getHeight();
@@ -204,27 +130,23 @@ public class BoundingBox {
 		double b = Math.sqrt((w * h + size) / c) - h;
 		double a = c * (h + b) - w;
 
-		xmax += 0.5 * a;
-		xmin -= 0.5 * a;
-
-		ymax += 0.5 * b;
-		ymin -= 0.5 * b;
+		width += a;
+		height += b;
 	}
 
-	/**
-	 * Performs a few checks to find out whether the Bounding Box has any
-	 * overlap with another Bounding Box.
-	 * 
-	 * @param other
-	 *            the other bounding box to check with.
-	 * @return true if this bounding box collides with the given Bounding Box,
-	 *         false if not.
-	 */
-	public boolean intersects(BoundingBox other) {
-		if (this.xmin + this.getWidth() > other.xmin
-				&& this.xmin < other.xmin + other.getWidth()
-				&& this.ymin + this.getHeight() > other.ymin
-				&& this.ymin < other.ymin + other.getHeight()) {
+	@Override
+	public boolean intersects(ICollisionArea other) {
+		double txmin = Math.min(getTopLeft().x, getBottomLeft().x);
+		double tymin = Math.min(getTopLeft().y, getTopRight().y);
+		
+		double oxmin = Math.min(other.getTopLeft().x, other.getBottomLeft().x);
+		double oymin = Math.min(other.getTopLeft().y, other.getTopRight().y);
+		
+		//TODO support rotation in collision checking
+		if (txmin + this.getWidth() > oxmin
+				&& txmin < oxmin + other.getWidth()
+				&& tymin + this.getHeight() > oymin
+				&& tymin < oymin + other.getHeight()) {
 			return true;
 		}
 
@@ -233,17 +155,42 @@ public class BoundingBox {
 
 
 	@Override
+	public double setRotation(IMovable m) {
+		Vec2d sv = m.getSpeedVector();
+		if (sv.x != 0) {
+			rotation = 360 - Math.toDegrees(Math.atan(sv.y / sv.x));
+		} else {
+			if (sv.y > 0) {
+				rotation = 270;
+			} else if (sv.y < 0) {
+				rotation = 90;
+			} else {
+				rotation = 0;
+			}
+		}		
+		return rotation;
+	}
+	
+	@Override
+	public double getRotation() {
+		return rotation;
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		if (center == null) {
+			result *= prime;
+		} else {
+			result = prime * result + center.hashCode();
+		}
 		long temp;
-		temp = Double.doubleToLongBits(xmax);
+		temp = Double.doubleToLongBits(height);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(xmin);
+		temp = Double.doubleToLongBits(rotation);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(ymax);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(ymin);
+		temp = Double.doubleToLongBits(width);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
@@ -257,19 +204,24 @@ public class BoundingBox {
 			return false;
 		}
 		BoundingBox other = (BoundingBox) obj;
-		if (Double.doubleToLongBits(xmax) != Double.doubleToLongBits(other.xmax)) {
+		if (center == null) {
+			if (other.center != null) {
+				return false;
+			}
+		} else if (!center.equals(other.center)) {
 			return false;
 		}
-		if (Double.doubleToLongBits(xmin) != Double.doubleToLongBits(other.xmin)) {
+		if (Double.doubleToLongBits(height) != Double.doubleToLongBits(other.height)) {
 			return false;
 		}
-		if (Double.doubleToLongBits(ymax) != Double.doubleToLongBits(other.ymax)) {
+		if (Double.doubleToLongBits(rotation) != Double.doubleToLongBits(other.rotation)) {
 			return false;
 		}
-		if (Double.doubleToLongBits(ymin) != Double.doubleToLongBits(other.ymin)) {
+		if (Double.doubleToLongBits(width) != Double.doubleToLongBits(other.width)) {
 			return false;
 		}
 		return true;
 	}
 
+	
 }
