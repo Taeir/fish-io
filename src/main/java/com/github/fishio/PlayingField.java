@@ -376,6 +376,14 @@ public abstract class PlayingField {
 		gameThread.stop();
 		renderThread.stop();
 	}
+	
+	/**
+	 * @return
+	 * 		if the game is running or not (stopped / paused)
+	 */
+	public boolean isRunning() {
+		return gameThread.getStatus() == Status.RUNNING;
+	}
 
 	/**
 	 * Gives back the canvas of the Playing Field.
@@ -428,6 +436,10 @@ public abstract class PlayingField {
 		if (o instanceof Entity) {
 			entities.remove(o);
 		}
+		
+		if (o instanceof ICollidable) {
+			collidables.remove(o);
+		}
 	}
 
 	/**
@@ -448,6 +460,9 @@ public abstract class PlayingField {
 		entities.clear();
 		drawables.clear();
 		movables.clear();
+		collidables.clear();
+		
+		enemyCount = 0;
 	}
 
 	/**

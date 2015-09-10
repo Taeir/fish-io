@@ -19,7 +19,7 @@
             <ColorAdjust contrast="-0.44" />
          </effect>
       </ImageView>
-      <VBox fx:id="company" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" visible="false">
+      <VBox fx:id="company" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.0">
          <children>
             <Label text="A game by">
                <font>
@@ -57,7 +57,7 @@
             </HBox>
          </children>
       </VBox>
-      <VBox fx:id="game" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" visible="false" StackPane.alignment="CENTER">
+      <VBox fx:id="game" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.0" StackPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="300.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
                <image>
