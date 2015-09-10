@@ -1,4 +1,4 @@
-package com.github.fishio.view;
+package com.github.fishio.control;
 
 import com.github.fishio.FishIO;
 import com.github.fishio.PlayingField;

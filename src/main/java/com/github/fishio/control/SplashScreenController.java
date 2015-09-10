@@ -1,4 +1,4 @@
-package com.github.fishio.view;
+package com.github.fishio.control;
 
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
