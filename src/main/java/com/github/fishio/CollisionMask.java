@@ -83,23 +83,23 @@ public class CollisionMask implements ICollisionArea {
 	}
 
 	@Override
-	public double getMinX() {
-		return center.x - 0.5 * width; //TODO use rotation
+	public Vec2d getTopLeft() {
+		return new Vec2d(center.x - 0.5 * width, center.y - 0.5 * height);
 	}
 
 	@Override
-	public double getMaxX() {
-		return center.x + 0.5 * width; //TODO use rotation
+	public Vec2d getTopRight() {
+		return new Vec2d(center.x + 0.5 * width, center.y - 0.5 * height);
 	}
 
 	@Override
-	public double getMinY() {
-		return center.y - 0.5 * height; //TODO use rotation
+	public Vec2d getBottomLeft() {
+		return new Vec2d(center.x - 0.5 * width, center.y + 0.5 * height);
 	}
 
 	@Override
-	public double getMaxY() {
-		return center.y + 0.5 * height; //TODO use rotation
+	public Vec2d getBottomRight() {
+		return new Vec2d(center.x + 0.5 * width, center.y + 0.5 * height);
 	}
 
 	@Override

@@ -255,18 +255,22 @@ public abstract class PlayingField {
 			m.preMove();
 			
 			ICollisionArea box = m.getBoundingArea();
+			double maxx = Math.max(box.getTopRight().x, box.getBottomRight().x);
+			double minx = Math.min(box.getTopLeft().x, box.getBottomLeft().x);
+			double maxy = Math.max(box.getBottomLeft().y, box.getBottomRight().y);
+			double miny = Math.min(box.getTopLeft().y, box.getTopRight().y);
 			if (m instanceof PlayerFish) {	// prevent playerfish from leaving the screen
-				if (box.getMaxX() >= WINDOW_X
-						|| box.getMinX() <= 0
-						|| box.getMaxY() >= WINDOW_Y
-						|| box.getMinY() <= 0) {
+				if (maxx >= WINDOW_X
+						|| minx <= 0
+						|| maxy >= WINDOW_Y
+						|| miny <= 0) {
 					m.hitWall();
 				}
 			} else {
-				if (box.getMaxX() >= WINDOW_X + box.getWidth() + 1
-						|| box.getMinX() <= -1 - box.getWidth()
-						|| box.getMaxY() >= WINDOW_Y + box.getHeight() + 1
-						|| box.getMinY() <= 0 - box.getHeight() - 1) {
+				if (maxx >= WINDOW_X + box.getWidth() + 1
+						|| minx <= -1 - box.getWidth()
+						|| maxy >= WINDOW_Y + box.getHeight() + 1
+						|| miny <= 0 - box.getHeight() - 1) {
 					m.hitWall();
 				}
 			}
@@ -275,14 +279,14 @@ public abstract class PlayingField {
 
 			if (!m.canMoveThroughWall()) {
 
-				if (box.getMaxX() > WINDOW_X) {
-					box.move(new Vec2d(-(box.getMaxX() - WINDOW_X), 0));
-				} if (box.getMinX() < 0) {
-					box.move(new Vec2d(-box.getMinX(), 0));
-				} if (box.getMaxY() > WINDOW_Y) {
-					box.move(new Vec2d(0, box.getMaxY() - WINDOW_Y));
-				} if (box.getMinY() < 0) {
-					box.move(new Vec2d(0, box.getMinY()));
+				if (maxx > WINDOW_X) {
+					box.move(new Vec2d(-(maxx - WINDOW_X), 0));
+				} if (minx < 0) {
+					box.move(new Vec2d(-minx, 0));
+				} if (maxy > WINDOW_Y) {
+					box.move(new Vec2d(0, maxy - WINDOW_Y));
+				} if (miny < 0) {
+					box.move(new Vec2d(0, miny));
 				}
 
 			}

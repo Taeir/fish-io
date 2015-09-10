@@ -9,6 +9,8 @@ import javafx.scene.transform.Rotate;
  * Represents a drawable object.
  */
 public interface IDrawable {
+	boolean DEBUG = false;
+	
 	/**
 	 * Called when this object dies.
 	 * 
@@ -58,7 +60,7 @@ public interface IDrawable {
 		gc.restore();
 
 		// debug options
-		if (true) {
+		if (DEBUG) {
 			gc.fillRect(cx - 0.5 * ca.getWidth(), cy - 0.5 * height, ca.getWidth(), height);
 			gc.setFill(Color.CYAN);
 			gc.fillOval(cx, cy, 2, 2);	//draw sprite center (usefull for debug)

@@ -47,23 +47,23 @@ public class BoundingBox implements ICollisionArea {
 	}
 
 	@Override
-	public double getMinX() {
-		return center.x - 0.5 * width;
+	public Vec2d getTopLeft() {
+		return new Vec2d(center.x - 0.5 * width, center.y - 0.5 * height);
 	}
 
 	@Override
-	public double getMaxX() {
-		return center.x + 0.5 * width;
+	public Vec2d getTopRight() {
+		return new Vec2d(center.x + 0.5 * width, center.y - 0.5 * height);
 	}
 
 	@Override
-	public double getMinY() {
-		return center.y - 0.5 * height;
+	public Vec2d getBottomLeft() {
+		return new Vec2d(center.x - 0.5 * width, center.y + 0.5 * height);
 	}
 
 	@Override
-	public double getMaxY() {
-		return center.y + 0.5 * height;
+	public Vec2d getBottomRight() {
+		return new Vec2d(center.x + 0.5 * width, center.y + 0.5 * height);
 	}
 
 	@Override
@@ -136,13 +136,17 @@ public class BoundingBox implements ICollisionArea {
 
 	@Override
 	public boolean intersects(ICollisionArea other) {
-		double xmin = getMinX();
-		double ymin = getMinY();
+		double txmin = Math.min(getTopLeft().x, getBottomLeft().x);
+		double tymin = Math.min(getTopLeft().y, getTopRight().y);
 		
-		if (xmin + this.getWidth() > other.getMinX()
-				&& xmin < other.getMinX() + other.getWidth()
-				&& ymin + this.getHeight() > other.getMinY()
-				&& ymin < other.getMinY() + other.getHeight()) {
+		double oxmin = Math.min(other.getTopLeft().x, other.getBottomLeft().x);
+		double oymin = Math.min(other.getTopLeft().y, other.getTopRight().y);
+		
+		//TODO support rotation in collision checking
+		if (txmin + this.getWidth() > oxmin
+				&& txmin < oxmin + other.getWidth()
+				&& tymin + this.getHeight() > oymin
+				&& tymin < oymin + other.getHeight()) {
 			return true;
 		}
 

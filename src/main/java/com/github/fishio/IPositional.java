@@ -10,7 +10,7 @@ public interface IPositional {
 	 * @return the minimal x coordinate of this object.
 	 */
 	default double getX() {
-		return getBoundingArea().getMinX();
+		return Math.min(getBoundingArea().getTopLeft().x, getBoundingArea().getBottomLeft().x);
 	}
 	
 	/**
@@ -19,7 +19,7 @@ public interface IPositional {
 	 * @return the minimal y coordinate of this object.
 	 */
 	default double getY() {
-		return getBoundingArea().getMinY();
+		return Math.min(getBoundingArea().getTopLeft().y, getBoundingArea().getTopRight().y);
 	}
 	
 	/**

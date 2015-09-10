@@ -22,87 +22,87 @@ public class TestBoundingBox {
 	}
 
 	/**
-	 * Test for {@link BoundingBox#getMinX()}.
+	 * Test for {@link BoundingBox#getTopLeft()}.
 	 */
 	@Test
-	public void testGetMinX() {
+	public void testGetTopLeft() {
 		BoundingBox bb = new BoundingBox(1.0, 2.0, 3.0, 4.0);
 		
-		assertEquals(1.0, bb.getMinX(), 0.0D);
+		assertEquals(new Vec2d(1.0, 2.0), bb.getTopLeft());
 	}
 	
 	/**
-	 * Test for {@link BoundingBox#getMinX()} using 
+	 * Test for {@link BoundingBox#getTopLeft()} using 
 	 * the constructor {@link BoundingBox#BoundingBox(Vec2d, double, double)}.
 	 */
 	@Test
-	public void testGetMinX2() {
+	public void testGetTopLeft2() {
 		BoundingBox bb = new BoundingBox(new Vec2d(5.0, 5.0), 4.0, 5.0);
 		
-		assertEquals(3.0, bb.getMinX(), 0.0D);
+		assertEquals(new Vec2d(3.0, 2.5), bb.getTopLeft());
 	}
 
 	/**
-	 * Test for {@link BoundingBox#getMaxX()}.
+	 * Test for {@link BoundingBox#getTopRight()}.
 	 */
 	@Test
-	public void testGetMaxX() {
+	public void testGetTopRight() {
 		BoundingBox bb = new BoundingBox(1.0, 2.0, 3.0, 4.0);
 		
-		assertEquals(3.0, bb.getMaxX(), 0.0D);
+		assertEquals(new Vec2d(3.0, 2.0), bb.getTopRight());
 	}
 	
 	/**
-	 * Test for {@link BoundingBox#getMaxX()} using 
+	 * Test for {@link BoundingBox#getTopRight()} using 
 	 * the constructor {@link BoundingBox#BoundingBox(Vec2d, double, double)}.
 	 */
 	@Test
-	public void testGetMaxX2() {
+	public void testGetTopRight2() {
 		BoundingBox bb = new BoundingBox(new Vec2d(5.0, 5.0), 4.0, 5.0);
 		
-		assertEquals(7.0, bb.getMaxX(), 0.0D);
+		assertEquals(new Vec2d(7.0, 2.5), bb.getTopRight());
 	}
 
 	/**
-	 * Test for {@link BoundingBox#getMinY()}.
+	 * Test for {@link BoundingBox#getBottomLeft()}.
 	 */
 	@Test
-	public void testGetMinY() {
+	public void testGetBottomLeft() {
 		BoundingBox bb = new BoundingBox(1.0, 2.0, 3.0, 5.0);
 		
-		assertEquals(2.0, bb.getMinY(), 0.0D);
+		assertEquals(new Vec2d(1.0, 5.0), bb.getBottomLeft());
 	}
 	
 	/**
-	 * Test for {@link BoundingBox#getMinY()} using 
+	 * Test for {@link BoundingBox#getBottomLeft()} using 
 	 * the constructor {@link BoundingBox#BoundingBox(Vec2d, double, double)}.
 	 */
 	@Test
-	public void testGetMinY2() {
+	public void testGetBottomLeft2() {
 		BoundingBox bb = new BoundingBox(new Vec2d(5.0, 5.0), 4.0, 5.0);
 		
-		assertEquals(2.5, bb.getMinY(), 0.0D);
+		assertEquals(new Vec2d(3.0, 7.5), bb.getBottomLeft());
 	}
 
 	/**
-	 * Test for {@link BoundingBox#getMaxY()}.
+	 * Test for {@link BoundingBox#getBottomRight()}.
 	 */
 	@Test
-	public void testGetMaxY() {
+	public void testGetBottomRight() {
 		BoundingBox bb = new BoundingBox(1.0, 2.0, 3.0, 4.0);
 		
-		assertEquals(4.0, bb.getMaxY(), 0.0D);
+		assertEquals(new Vec2d(3.0, 4.0), bb.getBottomRight());
 	}
 	
 	/**
-	 * Test for {@link BoundingBox#getMaxY()} using 
+	 * Test for {@link BoundingBox#getMBottomRight()} using 
 	 * the constructor {@link BoundingBox#BoundingBox(Vec2d, double, double)}.
 	 */
 	@Test
-	public void testGetMaxY2() {
+	public void testGetBottomRight2() {
 		BoundingBox bb = new BoundingBox(new Vec2d(5.0, 5.0), 4.0, 5.0);
 		
-		assertEquals(7.5, bb.getMaxY(), 0.0D);
+		assertEquals(new Vec2d(7.0, 7.5), bb.getBottomRight());
 	}
 
 	/**
@@ -157,10 +157,10 @@ public class TestBoundingBox {
 		//Move up right
 		bb.move(0.25 * Math.PI, 1.0);
 		
-		assertEquals(1.0 + 0.5 * Math.sqrt(2), bb.getMinX(), 0.0000001D);
-		assertEquals(2.0 + 0.5 * Math.sqrt(2), bb.getMinY(), 0.0000001D);
-		assertEquals(3.0 + 0.5 * Math.sqrt(2), bb.getMaxX(), 0.0000001D);
-		assertEquals(4.0 + 0.5 * Math.sqrt(2), bb.getMaxY(), 0.0000001D);
+		assertEquals(1.0 + 0.5 * Math.sqrt(2), bb.getTopLeft().x, 0.0000001D);
+		assertEquals(2.0 + 0.5 * Math.sqrt(2), bb.getTopLeft().y, 0.0000001D);
+		assertEquals(3.0 + 0.5 * Math.sqrt(2), bb.getTopRight().x, 0.0000001D);
+		assertEquals(4.0 + 0.5 * Math.sqrt(2), bb.getBottomRight().y, 0.0000001D);
 	}
 	
 	/**
@@ -173,10 +173,10 @@ public class TestBoundingBox {
 		
 		bb.move(new Vec2d(-5.3, 7.1));
 		
-		assertEquals(-4.3, bb.getMinX(), 0.0000001D);
-		assertEquals(-5.1, bb.getMinY(), 0.0000001D);
-		assertEquals(-2.3, bb.getMaxX(), 0.0000001D);
-		assertEquals(-3.1, bb.getMaxY(), 0.0000001D);
+		assertEquals(-4.3, bb.getTopLeft().x, 0.0000001D);
+		assertEquals(-5.1, bb.getTopLeft().y, 0.0000001D);
+		assertEquals(-2.3, bb.getBottomRight().x, 0.0000001D);
+		assertEquals(-3.1, bb.getBottomRight().y, 0.0000001D);
 	}
 	
 	/**
@@ -198,10 +198,10 @@ public class TestBoundingBox {
 		
 		bb.increaseSize(10.0);
 		
-		assertEquals(0.0, bb.getMinX(), 0000001D);
-		assertEquals(0.0, bb.getMinY(), 0000001D);
-		assertEquals(4.0, bb.getMaxX(), 0000001D);
-		assertEquals(3.0, bb.getMaxY(), 0000001D);
+		assertEquals(0.0, bb.getTopLeft().x, 0000001D);
+		assertEquals(0.0, bb.getTopLeft().y, 0000001D);
+		assertEquals(4.0, bb.getBottomRight().x, 0000001D);
+		assertEquals(3.0, bb.getBottomRight().y, 0000001D);
 	}
 
 	/**

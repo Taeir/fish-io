@@ -17,32 +17,32 @@ public interface ICollisionArea {
 	boolean intersects(ICollisionArea other);
 	
 	/**
-	 * A method which gives back the minimal x coordinate of the Bounding Box.
+	 * A method which gives back the top left coordinate of the Bounding Box.
 	 * 
-	 * @return the minimal x coordinate.
+	 * @return the top left coordinate.
 	 */
-	double getMinX();
+	Vec2d getTopLeft();
 	
 	/**
-	 * A method which gives back the maximal x coordinate of the Bounding Box.
+	 * A method which gives back the to right coordinate of the Bounding Box.
 	 * 
-	 * @return the maximal x coordinate.
+	 * @return the top right coordinate.
 	 */
-	double getMaxX();
+	Vec2d getTopRight();
 	
 	/**
-	 * A method which gives back the minimal y coordinate of the Bounding Box.
+	 * A method which gives back the bottom left coordinate of the Bounding Box.
 	 * 
-	 * @return the minimal y coordinate.
+	 * @return the bottom left coordinate.
 	 */
-	double getMinY();
+	Vec2d getBottomLeft();
 	
 	/**
-	 * A method which gives back the maximal y coordinate of the Bounding Box.
+	 * A method which gives back the bottom right coordinate of the Bounding Box.
 	 * 
-	 * @return the maximal y coordinate.
+	 * @return the bottom right coordinate.
 	 */
-	double getMaxY();
+	Vec2d getBottomRight();
 	
 	/**
 	 * A method which returns the x coordinate of the centre of the Bounding
