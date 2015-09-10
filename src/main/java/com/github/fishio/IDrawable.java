@@ -9,8 +9,8 @@ import javafx.scene.transform.Rotate;
  * Represents a drawable object.
  */
 public interface IDrawable {
-	boolean DEBUG = false;
-	
+	boolean DEBUG = true;
+
 	/**
 	 * Called when this object dies.
 	 * 
@@ -59,19 +59,23 @@ public interface IDrawable {
 		gc.drawImage(image, cx - 0.5 * width, cy - 0.5 * height, width, height);
 		gc.restore();
 
-		// debug options
+		// debug rendering
 		if (DEBUG) {
-			gc.fillRect(cx - 0.5 * ca.getWidth(), cy - 0.5 * height, ca.getWidth(), height);
+			angle = Math.toRadians(angle);
 			gc.setFill(Color.CYAN);
-			gc.fillOval(cx, cy, 2, 2);	//draw sprite center (usefull for debug)
+			gc.fillOval(cx, cy, 2, 2);	//draw sprite center
 			gc.setFill(Color.RED);
-			double d = Math.sqrt(0.25 * width * width + 0.25 * height * height);
-			double dx = d * Math.cos(angle);
-			double dy = d * Math.sin(angle);
-			gc.fillOval(cx - dx, cy - dy, 2, 2);
-			gc.fillOval(cx - dx, cy + dy, 2, 2);
-			gc.fillOval(cx + dx, cy - dy, 2, 2);
-			gc.fillOval(cx + dx, cy + dy, 2, 2);
+
+			// draw CollisionArea box corners
+			Vec2d tl = ca.getTopLeft();
+			Vec2d tr = ca.getTopRight();
+			Vec2d bl = ca.getBottomLeft();
+			Vec2d br = ca.getBottomRight();
+			
+			gc.fillOval(tl.x, tl.y, 2, 2);
+			gc.fillOval(tr.x, tr.y, 2, 2);
+			gc.fillOval(bl.x, bl.y, 2, 2);
+			gc.fillOval(br.x, br.y, 2, 2);
 		}
 	}
 }
