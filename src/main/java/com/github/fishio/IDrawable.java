@@ -9,7 +9,7 @@ import javafx.scene.transform.Rotate;
  * Represents a drawable object.
  */
 public interface IDrawable {
-	boolean DEBUG = true;
+	boolean DEBUG = false;
 
 	/**
 	 * Called when this object dies.
@@ -66,6 +66,7 @@ public interface IDrawable {
 			gc.setFill(Color.RED);
 
 			gc.fillText(String.valueOf(angle), cx, cy - 10);	//angle display
+			
 			angle = Math.toRadians(angle);
 			
 			// draw CollisionArea box corners
