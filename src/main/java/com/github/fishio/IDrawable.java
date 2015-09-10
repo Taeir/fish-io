@@ -9,7 +9,7 @@ import javafx.scene.transform.Rotate;
  * Represents a drawable object.
  */
 public interface IDrawable {
-	boolean DEBUG = true;
+	boolean DEBUG = false;
 
 	/**
 	 * Called when this object dies.
