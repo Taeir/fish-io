@@ -13,8 +13,8 @@ import javafx.stage.Stage;
  */
 public class PlayerFish extends Entity implements IMovable {
 
-	private double vx = 0;
-	private double vy = 0;
+	private double vx;
+	private double vy;
 
 	/**
 	 * These factors have values for whether each of the arrow keys is pressed.
@@ -24,10 +24,10 @@ public class PlayerFish extends Entity implements IMovable {
 	private boolean leftPressed;
 	private boolean rightPressed;
 
-	private KeyCode upKey = KeyCode.UP;
-	private KeyCode downKey = KeyCode.DOWN;
-	private KeyCode leftKey = KeyCode.LEFT;
-	private KeyCode rightKey = KeyCode.RIGHT;
+	private static final KeyCode KEY_UP = KeyCode.UP;
+	private static final KeyCode KEY_DOWN = KeyCode.DOWN;
+	private static final KeyCode KEY_LEFT = KeyCode.LEFT;
+	private static final KeyCode KEY_RIGHT = KeyCode.RIGHT;
 
 	private Image sprite;
 
@@ -61,26 +61,26 @@ public class PlayerFish extends Entity implements IMovable {
 
 		stage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
 			KeyCode pressedKey = event.getCode();
-			if (pressedKey == upKey) {
+			if (pressedKey == KEY_UP) {
 				upPressed = true;
-			} else if (pressedKey == downKey) {
+			} else if (pressedKey == KEY_DOWN) {
 				downPressed = true;
-			} else if (pressedKey == leftKey) {
+			} else if (pressedKey == KEY_LEFT) {
 				leftPressed = true;
-			} else if (pressedKey == rightKey) {
+			} else if (pressedKey == KEY_RIGHT) {
 				rightPressed = true;
 			}
 		});
 
 		stage.addEventHandler(KeyEvent.KEY_RELEASED, event -> {
 			KeyCode releasedKey = event.getCode();
-			if (releasedKey == upKey) {
+			if (releasedKey == KEY_UP) {
 				upPressed = false;
-			} else if (releasedKey == downKey) {
+			} else if (releasedKey == KEY_DOWN) {
 				downPressed = false;
-			} else if (releasedKey == leftKey) {
+			} else if (releasedKey == KEY_LEFT) {
 				leftPressed = false;
-			} else if (releasedKey == rightKey) {
+			} else if (releasedKey == KEY_RIGHT) {
 				rightPressed = false;
 			}
 		});
@@ -91,15 +91,23 @@ public class PlayerFish extends Entity implements IMovable {
 	 * horizontal direction, depending on which keys are currently
 	 * pressed by the user.
 	 */
-	@SuppressWarnings ("checkstyle:needbraces")
 	public void adjustXSpeed() {
-		if (leftPressed && -vx < MAX_SPEED) vx -= ACCELERATION;
-		if (rightPressed && vx < MAX_SPEED) vx += ACCELERATION;
+		if (leftPressed && -vx < MAX_SPEED) {
+			vx -= ACCELERATION;
+		}
+		if (rightPressed && vx < MAX_SPEED) {
+			vx += ACCELERATION;
+		}
 
-		if (vx < 0 && (!leftPressed || rightPressed)) vx += ACCELERATION;
-		if (vx > 0 && (!rightPressed || leftPressed)) vx -= ACCELERATION;
+		if (vx < 0 && (!leftPressed || rightPressed)) {
+			vx += ACCELERATION;
+		} else if (vx > 0 && (!rightPressed || leftPressed)) {
+			vx -= ACCELERATION;
+		}
 
-		if (vx < 0.1 && vx > -0.1) vx = 0;	// stop if speed is too slow
+		if (vx < 0.1 && vx > -0.1) {
+			vx = 0;	// stop if speed is too slow
+		}
 	}
 
 	/**
@@ -107,15 +115,24 @@ public class PlayerFish extends Entity implements IMovable {
 	 * vertical direction, depending on which keys are currently
 	 * pressed by the user.
 	 */
-	@SuppressWarnings ("checkstyle:needbraces")
 	public void adjustYSpeed() {
-		if (downPressed && -vy < MAX_SPEED) vy -= ACCELERATION;
-		if (upPressed && vy < MAX_SPEED) vy += ACCELERATION;
+		if (downPressed && -vy < MAX_SPEED) {
+			vy -= ACCELERATION;
+		}
 
-		if (vy < 0 && (!downPressed || upPressed)) vy += ACCELERATION;
-		if (vy > 0 && (!upPressed || downPressed)) vy -= ACCELERATION;
+		if (upPressed && vy < MAX_SPEED) {
+			vy += ACCELERATION;
+		}
 
-		if (vy < 0.1 && vy > -0.1) vy = 0;	// stop if speed is too slow
+		if (vy < 0 && (!downPressed || upPressed)) {
+			vy += ACCELERATION;
+		} else if (vy > 0 && (!upPressed || downPressed)) {
+			vy -= ACCELERATION;
+		}
+
+		if (vy < 0.1 && vy > -0.1) {
+			vy = 0;	// stop if speed is too slow
+		}
 	}
 
 	/**
@@ -294,6 +311,7 @@ public class PlayerFish extends Entity implements IMovable {
 			return;
 		}
 		getBoundingArea().setRotation(this); //update rotation;
+
 		if (vx >= 0) {
 			drawRotatedImage(gc, sprite, getBoundingArea(), false);
 		} else {

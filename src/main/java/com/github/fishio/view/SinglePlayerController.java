@@ -2,15 +2,16 @@ package com.github.fishio.view;
 
 import com.github.fishio.FishIO;
 import com.github.fishio.PlayingField;
+import com.github.fishio.Preloader;
 import com.github.fishio.SinglePlayerPlayingField;
 
-import javafx.animation.Animation.Status;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -21,8 +22,6 @@ import javafx.util.Duration;
  * @since 03-09-2015
  */
 public class SinglePlayerController implements ScreenController {
-
-	private FishIO mainApp;
 
 	@FXML
 	private Canvas gameCanvas;
@@ -36,14 +35,15 @@ public class SinglePlayerController implements ScreenController {
 	private PlayingField pf;
 
 	@Override
-	public void setMainApp(FishIO mainApp) {
-		this.mainApp = mainApp;
-
+	public void init(Scene scene) {
 		//setup the playing field
 		pf = new SinglePlayerPlayingField(60, gameCanvas, this);
-		pf.setBackground(new Image("background.png"));
-
-		mainApp.getPrimaryStage().setTitle("Fish.io Singleplayer");
+		pf.setBackground(Preloader.getImageOrLoad("background.png"));
+	}
+	
+	@Override
+	public void onSwitchTo() {
+		FishIO.getInstance().getPrimaryStage().setTitle("Fish.io Singleplayer");
 		pf.startGame();
 	}
 
@@ -55,11 +55,7 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void onPause(ActionEvent event) {
-		if (pf == null) {
-			return;
-		}
-
-		if (pf.getGameThread().getStatus() == Status.RUNNING) {
+		if (pf.isRunning()) {
 			pf.stopGame();
 		} else {
 			pf.startGame();
@@ -71,23 +67,56 @@ public class SinglePlayerController implements ScreenController {
 	 * 
 	 * @param visible
 	 * 			Boolean to indicate if the screen is visible.
+	 * @param onDone
+	 * 			will be called after the death screen has been shown.
+	 * 			Can be <code>null</code>.
 	 */
-	public void showDeathScreen(boolean visible) {
+	public void showDeathScreen(boolean visible, EventHandler<ActionEvent> onDone) {
+		if (visible && deathScreen.isVisible() && deathScreen.getOpacity() == 1.0) {
+			if (onDone != null) {
+				onDone.handle(new ActionEvent());
+			}
+			return;
+		} else if (!visible && !deathScreen.isVisible()) {
+			if (onDone != null) {
+				onDone.handle(new ActionEvent());
+			}
+			return;
+		}
+		
 		FadeTransition fade = new FadeTransition(Duration.millis(400), deathScreen);
+		
 		if (visible) {
+			//Show deathscreen fully transparent and fade it in
+			deathScreen.setOpacity(0.0);
+			deathScreen.setVisible(true);
+			
 			fade.setFromValue(0.0);
 			fade.setToValue(1.0);
+			
+			if (onDone != null) {
+				fade.setOnFinished(onDone);
+			}
 		} else {
-
-			fade.setToValue(1.0);
-			fade.setFromValue(0.0);
+			//Show deathscreen fully visible and fade it out
+			deathScreen.setOpacity(1.0);
+			deathScreen.setVisible(true);
+			
+			fade.setFromValue(1.0);
+			fade.setToValue(0.0);
+			
+			//Hide deathscreen when animation is done.
+			fade.setOnFinished(event -> {
+				deathScreen.setVisible(false);
+				
+				if (onDone != null) {
+					onDone.handle(event);
+				}
+			});
 		}
-
-
+		
+		//Start animation
 		fade.play();
-		if (deathScreen.isVisible() != visible) {
-			deathScreen.setVisible(visible);
-		}
 	}
 
 	/**
@@ -96,7 +125,7 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	public void backToMenu() {
 		pf.stopGame();
-		mainApp.openMainMenu();
+		FishIO.getInstance().openMainMenu();
 	}
 
 	/**
@@ -104,14 +133,15 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void restartGame() {
-		showDeathScreen(false);
-		
-		//Reset the map
+		//Stop the game, clear all items, and start it again.
 		pf.stopGame();
-		pf = new SinglePlayerPlayingField(60, gameCanvas, this);
-		pf.setBackground(new Image("background.png"));
-
-		pf.startGame();
+		pf.clear();
+		
+		//Start the render thread (it takes some time to appear).
+		pf.getRenderThread().play();
+		
+		//Hide the deathscreen. When the animation is done, start the game thread.
+		showDeathScreen(false, event -> pf.getGameThread().play());
 	}
 	
 	/**

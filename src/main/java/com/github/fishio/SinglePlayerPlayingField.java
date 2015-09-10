@@ -6,7 +6,6 @@ import com.github.fishio.listeners.TickListener;
 import com.github.fishio.view.SinglePlayerController;
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.image.Image;
 
 /**
  * Represents a playing field designed for single player.
@@ -14,6 +13,8 @@ import javafx.scene.image.Image;
 public class SinglePlayerPlayingField extends PlayingField {
 
 	private PlayerFish player;
+	
+	private final SinglePlayerController screenController;
 	
 	/**
 	 * Creates the playing field for a single player.
@@ -29,14 +30,10 @@ public class SinglePlayerPlayingField extends PlayingField {
 	public SinglePlayerPlayingField(int fps, Canvas canvas, SinglePlayerController screenController) {
 		super(fps, canvas);
 		
+		this.screenController = screenController;
+		
 		//Adding the playerFish
-		player = new PlayerFish(new BoundingBox(new Vec2d(640, 335), 30, 15), 
-				FishIO.getInstance().getPrimaryStage(), new Image("sprites/fish/playerFish.png"));
-		add(player);
-	
-		player.scoreProperty().addListener((observable, oldValue, newValue) -> {
-			screenController.updateScoreDisplay(newValue.intValue());
-		});
+		addPlayerFish();
 		
 		//Checking if the playerFish died
 		registerGameListener(new TickListener() {
@@ -46,12 +43,40 @@ public class SinglePlayerPlayingField extends PlayingField {
 			@Override
 			public void postTick() {
 				if (player.isDead()) {
-					screenController.showDeathScreen(true);
-					stopGame();
-					clear();
+					//Stop the game thread.
+					getGameThread().stop();
+					
+					//Stop the render thread after the animation is done.
+					//This is in order to prevent the rendering from stopping prematurely.
+					SinglePlayerPlayingField.this.screenController.showDeathScreen(true,
+							event -> getRenderThread().stop());
 				}
 			}
 		});
+	}
+	
+	/**
+	 * Creates and adds the player fish.
+	 */
+	protected final void addPlayerFish() {
+		this.player = new PlayerFish(
+				new BoundingBox(new Vec2d(640, 335), 30, 15), 
+				FishIO.getInstance().getPrimaryStage(),
+				Preloader.getImageOrLoad("sprites/fish/playerFish.png"));
+		
+		this.player.scoreProperty().addListener((observable, oldValue, newValue) -> {
+			screenController.updateScoreDisplay(newValue.intValue());
+		});
+		
+		add(this.player);
+	}
+	
+	@Override
+	public void clear() {
+		super.clear();
+		
+		//Also add the playerfish again.
+		addPlayerFish();
 	}
 
 	@Override
@@ -60,5 +85,4 @@ public class SinglePlayerPlayingField extends PlayingField {
 		res.add(player);
 		return res;
 	}
-
 }

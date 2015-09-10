@@ -1,6 +1,6 @@
 package com.github.fishio.view;
 
-import com.github.fishio.FishIO;
+import javafx.scene.Scene;
 
 /**
  * Interface ScreenController.
@@ -11,10 +11,15 @@ import com.github.fishio.FishIO;
  */
 public interface ScreenController {
 	/**
-	 * Set the mainApp reference of the screencontroller.
+	 * Called after the screen is loaded from fxml.
 	 * 
-	 * @param mainApp
-	 * 			The reference to the main app
+	 * @param scene
+	 * 		The scene corresponding to this screen.
 	 */
-	void setMainApp(FishIO mainApp);
+	void init(Scene scene);
+	
+	/**
+	 * Called right before the screen is switched to.
+	 */
+	void onSwitchTo();
 }
