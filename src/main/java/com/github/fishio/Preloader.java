@@ -11,7 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
-import com.github.fishio.view.ScreenController;
+import com.github.fishio.control.ScreenController;
 
 /**
  * Class to preload sprites.
