@@ -312,11 +312,13 @@ public class PlayerFish extends Entity implements IMovable {
 		}
 		getBoundingArea().setRotation(this); //update rotation;
 
-		if (vx >= 0) {
+		if (vx > 0) {
 			drawRotatedImage(gc, sprite, getBoundingArea(), false);
-		} else {
+		} else if (vx < 0) {
 			drawRotatedImage(gc, sprite, getBoundingArea(), true);
-		}	
+		} else {
+			drawRotatedImage(gc, sprite, getBoundingArea(), vy < 0);
+		}
 	}
 
 }
