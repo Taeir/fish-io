@@ -94,5 +94,12 @@ public class SplashScreenController implements ScreenController {
 			Preloader.switchTo("mainMenu", 1000);
 		}
 	}
+	
+	/**
+	 * Used by the tests, allows the animation to be ran again.
+	 */
+	public void allowRerun() {
+		run = false;
+	}
 
 }
