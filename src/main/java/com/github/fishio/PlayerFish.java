@@ -37,11 +37,11 @@ public class PlayerFish extends Entity implements IMovable {
 	 * The speed at which the speed of the fish increases /
 	 * decreases depending on what keys are pressed by the user.
 	 */
-	private static final double ACCELERATION = 0.1; //TODO find a nicer acceleration value
+	private static final double ACCELERATION = 0.1;
 
-	private static final double MAX_SPEED = 4; //TODO find a nicer max speed value
+	private static final double MAX_SPEED = 4;
 
-	private static final double GROWTH_SPEED = 2.5;
+	private static final double GROWTH_SPEED = 500;
 	private static final double FISH_EAT_THRESHOLD = 1.2;
 
 	/**
@@ -276,7 +276,7 @@ public class PlayerFish extends Entity implements IMovable {
 			if (tsize > osize * FISH_EAT_THRESHOLD) {
 				fish.setDead();
 				this.addPoints((int) (osize / 200));
-				double dSize = Math.pow(GROWTH_SPEED * osize / tsize, 0.9);
+				double dSize = GROWTH_SPEED * osize / tsize;
 				getBoundingArea().increaseSize(dSize);
 			} else if (osize > tsize * FISH_EAT_THRESHOLD) {
 				this.setDead();
@@ -312,11 +312,13 @@ public class PlayerFish extends Entity implements IMovable {
 		}
 		getBoundingArea().setRotation(this); //update rotation;
 
-		if (vx >= 0) {
+		if (vx > 0) {
 			drawRotatedImage(gc, sprite, getBoundingArea(), false);
-		} else {
+		} else if (vx < 0) {
 			drawRotatedImage(gc, sprite, getBoundingArea(), true);
-		}	
+		} else {
+			drawRotatedImage(gc, sprite, getBoundingArea(), vy < 0);
+		}
 	}
 
 }

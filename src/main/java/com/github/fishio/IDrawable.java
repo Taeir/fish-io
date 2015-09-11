@@ -15,7 +15,7 @@ public interface IDrawable {
 	 * Called when this object dies.
 	 * 
 	 * @param gc
-	 * 		the graphicscontext to render on.
+	 * 		the graphicscontext to rendpSrcer on.
 	 */
 	void drawDeath(GraphicsContext gc);
 
@@ -53,7 +53,7 @@ public interface IDrawable {
 		double height = ca.getHeight();
 
 		gc.save();
-		Rotate r = new Rotate(angle, cx, cy);
+		Rotate r = new Rotate(360 - angle, cx, cy);
 		gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
 
 		gc.drawImage(image, cx - 0.5 * width, cy - 0.5 * height, width, height);
@@ -61,11 +61,14 @@ public interface IDrawable {
 
 		// debug rendering
 		if (DEBUG) {
-			angle = Math.toRadians(angle);
 			gc.setFill(Color.CYAN);
 			gc.fillOval(cx, cy, 2, 2);	//draw sprite center
 			gc.setFill(Color.RED);
 
+			gc.fillText(String.valueOf(angle), cx, cy - 10);	//angle display
+			
+			angle = Math.toRadians(angle);
+			
 			// draw CollisionArea box corners
 			Vec2d tl = ca.getTopLeft();
 			Vec2d tr = ca.getTopRight();
