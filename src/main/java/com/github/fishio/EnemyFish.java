@@ -82,25 +82,39 @@ public class EnemyFish extends Entity implements IMovable {
 			}
 			limitSpeed();
 		}
-
 	}
 
 	/**
-	 * Limits the speed of the fish to a minimum and maximum value. These values
-	 * are retrieved from the LevelBuilder class.
+	 * Limits the horizontal (x-directional) speed of the fish to a minimum and
+	 * maximum value. These values are retrieved from the LevelBuilder class.
 	 */
-	private void limitSpeed() {
+	public void limitVx() {
 		if (vx > 0) {
 			vx = Math.max(LevelBuilder.MIN_EFISH_SPEED, Math.min(vx, LevelBuilder.MAX_EFISH_SPEED));
 		} else {
 			vx = Math.min(-LevelBuilder.MIN_EFISH_SPEED, Math.max(vx, -LevelBuilder.MAX_EFISH_SPEED));
 		}
-
+	}
+	
+	/**
+	 * Limits the vertical (y-directional) speed of the fish to a minimum and
+	 * maximum value. These values are retrieved from the LevelBuilder class.
+	 */
+	public void limitVy() {
 		if (vy > 0) {
 			vy = Math.max(LevelBuilder.MIN_EFISH_SPEED, Math.min(vy, LevelBuilder.MAX_EFISH_SPEED));
 		} else {
 			vy = Math.min(-LevelBuilder.MIN_EFISH_SPEED, Math.max(vy, -LevelBuilder.MAX_EFISH_SPEED));
-		}		
+		}
+	}
+	
+	/**
+	 * Limits the speed of the fish in both horizontal and vertical direction by
+	 * calling the limiter methods for each seperate direction.
+	 */
+	public void limitSpeed() {
+		limitVx();
+		limitVy();
 	}
 
 	@Override
