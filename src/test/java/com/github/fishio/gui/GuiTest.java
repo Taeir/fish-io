@@ -117,14 +117,15 @@ public class GuiTest extends AppTest {
 	 * Skips the splash screen.
 	 */
 	public void skipSplash() {
-		//Press a key to skip the splash
-		press(KeyCode.SPACE);
-		
-		//Sleep for 100ms
-		sleepFail(100L);
-		
-		//Assert that we are now on the main screen.
-		assertTrue(isCurrentScene(getMainMenuScene()));
+		switchToScreen("mainMenu");
+//		//Press a key to skip the splash
+//		press(KeyCode.SPACE);
+//		
+//		//Sleep for 100ms
+//		sleepFail(100L);
+//		
+//		//Assert that we are now on the main screen.
+//		assertTrue(isCurrentScene(getMainMenuScene()));
 	}
 	
 	/**
