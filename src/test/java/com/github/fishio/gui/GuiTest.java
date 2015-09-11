@@ -1,6 +1,6 @@
 package com.github.fishio.gui;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import javafx.application.Platform;
@@ -9,6 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.testfx.framework.junit.ApplicationTest;
 
 import com.github.fishio.FishIO;
@@ -31,6 +32,31 @@ public class GuiTest extends ApplicationTest {
 	private Scene mainScene, singleScene, splashScene;
 	
 	private volatile boolean loaded = false;
+	
+//	private static volatile boolean destroyed = false;
+	
+//	/**
+//	 * Called after all tests have been run.<br>
+//	 * <br>
+//	 * Clean up after we are done.
+//	 * 
+//	 * @throws Exception
+//	 * 		if an Exception is thrown in this method.
+//	 */
+//	@AfterClass
+//	public static void breakDownClass() throws Exception {
+//		Platform.runLater(() -> {
+//			Platform.exit();
+//			
+//			destroyed = true;
+//		});
+//		
+//		while (!destroyed) {
+//			Thread.sleep(50L);
+//		}
+//		
+//		Thread.sleep(10_000L);
+//	}
 	
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -105,7 +131,7 @@ public class GuiTest extends ApplicationTest {
 	 * @param ms
 	 * 		the amount of milliseconds to sleep for.
 	 */
-	public void sleepFail(long ms) {
+	public static void sleepFail(long ms) {
 		try {
 			Thread.sleep(100L);
 		} catch (InterruptedException ex) {
@@ -120,11 +146,11 @@ public class GuiTest extends ApplicationTest {
 		//Press a key to skip the splash
 		press(KeyCode.SPACE);
 		
-		//Sleep for 100 milliseconds to fix travis builds.
-		sleepFail(100L);
+//		//Sleep for 100 milliseconds to fix travis builds.
+//		sleepFail(100L);
 		
 		//Assert that we are now on the main screen.
-		assertSame(mainScene, getCurrentScene());
+		assertTrue(isCurrentScene(getMainMenuScene()));
 	}
 	
 	/**
