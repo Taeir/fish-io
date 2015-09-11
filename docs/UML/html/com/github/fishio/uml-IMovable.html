@@ -1,0 +1,69 @@
+<html><head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>
+IMovable</title></head><body bgcolor=#ffffff text=#000000vlink=#330000 alink=#330044 link=#0000aa>
+<h2>IMovable</h2>
+<p><a href="../../../Class Diagram0.html">Class Diagram0</a></p><p></p><table width=100% cellspacing=0 cellpadding=0>
+<tr><td width=32% valign=top>
+<table border=0 width=100% cellpadding=0 cellspacing=0><tr><td bgcolor=#fcfb6f><table border cellspacing=0 cellpadding=0 width=100%><tr><td>
+com.github.fishio. <a href=../../../com/github/fishio/uml-IPositional.html>IPositional</a>
+</td></tr><tr><td>
++<a href=../../../com/github/fishio/IPositional.html#getX()>getX</a>() :double<br>
++<a href=../../../com/github/fishio/IPositional.html#getY()>getY</a>() :double<br>
++<a href=../../../com/github/fishio/IPositional.html#getWidth()>getWidth</a>() :double<br>
++<a href=../../../com/github/fishio/IPositional.html#getHeight()>getHeight</a>() :double<br>
++<a href=../../../com/github/fishio/IPositional.html#getBoundingBox()>getBoundingBox</a>() :<a href=../../../com/github/fishio/uml-BoundingBox.html>BoundingBox</a><br>
+</td></tr></table></td></tr>
+</table>
+</td><td width=12 align=center valign=top>
+<img src=../../../images/ext.gif>
+</td><td width=32% valign=top align=center>
+<table border=0 width=100% cellpadding=0 cellspacing=0><tr><td bgcolor=#fcfb6f><table border cellspacing=0 cellpadding=0 width=100%><tr><td>
+com.github.fishio. <a href=../../../com/github/fishio/IMovable.html>IMovable</a>
+</td></tr><tr><td>
++<a href=../../../com/github/fishio/IMovable.html#getSpeedVector()>getSpeedVector</a>() :<a href=../../../com/github/fishio/uml-Vec2d.html>Vec2d</a><br>
++<a href=../../../com/github/fishio/IMovable.html#setSpeedVector(com.github.fishio.Vec2d)>setSpeedVector</a>(<a href=../../../com/github/fishio/uml-Vec2d.html>Vec2d</a> vector) :void<br>
++<a href=../../../com/github/fishio/IMovable.html#setDirection(com.github.fishio.Vec2d)>setDirection</a>(<a href=../../../com/github/fishio/uml-Vec2d.html>Vec2d</a> direction) :void<br>
++<a href=../../../com/github/fishio/IMovable.html#setDirection(com.github.fishio.Direction)>setDirection</a>(<a href=../../../com/github/fishio/uml-Direction.html>Direction</a> direction) :void<br>
++<a href=../../../com/github/fishio/IMovable.html#getSpeed()>getSpeed</a>() :double<br>
++<a href=../../../com/github/fishio/IMovable.html#setSpeed(double)>setSpeed</a>(double speed) :void<br>
++<a href=../../../com/github/fishio/IMovable.html#canMoveThroughWall()>canMoveThroughWall</a>() :boolean<br>
++<a href=../../../com/github/fishio/IMovable.html#hitWall()>hitWall</a>() :void<br>
++<a href=../../../com/github/fishio/IMovable.html#preMove()>preMove</a>() :void<br>
+</td></tr></table></td></tr>
+</table>
+</td><td width=12 align=center valign=top>
+<img src=../../../images/ext.gif
+</td>
+<td width=32% valign=top>
+<table border=1 width=100% cellpadding=0 cellspacing=3><tr><td bgcolor=#7dfff1><table border cellspacing=0 cellpadding=0 width=100%><tr><td>
+com.github.fishio. <a href=../../../com/github/fishio/uml-EnemyFish.html>EnemyFish</a>
+</td></tr><tr><td>
+-<a href=../../../com/github/fishio/EnemyFish.html#vx>vx</a> :double<br>
+-<a href=../../../com/github/fishio/EnemyFish.html#vy>vy</a> :double<br>
+-<a href=../../../com/github/fishio/EnemyFish.html#sprite>sprite</a> :<a href=../../../com/github/fishio/uml-Image.html>Image</a><br>
+<u>-<a href=../../../com/github/fishio/EnemyFish.html#DIRECTION_CHANGE_CHANCE>DIRECTION_CHANGE_CHANCE</a> :double</u><br>
+</td></tr><tr><td>
++<a href=../../../com/github/fishio/EnemyFish.html#EnemyFish(com.github.fishio.BoundingBox,com.github.fishio.Image,double,double)>EnemyFish</a>(<a href=../../../com/github/fishio/uml-BoundingBox.html>BoundingBox</a> b, <a href=../../../com/github/fishio/uml-Image.html>Image</a> sprite, double startvx, double startvy) :void<br>
+</td></tr></table></td></tr>
+<tr><td bgcolor=#7dfff1><table border cellspacing=0 cellpadding=0 width=100%><tr><td>
+com.github.fishio. <a href=../../../com/github/fishio/uml-PlayerFish.html>PlayerFish</a>
+</td></tr><tr><td>
+-<a href=../../../com/github/fishio/PlayerFish.html#vx>vx</a> :double<br>
+-<a href=../../../com/github/fishio/PlayerFish.html#vy>vy</a> :double<br>
+-<a href=../../../com/github/fishio/PlayerFish.html#score>score</a> :<a href=../../../com/github/fishio/uml-SimpleIntegerProperty.html>SimpleIntegerProperty</a><br>
+-<a href=../../../com/github/fishio/PlayerFish.html#sprite>sprite</a> :<a href=../../../com/github/fishio/uml-Image.html>Image</a><br>
+<u>-<a href=../../../com/github/fishio/PlayerFish.html#KEY_UP>KEY_UP</a> :<a href=../../../com/github/fishio/uml-KeyCode.html>KeyCode</a></u><br>
+<u>-<a href=../../../com/github/fishio/PlayerFish.html#KEY_DOWN>KEY_DOWN</a> :<a href=../../../com/github/fishio/uml-KeyCode.html>KeyCode</a></u><br>
+<u>-<a href=../../../com/github/fishio/PlayerFish.html#KEY_LEFT>KEY_LEFT</a> :<a href=../../../com/github/fishio/uml-KeyCode.html>KeyCode</a></u><br>
+<u>-<a href=../../../com/github/fishio/PlayerFish.html#KEY_RIGHT>KEY_RIGHT</a> :<a href=../../../com/github/fishio/uml-KeyCode.html>KeyCode</a></u><br>
+<u>-<a href=../../../com/github/fishio/PlayerFish.html#ACCELERATION>ACCELERATION</a> :double</u><br>
+<u>-<a href=../../../com/github/fishio/PlayerFish.html#MAX_SPEED>MAX_SPEED</a> :double</u><br>
+<u>-<a href=../../../com/github/fishio/PlayerFish.html#GROWTH_SPEED>GROWTH_SPEED</a> :double</u><br>
+<u>-<a href=../../../com/github/fishio/PlayerFish.html#FISH_EAT_THRESHOLD>FISH_EAT_THRESHOLD</a> :double</u><br>
+</td></tr><tr><td>
++<a href=../../../com/github/fishio/PlayerFish.html#PlayerFish(com.github.fishio.ICollisionArea,com.github.fishio.Stage,com.github.fishio.Image)>PlayerFish</a>(<a href=../../../com/github/fishio/uml-ICollisionArea.html>ICollisionArea</a> bb, <a href=../../../com/github/fishio/uml-Stage.html>Stage</a> stage, <a href=../../../com/github/fishio/uml-Image.html>Image</a> sprite)<br>
+</td></tr></table></td></tr>
+</table>
+</td></tr>
+</table></body></html>
