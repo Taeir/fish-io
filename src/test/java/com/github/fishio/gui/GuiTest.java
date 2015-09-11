@@ -9,19 +9,18 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.testfx.framework.junit.ApplicationTest;
 
 import com.github.fishio.FishIO;
 import com.github.fishio.Preloader;
-import com.github.fishio.view.MainMenuController;
-import com.github.fishio.view.SinglePlayerController;
-import com.github.fishio.view.SplashScreenController;
+import com.github.fishio.control.MainMenuController;
+import com.github.fishio.control.SinglePlayerController;
+import com.github.fishio.control.SplashScreenController;
 
 /**
  * Base class for GUI Tests.
  */
-public class GuiTest extends ApplicationTest {
+public class GuiTest extends AppTest {
 	private static final FishIO FISH_IO = new FishIO();
 	private Stage stage;
 	
@@ -32,31 +31,6 @@ public class GuiTest extends ApplicationTest {
 	private Scene mainScene, singleScene, splashScene;
 	
 	private volatile boolean loaded = false;
-	
-//	private static volatile boolean destroyed = false;
-	
-//	/**
-//	 * Called after all tests have been run.<br>
-//	 * <br>
-//	 * Clean up after we are done.
-//	 * 
-//	 * @throws Exception
-//	 * 		if an Exception is thrown in this method.
-//	 */
-//	@AfterClass
-//	public static void breakDownClass() throws Exception {
-//		Platform.runLater(() -> {
-//			Platform.exit();
-//			
-//			destroyed = true;
-//		});
-//		
-//		while (!destroyed) {
-//			Thread.sleep(50L);
-//		}
-//		
-//		Thread.sleep(10_000L);
-//	}
 	
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -146,11 +120,36 @@ public class GuiTest extends ApplicationTest {
 		//Press a key to skip the splash
 		press(KeyCode.SPACE);
 		
-//		//Sleep for 100 milliseconds to fix travis builds.
-//		sleepFail(100L);
+		//Sleep for 100ms
+		sleepFail(100L);
 		
 		//Assert that we are now on the main screen.
 		assertTrue(isCurrentScene(getMainMenuScene()));
+	}
+	
+	/**
+	 * Switch to the given screen and wait for the switch to happen.
+	 * 
+	 * @param screen
+	 * 		the screen to switch to.
+	 */
+	public void switchToScreen(final String screen) {
+		//Switch to the given screen.
+		Platform.runLater(() -> {
+			Preloader.switchTo(screen, 0);
+			
+			loaded = true;
+		});
+		
+		//Wait for the task to be executed.
+		while (!loaded) {
+			sleepFail(50L);
+		}
+		
+		loaded = false;
+		
+		//Sleep one more time
+		sleepFail(50L);
 	}
 	
 	/**
