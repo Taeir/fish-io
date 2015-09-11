@@ -21,7 +21,7 @@ public final class LevelBuilder {
 	 */
 	public static final double MAX_EFISH_SPEED = 4;
 	public static final double MIN_EFISH_SPEED = 1;
-	
+
 	/**
 	 * The amount of fish sprites that we have.
 	 */
@@ -57,7 +57,7 @@ public final class LevelBuilder {
 		double vx = 0.0, vy = 0.0;
 		Vec2d position = null;
 		//pick a side
-		switch (rand.nextInt(5)) {
+		switch (rand.nextInt(4)) {
 		case 0: 	// left
 			position = new Vec2d(-width, Math.random() * PlayingField.WINDOW_Y);
 			vx = Math.abs(randomSpeed());
