@@ -20,20 +20,20 @@
             </ImageView>
             <FlowPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="144.0" prefWidth="250.0" vgap="10.0">
                <children>
-                  <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#startSinglePlayer" prefWidth="120.0" text="Singleplayer" />
-                  <Button disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#startMultiplayer" prefWidth="120.0" text="Multiplayer" />
-                  <Button disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#loadLevel" prefWidth="120.0" text="Load level" />
-                  <Button disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showHighScores" prefWidth="120.0" text="Highscores" />
-                  <Button disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showAchievements" prefWidth="120.0" text="Achievements" />
-                  <Button disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showStatistics" prefWidth="120.0" text="Statistics" />
-                  <Button disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showSettings" prefWidth="120.0" text="Settings" />
-                  <Button disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showHelp" prefWidth="120.0" text="Help" />
+                  <Button fx:id="btnSingleplayer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#startSinglePlayer" prefWidth="120.0" text="Singleplayer" />
+                  <Button fx:id="btnMultiplayer" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#startMultiplayer" prefWidth="120.0" text="Multiplayer" />
+                  <Button fx:id="btnLoadLevel" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#loadLevel" prefWidth="120.0" text="Load level" />
+                  <Button fx:id="btnShowHighscores" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showHighScores" prefWidth="120.0" text="Highscores" />
+                  <Button fx:id="btnShowAchievements" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showAchievements" prefWidth="120.0" text="Achievements" />
+                  <Button fx:id="btnShowStatistics" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showStatistics" prefWidth="120.0" text="Statistics" />
+                  <Button fx:id="btnShowSettings" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showSettings" prefWidth="120.0" text="Settings" />
+                  <Button fx:id="btnShowHelp" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showHelp" prefWidth="120.0" text="Help" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
             </FlowPane>
-            <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#exitGame" prefWidth="120.0" text="Exit">
+            <Button fx:id="btnExit" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#exitGame" prefWidth="120.0" text="Exit">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
