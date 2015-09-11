@@ -4,11 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
-import javafx.stage.Stage;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import javafx.stage.Stage;
 
 /**
  * Tests the PlayerFish class.
@@ -112,7 +113,7 @@ public class TestPlayerFish {
 		
 		Mockito.verify(ef).setDead();
 		Mockito.verify(pf, never()).setDead();
-		Mockito.verify(bb).increaseSize(Math.pow(pf.getGrowthSpeed() * 3.9 / 5.0, 0.9));
+		Mockito.verify(bb).increaseSize(pf.getGrowthSpeed() * 3.9 / 5.0);
 	}
 	
 	/**

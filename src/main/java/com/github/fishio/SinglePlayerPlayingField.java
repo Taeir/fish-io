@@ -60,7 +60,7 @@ public class SinglePlayerPlayingField extends PlayingField {
 	 */
 	protected final void addPlayerFish() {
 		this.player = new PlayerFish(
-				new BoundingBox(new Vec2d(640, 335), 30, 15), 
+new BoundingBox(new Vec2d(640, 335), 60, 30),
 				FishIO.getInstance().getPrimaryStage(),
 				Preloader.getImageOrLoad("sprites/fish/playerFish.png"));
 		
