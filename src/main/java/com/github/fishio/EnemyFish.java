@@ -41,7 +41,7 @@ public class EnemyFish extends Entity implements IMovable {
 			return;
 		}
 		getBoundingArea().setRotation(this);	//update rotation
-		if (vx >= 0) {
+		if (vx > 0) {
 			drawRotatedImage(gc, sprite, getBoundingArea(), false);
 		} else {
 			drawRotatedImage(gc, sprite, getBoundingArea(), true);

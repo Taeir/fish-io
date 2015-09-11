@@ -1,5 +1,9 @@
 package com.github.fishio;
 
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+
 /**
  * Class to represent an (Axis Aligned) Bounding Box.
  */
@@ -9,7 +13,7 @@ public class BoundingBox implements ICollisionArea {
 	private double height;
 	private double width;
 	private double rotation;
-	
+
 	/**
 	 * Creates a new Bounding Box with the given coordinates.
 	 * 
@@ -46,24 +50,56 @@ public class BoundingBox implements ICollisionArea {
 		this.rotation = 0;
 	}
 
+	/**
+	 * @return 
+	 * 		The offsets to the top right and bottom left corner as seen from the center 
+	 */
+	private Vec2d getTRBLCornerOffsets() {
+		double tempX = 0.5 * width;
+		double tempY = 0.5 * height;
+
+		double a = Math.toRadians(rotation);
+		double rx = tempX * Math.cos(a) - tempY * Math.sin(a);
+		double ry = tempX * Math.sin(a) + tempY * Math.cos(a);
+		return new Vec2d(rx, ry);
+	}
+
+	/**
+	 * @return 
+	 * 		The offsets to the top left and bottom right corner as seen from the center 
+	 */
+	private Vec2d getTLBRCornerOffsets() {
+		double tempX = 0.5 * width;
+		double tempY = 0.5 * height;
+
+		double a = Math.toRadians(rotation);
+		double rx = tempX * Math.cos(a) + tempY * Math.sin(a);
+		double ry = tempX * Math.sin(a) - tempY * Math.cos(a);
+		return new Vec2d(rx, ry);
+	}
+
 	@Override
 	public Vec2d getTopLeft() {
-		return new Vec2d(center.x - 0.5 * width, center.y - 0.5 * height);
+		Vec2d d = getTLBRCornerOffsets();
+		return new Vec2d(center.x - d.x, center.y + d.y);
 	}
 
 	@Override
 	public Vec2d getTopRight() {
-		return new Vec2d(center.x + 0.5 * width, center.y - 0.5 * height);
-	}
+		Vec2d d = getTRBLCornerOffsets();
+		return new Vec2d(center.x + d.x, center.y - d.y);
+	}	
 
 	@Override
 	public Vec2d getBottomLeft() {
-		return new Vec2d(center.x - 0.5 * width, center.y + 0.5 * height);
+		Vec2d d = getTRBLCornerOffsets();
+		return new Vec2d(center.x - d.x, center.y + d.y);
 	}
 
 	@Override
 	public Vec2d getBottomRight() {
-		return new Vec2d(center.x + 0.5 * width, center.y + 0.5 * height);
+		Vec2d d = getTLBRCornerOffsets();
+		return new Vec2d(center.x + d.x, center.y - d.y);
 	}
 
 	@Override
@@ -136,30 +172,33 @@ public class BoundingBox implements ICollisionArea {
 
 	@Override
 	public boolean intersects(ICollisionArea other) {
-		double txmin = Math.min(getTopLeft().x, getBottomLeft().x);
-		double tymin = Math.min(getTopLeft().y, getTopRight().y);
-		
-		double oxmin = Math.min(other.getTopLeft().x, other.getBottomLeft().x);
-		double oymin = Math.min(other.getTopLeft().y, other.getTopRight().y);
-		
-		//TODO support rotation in collision checking
-		if (txmin + this.getWidth() > oxmin
-				&& txmin < oxmin + other.getWidth()
-				&& tymin + this.getHeight() > oymin
-				&& tymin < oymin + other.getHeight()) {
-			return true;
-		}
 
-		return false;
+		Shape rect1 = new Rectangle((int) (getCenterX() - 0.5 * width), 
+				(int) (getCenterY() - 0.5 * height), 
+				(int) width, (int) height);
+		Rectangle rect2 = new Rectangle((int) (other.getCenterX() - 0.5 * other.getWidth()), 
+				(int) (other.getCenterY() - 0.5 * other.getHeight()), 
+				(int) other.getWidth(), (int) other.getHeight());
+
+		AffineTransform t1 = new AffineTransform();
+		AffineTransform t2 = new AffineTransform();
+		
+		t1.rotate(Math.toRadians(this.getRotation()), 
+				this.getCenterX(), this.getCenterY()); //rotate self
+		t2.rotate(Math.toRadians(other.getRotation()), 
+				other.getCenterX(), other.getCenterY()); //rotate around other
+		
+		rect1 = t1.createTransformedShape(rect1);
+		rect1 = t2.createTransformedShape(rect1);
+
+		return rect1.intersects(rect2);
 	}
 
 
 	@Override
 	public double setRotation(IMovable m) {
 		Vec2d sv = m.getSpeedVector();
-		if (sv.x != 0) {
-			rotation = 360 - Math.toDegrees(Math.atan(sv.y / sv.x));
-		} else {
+		if (sv.x == 0) {
 			if (sv.y > 0) {
 				rotation = 270;
 			} else if (sv.y < 0) {
@@ -167,10 +206,21 @@ public class BoundingBox implements ICollisionArea {
 			} else {
 				rotation = 0;
 			}
-		}		
+		} else if (sv.y == 0) {
+			if (sv.x >= 0) {
+				rotation = 0;
+			} else {
+				rotation = 180;
+			}
+		} else {
+			rotation = Math.toDegrees(Math.atan(sv.y / sv.x));
+		}
+
+		rotation %= 180;	//get rid of upside down boxes
+		
 		return rotation;
 	}
-	
+
 	@Override
 	public double getRotation() {
 		return rotation;
@@ -223,5 +273,5 @@ public class BoundingBox implements ICollisionArea {
 		return true;
 	}
 
-	
+
 }

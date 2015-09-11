@@ -267,10 +267,10 @@ public abstract class PlayingField {
 					m.hitWall();
 				}
 			} else {
-				if (maxx >= WINDOW_X + box.getWidth() + 1
-						|| minx <= -1 - box.getWidth()
-						|| maxy >= WINDOW_Y + box.getHeight() + 1
-						|| miny <= 0 - box.getHeight() - 1) {
+				if (maxx >= WINDOW_X + 2.0 * box.getWidth()
+						|| minx <= -1 - 2.0 * box.getWidth()
+						|| maxy >= WINDOW_Y + 2.0 * box.getHeight() + 1
+						|| miny <= 0 - 2.0 * box.getHeight() - 1) {
 					m.hitWall();
 				}
 			}
