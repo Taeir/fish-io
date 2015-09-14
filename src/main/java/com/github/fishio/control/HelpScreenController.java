@@ -16,6 +16,12 @@ public class HelpScreenController implements ScreenController {
 	private Label helpText;
 	
 	@FXML
+	private Label helpTextPowerups;
+	
+	@FXML
+	private Label helpTextExtra;
+	
+	@FXML
 	private Button btnBackToMenu;
 	
 	@Override
