@@ -4,6 +4,7 @@ import com.github.fishio.Preloader;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
 /**
@@ -13,6 +14,9 @@ public class HelpScreenController implements ScreenController {
 
 	@FXML
 	private Label helpText;
+	
+	@FXML
+	private Button btnBackToMenu;
 	
 	@Override
 	public void init(Scene scene) {
@@ -32,6 +36,13 @@ public class HelpScreenController implements ScreenController {
 	@FXML
 	public void backToMenu() {
 		Preloader.switchTo("mainMenu", 400);
+	}
+
+	/**
+	 * @return btnbackToMenu
+	 */
+	public Button getBtnBackToMenu() {
+		return btnBackToMenu;
 	}
 
 }
