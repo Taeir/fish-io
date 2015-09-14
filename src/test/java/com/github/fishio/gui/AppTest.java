@@ -21,7 +21,6 @@ import javafx.stage.Stage;
 
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.testfx.api.FxRobot;
 import org.testfx.api.FxToolkit;
@@ -81,7 +80,7 @@ public abstract class AppTest extends FxRobot implements ApplicationFixture {
 	 */
 	@After
 	public void internalAfter() throws Exception {
-		//FxToolkit.cleanupApplication(this);
+		FxToolkit.cleanupApplication(this);
 
 		Thread.sleep(50L);
 	}

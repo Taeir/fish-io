@@ -1,7 +1,6 @@
 package com.github.fishio.gui;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import javafx.scene.input.KeyCode;
 
 import org.junit.Test;
@@ -88,11 +87,7 @@ public class TestSplashScreen extends GuiTest {
 		assertTrue(isCurrentScene(getSplashScene()));
 		
 		//Wait for 15 seconds
-		try {
-			Thread.sleep(15_000L);
-		} catch (InterruptedException ex) {
-			fail();
-		}
+		sleepFail(15_000L);
 		
 		//Now the main menu should be shown.
 		assertTrue(isCurrentScene(getMainMenuScene()));
