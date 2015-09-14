@@ -33,7 +33,7 @@ public class TestSinglePlayer extends GuiTest {
 		switchToScreen("singlePlayer");
 		
 		//Check that we are on the single player screen.
-		isCurrentScene(getSinglePlayerScene());
+		assertTrue(isCurrentScene(getSinglePlayerScene()));
 		
 		//Restart the game.
 		getSinglePlayerController().getPlayingField().stopGame();
