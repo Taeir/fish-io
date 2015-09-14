@@ -22,12 +22,14 @@ public class HelpScreenController implements ScreenController {
 
 	@Override
 	public void onSwitchTo() {
-		helpText.setText("Test");
+		//TODO if needed
 	}
 	
 	/**
 	 * Go back to main menu.
+	 * This button loads the main menu.
 	 */
+	@FXML
 	public void backToMenu() {
 		Preloader.switchTo("mainMenu", 400);
 	}
