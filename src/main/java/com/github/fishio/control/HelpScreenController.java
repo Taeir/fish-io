@@ -29,7 +29,7 @@ public class HelpScreenController implements ScreenController {
 	 * Go back to main menu.
 	 */
 	public void backToMenu() {
-		Preloader.switchTo("helpScreen", 400);
+		Preloader.switchTo("mainMenu", 400);
 	}
 
 }
