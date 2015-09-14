@@ -11,7 +11,7 @@
     <VBox alignment="CENTER" prefHeight="720.0" prefWidth="1280.0" spacing="10.0" StackPane.alignment="TOP_CENTER">
       <children>
         <Label fx:id="helpText" text="This is the temporary Helptext of the game Fish.io!" />
-        <Button mnemonicParsing="false" onAction="#backToMenu" text="Button" />
+        <Button mnemonicParsing="false" onAction="#backToMenu" text="Back to menu" />
       </children>
     </VBox>
   </children>
