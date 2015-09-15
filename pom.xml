@@ -186,7 +186,7 @@
 										<artifactId>maven-pmd-plugin</artifactId>
 										<versionRange>[3.5,)</versionRange>
 										<goals>
-											<goal>pmd</goal>
+											<goal>check</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>

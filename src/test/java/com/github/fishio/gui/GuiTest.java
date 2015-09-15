@@ -1,19 +1,20 @@
 package com.github.fishio.gui;
 
-import static org.junit.Assert.fail;
 import static org.junit.Assert.assertTrue;
-
-import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 
 import com.github.fishio.FishIO;
 import com.github.fishio.Preloader;
+import com.github.fishio.control.HelpScreenController;
 import com.github.fishio.control.MainMenuController;
 import com.github.fishio.control.SinglePlayerController;
 import com.github.fishio.control.SplashScreenController;
+
+import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 /**
  * Base class for GUI Tests.
@@ -25,8 +26,9 @@ public class GuiTest extends AppTest {
 	private MainMenuController mainMenuController;
 	private SinglePlayerController singleController;
 	private SplashScreenController splashController;
+	private HelpScreenController helpController;
 	
-	private Scene mainScene, singleScene, splashScene;
+	private Scene mainScene, singleScene, splashScene, helpScene;
 	
 	//Booleans used for interaction with the JavaFX thread.
 	private volatile boolean loaded = false;
@@ -46,6 +48,9 @@ public class GuiTest extends AppTest {
 		
 		singleScene = Preloader.loadScreen("singlePlayer");
 		singleController = (SinglePlayerController) singleScene.getProperties().get("Controller");
+		
+		helpScene = Preloader.loadScreen("helpScreen");
+		helpController = (HelpScreenController) helpScene.getProperties().get("Controller");
 	}
 	
 	/**
@@ -192,6 +197,14 @@ public class GuiTest extends AppTest {
 	
 	/**
 	 * @return
+	 * 		the ScreenController for the splash screen.
+	 */
+	public HelpScreenController getHelpScreenController() {
+		return helpController;
+	}
+	
+	/**
+	 * @return
 	 * 		the scene for the Main Menu Screen.
 	 */
 	public Scene getMainMenuScene() {
@@ -212,5 +225,13 @@ public class GuiTest extends AppTest {
 	 */
 	public Scene getSplashScene() {
 		return splashScene;
+	}
+	
+	/**
+	 * @return
+	 * 		the scene for the Help Screen.
+	 */
+	public Scene getHelpScene() {
+		return helpScene;
 	}
 }

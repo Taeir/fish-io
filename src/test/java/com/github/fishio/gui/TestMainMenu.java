@@ -1,9 +1,9 @@
 package com.github.fishio.gui;
 
-import javafx.scene.input.MouseButton;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import javafx.scene.input.MouseButton;
 
 /**
  * Test class for the Main Menu.
@@ -148,14 +148,14 @@ public class TestMainMenu extends GuiTest {
 	 * Scenario S2.8: Help<br>
 	 * Given the user is on the Main Menu Screen;<br>
 	 * When  the user presses the "Help" button;<br>
-	 * Then  nothing should happen.
+	 * Then  the helpScreen must be shown.
 	 */
 	@Test
 	public void testShowHelp() {
 		//Click on the help button
-		clickOn(getMainMenuController().getBtnLoadLevel(), MouseButton.PRIMARY);
+		clickOn(getMainMenuController().getBtnShowHelp(), MouseButton.PRIMARY);
 		
 		//We should still be on the multi player screen, since the help button is disabled.
-		assertCurrentScene(getMainMenuScene());
+		assertCurrentScene(getHelpScene());
 	}
 }
