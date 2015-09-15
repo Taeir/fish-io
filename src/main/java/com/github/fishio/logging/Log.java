@@ -8,4 +8,5 @@ package com.github.fishio.logging;
  */
 public final class Log {
 
+	
 }
