@@ -79,7 +79,7 @@ public final class Log {
 		}
 		// Check log level
 		if (logLvl.ordinal() <= logLevel.ordinal()) {
-			handler.outPut(logLvl, logMessage);
+			handler.output(logLvl, logMessage);
 		}
 	}
 	

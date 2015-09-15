@@ -32,7 +32,7 @@ public final class Handler {
 	 * @param message
 	 * 		The log message of the log.
 	 */
-	public void outPut(LogLevel logLvl, String message) {
+	public void output(LogLevel logLvl, String message) {
 		//TODO
 	}
 }
