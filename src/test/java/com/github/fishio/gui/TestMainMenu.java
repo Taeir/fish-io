@@ -1,15 +1,27 @@
 package com.github.fishio.gui;
 
-import static org.junit.Assert.assertTrue;
+import org.junit.Before;
+import org.junit.Test;
 
 import javafx.scene.input.MouseButton;
-
-import org.junit.Test;
 
 /**
  * Test class for the Main Menu.
  */
 public class TestMainMenu extends GuiTest {
+	
+	/**
+	 * Runs before all the tests.<br>
+	 * <br>
+	 * This method simply skips the splash screen, so that we are on the
+	 * main menu before every test.
+	 */
+	@Before
+	public void beforeMainMenu() {
+		//Skip the splash screen
+		skipSplash();
+	}
+	
 	/**
 	 * Test for the following scenario:<br>
 	 * <br>
@@ -21,14 +33,11 @@ public class TestMainMenu extends GuiTest {
 	 */
 	@Test
 	public void testStartSinglePlayerGame() {
-		//Skip the splash screen
-		skipSplash();
-		
 		//Click on the single player button
 		clickOn(getMainMenuController().getBtnSingleplayer(), MouseButton.PRIMARY);
 		
 		//We should now be on the single player screen.
-		assertTrue(isCurrentScene(getSinglePlayerScene()));
+		assertCurrentScene(getSinglePlayerScene());
 	}
 
 	/**
@@ -41,14 +50,11 @@ public class TestMainMenu extends GuiTest {
 	 */
 	@Test
 	public void testStartMultiplayer() {
-		//Skip the splash screen
-		skipSplash();
-		
 		//Click on the multi player button
 		clickOn(getMainMenuController().getBtnMultiplayer(), MouseButton.PRIMARY);
 		
 		//We should still be on the multi player screen, since multiplayer is disabled.
-		assertTrue(isCurrentScene(getMainMenuScene()));
+		assertCurrentScene(getMainMenuScene());
 	}
 
 	/**
@@ -61,14 +67,11 @@ public class TestMainMenu extends GuiTest {
 	 */
 	@Test
 	public void testLoadLevel() {
-		//Skip the splash screen
-		skipSplash();
-		
 		//Click on the load level button
 		clickOn(getMainMenuController().getBtnLoadLevel(), MouseButton.PRIMARY);
 		
 		//We should still be on the multi player screen, since the load level button is disabled.
-		assertTrue(isCurrentScene(getMainMenuScene()));
+		assertCurrentScene(getMainMenuScene());
 	}
 
 	/**
@@ -81,14 +84,11 @@ public class TestMainMenu extends GuiTest {
 	 */
 	@Test
 	public void testShowHighScores() {
-		//Skip the splash screen
-		skipSplash();
-		
 		//Click on the highscores button
 		clickOn(getMainMenuController().getBtnShowHighscores(), MouseButton.PRIMARY);
 		
 		//We should still be on the multi player screen, since the show highscores button is disabled.
-		assertTrue(isCurrentScene(getMainMenuScene()));
+		assertCurrentScene(getMainMenuScene());
 	}
 
 	/**
@@ -101,14 +101,11 @@ public class TestMainMenu extends GuiTest {
 	 */
 	@Test
 	public void testShowAchievements() {
-		//Skip the splash screen
-		skipSplash();
-		
 		//Click on the achievements button
 		clickOn(getMainMenuController().getBtnShowAchievements(), MouseButton.PRIMARY);
 		
 		//We should still be on the multi player screen, since the show achievements button is disabled.
-		assertTrue(isCurrentScene(getMainMenuScene()));
+		assertCurrentScene(getMainMenuScene());
 	}
 
 	/**
@@ -121,14 +118,11 @@ public class TestMainMenu extends GuiTest {
 	 */
 	@Test
 	public void testShowStatistics() {
-		//Skip the splash screen
-		skipSplash();
-		
 		//Click on the statistics button
 		clickOn(getMainMenuController().getBtnShowStatistics(), MouseButton.PRIMARY);
 		
 		//We should still be on the multi player screen, since the show statistics button is disabled.
-		assertTrue(isCurrentScene(getMainMenuScene()));
+		assertCurrentScene(getMainMenuScene());
 	}
 
 	/**
@@ -141,14 +135,11 @@ public class TestMainMenu extends GuiTest {
 	 */
 	@Test
 	public void testShowSettings() {
-		//Skip the splash screen
-		skipSplash();
-		
 		//Click on the settings button
 		clickOn(getMainMenuController().getBtnShowSettings(), MouseButton.PRIMARY);
 		
 		//We should still be on the multi player screen, since the settings button is disabled.
-		assertTrue(isCurrentScene(getMainMenuScene()));
+		assertCurrentScene(getMainMenuScene());
 	}
 
 	/**
@@ -161,13 +152,10 @@ public class TestMainMenu extends GuiTest {
 	 */
 	@Test
 	public void testShowHelp() {
-		//Skip the splash screen
-		skipSplash();
-		
 		//Click on the help button
 		clickOn(getMainMenuController().getBtnShowHelp(), MouseButton.PRIMARY);
 		
 		//We should still be on the multi player screen, since the help button is disabled.
-		assertTrue(isCurrentScene(getHelpScene()));
+		assertCurrentScene(getHelpScene());
 	}
 }
