@@ -21,22 +21,29 @@ public interface IHandler {
 	 * @param format
 	 * 		The formater that should be used.
 	 */
-	void setFormat(IFormater format);
+	void setFormat(IFormatter format);
 	
 	/**
 	 * Get current format.
 	 * @return
 	 * 		Return current format.
 	 */
-	IFormater getFormat();
+	IFormatter getFormat();
 	
 	/**
 	 * Equals method for IHandlers. 
 	 * Handlers that are equal must be the same kind of IHandlers that have the same formatting.
 	 * @param that
-	 * 		The other handler.
+	 * 		The other object.
 	 * @return
 	 * 		Whether handlers are equal.
 	 */
-	boolean equals(IHandler that);
+	boolean equals(Object that);
+	
+	/**
+	 * hashCode method for IHandlers.
+	 * @return
+	 * 		HashCode of handler.
+	 */
+	int hashCode();
 }
