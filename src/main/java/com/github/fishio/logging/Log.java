@@ -47,6 +47,14 @@ public final class Log {
 		return logLevel;
 	}
 	
+	/**
+	 * Add a unique handler to the logging. 
+	 * @param handler
+	 * 		The handler to be added.
+	 */
+	public void addHandler(IHandler handler) {
+		handlers.add(handler);
+	}
 	
 	/**
 	 * Return current Handler.
