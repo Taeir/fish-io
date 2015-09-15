@@ -14,7 +14,7 @@ public class DefaultFormat implements IFormatter {
 	
 	@Override
 	public String formatOutput(LogLevel logLvl, String logMessage) {
-		return "[" + logLvl.toString() + "]:- " + logMessage;
+		return "[" + logLvl.toString() + "]:- 	" + logMessage;
 	}
 
 }

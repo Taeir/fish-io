@@ -2,10 +2,6 @@ package com.github.fishio.logging;
 
 
 import static org.junit.Assert.assertEquals;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -26,21 +22,40 @@ public class TestTimeStampFormat {
 	}
 	
 	/**
-	 * Test String construction of the format method (1).
+	 * Test String construction of the format method (1).<br>
+	 * 
+	 * Note: It is very important to know why the string output is only partially tested.
+	 * This must me done because otherwise the moment when the test is run is important and
+	 * the amount time it takes to finish the test also is important. This is because the
+	 * test retrieves a current time stamp, so results may differ on different computers,
+	 * which is desirable. To make sure this does not happen, the time stamp
+	 * relevant part is cut out. This ensures the test will pass when the rest of the format
+	 * is correct.
 	 */
 	@Test
 	public void testFormat1() {
-		String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
-		assertEquals("[" + timeStamp + "] [" + LogLevel.ERROR.toString() + "]:- Test1.", 
-				formatter.formatOutput(LogLevel.ERROR, "Test1."));
+		String testString = formatter.formatOutput(LogLevel.ERROR, "Test1.");
+		testString = testString.substring(0, 1) + testString.substring(20, testString.length());
+		assertEquals("[] [" + LogLevel.ERROR.toString() + "]:- 	Test1.", 
+				testString);
 	}
 
 	/**
-	 * Test String construction of the format method (2).
+	 * Test String construction of the format method (2).<br>
+	 * 
+	 * Note: It is very important to know why the string output is only partially tested.
+	 * This must me done because otherwise the moment when the test is run is important and
+	 * the amount time it takes to finish the test also is important. This is because the
+	 * test retrieves a current time stamp, so results may differ on different computers,
+	 * which is not desirable. To make sure this does not happen, the time stamp
+	 * relevant part is cut out. This ensures the test will pass when the rest of the format
+	 * is correct.
 	 */
 	@Test
 	public void testFormat2() {
-		assertEquals("[" + LogLevel.WARNING.toString() + "]:- Test2.", 
-				formatter.formatOutput(LogLevel.WARNING, "Test2."));
+		String testString = formatter.formatOutput(LogLevel.WARNING, "Test2.");
+		testString = testString.substring(0, 1) + testString.substring(20, testString.length());
+		assertEquals("[] [" + LogLevel.WARNING.toString() + "]:- 	Test2.", 
+				testString);
 	}
 }

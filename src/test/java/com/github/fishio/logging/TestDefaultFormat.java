@@ -26,7 +26,8 @@ public class TestDefaultFormat {
 	 */
 	@Test
 	public void testFormat1() {
-		assertEquals("[" + LogLevel.ERROR.toString() + "]:- Test1.", formatter.formatOutput(LogLevel.ERROR, "Test1."));
+		assertEquals("[" + LogLevel.ERROR.toString() + "]:- 	Test1.",
+				formatter.formatOutput(LogLevel.ERROR, "Test1."));
 	}
 
 	/**
@@ -34,7 +35,7 @@ public class TestDefaultFormat {
 	 */
 	@Test
 	public void testFormat2() {
-		assertEquals("[" + LogLevel.WARNING.toString() + "]:- Test2.", 
+		assertEquals("[" + LogLevel.WARNING.toString() + "]:- 	Test2.", 
 				formatter.formatOutput(LogLevel.WARNING, "Test2."));
 	}
 }
