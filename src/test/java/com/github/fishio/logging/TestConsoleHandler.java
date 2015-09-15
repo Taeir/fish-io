@@ -3,6 +3,10 @@ package com.github.fishio.logging;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 /**
@@ -12,7 +16,6 @@ import static org.mockito.Mockito.when;
 public class TestConsoleHandler extends TestIHandler {
 
 	private ConsoleHandler handler;
-	private IFormatter formatter;
 	
 	//TODO add factory methods for get and set methods
 	
@@ -21,8 +24,6 @@ public class TestConsoleHandler extends TestIHandler {
 	 */
 	@Before
 	public void setUp() {
-		formatter = Mockito.mock(DefaultFormat.class);
-		when(formatter.format(LogLevel.ERROR, "Test")).thenReturn("Test Output");
 		handler = new ConsoleHandler();
 	}
 	
@@ -31,9 +32,92 @@ public class TestConsoleHandler extends TestIHandler {
 	 */
 	@Test
 	public void testOutput() {
+		IFormatter formatter = Mockito.mock(DefaultFormat.class);
+		when(formatter.format(LogLevel.ERROR, "Test")).thenReturn("Test Output");
+		
 		handler.setFormat(formatter);
 		handler.output(LogLevel.ERROR, "Test");
 		Mockito.verify(formatter).format(LogLevel.ERROR, "Test");
 	}
 
+	/**
+	 * Test Hashcode formatter null.
+	 */
+	@Test
+	public void testHashcodeNull() {
+		handler.setFormat(null);
+		assertEquals(31, handler.hashCode());
+	}
+	
+	/**
+	 * Test Hashcode formatter with default.
+	 */
+	@Test
+	public void testHashcodeDefault() {
+		assertEquals(31 + handler.getFormat().hashCode(), handler.hashCode());
+	}
+	
+	/**
+	 * Test equals with itself.
+	 */
+	@Test
+	public void testEqualsItself() {
+		assertTrue(handler.equals(handler));
+	}
+	
+	/**
+	 * Test equals with other class.
+	 */
+	@Test
+	public void testEqualsNull() {
+		assertFalse(handler.equals(null));
+	}
+	
+	/**
+	 * Test equals with other class.
+	 */
+	@Test
+	public void testEqualsOtherClass() {
+		assertFalse(handler.equals(new Double(1.0)));
+	}
+	
+	/**
+	 * Test equals with null formatter.
+	 */
+	@Test
+	public void testEqualsNullFormatter1() {
+		ConsoleHandler ch2 = new ConsoleHandler();
+		handler.setFormat(null);
+		assertFalse(handler.equals(ch2));
+	}
+	
+	/**
+	 * Test equals with double null formatter.
+	 */
+	@Test
+	public void testEqualsNullFormatter2() {
+		ConsoleHandler ch2 = new ConsoleHandler(null);
+		handler.setFormat(null);
+		assertTrue(handler.equals(ch2));
+	}
+	
+	
+	
+	/**
+	 * Test equals with different formatter in second object.
+	 */
+	@Test
+	public void testEqualsDifferentFormatter() {
+		ConsoleHandler ch2 = new ConsoleHandler(new TimeStampFormat());
+		assertFalse(handler.equals(ch2));
+	}
+	
+	/**
+	 * Test equals with equal ConsoleHandler.
+	 */
+	@Test
+	public void testEqualsEqual() {
+		ConsoleHandler ch2 = new ConsoleHandler();
+		assertTrue(handler.equals(ch2));
+	}
 }

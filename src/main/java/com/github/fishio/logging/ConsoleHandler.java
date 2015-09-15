@@ -65,7 +65,7 @@ public class ConsoleHandler implements IHandler {
 			if (other.format != null) {
 				return false;
 			}
-		} else if (!format.equals(other.format)) {
+		} else if (format.getClass() != other.format.getClass()) {
 			return false;
 		}
 		return true;
