@@ -7,4 +7,6 @@ package com.github.fishio.logging;
  */
 public class Handler {
 
+	
+	
 }
