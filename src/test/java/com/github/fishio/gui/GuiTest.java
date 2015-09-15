@@ -3,19 +3,18 @@ package com.github.fishio.gui;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
-import javafx.stage.Stage;
-
 import org.junit.After;
-import org.testfx.framework.junit.ApplicationTest;
 
 import com.github.fishio.FishIO;
 import com.github.fishio.Preloader;
+import com.github.fishio.control.HelpScreenController;
 import com.github.fishio.control.MainMenuController;
 import com.github.fishio.control.SinglePlayerController;
 import com.github.fishio.control.SplashScreenController;
+
+import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 /**
  * Base class for GUI Tests.
@@ -27,10 +26,13 @@ public class GuiTest extends AppTest {
 	private MainMenuController mainMenuController;
 	private SinglePlayerController singleController;
 	private SplashScreenController splashController;
+	private HelpScreenController helpController;
 	
-	private Scene mainScene, singleScene, splashScene;
+	private Scene mainScene, singleScene, splashScene, helpScene;
 	
+	//Booleans used for interaction with the JavaFX thread.
 	private volatile boolean loaded = false;
+	private volatile boolean loaded2 = false;
 	
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -46,6 +48,9 @@ public class GuiTest extends AppTest {
 		
 		singleScene = Preloader.loadScreen("singlePlayer");
 		singleController = (SinglePlayerController) singleScene.getProperties().get("Controller");
+		
+		helpScene = Preloader.loadScreen("helpScreen");
+		helpController = (HelpScreenController) helpScene.getProperties().get("Controller");
 	}
 	
 	/**
@@ -57,10 +62,7 @@ public class GuiTest extends AppTest {
 	 * 		if an Exception occurs.
 	 */
 	@After
-	public void breakDown() throws Exception {
-		//Allow the splash to be rerun
-		splashController.allowRerun();
-		
+	public void breakDownGuiTest() throws Exception {
 		//Switch back to the splash screen.
 		Platform.runLater(() -> {
 			Preloader.switchTo("splashScreen", 0);
@@ -98,6 +100,18 @@ public class GuiTest extends AppTest {
 	}
 	
 	/**
+	 * Asserts if the given scene is the currently displayed scene, using {@link org.junit.Assert#assertTrue(boolean)}.
+	 * 
+	 * @param scene
+	 * 		the scene to check
+	 * 
+	 * @see #isCurrentScene(Scene)
+	 */
+	public void assertCurrentScene(Scene scene) {
+		assertTrue(isCurrentScene(scene));
+	}
+	
+	/**
 	 * Sleeps for the given amount of milliseconds.<br>
 	 * <br>
 	 * If an InterruptedException is thrown from the sleep method, {@link org.junit.Assert#fail()} is called.
@@ -107,7 +121,7 @@ public class GuiTest extends AppTest {
 	 */
 	public static void sleepFail(long ms) {
 		try {
-			Thread.sleep(100L);
+			Thread.sleep(ms);
 		} catch (InterruptedException ex) {
 			fail();
 		}
@@ -117,15 +131,11 @@ public class GuiTest extends AppTest {
 	 * Skips the splash screen.
 	 */
 	public void skipSplash() {
+		//Reset the splash screen.
+		getSplashScreenController().stopTransition();
+		
+		//Switch to the main menu.
 		switchToScreen("mainMenu");
-//		//Press a key to skip the splash
-//		press(KeyCode.SPACE);
-//		
-//		//Sleep for 100ms
-//		sleepFail(100L);
-//		
-//		//Assert that we are now on the main screen.
-//		assertTrue(isCurrentScene(getMainMenuScene()));
 	}
 	
 	/**
@@ -139,15 +149,15 @@ public class GuiTest extends AppTest {
 		Platform.runLater(() -> {
 			Preloader.switchTo(screen, 0);
 			
-			loaded = true;
+			loaded2 = true;
 		});
 		
 		//Wait for the task to be executed.
-		while (!loaded) {
+		while (!loaded2) {
 			sleepFail(50L);
 		}
 		
-		loaded = false;
+		loaded2 = false;
 		
 		//Sleep one more time
 		sleepFail(50L);
@@ -187,6 +197,14 @@ public class GuiTest extends AppTest {
 	
 	/**
 	 * @return
+	 * 		the ScreenController for the splash screen.
+	 */
+	public HelpScreenController getHelpScreenController() {
+		return helpController;
+	}
+	
+	/**
+	 * @return
 	 * 		the scene for the Main Menu Screen.
 	 */
 	public Scene getMainMenuScene() {
@@ -207,5 +225,13 @@ public class GuiTest extends AppTest {
 	 */
 	public Scene getSplashScene() {
 		return splashScene;
+	}
+	
+	/**
+	 * @return
+	 * 		the scene for the Help Screen.
+	 */
+	public Scene getHelpScene() {
+		return helpScene;
 	}
 }

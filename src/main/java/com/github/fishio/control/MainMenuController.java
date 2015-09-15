@@ -117,7 +117,7 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void showHelp() {
-		//TODO (not now)
+		Preloader.switchTo("helpScreen", 400);
 	}
 
 	/**

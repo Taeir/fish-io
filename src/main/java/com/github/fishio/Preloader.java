@@ -42,6 +42,7 @@ public final class Preloader {
 		Thread thread = new Thread(() -> {
 			loadScreen("mainMenu");
 			loadScreen("singlePlayer");
+			loadScreen("helpScreen");
 			
 			//We don't load the splash screen, because it is shown immediately.
 		});

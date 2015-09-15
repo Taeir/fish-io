@@ -33,7 +33,7 @@ public class TestSinglePlayer extends GuiTest {
 		switchToScreen("singlePlayer");
 		
 		//Check that we are on the single player screen.
-		isCurrentScene(getSinglePlayerScene());
+		assertCurrentScene(getSinglePlayerScene());
 		
 		//Restart the game.
 		getSinglePlayerController().getPlayingField().stopGame();
@@ -138,19 +138,99 @@ public class TestSinglePlayer extends GuiTest {
 		//The game should be running.
 		assertTrue(getSinglePlayerController().getPlayingField().isRunning());
 		
-		//The PlayerFish must be present and not dead.
-		assertTrue(getPlayer() != null && !getPlayer().isDead());
+		//Click on the mute button
+		clickOn(getSinglePlayerController().getBtnMute(), MouseButton.PRIMARY);
 		
-		//Pause the game
-		getSinglePlayerController().getPlayingField().stopGame();
-		
-		//Click on the pause button
-		clickOn(getSinglePlayerController().getBtnPause(), MouseButton.PRIMARY);
-		
-		//The game should be running again.
+		//The game should still be running
 		assertTrue(getSinglePlayerController().getPlayingField().isRunning());
+	}
+	
+	/**
+	 * Test for the following scenario:<br>
+	 * <br>
+	 * Scenario S3.4: menu<br>
+	 * Given the user is on the Single Player Screen;<br>
+	 * When  the user presses the "Menu" button;<br>
+	 * Then  the main menu screen should be shown,<br>
+	 * and   the game should be paused.
+	 */
+	@Test
+	public void testMenu() {
+		//Click on the menu button
+		clickOn(getSinglePlayerController().getBtnMenu(), MouseButton.PRIMARY);
 		
-		//The PlayerFish should still be present and not dead.
-		assertTrue(getPlayer() != null && !getPlayer().isDead());
+		//The menu should be shown
+		assertCurrentScene(getMainMenuScene());
+		
+		//The game should no longer be running.
+		assertFalse(getSinglePlayerController().getPlayingField().isRunning());
+	}
+	
+	/**
+	 * Test for the following scenario:<br>
+	 * <br>
+	 * Scenario S3.5: death screen menu<br>
+	 * Given the user is on the Single Player Screen,<br>
+	 * and   the death screen is being shown;<br>
+	 * When  the user presses the "Menu" button on the death screen;<br>
+	 * Then  the main menu screen should be shown.
+	 */
+	@Test
+	public void testDeathScreenMenu() {
+		//Kill the fish
+		getPlayer().setDead();
+		
+		//Wait for a bit
+		sleepFail(1500L);
+		
+		//The death screen should be displayed
+		assertTrue(getSinglePlayerController().isDeathScreenShown());
+		
+		//Click on the menu button on the death screen.
+		clickOn(getSinglePlayerController().getBtnDSMenu(), MouseButton.PRIMARY);
+		
+		//The menu should be shown
+		assertCurrentScene(getMainMenuScene());
+		
+		//The game should no longer be running.
+		assertFalse(getSinglePlayerController().getPlayingField().isRunning());
+	}
+	
+	/**
+	 * Test for the following scenario:<br>
+	 * <br>
+	 * Scenario S3.5: death screen menu<br>
+	 * Given the user is on the Single Player Screen,<br>
+	 * and   the death screen is being shown;<br>
+	 * When  the user presses the "Restart" button on the death screen;<br>
+	 * Then  the death screen should disappear,<br>
+	 * and   the game should restart.
+	 */
+	@Test
+	public void testDeathScreenRestart() {
+		//Kill the fish
+		getPlayer().setDead();
+		
+		//Wait for a bit
+		sleepFail(1000L);
+		
+		//The death screen should be displayed
+		assertTrue(getSinglePlayerController().isDeathScreenShown());
+		
+		//Click on the restart button on the death screen.
+		clickOn(getSinglePlayerController().getBtnDSRestart(), MouseButton.PRIMARY);
+		
+		//The player should not be null and not be dead.
+		assertFalse(getPlayer() == null);
+		assertFalse(getPlayer().isDead());
+		
+		//Wait for the death screen to disappear.
+		sleepFail(1000L);
+		
+		//The death screen should be gone
+		assertFalse(getSinglePlayerController().isDeathScreenShown());
+		
+		//The game should be running.
+		assertTrue(getSinglePlayerController().getPlayingField().isRunning());
 	}
 }

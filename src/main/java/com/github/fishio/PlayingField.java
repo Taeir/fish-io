@@ -1,6 +1,7 @@
 package com.github.fishio;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 import com.github.fishio.listeners.TickListener;
 
@@ -187,9 +188,10 @@ public abstract class PlayingField {
 		//draw background image
 		gc.drawImage(background, 0, 0);
 
-		//Render all drawables
-		for (IDrawable d : drawables) {
-			d.render(gc);
+		//Render all drawables, in reverse order
+		ListIterator<IDrawable> li = drawables.listIterator(drawables.size());
+		while (li.hasPrevious()) {
+			li.previous().render(gc);
 		}
 	}
 

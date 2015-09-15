@@ -1,7 +1,5 @@
 package com.github.fishio.gui;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import javafx.scene.input.KeyCode;
 
 import org.junit.Test;
@@ -22,13 +20,13 @@ public class TestSplashScreen extends GuiTest {
 	@Test
 	public void testSkipSplash1() {
 		//The splash screen should be shown.
-		assertTrue(isCurrentScene(getSplashScene()));
+		assertCurrentScene(getSplashScene());
 		
 		//Skip the splash screen
 		press(KeyCode.SPACE);
 		
 		//Now the main menu should be shown.
-		assertTrue(isCurrentScene(getMainMenuScene()));
+		assertCurrentScene(getMainMenuScene());
 	}
 	
 	/**
@@ -43,13 +41,13 @@ public class TestSplashScreen extends GuiTest {
 	@Test
 	public void testSkipSplash2() {
 		//The splash screen should be shown.
-		assertTrue(isCurrentScene(getSplashScene()));
+		assertCurrentScene(getSplashScene());
 		
 		//Skip the splash screen
 		press(KeyCode.K);
 		
 		//Now the main menu should be shown.
-		assertTrue(isCurrentScene(getMainMenuScene()));
+		assertCurrentScene(getMainMenuScene());
 	}
 	
 	/**
@@ -64,13 +62,13 @@ public class TestSplashScreen extends GuiTest {
 	@Test
 	public void testSkipSplash3() {
 		//The splash screen should be shown.
-		assertTrue(isCurrentScene(getSplashScene()));
+		assertCurrentScene(getSplashScene());
 		
 		//Skip the splash screen
 		press(KeyCode.ENTER);
 		
 		//Now the main menu should be shown.
-		assertTrue(isCurrentScene(getMainMenuScene()));
+		assertCurrentScene(getMainMenuScene());
 	}
 	
 	/**
@@ -85,16 +83,12 @@ public class TestSplashScreen extends GuiTest {
 	@Test
 	public void testWaitSplash() {
 		//The splash screen should be shown.
-		assertTrue(isCurrentScene(getSplashScene()));
+		assertCurrentScene(getSplashScene());
 		
 		//Wait for 15 seconds
-		try {
-			Thread.sleep(15_000L);
-		} catch (InterruptedException ex) {
-			fail();
-		}
+		sleepFail(15_000L);
 		
 		//Now the main menu should be shown.
-		assertTrue(isCurrentScene(getMainMenuScene()));
+		assertCurrentScene(getMainMenuScene());
 	}
 }
