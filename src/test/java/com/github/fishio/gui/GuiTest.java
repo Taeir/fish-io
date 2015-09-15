@@ -7,6 +7,7 @@ import org.junit.After;
 
 import com.github.fishio.FishIO;
 import com.github.fishio.Preloader;
+import com.github.fishio.control.AchievementScreenController;
 import com.github.fishio.control.HelpScreenController;
 import com.github.fishio.control.MainMenuController;
 import com.github.fishio.control.SinglePlayerController;
@@ -27,8 +28,9 @@ public class GuiTest extends AppTest {
 	private SinglePlayerController singleController;
 	private SplashScreenController splashController;
 	private HelpScreenController helpController;
+	private AchievementScreenController achievementController;
 	
-	private Scene mainScene, singleScene, splashScene, helpScene;
+	private Scene mainScene, singleScene, splashScene, helpScene, achievementScene;
 	
 	//Booleans used for interaction with the JavaFX thread.
 	private volatile boolean loaded = false;
@@ -51,6 +53,9 @@ public class GuiTest extends AppTest {
 		
 		helpScene = Preloader.loadScreen("helpScreen");
 		helpController = (HelpScreenController) helpScene.getProperties().get("Controller");
+		
+		achievementScene = Preloader.loadScreen("achievementScreen");
+		achievementController = (AchievementScreenController) achievementScene.getProperties().get("Controller");
 	}
 	
 	/**
@@ -180,32 +185,35 @@ public class GuiTest extends AppTest {
 	}
 	
 	/**
-	 * @return
-	 * 		the ScreenController for the Single Player screen.
+	 * @return the ScreenController for the Single Player Screen.
 	 */
 	public SinglePlayerController getSinglePlayerController() {
 		return singleController;
 	}
 	
 	/**
-	 * @return
-	 * 		the ScreenController for the splash screen.
+	 * @return the ScreenController for the Splash Screen.
 	 */
 	public SplashScreenController getSplashScreenController() {
 		return splashController;
 	}
 	
 	/**
-	 * @return
-	 * 		the ScreenController for the splash screen.
+	 * @return the ScreenController for the Help Screen.
 	 */
 	public HelpScreenController getHelpScreenController() {
 		return helpController;
 	}
 	
 	/**
-	 * @return
-	 * 		the scene for the Main Menu Screen.
+	 * @return the ScreenController for the Achievement Screen.
+	 */
+	public AchievementScreenController getAchievementScreenController() {
+		return achievementController;
+	}
+	
+	/**
+	 * @return the scene for the Main Menu Screen.
 	 */
 	public Scene getMainMenuScene() {
 		return mainScene;
@@ -233,5 +241,12 @@ public class GuiTest extends AppTest {
 	 */
 	public Scene getHelpScene() {
 		return helpScene;
+	}
+	
+	/**
+	 * @return the scene for the Achievement Screen.
+	 */
+	public Scene getAchievementScene() {
+		return achievementScene;
 	}
 }
