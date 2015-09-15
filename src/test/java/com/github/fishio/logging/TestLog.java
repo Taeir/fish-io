@@ -81,6 +81,46 @@ public class TestLog {
 	}
 	
 	/**
+	 * Test addHandler method(1).
+	 */
+	@Test
+	public void testAddHandler1() {
+		log.addHandler(mockedHandler1);
+		assertEquals(1, log.getHandler().size());
+	}
+	
+	/**
+	 * Test addHandler method(2).
+	 */
+	@Test
+	public void testAddHandler2() {
+		log.addHandler(mockedHandler1);
+		log.addHandler(mockedHandler2);
+		assertEquals(2, log.getHandler().size());
+	}
+	
+	/**
+	 * Test removeHandlers method(1).
+	 */
+	@Test
+	public void testRemoveAllHandler1() {
+		log.addHandler(mockedHandler1);
+		log.removeAllHandlers();
+		assertEquals(0, log.getHandler().size());
+	}
+	
+	/**
+	 * Test removeHandlers method(2).
+	 */
+	@Test
+	public void testRemoveAllHandler2() {
+		log.addHandler(mockedHandler1);
+		log.addHandler(mockedHandler2);
+		log.removeAllHandlers();
+		assertEquals(0, log.getHandler().size());
+	}
+	
+	/**
 	 * Test log method with a single Handler and one log message.
 	 */
 	@Test
