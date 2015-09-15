@@ -5,7 +5,7 @@ import java.util.Date;
 
 /**
  * The time stamp format class.
- * Contains a default format for logging that adds timestamps to loggs.
+ * Contains a default format for logging that adds time stamps to logs.
  */
 public class TimeStampFormat implements IFormatter {
 

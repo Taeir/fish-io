@@ -70,9 +70,4 @@ public class ConsoleHandler implements IHandler {
 		}
 		return true;
 	}
-	
-	
-
-	
-
 }

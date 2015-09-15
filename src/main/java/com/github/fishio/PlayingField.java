@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.ListIterator;
 
 import com.github.fishio.listeners.TickListener;
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
 
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
@@ -35,6 +37,7 @@ public abstract class PlayingField {
 	private ArrayList<IMovable> movables = new ArrayList<>();
 	private ArrayList<Entity> entities = new ArrayList<>();
 	private ArrayList<ICollidable> collidables = new ArrayList<>();
+	private Log log = Log.getLogger();
 
 	private Image background;
 	private int enemyCount;
@@ -60,7 +63,8 @@ public abstract class PlayingField {
 	 */
 	public PlayingField(int fps, Canvas canvas) {
 		this.fps = fps;
-
+		log.log(LogLevel.INFO, "Set Playing field fps to: " + fps + ".");
+		
 		if (canvas == null) {
 			this.canvas = new Canvas(WINDOW_X, WINDOW_Y);
 		} else {
@@ -71,7 +75,9 @@ public abstract class PlayingField {
 		enemyCount = 0;
 
 		createGameThread();
+		log.log(LogLevel.INFO, "Created GameThread().");
 		createRenderThread();
+		log.log(LogLevel.INFO, "Created RenderThread().");
 	}
 
 	/**
@@ -225,6 +231,7 @@ public abstract class PlayingField {
 		for (Entity e : tbr) {
 			remove(e);
 			enemyCount--;
+			log.log(LogLevel.DEBUG, "Removed enemy fish. Enemycount: " + enemyCount + ".");
 		}
 	}
 
@@ -239,6 +246,7 @@ public abstract class PlayingField {
 			EnemyFish eFish = LevelBuilder.randomizedFish(getPlayers().get(0).getBoundingArea());
 			add(eFish);
 			enemyCount++;
+			log.log(LogLevel.DEBUG, "Added enemy fish. Enemycount: " +  enemyCount + ".");
 		}
 	}
 
