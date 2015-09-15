@@ -10,13 +10,13 @@ import org.junit.Test;
  */
 public class TestLog {
 
-	private Log log; 
+	private static Log log; 
 	
 	/**
 	 * initialize the logger.
 	 */
 	@BeforeClass
-	public void init() {
+	public static void init() {
 		log = Log.getLogger();
 	}
 	
@@ -27,5 +27,7 @@ public class TestLog {
 	public void testInitialize() {
 		assertNotNull(Log.getLogger());
 	}
+	
+	
 
 }
