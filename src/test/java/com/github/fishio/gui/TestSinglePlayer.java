@@ -33,7 +33,7 @@ public class TestSinglePlayer extends GuiTest {
 		switchToScreen("singlePlayer");
 		
 		//Check that we are on the single player screen.
-		assertTrue(isCurrentScene(getSinglePlayerScene()));
+		assertCurrentScene(getSinglePlayerScene());
 		
 		//Restart the game.
 		getSinglePlayerController().getPlayingField().stopGame();
@@ -156,11 +156,11 @@ public class TestSinglePlayer extends GuiTest {
 	 */
 	@Test
 	public void testMenu() {
-		//Click on the mute button
+		//Click on the menu button
 		clickOn(getSinglePlayerController().getBtnMenu(), MouseButton.PRIMARY);
 		
 		//The menu should be shown
-		isCurrentScene(getMainMenuScene());
+		assertCurrentScene(getMainMenuScene());
 		
 		//The game should no longer be running.
 		assertFalse(getSinglePlayerController().getPlayingField().isRunning());
@@ -190,7 +190,7 @@ public class TestSinglePlayer extends GuiTest {
 		clickOn(getSinglePlayerController().getBtnDSMenu(), MouseButton.PRIMARY);
 		
 		//The menu should be shown
-		isCurrentScene(getMainMenuScene());
+		assertCurrentScene(getMainMenuScene());
 		
 		//The game should no longer be running.
 		assertFalse(getSinglePlayerController().getPlayingField().isRunning());

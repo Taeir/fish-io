@@ -1,6 +1,7 @@
 package com.github.fishio.gui;
 
 import static org.junit.Assert.fail;
+import static org.junit.Assert.assertTrue;
 
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -27,6 +28,7 @@ public class GuiTest extends AppTest {
 	
 	private Scene mainScene, singleScene, splashScene;
 	
+	//Booleans used for interaction with the JavaFX thread.
 	private volatile boolean loaded = false;
 	private volatile boolean loaded2 = false;
 	
@@ -55,7 +57,7 @@ public class GuiTest extends AppTest {
 	 * 		if an Exception occurs.
 	 */
 	@After
-	public void breakDown() throws Exception {
+	public void breakDownGuiTest() throws Exception {
 		//Switch back to the splash screen.
 		Platform.runLater(() -> {
 			Preloader.switchTo("splashScreen", 0);
@@ -90,6 +92,18 @@ public class GuiTest extends AppTest {
 	 */
 	public boolean isCurrentScene(Scene scene) {
 		return scene == getCurrentScene();
+	}
+	
+	/**
+	 * Asserts if the given scene is the currently displayed scene, using {@link org.junit.Assert#assertTrue(boolean)}.
+	 * 
+	 * @param scene
+	 * 		the scene to check
+	 * 
+	 * @see #isCurrentScene(Scene)
+	 */
+	public void assertCurrentScene(Scene scene) {
+		assertTrue(isCurrentScene(scene));
 	}
 	
 	/**
