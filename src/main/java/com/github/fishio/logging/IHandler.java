@@ -17,6 +17,20 @@ public interface IHandler {
 	void output(LogLevel logLvl, String logMessage);
 	
 	/**
+	 * Set the format that the handler should use.
+	 * @param format
+	 * 		The formater that should be used.
+	 */
+	void setFormat(IFormater format);
+	
+	/**
+	 * Get current format.
+	 * @return
+	 * 		Return current format.
+	 */
+	IFormater getFormat();
+	
+	/**
 	 * Equals method for IHandlers. 
 	 * Handlers that are equal must be the same kind of IHandlers that have the same formatting.
 	 * @param that
