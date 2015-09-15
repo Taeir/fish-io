@@ -10,6 +10,7 @@ public final class Log {
 
 	private static final Log LOG = new Log();
 	private LogLevel logLevel = LogLevel.WARNING;
+	private Handler handler;
 	
 	/**
 	 * Private constructor to prevent initialization.
@@ -45,6 +46,24 @@ public final class Log {
 	}
 	
 	/**
+	 * Set which handler should handle the log output.
+	 * @param handlr
+	 * 		Handler of log output to be set.
+	 */
+	public void setHandler(Handler handlr) {
+		handler = handlr;
+	}
+	
+	/**
+	 * Return current Handler.
+	 * @return
+	 * 		Current handler, that might be null if not set.
+	 */
+	public Handler getHandler() {
+		return handler;
+	}
+	
+	/**
 	 * Log this message.
 	 * Checks whether the log level is set low enough for the message to pass.
 	 * 
@@ -54,7 +73,10 @@ public final class Log {
 	 * 		The log message of the log.
 	 */
 	public void log(LogLevel logLvl, String logMessage) {
-		//TODO
+		if (handler == null) return;
+		if (logLvl.ordinal() <= logLevel.ordinal()) {
+			//TODO
+		}
 	}
 	
 }

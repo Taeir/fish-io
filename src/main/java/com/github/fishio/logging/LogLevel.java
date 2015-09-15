@@ -6,5 +6,6 @@ package com.github.fishio.logging;
  */
 public enum LogLevel {
 
-	ERROR, WARNING, INFO, DEBUG	
+	ERROR, WARNING, INFO, DEBUG;
+	
 }
