@@ -9,7 +9,7 @@ package com.github.fishio.logging;
 public final class Log {
 
 	private static final Log LOG = new Log();
-	private LogLevel logLevel = LogLevel.ERROR;
+	private LogLevel logLevel = LogLevel.WARNING;
 	
 	/**
 	 * Private constructor to prevent initialization.
@@ -25,6 +25,7 @@ public final class Log {
 	public static Log getLogger() {
 		return LOG;
 	}
+	
 	/**
 	 * Set the lowest log level.
 	 * @param logLvl
@@ -35,10 +36,19 @@ public final class Log {
 	}
 	
 	/**
+	 * Get the set log Level.
+	 * @return 
+	 * 		The current log level.
+	 */
+	public LogLevel getLogLevel() {
+		return logLevel;
+	}
+	
+	/**
 	 * Log this message.
 	 * Checks whether the log level is set low enough for the message to pass.
 	 * 
-	 * @param logLevel
+	 * @param logLvl
 	 * 		The log level of the log.
 	 * @param logMessage
 	 * 		The log message of the log.

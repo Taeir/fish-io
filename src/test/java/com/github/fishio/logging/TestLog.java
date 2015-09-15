@@ -1,5 +1,6 @@
 package com.github.fishio.logging;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.BeforeClass;
@@ -28,6 +29,20 @@ public class TestLog {
 		assertNotNull(Log.getLogger());
 	}
 	
+	/**
+	 * Test default LogLevel.
+	 */
+	@Test
+	public void testDefaultLogLevel() {
+		assertEquals(LogLevel.WARNING, log.getLogLevel());
+	}
 	
-
+	/**
+	 * Test default LogLevel.
+	 */
+	@Test
+	public void testSetGetLogLevel() {
+		log.setLogLevel(LogLevel.ERROR);
+		assertEquals(LogLevel.ERROR, log.getLogLevel());
+	}
 }
