@@ -8,6 +8,7 @@ package com.github.fishio.logging;
 public final class Handler {
 
 	private static final Handler HANDLER = new Handler();
+	//private boolean commandLineLog = true;
 	
 	/**
 	 * Private constructor to prevent initialization.
@@ -22,5 +23,16 @@ public final class Handler {
 	 */
 	public static Handler getHandler() {
 		return HANDLER;
+	}
+	
+	/**
+	 * Output the log message in the appropriate channels.
+	 * @param logLvl
+	 * 		The Log Level of the log.
+	 * @param message
+	 * 		The log message of the log.
+	 */
+	public void outPut(LogLevel logLvl, String message) {
+		//TODO
 	}
 }

@@ -73,9 +73,13 @@ public final class Log {
 	 * 		The log message of the log.
 	 */
 	public void log(LogLevel logLvl, String logMessage) {
-		if (handler == null) return;
+		// If handler is not set the application will not log.
+		if (handler == null) {
+			return;
+		}
+		// Check log level
 		if (logLvl.ordinal() <= logLevel.ordinal()) {
-			//TODO
+			handler.outPut(logLvl, logMessage);
 		}
 	}
 	
