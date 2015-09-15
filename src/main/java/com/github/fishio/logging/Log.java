@@ -66,6 +66,13 @@ public final class Log {
 	}
 	
 	/**
+	 * Reset handler ArrayList.
+	 */
+	public void removeAllHandlers() {
+		handlers = new ArrayList<IHandler>();
+	}
+	
+	/**
 	 * Log this message.
 	 * Checks whether the log level is set low enough for the message to pass.
 	 * 
@@ -81,7 +88,10 @@ public final class Log {
 		}
 		// Check log level
 		if (logLvl.ordinal() <= logLevel.ordinal()) {
-			//TODO
+			// Activate all attached handlers
+			for (IHandler handler : handlers) {
+				handler.output(logLvl, logMessage);
+			}
 		}
 	}
 	

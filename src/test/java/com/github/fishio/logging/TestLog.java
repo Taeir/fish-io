@@ -2,9 +2,13 @@ package com.github.fishio.logging;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.times;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
+
 /**
  * Testing class for the Log class.
  *
@@ -12,13 +16,25 @@ import org.junit.Test;
 public class TestLog {
 
 	private Log log; 
+	private ConsoleHandler mockedHandler1;
+	private ConsoleHandler mockedHandler2;
 	
 	/**
 	 * Initialize the logger and handler.
 	 */
 	@Before
 	public void init() {
+		mockedHandler1 = Mockito.mock(ConsoleHandler.class);
+		mockedHandler2 = Mockito.mock(ConsoleHandler.class);
 		log = Log.getLogger();
+	}
+	
+	/**
+	 * Remove any remaining Handlers in the logger.
+	 */
+	@After
+	public void breakDown() {
+		log.removeAllHandlers();
 	}
 	
 	/**
@@ -47,19 +63,73 @@ public class TestLog {
 	}
 	
 	/**
-	 * Test default handler.
+	 * Test default handler array.
 	 */
 	@Test
-	public void testDefaultHandler() {
+	public void testNoHandler() {
 		assertEquals(0, log.getHandler().size());
 	}
 	
 	/**
-	 * Test set and get handler.
+	 * Test log method with no handlers.
+	 * The method should exit without anything else happening if there are no handlers.
 	 */
 	@Test
-	public void testSetGetHandler() {
-		//TODO
+	public void testLogNoHandlers() {
+		log.log(LogLevel.ERROR, "TestLogNoHandlers");
 	}
+	
+	/**
+	 * Test log method with a single Handler and one log message.
+	 */
+	@Test
+	public void testLogSingleHandlersSingleLog() {
+		//Attach handler
+		log.addHandler(mockedHandler1);
+		log.log(LogLevel.ERROR, "TestLogSingleHandler");
+		Mockito.verify(mockedHandler1).output(LogLevel.ERROR, "TestLogSingleHandler");
+	}
+	
+	/**
+	 * Test log method with a single Handler and multiple log messages.
+	 */
+	@Test
+	public void testLogSingleHandlersMultipleLogs() {
+		//Attach handler
+		log.addHandler(mockedHandler1);
+		log.log(LogLevel.ERROR, "TestLogSingleHandler");
+		log.log(LogLevel.ERROR, "TestLogSingleHandler");
+		Mockito.verify(mockedHandler1, times(2)).output(LogLevel.ERROR, "TestLogSingleHandler");
+	}
+	
+	/**
+	 * Test log method with a Multiple Handlers and one log message.
+	 */
+	@Test
+	public void testLogMultipleHandlersSingleLog() {
+		//Attach handlers
+		log.addHandler(mockedHandler1);
+		log.addHandler(mockedHandler2);
+		
+		log.log(LogLevel.ERROR, "TestLogMultipleHandlers1");
+		Mockito.verify(mockedHandler1).output(LogLevel.ERROR, "TestLogMultipleHandlers1");
+		Mockito.verify(mockedHandler2).output(LogLevel.ERROR, "TestLogMultipleHandlers1");
+	}
+	
+	/**
+	 * Test log method with a Multiple Handlers and multiple log messages.
+	 */
+	@Test
+	public void testLogMultipleHandlersMultipleLogs() {
+		//Attach handlers
+		log.addHandler(mockedHandler1);
+		log.addHandler(mockedHandler2);
+		
+		log.log(LogLevel.ERROR, "TestLogMultipleHandlers1");
+		log.log(LogLevel.ERROR, "TestLogMultipleHandlers1");
+		Mockito.verify(mockedHandler1, times(2)).output(LogLevel.ERROR, "TestLogMultipleHandlers1");
+		Mockito.verify(mockedHandler2, times(2)).output(LogLevel.ERROR, "TestLogMultipleHandlers1");
+	}
+	
 	
 }
