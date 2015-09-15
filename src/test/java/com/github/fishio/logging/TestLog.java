@@ -2,8 +2,9 @@ package com.github.fishio.logging;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 /**
  * Testing class for the Log class.
@@ -11,14 +12,17 @@ import org.junit.Test;
  */
 public class TestLog {
 
-	private static Log log; 
+	private Log log; 
+	private Handler handle;
 	
 	/**
-	 * initialize the logger.
+	 * Initialize the logger and handler.
 	 */
-	@BeforeClass
-	public static void init() {
+	@Before
+	public void init() {
 		log = Log.getLogger();
+		handle = Handler.getHandler();
+		log.setHandler(null);
 	}
 	
 	/**
@@ -38,11 +42,29 @@ public class TestLog {
 	}
 	
 	/**
-	 * Test default LogLevel.
+	 * Test set and get of log level.
 	 */
 	@Test
 	public void testSetGetLogLevel() {
 		log.setLogLevel(LogLevel.ERROR);
 		assertEquals(LogLevel.ERROR, log.getLogLevel());
 	}
+	
+	/**
+	 * Test default handler.
+	 */
+	@Test
+	public void testDefaultHandler() {
+		assertEquals(null, log.getHandler());
+	}
+	
+	/**
+	 * Test set and get handler.
+	 */
+	@Test
+	public void testSetGetHandler() {
+		log.setHandler(handle);
+		assertSame(handle, log.getHandler());
+	}
+	
 }
