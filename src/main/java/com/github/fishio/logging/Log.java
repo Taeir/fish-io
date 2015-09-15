@@ -1,5 +1,7 @@
 package com.github.fishio.logging;
 
+import java.util.ArrayList;
+
 /**
  * The logging class.
  * This class can be called from other classes to log events. The
@@ -10,7 +12,7 @@ public final class Log {
 
 	private static final Log LOG = new Log();
 	private LogLevel logLevel = LogLevel.WARNING;
-	private Handler handler;
+	private ArrayList<IHandler> handlers = new ArrayList<IHandler>();
 	
 	/**
 	 * Private constructor to prevent initialization.
@@ -45,22 +47,14 @@ public final class Log {
 		return logLevel;
 	}
 	
-	/**
-	 * Set which handler should handle the log output.
-	 * @param handlr
-	 * 		Handler of log output to be set.
-	 */
-	public void setHandler(Handler handlr) {
-		handler = handlr;
-	}
 	
 	/**
 	 * Return current Handler.
 	 * @return
 	 * 		Current handler, that might be null if not set.
 	 */
-	public Handler getHandler() {
-		return handler;
+	public ArrayList<IHandler> getHandler() {
+		return handlers;
 	}
 	
 	/**
@@ -74,12 +68,12 @@ public final class Log {
 	 */
 	public void log(LogLevel logLvl, String logMessage) {
 		// If handler is not set the application will not log.
-		if (handler == null) {
+		if (handlers.size() == 0) {
 			return;
 		}
 		// Check log level
 		if (logLvl.ordinal() <= logLevel.ordinal()) {
-			handler.output(logLvl, logMessage);
+			//TODO
 		}
 	}
 	
