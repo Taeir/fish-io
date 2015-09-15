@@ -3,6 +3,7 @@ package com.github.fishio.logging;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.never;
 
 import org.junit.After;
 import org.junit.Before;
@@ -118,6 +119,22 @@ public class TestLog {
 	
 	/**
 	 * Test log method with a Multiple Handlers and multiple log messages.
+	 * And a too high log level.
+	 */
+	@Test
+	public void testLogMultipleHandlersMultipleLogsLowLevel() {
+		//Attach handlers
+		log.addHandler(mockedHandler1);
+		log.addHandler(mockedHandler2);
+		
+		log.log(LogLevel.DEBUG, "TestLogMultipleHandlers1");
+		log.log(LogLevel.DEBUG, "TestLogMultipleHandlers1");
+		Mockito.verify(mockedHandler1, never()).output(LogLevel.ERROR, "TestLogMultipleHandlers1");
+		Mockito.verify(mockedHandler2, never()).output(LogLevel.ERROR, "TestLogMultipleHandlers1");
+	}
+	
+	/**
+	 * Test log method with a Multiple Handlers and multiple log messages.
 	 */
 	@Test
 	public void testLogMultipleHandlersMultipleLogs() {
@@ -130,6 +147,5 @@ public class TestLog {
 		Mockito.verify(mockedHandler1, times(2)).output(LogLevel.ERROR, "TestLogMultipleHandlers1");
 		Mockito.verify(mockedHandler2, times(2)).output(LogLevel.ERROR, "TestLogMultipleHandlers1");
 	}
-	
 	
 }
