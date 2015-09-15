@@ -3,6 +3,8 @@ package com.github.fishio;
 import java.io.IOException;
 import java.util.HashMap;
 
+import com.github.fishio.control.ScreenController;
+
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,8 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
-
-import com.github.fishio.control.ScreenController;
 
 /**
  * Class to preload sprites.
@@ -43,6 +43,7 @@ public final class Preloader {
 			loadScreen("mainMenu");
 			loadScreen("singlePlayer");
 			loadScreen("helpScreen");
+			loadScreen("achievementScreen");
 			
 			//We don't load the splash screen, because it is shown immediately.
 		});
