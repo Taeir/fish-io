@@ -17,7 +17,7 @@ public class TimeStampFormat implements IFormatter {
 	
 	@Override
 	public String formatOutput(LogLevel logLvl, String logMessage) {
-		return "[" + getTimeStamp() + "] [" + logLvl.toString() + "]:- 	" + logMessage;
+		return "[" + getTimeStamp() + "] [" + logLvl.toString() + "]:-\t" + logMessage;
 	}
 
 	/**
@@ -25,8 +25,8 @@ public class TimeStampFormat implements IFormatter {
 	 * @return
 	 * 		Current System Time.
 	 */
-	private static String getTimeStamp() {
-		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());		
+	public String getTimeStamp() {
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());		
 	}
 }
 

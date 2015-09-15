@@ -1,9 +1,16 @@
 package com.github.fishio.logging;
 
-
 import static org.junit.Assert.assertEquals;
-import org.junit.BeforeClass;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.when;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
  * Test class for TimeStampFormat.
@@ -11,51 +18,81 @@ import org.junit.Test;
  */
 public class TestTimeStampFormat {
 
-	private static TimeStampFormat formatter;
+	private TimeStampFormat mockedFormatter;
 	
 	/**
-	 * Initialize a DefaultFormat. 
+	 * Setup Mockito to replace the getTimeStampMethod.
 	 */
-	@BeforeClass
-	public static void setUp() {
-		formatter = new TimeStampFormat();
+	@Before
+	public void setUp() {
+		mockedFormatter = Mockito.spy(new TimeStampFormat());
 	}
 	
 	/**
-	 * Test String construction of the format method (1).<br>
-	 * 
-	 * Note: It is very important to know why the string output is only partially tested.
-	 * This must me done because otherwise the moment when the test is run is important and
-	 * the amount time it takes to finish the test also is important. This is because the
-	 * test retrieves a current time stamp, so results may differ on different computers,
-	 * which is desirable. To make sure this does not happen, the time stamp
-	 * relevant part is cut out. This ensures the test will pass when the rest of the format
-	 * is correct.
+	 * Test the getTimeStamp method. <br>
+	 * Note: Since there are a lot of factors that can influence
+	 * either the speed of the tests and method execution a different
+	 * approach then normal is taken: The date before and after the test 
+	 * are recorded. The date of test itself should lie between these two dates,
+	 * at least. Checking this gives some confidence that the time stamp that the
+	 * method creates is correct.
 	 */
 	@Test
-	public void testFormat1() {
-		String testString = formatter.formatOutput(LogLevel.ERROR, "Test1.");
-		testString = testString.substring(0, 1) + testString.substring(20, testString.length());
-		assertEquals("[] [" + LogLevel.ERROR.toString() + "]:- 	Test1.", 
-				testString);
+	public void testGetTimeStamp() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		TimeStampFormat timeStampFormat = new TimeStampFormat();
+		
+		Date beforeTest = null;
+		try {
+			// Formating the date, then parsing it so it fits the desired format
+			beforeTest = format.parse(format.format(new Date()));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		Date test = null;
+		try {
+			// Parse date returned from getTimeStamp method
+			test = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
+				.parse(timeStampFormat.getTimeStamp());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		Date afterTest = null;
+		try {
+			afterTest = format.parse(format.format(new Date()));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		// Check if date is after the beginning of the test
+		assertFalse(beforeTest.after(test));
+		// Check if date is before the end of the test
+		assertFalse(afterTest.before(test));
 	}
-
+	
 	/**
-	 * Test String construction of the format method (2).<br>
-	 * 
-	 * Note: It is very important to know why the string output is only partially tested.
-	 * This must me done because otherwise the moment when the test is run is important and
-	 * the amount time it takes to finish the test also is important. This is because the
-	 * test retrieves a current time stamp, so results may differ on different computers,
-	 * which is not desirable. To make sure this does not happen, the time stamp
-	 * relevant part is cut out. This ensures the test will pass when the rest of the format
-	 * is correct.
+	 * Test the formatOutput method with some inputs(1).
 	 */
 	@Test
-	public void testFormat2() {
-		String testString = formatter.formatOutput(LogLevel.WARNING, "Test2.");
-		testString = testString.substring(0, 1) + testString.substring(20, testString.length());
-		assertEquals("[] [" + LogLevel.WARNING.toString() + "]:- 	Test2.", 
-				testString);
+	public void testFormatOutPut1() {
+		String mockedDate = "MockedTimeStamp";
+		when(mockedFormatter.getTimeStamp()).thenReturn(mockedDate);
+		
+		assertEquals("[" + mockedDate + "] [" + LogLevel.ERROR.toString() + "]:-\tTest1.",
+				mockedFormatter.formatOutput(LogLevel.ERROR, "Test1."));
+	}
+	
+	/**
+	 * Test the formatOutput method with some inputs(2).
+	 */
+	@Test
+	public void testFormatOutPut2() {
+		String mockedDate = "MockedTimeStamp";
+		when(mockedFormatter.getTimeStamp()).thenReturn(mockedDate);
+		
+		assertEquals("[" + mockedDate + "] [" + LogLevel.WARNING.toString() + "]:-\tTest2.",
+				mockedFormatter.formatOutput(LogLevel.WARNING, "Test2."));
 	}
 }
