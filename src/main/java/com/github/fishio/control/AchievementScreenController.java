@@ -21,7 +21,7 @@ public class AchievementScreenController implements ScreenController {
 	
 	@Override
 	public void onSwitchTo() {
-	
+		// TODO if necessary.
 	}
 	
 	/**
