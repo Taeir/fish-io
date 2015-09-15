@@ -20,7 +20,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.testfx.api.FxRobot;
 import org.testfx.api.FxToolkit;
@@ -31,8 +30,6 @@ import org.testfx.toolkit.ApplicationFixture;
  * tests work on the travis ci server.
  */
 public abstract class AppTest extends FxRobot implements ApplicationFixture {
-//	private static AppTest instance;
-	
 	//---------------------------------------------------------------------------------------------
 	// STATIC METHODS.
 	//---------------------------------------------------------------------------------------------
@@ -66,7 +63,6 @@ public abstract class AppTest extends FxRobot implements ApplicationFixture {
 	 */
 	@Before
 	public void internalBefore() throws Exception {
-//		instance = this;
 		FxToolkit.registerPrimaryStage();
 		FxToolkit.setupApplication(this);
 	}
@@ -83,24 +79,6 @@ public abstract class AppTest extends FxRobot implements ApplicationFixture {
 		FxToolkit.cleanupApplication(this);
 
 		Thread.sleep(50L);
-	}
-	
-	/**
-	 * Called after all tests in this class are done.<br>
-	 * <br>
-	 * Sleeps for a second to allow the next test to start up.
-	 * 
-	 * @throws Exception
-	 * 		if anything goes wrong while sleeping.
-	 */
-	@AfterClass
-	public static void internalAfterClass() throws Exception {
-//		if (instance != null) {
-//			FxToolkit.cleanupApplication(instance);
-//			instance = null;
-//		}
-//		
-//		Thread.sleep(1000L);
 	}
 
 	@Override
