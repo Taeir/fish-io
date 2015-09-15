@@ -33,11 +33,11 @@ public class TestConsoleHandler extends TestIHandler {
 	@Test
 	public void testOutput() {
 		IFormatter formatter = Mockito.mock(DefaultFormat.class);
-		when(formatter.format(LogLevel.ERROR, "Test")).thenReturn("Test Output");
+		when(formatter.formatOutput(LogLevel.ERROR, "Test")).thenReturn("Test Output");
 		
 		handler.setFormat(formatter);
 		handler.output(LogLevel.ERROR, "Test");
-		Mockito.verify(formatter).format(LogLevel.ERROR, "Test");
+		Mockito.verify(formatter).formatOutput(LogLevel.ERROR, "Test");
 	}
 
 	/**

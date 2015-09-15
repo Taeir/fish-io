@@ -13,7 +13,7 @@ public class DefaultFormat implements IFormatter {
 	public DefaultFormat() { }
 	
 	@Override
-	public String format(LogLevel logLvl, String logMessage) {
+	public String formatOutput(LogLevel logLvl, String logMessage) {
 		return "[" + logLvl.toString() + "]:- " + logMessage;
 	}
 

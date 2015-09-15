@@ -15,6 +15,6 @@ public interface IFormatter {
 	 * @return
 	 * 		String that is formated in a specific way.
 	 */
-	String format(LogLevel logLvl, String logMessage);
+	String formatOutput(LogLevel logLvl, String logMessage);
 	
 }

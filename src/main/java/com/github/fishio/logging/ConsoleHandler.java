@@ -23,7 +23,7 @@ public class ConsoleHandler implements IHandler {
 	
 	@Override
 	public void output(LogLevel logLvl, String logMessage) {
-		System.out.println(format.format(logLvl, logMessage));
+		System.out.println(format.formatOutput(logLvl, logMessage));
 	}
 
 	@Override

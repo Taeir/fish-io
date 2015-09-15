@@ -1,5 +1,8 @@
 package com.github.fishio.logging;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * The time stamp format class.
  * Contains a default format for logging that adds timestamps to loggs.
@@ -13,10 +16,17 @@ public class TimeStampFormat implements IFormatter {
 	public TimeStampFormat() { }
 	
 	@Override
-	public String format(LogLevel logLvl, String logMessage) {
-		//TODO get system time and make it a good format
-		return "NOTDONE[" + logLvl.toString() + "]:- " + logMessage;
+	public String formatOutput(LogLevel logLvl, String logMessage) {
+		return "[" + getTimeStamp() + "] [" + logLvl.toString() + "]:- " + logMessage;
 	}
 
+	/**
+	 * Method that returns a string time stamp of current system time.
+	 * @return
+	 * 		Current System Time.
+	 */
+	private static String getTimeStamp() {
+		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());		
+	}
 }
 
