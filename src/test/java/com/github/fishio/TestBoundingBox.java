@@ -8,7 +8,7 @@ import org.junit.Test;
 /**
  * Class for testing the BoundingBox.
  */
-public class TestBoundingBox {
+public class TestBoundingBox extends TestICollisionArea {
 
 	/**
 	 * Test for {@link BoundingBox#hashCode()}.
@@ -275,5 +275,10 @@ public class TestBoundingBox {
 		BoundingBox bb2 = new BoundingBox(1.0, 2.0, 3.0, 5.0);
 		
 		assertNotEquals(bb1, bb2);
+	}
+
+	@Override
+	public ICollisionArea getCollisionArea() {
+		return new BoundingBox(new Vec2d(0, 0), 10, 5);
 	}
 }
