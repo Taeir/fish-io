@@ -18,9 +18,6 @@ import javafx.util.Duration;
 
 /**
  * The controller class of the single player game.
- * 
- * @author Chiel Bruin
- * @since 03-09-2015
  */
 public class SinglePlayerController implements ScreenController {
 
@@ -139,7 +136,9 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	public void backToMenu() {
 		pf.stopGame();
-		FishIO.getInstance().openMainMenu();
+		pf.clear();
+		
+		Preloader.switchTo("mainMenu", 400);
 	}
 
 	/**
@@ -178,56 +177,64 @@ public class SinglePlayerController implements ScreenController {
 	}
 
 	/**
-	 * @return the deathScreen
+	 * @return
+	 * 		the deathScreen box.
 	 */
 	public VBox getDeathScreen() {
 		return deathScreen;
 	}
 
 	/**
-	 * @return the scoreField
+	 * @return
+	 * 		the score label.
 	 */
 	public Label getScoreField() {
 		return scoreField;
 	}
 
 	/**
-	 * @return the btnPause
+	 * @return
+	 * 		the pause button.
 	 */
 	public Button getBtnPause() {
 		return btnPause;
 	}
 
 	/**
-	 * @return the btnMute
+	 * @return
+	 * 		the mute/unmute button.
 	 */
 	public Button getBtnMute() {
 		return btnMute;
 	}
 
 	/**
-	 * @return the btnMenu
+	 * @return
+	 * 		the button that goes back to the menu.
 	 */
 	public Button getBtnMenu() {
 		return btnMenu;
 	}
 
 	/**
-	 * @return the btnDSRestart
+	 * @return
+	 * 		the button on the death screen that restarts the game.
 	 */
 	public Button getBtnDSRestart() {
 		return btnDSRestart;
 	}
 
 	/**
-	 * @return the btnDSMenu
+	 * @return
+	 * 		the button on the death screen that returns to the main menu.
 	 */
 	public Button getBtnDSMenu() {
 		return btnDSMenu;
 	}
 
 	/**
-	 * @return the playingfield
+	 * @return
+	 * 		the playingfield
 	 */
 	public PlayingField getPlayingField() {
 		return pf;

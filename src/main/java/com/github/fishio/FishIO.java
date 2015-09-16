@@ -54,13 +54,6 @@ public class FishIO extends Application {
 	public Stage getPrimaryStage() {
 		return primaryStage;
 	}
-
-	/**
-	 * Open the main menu when in another screen.
-	 */
-	public void openMainMenu() {
-		Preloader.switchTo("mainMenu", 400);
-	}
 	
 	/**
 	 * Returns the instance parameter of the class.

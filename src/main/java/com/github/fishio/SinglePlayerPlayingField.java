@@ -64,9 +64,8 @@ new BoundingBox(new Vec2d(640, 335), 60, 30),
 				FishIO.getInstance().getPrimaryStage(),
 				Preloader.getImageOrLoad("sprites/fish/playerFish.png"));
 		
-		this.player.scoreProperty().addListener((observable, oldValue, newValue) -> {
-			screenController.updateScoreDisplay(newValue.intValue());
-		});
+		this.player.scoreProperty().addListener(
+				(observable, oldValue, newValue) -> screenController.updateScoreDisplay(newValue.intValue()));
 		
 		add(this.player);
 	}

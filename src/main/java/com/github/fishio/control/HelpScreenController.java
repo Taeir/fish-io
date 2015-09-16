@@ -25,19 +25,13 @@ public class HelpScreenController implements ScreenController {
 	private Button btnBackToMenu;
 	
 	@Override
-	public void init(Scene scene) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void init(Scene scene) { }
 
 	@Override
-	public void onSwitchTo() {
-		//TODO if needed
-	}
+	public void onSwitchTo() { }
 	
 	/**
-	 * Go back to main menu.
-	 * This button loads the main menu.
+	 * Go back to the main menu.
 	 */
 	@FXML
 	public void backToMenu() {
@@ -45,7 +39,8 @@ public class HelpScreenController implements ScreenController {
 	}
 
 	/**
-	 * @return btnbackToMenu
+	 * @return
+	 * 		the button that returns to the main menu.
 	 */
 	public Button getBtnBackToMenu() {
 		return btnBackToMenu;
