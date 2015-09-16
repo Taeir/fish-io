@@ -1,10 +1,11 @@
-package com.github.fishio.view;
+package com.github.fishio.control;
 
 import com.github.fishio.FishIO;
 import com.github.fishio.Preloader;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 
 /**
  * The controller class for the main menu.
@@ -13,6 +14,34 @@ import javafx.scene.Scene;
  * @since 03-09-2015
  */
 public class MainMenuController implements ScreenController {
+	
+	@FXML
+	private Button btnSingleplayer;
+	
+	@FXML
+	private Button btnMultiplayer;
+	
+	@FXML
+	private Button btnLoadLevel;
+	
+	@FXML
+	private Button btnShowHighscores;
+	
+	@FXML
+	private Button btnShowAchievements;
+	
+	@FXML
+	private Button btnShowStatistics;
+	
+	@FXML
+	private Button btnShowSettings;
+	
+	@FXML
+	private Button btnShowHelp;
+	
+	@FXML
+	private Button btnExit;
+
 	@Override
 	public void init(Scene scene) { }
 	
@@ -88,7 +117,7 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void showHelp() {
-		//TODO (not now)
+		Preloader.switchTo("helpScreen", 400);
 	}
 
 	/**
@@ -98,6 +127,69 @@ public class MainMenuController implements ScreenController {
 	@FXML
 	public void exitGame() {
 		FishIO.getInstance().closeApplication();
+	}
+	
+	/**
+	 * @return the btnSingleplayer
+	 */
+	public Button getBtnSingleplayer() {
+		return btnSingleplayer;
+	}
+
+	/**
+	 * @return the btnMultiplayer
+	 */
+	public Button getBtnMultiplayer() {
+		return btnMultiplayer;
+	}
+
+	/**
+	 * @return the btnLoadLevel
+	 */
+	public Button getBtnLoadLevel() {
+		return btnLoadLevel;
+	}
+
+	/**
+	 * @return the btnShowHighscores
+	 */
+	public Button getBtnShowHighscores() {
+		return btnShowHighscores;
+	}
+
+	/**
+	 * @return the btnShowAchievements
+	 */
+	public Button getBtnShowAchievements() {
+		return btnShowAchievements;
+	}
+
+	/**
+	 * @return the btnShowStatistics
+	 */
+	public Button getBtnShowStatistics() {
+		return btnShowStatistics;
+	}
+
+	/**
+	 * @return the btnShowSettings
+	 */
+	public Button getBtnShowSettings() {
+		return btnShowSettings;
+	}
+
+	/**
+	 * @return the btnShowHelp
+	 */
+	public Button getBtnShowHelp() {
+		return btnShowHelp;
+	}
+
+	/**
+	 * @return the btnExit
+	 */
+	public Button getBtnExit() {
+		return btnExit;
 	}
 
 }

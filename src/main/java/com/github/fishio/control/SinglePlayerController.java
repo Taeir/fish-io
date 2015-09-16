@@ -1,4 +1,4 @@
-package com.github.fishio.view;
+package com.github.fishio.control;
 
 import com.github.fishio.FishIO;
 import com.github.fishio.PlayingField;
@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -31,6 +32,19 @@ public class SinglePlayerController implements ScreenController {
 	private Label scoreField;
 	@FXML
 	private Label endScore;
+	
+	
+	@FXML
+	private Button btnPause;
+	@FXML
+	private Button btnMute;
+	@FXML
+	private Button btnMenu;
+	
+	@FXML
+	private Button btnDSRestart;
+	@FXML
+	private Button btnDSMenu;
 
 	private PlayingField pf;
 
@@ -155,4 +169,67 @@ public class SinglePlayerController implements ScreenController {
 		endScore.setText("score: " + score + " points");
 	}
 
+	/**
+	 * @return
+	 * 		if the death screen is being shown.
+	 */
+	public boolean isDeathScreenShown() {
+		return deathScreen.isVisible();
+	}
+
+	/**
+	 * @return the deathScreen
+	 */
+	public VBox getDeathScreen() {
+		return deathScreen;
+	}
+
+	/**
+	 * @return the scoreField
+	 */
+	public Label getScoreField() {
+		return scoreField;
+	}
+
+	/**
+	 * @return the btnPause
+	 */
+	public Button getBtnPause() {
+		return btnPause;
+	}
+
+	/**
+	 * @return the btnMute
+	 */
+	public Button getBtnMute() {
+		return btnMute;
+	}
+
+	/**
+	 * @return the btnMenu
+	 */
+	public Button getBtnMenu() {
+		return btnMenu;
+	}
+
+	/**
+	 * @return the btnDSRestart
+	 */
+	public Button getBtnDSRestart() {
+		return btnDSRestart;
+	}
+
+	/**
+	 * @return the btnDSMenu
+	 */
+	public Button getBtnDSMenu() {
+		return btnDSMenu;
+	}
+
+	/**
+	 * @return the playingfield
+	 */
+	public PlayingField getPlayingField() {
+		return pf;
+	}
 }

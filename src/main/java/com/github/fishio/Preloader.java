@@ -11,7 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
-import com.github.fishio.view.ScreenController;
+import com.github.fishio.control.ScreenController;
 
 /**
  * Class to preload sprites.
@@ -53,6 +53,7 @@ public final class Preloader {
 		Thread thread = new Thread(() -> {
 			loadScreen("mainMenu");
 			loadScreen("singlePlayer");
+			loadScreen("helpScreen");
 			
 			//We don't load the splash screen, because it is shown immediately.
 		});
@@ -244,17 +245,44 @@ public final class Preloader {
 	 * 		the scene that has been loaded.
 	 */
 	public static Scene loadScreen(String filename) {
+		Scene oldScene;
 		
-		synchronized (SCREENS) {
-			Scene scene = SCREENS.get(filename);
-			if (scene != null) {
-				return scene;
+		sync:
+			synchronized (SCREENS) {
+				//Check if this screen is already being loaded
+				oldScene = SCREENS.get(filename);
+				
+				if (oldScene == EMPTY_SCENE) {
+					//The screen is being loaded.
+					//We break out of the synchronized block and start waiting below.
+					break sync;
+				} else if (oldScene != null) {
+					//The screen has already been loaded, so we return it.
+					return oldScene;
+				}
+	
+				//Indicate that we are loading the screen by putting the EMPTY_SCENE in the map.
+				SCREENS.put(filename, EMPTY_SCENE);
 			}
+		
+		//While the scene is the EMPTY_SCENE (indicates that the scene is being loaded), we wait.
+		if (oldScene == EMPTY_SCENE) {
+			do {
+				try {
+					Thread.sleep(50L);
+					
+					synchronized (SCREENS) {
+						oldScene = SCREENS.get(filename);
+					}
+				} catch (InterruptedException ex) {
+					throw new LoaderException("Interrupted while waiting for screen to get loaded!", ex);
+				}
+			} while (oldScene == EMPTY_SCENE);
 			
-			//Indicate that we are loading the screen by putting the EMPTY_SCENE in the map.
-			SCREENS.put(filename, EMPTY_SCENE);
+			return oldScene;
 		}
 		
+		//Otherwise, we load the scene.
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Preloader.class.getResource("view/" + filename + ".fxml"));
 

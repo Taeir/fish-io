@@ -2,8 +2,8 @@ package com.github.fishio;
 
 import java.util.ArrayList;
 
+import com.github.fishio.control.SinglePlayerController;
 import com.github.fishio.listeners.TickListener;
-import com.github.fishio.view.SinglePlayerController;
 
 import javafx.scene.canvas.Canvas;
 
