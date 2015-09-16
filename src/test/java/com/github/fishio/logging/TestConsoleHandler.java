@@ -28,6 +28,15 @@ public class TestConsoleHandler extends TestIHandler {
 	}
 	
 	/**
+	 * Test initialization with default formatter.
+	 * Test formatter.
+	 */
+	@Test
+	public void testConsoleHandlerDefault() {
+		assertTrue(handler.getFormat() instanceof DefaultFormat);
+	}
+	
+	/**
 	 * Test if output calls correct method.
 	 */
 	@Test

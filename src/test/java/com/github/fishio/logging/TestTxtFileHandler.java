@@ -1,6 +1,8 @@
 package com.github.fishio.logging;
 
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import org.junit.Before;
@@ -23,11 +25,38 @@ public class TestTxtFileHandler extends TestIHandler {
 	//TODO add factory methods for get and set methods
 	
 	/**
-	 * Set up handler.
+	 * Set up handler and a buffered writer.
 	 */
 	@Before
 	public void setUp() {
-		handler = new TxtFileHandler("test");
+		String filename = "test";
+		handler = new TxtFileHandler(filename);
+	}
+	
+	/**
+	 * Test initialization with default formatter.
+	 * Test formatter.
+	 */
+	@Test
+	public void testTxtFileHandlerDefault() {
+		assertTrue(handler.getFormat() instanceof DefaultFormat);
+	}
+	
+	
+	
+	/**
+	 * Test the set and get method.
+	 */
+	@Test
+	public void testSetGetBW() {
+		BufferedWriter bw2 = null;
+		try {
+			bw2 = new BufferedWriter(new FileWriter(new File("Test")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		handler.setBufferedWriter(bw2);
+		assertEquals(bw2, handler.getBufferedWriter());
 	}
 	
 	/**
