@@ -55,6 +55,15 @@ public class SinglePlayerController implements ScreenController {
 	@Override
 	public void onSwitchTo() {
 		FishIO.getInstance().getPrimaryStage().setTitle("Fish.io Singleplayer");
+		
+		//Reset the pause button
+		getBtnPause().setText("Pause");
+		getBtnPause().setDisable(false);
+		
+		//Hide the death screen
+		deathScreen.setVisible(false);
+		
+		//Start the game.
 		pf.startGame();
 	}
 
@@ -68,8 +77,10 @@ public class SinglePlayerController implements ScreenController {
 	public void onPause(ActionEvent event) {
 		if (pf.isRunning()) {
 			pf.stopGame();
+			getBtnPause().setText("Unpause");
 		} else {
 			pf.startGame();
+			getBtnPause().setText("Pause");
 		}
 	}
 
@@ -98,6 +109,9 @@ public class SinglePlayerController implements ScreenController {
 		FadeTransition fade = new FadeTransition(Duration.millis(400), deathScreen);
 		
 		if (visible) {
+			//Disable pause button
+			getBtnPause().setDisable(true);
+			
 			//Show deathscreen fully transparent and fade it in
 			deathScreen.setOpacity(0.0);
 			deathScreen.setVisible(true);
@@ -146,6 +160,10 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void restartGame() {
+		//Reset the pause button
+		getBtnPause().setText("Pause");
+		getBtnPause().setDisable(false);
+		
 		//Stop the game, clear all items, and start it again.
 		pf.stopGame();
 		pf.clear();

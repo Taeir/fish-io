@@ -117,4 +117,36 @@ public interface ICollisionArea {
 	 * 		the rotation of the boundingArea in degrees.
 	 */
 	double getRotation();
+	
+	/**
+	 * @return
+	 * 		the largest x coordinate of this ICollisionArea.
+	 */
+	default double getMaxX() {
+		return Math.max(getTopRight().x, getBottomRight().x);
+	}
+	
+	/**
+	 * @return
+	 * 		the smallest x coordinate of this ICollisionArea.
+	 */
+	default double getMinX() {
+		return Math.min(getTopLeft().x, getBottomLeft().x);
+	}
+	
+	/**
+	 * @return
+	 * 		the largest y coordinate of this ICollisionArea.
+	 */
+	default double getMaxY() {
+		return Math.max(getBottomLeft().y, getBottomRight().y);
+	}
+	
+	/**
+	 * @return
+	 * 		the smallest y coordinate of this ICollisionArea.
+	 */
+	default double getMinY() {
+		return Math.min(getTopLeft().y, getTopRight().y);
+	}
 }

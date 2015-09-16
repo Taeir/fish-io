@@ -255,41 +255,72 @@ public abstract class PlayingField {
 			m.preMove();
 			
 			ICollisionArea box = m.getBoundingArea();
-			double maxx = Math.max(box.getTopRight().x, box.getBottomRight().x);
-			double minx = Math.min(box.getTopLeft().x, box.getBottomLeft().x);
-			double maxy = Math.max(box.getBottomLeft().y, box.getBottomRight().y);
-			double miny = Math.min(box.getTopLeft().y, box.getTopRight().y);
-			if (m instanceof PlayerFish) {	// prevent playerfish from leaving the screen
-				if (maxx >= WINDOW_X
-						|| minx <= 0
-						|| maxy >= WINDOW_Y
-						|| miny <= 0) {
-					m.hitWall();
-				}
-			} else {
-				if (maxx >= WINDOW_X + 2.0 * box.getWidth()
-						|| minx <= -1 - 2.0 * box.getWidth()
-						|| maxy >= WINDOW_Y + 2.0 * box.getHeight() + 1
-						|| miny <= 0 - 2.0 * box.getHeight() - 1) {
-					m.hitWall();
-				}
+			if (hitsWall(m, box)) {
+				m.hitWall();
 			}
 
 			box.move(m.getSpeedVector());
 
 			if (!m.canMoveThroughWall()) {
-
-				if (maxx > WINDOW_X) {
-					box.move(new Vec2d(-(maxx - WINDOW_X), 0));
-				} if (minx < 0) {
-					box.move(new Vec2d(-minx, 0));
-				} if (maxy > WINDOW_Y) {
-					box.move(new Vec2d(0, maxy - WINDOW_Y));
-				} if (miny < 0) {
-					box.move(new Vec2d(0, miny));
-				}
-
+				moveWithinScreen(box);
 			}
+		}
+	}
+
+	/**
+	 * Check if a the given IMovable hits a wall or not.
+	 * 
+	 * @param m
+	 * 		the movable to check.
+	 * @param box
+	 * 		the ICollisionArea to check.
+	 * 
+	 * @return
+	 * 		true if the given Movable with the given box hits a wall.
+	 */
+	private boolean hitsWall(IMovable m, ICollisionArea box) {
+		// prevent playerfish from leaving the screen
+		if (m instanceof PlayerFish) {	
+			if (box.getMaxX() >= WINDOW_X
+					|| box.getMinX() <= 0
+					|| box.getMaxY() >= WINDOW_Y
+					|| box.getMinY() <= 0) {
+				return true;
+			}
+		} else {
+			if (box.getMaxX() >= WINDOW_X + 2.0 * box.getWidth()
+					|| box.getMinX() <= -(2.0 * box.getWidth()) - 1
+					|| box.getMaxY() >= WINDOW_Y + 2.0 * box.getHeight() + 1
+					|| box.getMinY() <= -(2.0 * box.getHeight()) - 1) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	/**
+	 * If the ICollisionArea is off the screen, it is moved back within
+	 * the screen boundaries.
+	 * 
+	 * @param box
+	 * 		the ICollisionArea to move.
+	 */
+	private void moveWithinScreen(ICollisionArea box) {
+		if (box.getMaxX() > WINDOW_X) {
+			box.move(new Vec2d(-(box.getMaxX() - WINDOW_X), 0));
+		}
+		
+		if (box.getMinX() < 0) {
+			box.move(new Vec2d(-box.getMinX(), 0));
+		}
+		
+		if (box.getMaxY() > WINDOW_Y) {
+			box.move(new Vec2d(0, box.getMaxY() - WINDOW_Y));
+		}
+		
+		if (box.getMinY() < 0) {
+			box.move(new Vec2d(0, box.getMinY()));
 		}
 	}
 
