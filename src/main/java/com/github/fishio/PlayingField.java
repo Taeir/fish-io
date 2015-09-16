@@ -324,7 +324,7 @@ public abstract class PlayingField {
 				tl.preTick();
 			} catch (Exception ex) {
 				//TODO Handle exception differently
-				log.log(LogLevel.ERROR, "Error in preTick!");
+				log.log(LogLevel.ERROR, "Error in preTick:\t" + ex.getMessage());
 				ex.printStackTrace();
 			}
 		}
