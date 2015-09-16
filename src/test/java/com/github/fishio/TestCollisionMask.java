@@ -7,50 +7,18 @@ import static org.junit.Assert.assertArrayEquals;
 
 import java.util.HashSet;
 
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import javafx.application.Platform;
+import com.github.fishio.gui.GuiTest;
+
 import javafx.scene.image.Image;
 
 /**
  * Test class for the CollisionMask class.
  */
-public class TestCollisionMask extends TestICollisionArea {
-	private static boolean started = true;
+public class TestCollisionMask extends GuiTest {
 	private CollisionMask ca;
-	
-	/**
-	 * Setup the GUI, needed to create Image(sprite) objects.
-	 * @throws Exception
-	 * 			when something goes wrong with the thread.
-	 */
-	@BeforeClass
-	public static void setUpClass() throws Exception {
-		if (FishIO.getInstance() != null) {
-			started = false;
-			return;
-		}
-		
-		new Thread(() -> FishIO.main(new String[0])).start();
-		
-		// wait for FishIO to initialize
-		while (FishIO.getInstance() == null) {
-			Thread.sleep(50L);
-		}
-	}
-	
-	/**
-	 * Stop the GUI thread.
-	 */
-	@AfterClass
-	public static void breakDownClass() {
-		if (started) {
-			Platform.exit();
-		}
-	}
 	
 	/**
 	 * Before method
@@ -61,11 +29,6 @@ public class TestCollisionMask extends TestICollisionArea {
 		Image image = new Image("AlphaDataTest.png");
 		boolean[][] data = CollisionMask.buildData(image);
 		ca = new CollisionMask(new Vec2d(0, 0), 4, 4, data, 1);
-	}
-	
-	@Override
-	public ICollisionArea getCollisionArea() {
-		return new CollisionMask(new Vec2d(0, 0), 10, 5, null, 1);
 	}
 
 	/**
