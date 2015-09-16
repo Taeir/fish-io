@@ -161,7 +161,7 @@ public abstract class PlayingField {
 			addEntities();
 
 			//Check for collisions
-			checkCollisions();
+			checkPlayerCollisions();
 
 			//Cleanup dead entities.
 			cleanupDead();
@@ -196,10 +196,9 @@ public abstract class PlayingField {
 	}
 
 	/**
-	 * Checks for collisions.
-	 * Only needed for the players on movables
+	 * Checks for player collisions.
 	 */
-	public void checkCollisions() {
+	public void checkPlayerCollisions() {
 		for (int i = 0; i < getPlayers().size(); i++) {
 			for (int j = 0; j < collidables.size(); j++) {
 				ICollidable c1 = getPlayers().get(i);

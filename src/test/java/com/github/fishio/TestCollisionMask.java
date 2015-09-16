@@ -19,7 +19,7 @@ import javafx.scene.image.Image;
  */
 public class TestCollisionMask extends GuiTest {
 	private CollisionMask ca;
-	
+
 	/**
 	 * Before method
 	 * Creates a mask with a simple sprite.
@@ -37,15 +37,15 @@ public class TestCollisionMask extends GuiTest {
 	@Test
 	public void testBuildData() {
 		boolean[][] exp = {{true, false, false},
-						   {true, true, true},
-						   {false, false, true}};
-		
+				{true, true, true},
+				{false, false, true}};
+
 		Image image = new Image("AlphaDataTest.png");
 		boolean[][] data = CollisionMask.buildData(image);
-		
+
 		assertArrayEquals(exp, data);
 	}
-	
+
 	/**
 	 * Test for {@link CollisionMask#getAlphaRatio(boolean[][]).
 	 */
@@ -56,7 +56,7 @@ public class TestCollisionMask extends GuiTest {
 		double ratio = CollisionMask.getAlphaRatio(data);
 		assertEquals(5.0 / 9.0 , ratio, 0.1E-12);
 	}
-	
+
 	/**
 	 * Test for {@link CollisionMask#getMask().
 	 * Test to check the size of the mask.
@@ -66,10 +66,10 @@ public class TestCollisionMask extends GuiTest {
 		Image image = new Image("AlphaDataTest.png");
 		boolean[][] data = CollisionMask.buildData(image);
 		CollisionMask ca = new CollisionMask(new Vec2d(0, 0), 10, 10, data, 1);	
-		
+
 		assertEquals((int) (100 / 9.0 * 4.0), ca.getMask().size());
 	}
-	
+
 	/**
 	 * Test for {@link CollisionMask#getMask().
 	 * Test for getting the mask of a rotated mask.
@@ -80,7 +80,7 @@ public class TestCollisionMask extends GuiTest {
 		boolean[][] data = CollisionMask.buildData(image);
 		CollisionMask ca = new CollisionMask(new Vec2d(0, 0), 4, 4, data, 1);	
 		ca.setRotation(23.45);
-		
+
 		HashSet<Vec2d> exp = new HashSet<Vec2d>();
 		exp.add(new Vec2d(-2, -1));
 		exp.add(new Vec2d(-2, 0));
@@ -89,10 +89,10 @@ public class TestCollisionMask extends GuiTest {
 		exp.add(new Vec2d(0, -1));
 		exp.add(new Vec2d(0, 0));
 		exp.add(new Vec2d(1, 0));
-		
+
 		assertEquals(exp, ca.getMask());
 	}
-	
+
 	/**
 	 * Test for {@link CollisionMask#intersects(ICollisionArea)}.
 	 * Test for intersection with a normal bounding box.
@@ -102,7 +102,7 @@ public class TestCollisionMask extends GuiTest {
 		BoundingBox box = new BoundingBox(new Vec2d(0, 0), 5, 5);
 		assertTrue(ca.intersects(box));
 	}
-	
+
 	/**
 	 * Test for {@link CollisionMask#intersects(ICollisionArea)}.
 	 * Test for no intersection with a normal box;
@@ -112,7 +112,7 @@ public class TestCollisionMask extends GuiTest {
 		BoundingBox box = new BoundingBox(new Vec2d(20, 20), 5, 5);
 		assertFalse(ca.intersects(box));
 	}
-	
+
 	/**
 	 * Test for {@link CollisionMask#intersects(ICollisionArea)}.
 	 * Test for intersection with itself.

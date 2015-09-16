@@ -171,7 +171,7 @@ public final class Preloader {
 	public static boolean[][] getAlphaDataOrLoad(String file) {
 		boolean[][] data;
 		synchronized (IMAGE_DATA) {
-		data = IMAGE_DATA.get(file);
+			data = IMAGE_DATA.get(file);
 			if (data != null) {
 				return data;
 			}
