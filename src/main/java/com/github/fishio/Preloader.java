@@ -330,8 +330,11 @@ public final class Preloader {
 	 * @throws LoaderException
 	 * 		if a screen is still being loaded, and while waiting for it to be done loaded,
 	 * 		we get interrupted.
+	 * 
+	 * @return
+	 * 		the Scene of the screen that was switched to.
 	 */
-	public static void switchTo(String filename, int length) {
+	public static Scene switchTo(String filename, int length) {
 		Scene scene;
 		synchronized (SCREENS) {
 			scene = SCREENS.get(filename);
@@ -355,6 +358,7 @@ public final class Preloader {
 		}
 		
 		showScreen(scene, length);
+		return scene;
 	}
 	
 	/**
@@ -364,8 +368,11 @@ public final class Preloader {
 	 * 			filename of the fxml file.
 	 * @param length
 	 * 			If &gt; 0, fade in the new screen, else just show it.
+	 * 
+	 * @return
+	 * 		the Scene of the screen that is being shown.
 	 */
-	public static void loadAndShowScreen(String filename, int length) {
+	public static Scene loadAndShowScreen(String filename, int length) {
 		Scene scene;
 		synchronized (SCREENS) {
 			scene = SCREENS.get(filename);
@@ -376,6 +383,7 @@ public final class Preloader {
 		}
 		
 		showScreen(scene, length);
+		return scene;
 	}
 	
 	/**

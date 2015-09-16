@@ -3,7 +3,7 @@ package com.github.fishio.gui;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import org.junit.After;
+import org.junit.Before;
 
 import com.github.fishio.FishIO;
 import com.github.fishio.Preloader;
@@ -12,7 +12,6 @@ import com.github.fishio.control.MainMenuController;
 import com.github.fishio.control.SinglePlayerController;
 import com.github.fishio.control.SplashScreenController;
 
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -21,6 +20,8 @@ import javafx.stage.Stage;
  */
 public class GuiTest extends AppTest {
 	private static final FishIO FISH_IO = new FishIO();
+	public static final String DEFAULT_STARTSCREEN = "splashScreen";
+	
 	private Stage stage;
 	
 	private MainMenuController mainMenuController;
@@ -30,9 +31,26 @@ public class GuiTest extends AppTest {
 	
 	private Scene mainScene, singleScene, splashScene, helpScene;
 	
-	//Booleans used for interaction with the JavaFX thread.
-	private volatile boolean loaded = false;
-	private volatile boolean loaded2 = false;
+	private String startScreen;
+	
+	/**
+	 * Creates a new GuiTest with the default start screen,
+	 * {@link #DEFAULT_STARTSCREEN}.
+	 */
+	public GuiTest() {
+		this(DEFAULT_STARTSCREEN);
+	}
+	
+	/**
+	 * Creates a new GuiTest with the given startScreen.
+	 * 
+	 * @param startScreen
+	 * 		the screen that should be switched to before every
+	 * 		test.
+	 */
+	public GuiTest(String startScreen) {
+		this.startScreen = startScreen;
+	}
 	
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -54,28 +72,44 @@ public class GuiTest extends AppTest {
 	}
 	
 	/**
-	 * Called after every test.<br>
+	 * Called before every tests.<br>
 	 * <br>
-	 * Allows the splash screen to be re skipped.
+	 * Resets the GUI to the start screen.
 	 * 
 	 * @throws Exception
-	 * 		if an Exception occurs.
+	 * 		if an Exception occurs while switching to the start screen.
 	 */
-	@After
-	public void breakDownGuiTest() throws Exception {
-		//Switch back to the splash screen.
-		Platform.runLater(() -> {
-			Preloader.switchTo("splashScreen", 0);
-			
-			loaded = true;
-		});
+	@Before
+	public void setUpGuiTest() throws Exception {
+		//Stop any running splash screen transition
+		getSplashScreenController().stopTransition();
 		
-		//Wait for the task to be executed.
-		while (!loaded) {
-			Thread.sleep(50L);
+		//Switch to the splash screen.
+		ScreenSwitcher switcher = new ScreenSwitcher(startScreen, 0);
+		
+		//We wait until we have switched to the given screen.
+		if (switcher.waitUntilDone()) {
+			//We rethrow the exception of the screen switch.
+			throw switcher.getException();
 		}
-		
-		loaded = false;
+	}
+
+	/**
+	 * @return
+	 * 		the screen that should be switched to before each test.
+	 */
+	public String getStartScreen() {
+		return startScreen;
+	}
+	
+	/**
+	 * Sets the screen that will be switched to before every test.
+	 * 
+	 * @param screen
+	 * 		the screen that should be switched to before every test.
+	 */
+	public void setStartScreen(String screen) {
+		this.startScreen = screen;
 	}
 	
 	/**
@@ -146,21 +180,22 @@ public class GuiTest extends AppTest {
 	 */
 	public void switchToScreen(final String screen) {
 		//Switch to the given screen.
-		Platform.runLater(() -> {
-			Preloader.switchTo(screen, 0);
-			
-			loaded2 = true;
-		});
+		ScreenSwitcher switcher = new ScreenSwitcher(screen, 0);
 		
-		//Wait for the task to be executed.
-		while (!loaded2) {
+		//We wait until we have switched to the given screen.
+		//If an exception occurs, we call fail.
+		try {
+			if (switcher.waitUntilDone()) {
+				fail();
+			}
+		} catch (InterruptedException ex) {
+			fail();
+		}
+
+		//Wait until the screen is the actually displayed screen.
+		while (!isCurrentScene(switcher.getScene())) {
 			sleepFail(50L);
 		}
-		
-		loaded2 = false;
-		
-		//Sleep one more time
-		sleepFail(50L);
 	}
 	
 	/**
