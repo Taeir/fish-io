@@ -12,7 +12,6 @@ import com.github.fishio.control.MainMenuController;
 import com.github.fishio.control.SinglePlayerController;
 import com.github.fishio.control.SplashScreenController;
 
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -29,10 +28,6 @@ public class GuiTest extends AppTest {
 	private HelpScreenController helpController;
 	
 	private Scene mainScene, singleScene, splashScene, helpScene;
-	
-	//Booleans used for interaction with the JavaFX thread.
-	private volatile boolean loaded = false;
-	private volatile boolean loaded2 = false;
 	
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -56,26 +51,29 @@ public class GuiTest extends AppTest {
 	/**
 	 * Called after every test.<br>
 	 * <br>
-	 * Allows the splash screen to be re skipped.
+	 * Resets the GUI to the splash screen.
 	 * 
 	 * @throws Exception
 	 * 		if an Exception occurs.
 	 */
 	@After
 	public void breakDownGuiTest() throws Exception {
-		//Switch back to the splash screen.
-		Platform.runLater(() -> {
-			Preloader.switchTo("splashScreen", 0);
-			
-			loaded = true;
-		});
+		//Stop any running splash screen transition
+		getSplashScreenController().stopTransition();
 		
-		//Wait for the task to be executed.
-		while (!loaded) {
+		//Switch to the splash screen.
+		ScreenSwitcher switcher = new ScreenSwitcher("splashScreen", 0);
+		
+		//We wait until we have switched to the given screen.
+		if (switcher.waitUntilDone()) {
+			//We rethrow the exception of the screen switch.
+			throw switcher.getException();
+		}
+
+		//Wait until the screen is the actually displayed screen.
+		while (!isCurrentScene(switcher.getScene())) {
 			Thread.sleep(50L);
 		}
-		
-		loaded = false;
 	}
 	
 	/**
@@ -146,21 +144,22 @@ public class GuiTest extends AppTest {
 	 */
 	public void switchToScreen(final String screen) {
 		//Switch to the given screen.
-		Platform.runLater(() -> {
-			Preloader.switchTo(screen, 0);
-			
-			loaded2 = true;
-		});
+		ScreenSwitcher switcher = new ScreenSwitcher(screen, 0);
 		
-		//Wait for the task to be executed.
-		while (!loaded2) {
+		//We wait until we have switched to the given screen.
+		//If an exception occurs, we call fail.
+		try {
+			if (switcher.waitUntilDone()) {
+				fail();
+			}
+		} catch (InterruptedException ex) {
+			fail();
+		}
+
+		//Wait until the screen is the actually displayed screen.
+		while (!isCurrentScene(switcher.getScene())) {
 			sleepFail(50L);
 		}
-		
-		loaded2 = false;
-		
-		//Sleep one more time
-		sleepFail(50L);
 	}
 	
 	/**
