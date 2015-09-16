@@ -5,10 +5,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.mockito.Mockito;
 
 import static org.junit.Assert.assertTrue;
@@ -27,24 +27,19 @@ public class TestTxtFileHandler extends TestIHandler {
 	//TODO add factory methods for get and set methods
 	
 	/**
+	 * Create temporary folder for testing.
+	 */
+	@Rule
+	public TemporaryFolder folder = new TemporaryFolder();
+	
+	/**
 	 * Set up handler and a buffered writer.
 	 */
 	@Before
 	public void setUp() {
 		handler = new TxtFileHandler(
-				new File("src\\test\\java\\com\\github\\fishio\\logging\\TEMP\\test.txt"));
+				new File(folder.getRoot(), "test.txt"));
 	}	
-	
-	/**
-	 * Remove Test file after test ran. 
-	 * This won't work if the program has no admin rights, however the gitignore will
-	 * ignore this file.
-	 */
-	@AfterClass
-	public static void removeTestFile() {
-		File file = new File("src\\test\\java\\com\\github\\fishio\\logging\\TEMP\\test.txt");
-		file.delete();
-	}
 	
 	/**
 	 * Test initialization with default formatter.
@@ -62,7 +57,7 @@ public class TestTxtFileHandler extends TestIHandler {
 	@Test
 	public void testTxtFileHandlerCustom() {
 		TxtFileHandler handler2 = new TxtFileHandler(new TimeStampFormat(),
-				new File("src\\test\\java\\com\\github\\fishio\\logging\\TEMP\\test.txt"));
+				new File(folder.getRoot(), "test.txt"));
 		assertTrue(handler2.getFormat() instanceof TimeStampFormat);
 		try {
 			handler2.close();
@@ -79,7 +74,7 @@ public class TestTxtFileHandler extends TestIHandler {
 		BufferedWriter bw2 = null;
 		try {
 			bw2 = new BufferedWriter(new FileWriter(
-					new File("src\\test\\java\\com\\github\\fishio\\logging\\TEMP\\test.txt")));
+					new File(folder.getRoot(), "test.txt")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -167,7 +162,7 @@ public class TestTxtFileHandler extends TestIHandler {
 	@Test
 	public void testEqualsFormatNull() {
 		TxtFileHandler handler2 = new TxtFileHandler(new TimeStampFormat(),
-				new File("src\\test\\java\\com\\github\\fishio\\logging\\TEMP\\test.txt"));
+				new File(folder.getRoot(), "test.txt"));
 		
 		handler.setFormat(null);
 		assertFalse(handler.equals(handler2));
@@ -185,7 +180,7 @@ public class TestTxtFileHandler extends TestIHandler {
 	@Test
 	public void testEqualsFormatNullBoth() {
 		TxtFileHandler handler2 = new TxtFileHandler(new TimeStampFormat(),
-				new File("src\\test\\java\\com\\github\\fishio\\logging\\TEMP\\test.txt"));
+				new File(folder.getRoot(), "test.txt"));
 		
 		handler.setFormat(null);
 		handler2.setFormat(null);
@@ -204,7 +199,7 @@ public class TestTxtFileHandler extends TestIHandler {
 	@Test
 	public void testEqualsFormatNullOther() {
 		TxtFileHandler handler2 = new TxtFileHandler(new TimeStampFormat(),
-				new File("src\\test\\java\\com\\github\\fishio\\logging\\TEMP\\test.txt"));
+				new File(folder.getRoot(), "test.txt"));
 		
 		handler2.setFormat(null);
 		assertFalse(handler.equals(handler2));
@@ -221,7 +216,7 @@ public class TestTxtFileHandler extends TestIHandler {
 	@Test
 	public void testEqualsEqual() {
 		TxtFileHandler handler2 = new TxtFileHandler(new TimeStampFormat(),
-				new File("src\\test\\java\\com\\github\\fishio\\logging\\TEMP\\test.txt"));
+				new File(folder.getRoot(), "test.txt"));
 		DefaultFormat df = new DefaultFormat();
 		handler.setFormat(df);
 		handler2.setFormat(df);
