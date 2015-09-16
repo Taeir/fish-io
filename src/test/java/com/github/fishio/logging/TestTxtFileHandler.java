@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,13 +36,28 @@ public class TestTxtFileHandler extends TestIHandler {
 	}
 	
 	/**
-	 * Remove Test file after test ran.
+	 * Set up handler and a buffered writer.
+	 */
+	@After
+	public void closeWriter() {
+		try {
+			handler.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
+	 * Remove Test file after test ran. 
+	 * This won't work if the program has no admin rights, however the gitignore will
+	 * ignore this file.
 	 */
 	@AfterClass
 	public static void removeTestFile() {
 		File file = new File("src\\test\\java\\com\\github\\fishio\\logging\\TEMP\\test.txt");
-		boolean b = file.delete();
-		System.out.println("Deleted file: " +  b);
+		file.delete();
 	}
 	
 	/**
@@ -53,7 +69,21 @@ public class TestTxtFileHandler extends TestIHandler {
 		assertTrue(handler.getFormat() instanceof DefaultFormat);
 	}
 	
-	
+	/**
+	 * Test initialization with custom formatter.
+	 * Test formatter.
+	 */
+	@Test
+	public void testTxtFileHandlerCustom() {
+		TxtFileHandler handler2 = new TxtFileHandler(new TimeStampFormat(),
+				new File("src\\test\\java\\com\\github\\fishio\\logging\\TEMP\\test.txt"));
+		assertTrue(handler2.getFormat() instanceof TimeStampFormat);
+		try {
+			handler2.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * Test the set and get method.
@@ -152,5 +182,77 @@ public class TestTxtFileHandler extends TestIHandler {
 		assertFalse(handler.equals(new Double(1.0)));
 	}
 	
+	/**
+	 * Test equals with original format is null.
+	 * Other has not null format.
+	 */
+	@Test
+	public void testEqualsFormatNull() {
+		TxtFileHandler handler2 = new TxtFileHandler(new TimeStampFormat(),
+				new File("src\\test\\java\\com\\github\\fishio\\logging\\TEMP\\test.txt"));
+		
+		handler.setFormat(null);
+		assertFalse(handler.equals(handler2));
+		try {
+			handler2.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
+	/**
+	 * Test equals with original format is null.
+	 * Other has null format.
+	 */
+	@Test
+	public void testEqualsFormatNullBoth() {
+		TxtFileHandler handler2 = new TxtFileHandler(new TimeStampFormat(),
+				new File("src\\test\\java\\com\\github\\fishio\\logging\\TEMP\\test.txt"));
+		
+		handler.setFormat(null);
+		handler2.setFormat(null);
+		assertTrue(handler.equals(handler2));
+		try {
+			handler2.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Test equals with original format is not null.
+	 * Other has null format.
+	 */
+	@Test
+	public void testEqualsFormatNullOther() {
+		TxtFileHandler handler2 = new TxtFileHandler(new TimeStampFormat(),
+				new File("src\\test\\java\\com\\github\\fishio\\logging\\TEMP\\test.txt"));
+		
+		handler2.setFormat(null);
+		assertFalse(handler.equals(handler2));
+		try {
+			handler2.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Test equals with equal TxtFileHandler.
+	 */
+	@Test
+	public void testEqualsEqual() {
+		TxtFileHandler handler2 = new TxtFileHandler(new TimeStampFormat(),
+				new File("src\\test\\java\\com\\github\\fishio\\logging\\TEMP\\test.txt"));
+		DefaultFormat df = new DefaultFormat();
+		handler.setFormat(df);
+		handler2.setFormat(df);
+		
+		assertTrue(handler.equals(handler2));
+		try {
+			handler2.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -118,13 +118,7 @@ public class TxtFileHandler implements IHandler, Closeable {
 			return false;
 		}
 		TxtFileHandler other = (TxtFileHandler) obj;
-		if (bw == null) {
-			if (other.bw != null) {
-				return false;
-			}
-		} else if (!bw.equals(other.bw)) {
-			return false;
-		}
+		
 		if (format == null) {
 			if (other.format != null) {
 				return false;
