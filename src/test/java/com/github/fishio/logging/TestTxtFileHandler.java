@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -29,8 +30,18 @@ public class TestTxtFileHandler extends TestIHandler {
 	 */
 	@Before
 	public void setUp() {
-		String filename = "test";
-		handler = new TxtFileHandler(filename);
+		handler = new TxtFileHandler(
+				new File("src\\test\\java\\com\\github\\fishio\\logging\\TEMP\\test.txt"));
+	}
+	
+	/**
+	 * Remove Test file after test ran.
+	 */
+	@AfterClass
+	public static void removeTestFile() {
+		File file = new File("src\\test\\java\\com\\github\\fishio\\logging\\TEMP\\test.txt");
+		boolean b = file.delete();
+		System.out.println("Deleted file: " +  b);
 	}
 	
 	/**
@@ -51,7 +62,8 @@ public class TestTxtFileHandler extends TestIHandler {
 	public void testSetGetBW() {
 		BufferedWriter bw2 = null;
 		try {
-			bw2 = new BufferedWriter(new FileWriter(new File("Test")));
+			bw2 = new BufferedWriter(new FileWriter(
+					new File("src\\test\\java\\com\\github\\fishio\\logging\\TEMP\\test.txt")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -80,12 +92,32 @@ public class TestTxtFileHandler extends TestIHandler {
 	}
 
 	/**
+	 * Test Hashcode formatter and bw null.
+	 */
+	@Test
+	public void testHashcodeBothNull() {
+		handler.setFormat(null);
+		handler.setBufferedWriter(null);
+		assertEquals(31, handler.hashCode());
+	}
+	
+	/**
 	 * Test Hashcode formatter null.
 	 */
-	//@Test
-	public void testHashcodeNull() {
+	@Test
+	public void testHashcodeFormatterNull() {
 		handler.setFormat(null);
-		assertEquals(31, handler.hashCode());
+		assertEquals(31 + handler.getBufferedWriter().hashCode(), handler.hashCode());
+	}
+	
+	/**
+	 * Test Hashcode buffered writer null.
+	 */
+	@Test
+	public void testHashcodeBWNull() {
+		handler.setBufferedWriter(null);
+		IFormatter format = handler.getFormat();
+		assertEquals(31 + format.hashCode() , handler.hashCode());
 	}
 	
 	/**

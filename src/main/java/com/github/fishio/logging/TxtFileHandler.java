@@ -1,6 +1,7 @@
 package com.github.fishio.logging;
 
 import java.io.BufferedWriter;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -8,24 +9,24 @@ import java.io.IOException;
 /**
  * Log handler that outputs in the a txt file.
  */
-public class TxtFileHandler implements IHandler {
+public class TxtFileHandler implements IHandler, Closeable {
 
 	private IFormatter format = new DefaultFormat();
 	private BufferedWriter bw;
 	
 	/**
 	 * Create ConsoleHandler with default formatter.
-	 * @param name
-	 * 		Name of logfile, .txt is automatically added.
+	 * @param file
+	 * 		File of logfile.
 	 */
-	public TxtFileHandler(String name) { 
+	public TxtFileHandler(File file) { 
 		try {
-			File file = new File("/" + name + ".txt");
-			// if file doesn't exists, then create it
+			// If file doesn't exists, then create it
 			if (!file.exists()) {
+				
 				file.createNewFile();
 			}
-			//Save BufferedWriter
+			// Save BufferedWriter
 			bw = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -36,18 +37,17 @@ public class TxtFileHandler implements IHandler {
 	 * Create ConsoleHandler with custom formatter.
 	 * @param formatter
 	 * 		The custom format the handler should adapt.
-	 * @param name
-	 * 		Name of logfile, .txt is automatically added.
+	 *  @param file
+	 * 		File of logfile.
 	 */
-	public TxtFileHandler(IFormatter formatter, String name) {
+	public TxtFileHandler(IFormatter formatter, File file) {
 		format = formatter;
 		try {
-			File file = new File("/" + name + ".txt");
-			// if file doesn't exists, then create it
+			// If file doesn't exists, then create it
 			if (!file.exists()) {
 				file.createNewFile();
 			}
-			//Save BufferedWriter
+			// Save BufferedWriter
 			bw = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -133,5 +133,12 @@ public class TxtFileHandler implements IHandler {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public void close() throws IOException {
+		if (bw != null) {
+			bw.close();
+		}
 	}
 }

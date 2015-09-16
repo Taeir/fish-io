@@ -39,16 +39,10 @@ public class TestTimeStampFormat {
 	 */
 	@Test
 	public void testGetTimeStamp() {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 		TimeStampFormat timeStampFormat = new TimeStampFormat();
 		
-		Date beforeTest = null;
-		try {
-			// Formating the date, then parsing it so it fits the desired format
-			beforeTest = format.parse(format.format(new Date()));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		// Date before test
+		Date beforeTest = new Date();
 		
 		Date test = null;
 		try {
@@ -59,12 +53,8 @@ public class TestTimeStampFormat {
 			e.printStackTrace();
 		}
 		
-		Date afterTest = null;
-		try {
-			afterTest = format.parse(format.format(new Date()));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		// Date after test
+		Date afterTest = new Date();
 		
 		// Check if date is after the beginning of the test
 		assertFalse(beforeTest.after(test));
