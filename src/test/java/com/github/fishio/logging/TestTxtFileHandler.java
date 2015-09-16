@@ -33,21 +33,7 @@ public class TestTxtFileHandler extends TestIHandler {
 	public void setUp() {
 		handler = new TxtFileHandler(
 				new File("src\\test\\java\\com\\github\\fishio\\logging\\TEMP\\test.txt"));
-	}
-	
-	/**
-	 * Set up handler and a buffered writer.
-	 */
-	@After
-	public void closeWriter() {
-		try {
-			handler.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
+	}	
 	
 	/**
 	 * Remove Test file after test ran. 
@@ -148,14 +134,6 @@ public class TestTxtFileHandler extends TestIHandler {
 		handler.setBufferedWriter(null);
 		IFormatter format = handler.getFormat();
 		assertEquals(31 + format.hashCode() , handler.hashCode());
-	}
-	
-	/**
-	 * Test Hashcode formatter with default.
-	 */
-	//@Test
-	public void testHashcodeDefault() {
-		assertEquals(31 + handler.getFormat().hashCode(), handler.hashCode());
 	}
 	
 	/**
