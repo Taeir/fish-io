@@ -7,4 +7,5 @@ Thumbs.db
 .project
 /bin/
 
-src/test/java/com/github/fishio/logging/TEMP/
+src/test/java/com/github/fishio/logging/TEMP/test.txt
+logs/*.txt

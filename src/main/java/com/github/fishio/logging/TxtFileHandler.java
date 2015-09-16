@@ -13,6 +13,8 @@ public class TxtFileHandler implements IHandler, Closeable {
 
 	private IFormatter format = new DefaultFormat();
 	private BufferedWriter bw;
+	private int flushCounter = 0;
+	private final int flushNumber = 10;
 	
 	/**
 	 * Create ConsoleHandler with default formatter.
@@ -59,10 +61,28 @@ public class TxtFileHandler implements IHandler, Closeable {
 		}
 	}
 	
+	/**
+	 * Logs to a file specified by the BufferedWriter.<br>
+	 * Flushes every now and then specified by the flushNumber
+	 * final attribute. This is so that not the entire BufferedWriter
+	 * has to be full before flushed, and will log even when the game
+	 * crashes early.
+	 * @param logLvl
+	 * 		LogLevel of the log.
+	 * @param logMessage
+	 * 		Log message of the log.
+	 */
 	@Override
 	public void output(LogLevel logLvl, String logMessage) {
 		try {
 			bw.write(format.formatOutput(logLvl, logMessage));
+			bw.newLine();
+			
+			// Flush every now and then to ensure 
+			flushCounter++;
+			if (flushCounter >= flushNumber) {
+				bw.flush();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

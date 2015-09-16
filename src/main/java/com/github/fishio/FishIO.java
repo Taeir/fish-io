@@ -1,6 +1,11 @@
 package com.github.fishio;
 
+
+import java.io.File;
+import java.io.IOException;
+
 import com.github.fishio.logging.ConsoleHandler;
+import com.github.fishio.logging.TxtFileHandler;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.logging.TimeStampFormat;
@@ -17,6 +22,7 @@ public class FishIO extends Application {
 	
 	private Log log = Log.getLogger();
 	private ConsoleHandler consoleHandler = new ConsoleHandler(new TimeStampFormat());
+	private TxtFileHandler textFileHandler = new TxtFileHandler(new TimeStampFormat(), new File("logs\\log.txt"));
 	private LogLevel logLevel = LogLevel.DEBUG;
 
 	@Override
@@ -59,6 +65,11 @@ public class FishIO extends Application {
 	 * Closes the program.
 	 */
 	public void closeApplication() {
+		try {
+			textFileHandler.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		this.primaryStage.close();
 	}
 
@@ -93,6 +104,7 @@ public class FishIO extends Application {
 	protected final void initiateLogger() {
 		//Set Handlers with formatters
 		log.addHandler(consoleHandler);
+		log.addHandler(textFileHandler);
 		
 		//Set Log level
 		log.setLogLevel(logLevel);
