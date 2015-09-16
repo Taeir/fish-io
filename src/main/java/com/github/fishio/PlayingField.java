@@ -371,8 +371,33 @@ public abstract class PlayingField {
 	 * Starts the game.
 	 */
 	public void startGame() {
-		renderThread.play();
-		gameThread.play();
+		if (renderThread.getStatus() != Status.RUNNING) {
+			renderThread.play();
+		}
+		
+		if (!isRunning()) {
+			gameThread.play();
+		}
+	}
+	
+	/**
+	 * Starts the game and waits for it to be running.
+	 * 
+	 * @throws InterruptedException
+	 * 		if the waiting is interrupted.
+	 * 
+	 * @see #startGame()
+	 */
+	public void startGameAndWait() throws InterruptedException {
+		Duration position = gameThread.getCurrentTime();
+		
+		startGame();
+		
+		//If the play head is at the same position, the game thread has not
+		//ran a cycle yet, so we wait a bit and check again.
+		while (position.equals(gameThread.getCurrentTime())) {
+			Thread.sleep(25L);
+		}
 	}
 
 	/**
@@ -381,6 +406,23 @@ public abstract class PlayingField {
 	public void stopGame() {
 		gameThread.stop();
 		renderThread.stop();
+	}
+	
+	/**
+	 * Stops (pauses) the game, and waits for the game to fully stop.
+	 * 
+	 * @throws InterruptedException
+	 * 		if the waiting is interrupted.
+	 * 
+	 * @see #stopGame()
+	 */
+	public void stopGameAndWait() throws InterruptedException {
+		stopGame();
+		
+		//While we are still running, we wait.
+		while (isRunning()) {
+			Thread.sleep(25L);
+		}
 	}
 	
 	/**
