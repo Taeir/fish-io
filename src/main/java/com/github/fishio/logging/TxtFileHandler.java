@@ -23,7 +23,9 @@ public class TxtFileHandler implements IHandler, Closeable {
 		try {
 			// If file doesn't exists, then create it
 			if (!file.exists()) {
-				
+				if (!file.getParentFile().exists()) {
+				file.getAbsoluteFile().getParentFile().mkdirs();
+				}
 				file.createNewFile();
 			}
 			// Save BufferedWriter
@@ -45,6 +47,9 @@ public class TxtFileHandler implements IHandler, Closeable {
 		try {
 			// If file doesn't exists, then create it
 			if (!file.exists()) {
+				if (!file.getParentFile().exists()) {
+					file.getAbsoluteFile().getParentFile().mkdirs();
+					}
 				file.createNewFile();
 			}
 			// Save BufferedWriter
