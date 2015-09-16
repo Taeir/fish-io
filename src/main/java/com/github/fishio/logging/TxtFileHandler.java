@@ -72,14 +72,38 @@ public class TxtFileHandler implements IHandler {
 	public IFormatter getFormat() {
 		return format;
 	}
+	
+	/**
+	 * Set buffered writer.
+	 * @param bw2
+	 * 		BufferedWriter to be set.
+	 */
+	public void setBufferedWriter(BufferedWriter bw2) {
+		bw = bw2;
+	}
+	
+	/**
+	 * Get buffered writer.
+	 * @return bw
+	 * 		BufferedWriter that is set for this TxtFileHandler.
+	 */
+	public BufferedWriter getBufferedWriter() {
+		return bw;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((bw == null) ? 0 : bw.hashCode());
-		result = prime * result + ((format == null) ? 0 : format.hashCode());
-		return result;
+		result = prime * result;
+		if (bw != null) {
+			result = result + bw.hashCode();
+		} 		
+		if (format == null) {
+			return result;
+		} else {
+			return result + format.hashCode();
+		}
 	}
 
 	@Override
