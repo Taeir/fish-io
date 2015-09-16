@@ -3,7 +3,7 @@ package com.github.fishio.gui;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import org.junit.After;
+import org.junit.Before;
 
 import com.github.fishio.FishIO;
 import com.github.fishio.Preloader;
@@ -20,6 +20,8 @@ import javafx.stage.Stage;
  */
 public class GuiTest extends AppTest {
 	private static final FishIO FISH_IO = new FishIO();
+	public static final String DEFAULT_STARTSCREEN = "splashScreen";
+	
 	private Stage stage;
 	
 	private MainMenuController mainMenuController;
@@ -28,6 +30,27 @@ public class GuiTest extends AppTest {
 	private HelpScreenController helpController;
 	
 	private Scene mainScene, singleScene, splashScene, helpScene;
+	
+	private String startScreen;
+	
+	/**
+	 * Creates a new GuiTest with the default start screen,
+	 * {@link #DEFAULT_STARTSCREEN}.
+	 */
+	public GuiTest() {
+		this(DEFAULT_STARTSCREEN);
+	}
+	
+	/**
+	 * Creates a new GuiTest with the given startScreen.
+	 * 
+	 * @param startScreen
+	 * 		the screen that should be switched to before every
+	 * 		test.
+	 */
+	public GuiTest(String startScreen) {
+		this.startScreen = startScreen;
+	}
 	
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -49,31 +72,44 @@ public class GuiTest extends AppTest {
 	}
 	
 	/**
-	 * Called after every test.<br>
+	 * Called before every tests.<br>
 	 * <br>
-	 * Resets the GUI to the splash screen.
+	 * Resets the GUI to the start screen.
 	 * 
 	 * @throws Exception
-	 * 		if an Exception occurs.
+	 * 		if an Exception occurs while switching to the start screen.
 	 */
-	@After
-	public void breakDownGuiTest() throws Exception {
+	@Before
+	public void setUpGuiTest() throws Exception {
 		//Stop any running splash screen transition
 		getSplashScreenController().stopTransition();
 		
 		//Switch to the splash screen.
-		ScreenSwitcher switcher = new ScreenSwitcher("splashScreen", 0);
+		ScreenSwitcher switcher = new ScreenSwitcher(startScreen, 0);
 		
 		//We wait until we have switched to the given screen.
 		if (switcher.waitUntilDone()) {
 			//We rethrow the exception of the screen switch.
 			throw switcher.getException();
 		}
+	}
 
-		//Wait until the screen is the actually displayed screen.
-		while (!isCurrentScene(switcher.getScene())) {
-			Thread.sleep(50L);
-		}
+	/**
+	 * @return
+	 * 		the screen that should be switched to before each test.
+	 */
+	public String getStartScreen() {
+		return startScreen;
+	}
+	
+	/**
+	 * Sets the screen that will be switched to before every test.
+	 * 
+	 * @param screen
+	 * 		the screen that should be switched to before every test.
+	 */
+	public void setStartScreen(String screen) {
+		this.startScreen = screen;
 	}
 	
 	/**
