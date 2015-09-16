@@ -195,11 +195,12 @@ public abstract class PlayingField {
 
 	/**
 	 * Checks for collisions.
+	 * Only needed for the players on movables
 	 */
 	public void checkCollisions() {
-		for (int i = 0; i < collidables.size() - 1; i++) {
-			for (int j = i + 1; j < collidables.size(); j++) {
-				ICollidable c1 = collidables.get(i);
+		for (int i = 0; i < getPlayers().size(); i++) {
+			for (int j = 0; j < collidables.size(); j++) {
+				ICollidable c1 = getPlayers().get(i);
 				ICollidable c2 = collidables.get(j);
 				if (c1 != c2 && c1.doesCollides(c2)) {
 					c1.onCollide(c2);

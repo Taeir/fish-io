@@ -30,6 +30,17 @@ public final class Preloader {
 	public static final HashMap<String, Image> IMAGES = new HashMap<String, Image>();
 	
 	/**
+	 * A map which holds the alpha map of an image.
+	 */
+	public static final HashMap<String, boolean[][]> IMAGE_DATA = new HashMap<String, boolean[][]>();
+	
+	/**
+	 * A map which holds the relative size of images.
+	 */
+	public static final HashMap<String, Double> IMAGE_ALPHARATS = new HashMap<String, Double>();
+	
+	
+	/**
 	 * An empty scene for indicating that a screen is still being loaded.
 	 */
 	private static final Scene EMPTY_SCENE = new Scene(new HBox());
@@ -54,29 +65,29 @@ public final class Preloader {
 	 */
 	public static void preloadImages() {
 		Thread thread = new Thread(() -> {
-			tryPreLoad("background.png");
-			tryPreLoad("logo.png");
+			tryPreLoad("background.png", false);
+			tryPreLoad("logo.png", false);
 			
 			//Load fish sprites
-			tryPreLoad("sprites/fish/playerFish.png");
+			tryPreLoad("sprites/fish/playerFish.png", true);
 			for (int i = 0; i < 29; i++) {
-				tryPreLoad("sprites/fish/fish" + i + ".png");
+				tryPreLoad("sprites/fish/fish" + i + ".png", true);
 			}
 			
-			tryPreLoad("sprites/fish/special/barrelFish.png");
-			tryPreLoad("sprites/fish/special/clownFish1.png");
-			tryPreLoad("sprites/fish/special/clownFish2.png");
-			tryPreLoad("sprites/fish/special/jellyfish.png");
-			tryPreLoad("sprites/fish/special/submarine.png");
-			tryPreLoad("sprites/fish/special/swordfish.png");
-			tryPreLoad("sprites/fish/special/turtle.png");
+			tryPreLoad("sprites/fish/special/barrelFish.png", true);
+			tryPreLoad("sprites/fish/special/clownFish1.png", true);
+			tryPreLoad("sprites/fish/special/clownFish2.png", true);
+			tryPreLoad("sprites/fish/special/jellyfish.png", true);
+			tryPreLoad("sprites/fish/special/submarine.png", true);
+			tryPreLoad("sprites/fish/special/swordfish.png", true);
+			tryPreLoad("sprites/fish/special/turtle.png", true);
 			
-			tryPreLoad("sprites/anchor1.png");
-			tryPreLoad("sprites/anchor2.png");
-			tryPreLoad("sprites/fishingPole.png");
-			tryPreLoad("sprites/float.png");
-			tryPreLoad("sprites/seaweed1.png");
-			tryPreLoad("sprites/starfish.png");
+			tryPreLoad("sprites/anchor1.png", false);
+			tryPreLoad("sprites/anchor2.png", false);
+			tryPreLoad("sprites/fishingPole.png", false);
+			tryPreLoad("sprites/float.png", false);
+			tryPreLoad("sprites/seaweed1.png", false);
+			tryPreLoad("sprites/starfish.png", false);
 		});
 		
 		thread.start();
@@ -90,7 +101,7 @@ public final class Preloader {
 	 * @param file
 	 * 		the file of the image.
 	 */
-	private static void tryPreLoad(String file) {
+	private static void tryPreLoad(String file, boolean pixelData) {
 		synchronized (IMAGES) {
 			if (IMAGES.containsKey(file)) {
 				return;
@@ -104,7 +115,18 @@ public final class Preloader {
 			System.err.println("Error while trying to load image " + file);
 			return;
 		}
-		
+		if (pixelData) {
+			boolean[][] data = CollisionMask.buildData(image);
+			double alphaRatio = CollisionMask.getAlphaRatio(data);
+			
+			synchronized (IMAGE_ALPHARATS) {
+				IMAGE_ALPHARATS.put(file, alphaRatio);
+			}
+			
+			synchronized (IMAGE_DATA) {
+				IMAGE_DATA.put(file, data);
+			}			
+		}
 		synchronized (IMAGES) {
 			IMAGES.put(file, image);
 		}
@@ -133,6 +155,59 @@ public final class Preloader {
 			IMAGES.put(file, image);
 		}
 		return image;
+	}
+	
+	/**
+	 * Gets the alpha data of an Image for the given filepath.<br>
+	 * If it is not loaded, it builds the data.
+	 * 
+	 * @param file
+	 * 		the file of the Image.
+	 * 
+	 * @return
+	 * 		the alpha data of the image
+	 */
+	public static boolean[][] getAlphaDataOrLoad(String file) {
+		boolean[][] data;
+		synchronized (IMAGE_DATA) {
+		data = IMAGE_DATA.get(file);
+			if (data != null) {
+				return data;
+			}
+		}
+		
+		Image image = getImageOrLoad(file);
+		data = CollisionMask.buildData(image);
+		synchronized (IMAGE_DATA) {
+			IMAGE_DATA.put(file, data);
+		}
+		return data;
+	}
+
+	/**
+	 * Gets the ratio of opaque and transparent pixels of an image with the given filepath.<br>
+	 * If it is not loaded, it calculates the ratio.
+	 * 
+	 * @param file
+	 * 		the file of the Image.
+	 * 
+	 * @return
+	 * 		the ratio.
+	 */
+	public static double getSpriteAlphaRatioOrLoad(String file) {
+		synchronized (IMAGE_ALPHARATS) {
+		Double temp = IMAGE_ALPHARATS.get(file);
+			if (temp != null) {
+				return temp.doubleValue();
+			}
+		}
+		
+		boolean[][] data = getAlphaDataOrLoad(file);
+		double alphaRatio = CollisionMask.getAlphaRatio(data);
+		synchronized (IMAGE_ALPHARATS) {
+			IMAGE_ALPHARATS.put(file, alphaRatio);
+		}
+		return alphaRatio;
 	}
 	
 	/**
