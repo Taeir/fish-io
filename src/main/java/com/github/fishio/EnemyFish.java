@@ -18,8 +18,8 @@ public class EnemyFish extends Entity implements IMovable {
 	/**
 	 * Main constructor of the enemy fish.
 	 * 
-	 * @param b
-	 *            Bounding box of enemy fish object.
+	 * @param ca
+	 *            ICollisionArea of enemy fish object.
 	 * @param sprite
 	 *            Sprite of the enemy fish object.
 	 * @param startvx
@@ -27,8 +27,8 @@ public class EnemyFish extends Entity implements IMovable {
 	 * @param startvy
 	 *            Starting speed of the enemy fish object in the y direction.
 	 */
-	public EnemyFish(BoundingBox b, Image sprite, double startvx, double startvy) {
-		super(b);
+	public EnemyFish(ICollisionArea ca, Image sprite, double startvx, double startvy) {
+		super(ca);
 		this.sprite = sprite;
 		vx = startvx;
 		vy = startvy;

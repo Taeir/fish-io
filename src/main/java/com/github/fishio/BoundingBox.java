@@ -1,9 +1,5 @@
 package com.github.fishio;
 
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
-
 /**
  * Class to represent an (Axis Aligned) Bounding Box.
  */
@@ -172,53 +168,7 @@ public class BoundingBox implements ICollisionArea {
 
 	@Override
 	public boolean intersects(ICollisionArea other) {
-
-		Shape rect1 = new Rectangle((int) (getCenterX() - 0.5 * width), 
-				(int) (getCenterY() - 0.5 * height), 
-				(int) width, (int) height);
-		Rectangle rect2 = new Rectangle((int) (other.getCenterX() - 0.5 * other.getWidth()), 
-				(int) (other.getCenterY() - 0.5 * other.getHeight()), 
-				(int) other.getWidth(), (int) other.getHeight());
-
-		AffineTransform t1 = new AffineTransform();
-		AffineTransform t2 = new AffineTransform();
-		
-		t1.rotate(Math.toRadians(this.getRotation()), 
-				this.getCenterX(), this.getCenterY()); //rotate self
-		t2.rotate(Math.toRadians(other.getRotation()), 
-				other.getCenterX(), other.getCenterY()); //rotate around other
-		
-		rect1 = t1.createTransformedShape(rect1);
-		rect1 = t2.createTransformedShape(rect1);
-
-		return rect1.intersects(rect2);
-	}
-
-
-	@Override
-	public double setRotation(IMovable m) {
-		Vec2d sv = m.getSpeedVector();
-		if (sv.x == 0) {
-			if (sv.y > 0) {
-				rotation = 270;
-			} else if (sv.y < 0) {
-				rotation = 90;
-			} else {
-				rotation = 0;
-			}
-		} else if (sv.y == 0) {
-			if (sv.x >= 0) {
-				rotation = 0;
-			} else {
-				rotation = 180;
-			}
-		} else {
-			rotation = Math.toDegrees(Math.atan(sv.y / sv.x));
-		}
-
-		rotation %= 180;	//get rid of upside down boxes
-		
-		return rotation;
+		return boxIntersects(other);
 	}
 
 	@Override
@@ -273,5 +223,16 @@ public class BoundingBox implements ICollisionArea {
 		return true;
 	}
 
+	@Override
+	public double setRotation(double angle) {
+		rotation = angle % 180;	//get rid of upside down boxes
+		return rotation;
+	}
 
+	@Override
+	public void setSize(double size) {
+		double r = width / height;
+		height = Math.sqrt(size / r);
+		width = height * r;
+	}
 }

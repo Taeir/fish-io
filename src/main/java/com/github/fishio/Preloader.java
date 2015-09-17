@@ -3,6 +3,8 @@ package com.github.fishio;
 import java.io.IOException;
 import java.util.HashMap;
 
+import com.github.fishio.control.ScreenController;
+
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,12 +13,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
-import com.github.fishio.control.ScreenController;
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
 
 /**
  * Class to preload sprites.
  */
 public final class Preloader {
+	
+	private static Log log = Log.getLogger();
 	private Preloader() { }
 	
 	/**
@@ -28,6 +33,17 @@ public final class Preloader {
 	 * A map which holds the loaded images.
 	 */
 	public static final HashMap<String, Image> IMAGES = new HashMap<String, Image>();
+	
+	/**
+	 * A map which holds the alpha map of an image.
+	 */
+	public static final HashMap<String, boolean[][]> IMAGE_DATA = new HashMap<String, boolean[][]>();
+	
+	/**
+	 * A map which holds the relative size of images.
+	 */
+	public static final HashMap<String, Double> IMAGE_ALPHARATS = new HashMap<String, Double>();
+	
 	
 	/**
 	 * An empty scene for indicating that a screen is still being loaded.
@@ -42,6 +58,8 @@ public final class Preloader {
 		Thread thread = new Thread(() -> {
 			loadScreen("mainMenu");
 			loadScreen("singlePlayer");
+			loadScreen("helpScreen");
+			loadScreen("achievementScreen");
 			
 			//We don't load the splash screen, because it is shown immediately.
 		});
@@ -54,29 +72,29 @@ public final class Preloader {
 	 */
 	public static void preloadImages() {
 		Thread thread = new Thread(() -> {
-			tryPreLoad("background.png");
-			tryPreLoad("logo.png");
+			tryPreLoad("background.png", false);
+			tryPreLoad("logo.png", false);
 			
 			//Load fish sprites
-			tryPreLoad("sprites/fish/playerFish.png");
+			tryPreLoad("sprites/fish/playerFish.png", true);
 			for (int i = 0; i < 29; i++) {
-				tryPreLoad("sprites/fish/fish" + i + ".png");
+				tryPreLoad("sprites/fish/fish" + i + ".png", true);
 			}
 			
-			tryPreLoad("sprites/fish/special/barrelFish.png");
-			tryPreLoad("sprites/fish/special/clownFish1.png");
-			tryPreLoad("sprites/fish/special/clownFish2.png");
-			tryPreLoad("sprites/fish/special/jellyfish.png");
-			tryPreLoad("sprites/fish/special/submarine.png");
-			tryPreLoad("sprites/fish/special/swordfish.png");
-			tryPreLoad("sprites/fish/special/turtle.png");
+			tryPreLoad("sprites/fish/special/barrelFish.png", true);
+			tryPreLoad("sprites/fish/special/clownFish1.png", true);
+			tryPreLoad("sprites/fish/special/clownFish2.png", true);
+			tryPreLoad("sprites/fish/special/jellyfish.png", true);
+			tryPreLoad("sprites/fish/special/submarine.png", true);
+			tryPreLoad("sprites/fish/special/swordfish.png", true);
+			tryPreLoad("sprites/fish/special/turtle.png", true);
 			
-			tryPreLoad("sprites/anchor1.png");
-			tryPreLoad("sprites/anchor2.png");
-			tryPreLoad("sprites/fishingPole.png");
-			tryPreLoad("sprites/float.png");
-			tryPreLoad("sprites/seaweed1.png");
-			tryPreLoad("sprites/starfish.png");
+			tryPreLoad("sprites/anchor1.png", false);
+			tryPreLoad("sprites/anchor2.png", false);
+			tryPreLoad("sprites/fishingPole.png", false);
+			tryPreLoad("sprites/float.png", false);
+			tryPreLoad("sprites/seaweed1.png", false);
+			tryPreLoad("sprites/starfish.png", false);
 		});
 		
 		thread.start();
@@ -90,7 +108,7 @@ public final class Preloader {
 	 * @param file
 	 * 		the file of the image.
 	 */
-	private static void tryPreLoad(String file) {
+	private static void tryPreLoad(String file, boolean pixelData) {
 		synchronized (IMAGES) {
 			if (IMAGES.containsKey(file)) {
 				return;
@@ -101,10 +119,21 @@ public final class Preloader {
 		try {
 			image = new Image(file);
 		} catch (Exception ex) {
-			System.err.println("Error while trying to load image " + file);
+			log.log(LogLevel.ERROR, "Error while trying to load image: " + file);
 			return;
 		}
-		
+		if (pixelData) {
+			boolean[][] data = CollisionMask.buildData(image);
+			double alphaRatio = CollisionMask.getAlphaRatio(data);
+			
+			synchronized (IMAGE_ALPHARATS) {
+				IMAGE_ALPHARATS.put(file, alphaRatio);
+			}
+			
+			synchronized (IMAGE_DATA) {
+				IMAGE_DATA.put(file, data);
+			}			
+		}
 		synchronized (IMAGES) {
 			IMAGES.put(file, image);
 		}
@@ -136,6 +165,59 @@ public final class Preloader {
 	}
 	
 	/**
+	 * Gets the alpha data of an Image for the given filepath.<br>
+	 * If it is not loaded, it builds the data.
+	 * 
+	 * @param file
+	 * 		the file of the Image.
+	 * 
+	 * @return
+	 * 		the alpha data of the image
+	 */
+	public static boolean[][] getAlphaDataOrLoad(String file) {
+		boolean[][] data;
+		synchronized (IMAGE_DATA) {
+			data = IMAGE_DATA.get(file);
+			if (data != null) {
+				return data;
+			}
+		}
+		
+		Image image = getImageOrLoad(file);
+		data = CollisionMask.buildData(image);
+		synchronized (IMAGE_DATA) {
+			IMAGE_DATA.put(file, data);
+		}
+		return data;
+	}
+
+	/**
+	 * Gets the ratio of opaque and transparent pixels of an image with the given filepath.<br>
+	 * If it is not loaded, it calculates the ratio.
+	 * 
+	 * @param file
+	 * 		the file of the Image.
+	 * 
+	 * @return
+	 * 		the ratio.
+	 */
+	public static double getSpriteAlphaRatioOrLoad(String file) {
+		synchronized (IMAGE_ALPHARATS) {
+		Double temp = IMAGE_ALPHARATS.get(file);
+			if (temp != null) {
+				return temp.doubleValue();
+			}
+		}
+		
+		boolean[][] data = getAlphaDataOrLoad(file);
+		double alphaRatio = CollisionMask.getAlphaRatio(data);
+		synchronized (IMAGE_ALPHARATS) {
+			IMAGE_ALPHARATS.put(file, alphaRatio);
+		}
+		return alphaRatio;
+	}
+	
+	/**
 	 * Gets the preloaded image from the given file, if it is loaded.<br>
 	 * If not, this method throws an IllegalArgumentException.
 	 * 
@@ -154,6 +236,7 @@ public final class Preloader {
 			if (image != null) {
 				return image;
 			} else {
+				log.log(LogLevel.ERROR, "No image loaded for " + file + "!");
 				throw new IllegalArgumentException("No image loaded for " + file + "!");
 			}
 		}
@@ -169,17 +252,45 @@ public final class Preloader {
 	 * 		the scene that has been loaded.
 	 */
 	public static Scene loadScreen(String filename) {
+		Scene oldScene;
 		
-		synchronized (SCREENS) {
-			Scene scene = SCREENS.get(filename);
-			if (scene != null) {
-				return scene;
+		sync:
+			synchronized (SCREENS) {
+				//Check if this screen is already being loaded
+				oldScene = SCREENS.get(filename);
+				
+				if (oldScene == EMPTY_SCENE) {
+					//The screen is being loaded.
+					//We break out of the synchronized block and start waiting below.
+					break sync;
+				} else if (oldScene != null) {
+					//The screen has already been loaded, so we return it.
+					return oldScene;
+				}
+	
+				//Indicate that we are loading the screen by putting the EMPTY_SCENE in the map.
+				SCREENS.put(filename, EMPTY_SCENE);
 			}
+		
+		//While the scene is the EMPTY_SCENE (indicates that the scene is being loaded), we wait.
+		if (oldScene == EMPTY_SCENE) {
+			do {
+				try {
+					Thread.sleep(50L);
+					
+					synchronized (SCREENS) {
+						oldScene = SCREENS.get(filename);
+					}
+				} catch (InterruptedException ex) {
+					log.log(LogLevel.ERROR, "Interrupted while waiting for screen to get loaded!");
+					throw new LoaderException("Interrupted while waiting for screen to get loaded!", ex);
+				}
+			} while (oldScene == EMPTY_SCENE);
 			
-			//Indicate that we are loading the screen by putting the EMPTY_SCENE in the map.
-			SCREENS.put(filename, EMPTY_SCENE);
+			return oldScene;
 		}
 		
+		//Otherwise, we load the scene.
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Preloader.class.getResource("view/" + filename + ".fxml"));
 
@@ -187,7 +298,7 @@ public final class Preloader {
 			Pane rootLayout = (Pane) loader.load();
 			ScreenController controller = ((ScreenController) loader.getController());
 			if (controller == null) {
-				System.err.println("Screen controller not found for " + filename);
+				log.log(LogLevel.ERROR, "Screen controller not found for " + filename);
 				return null;
 			}
 
@@ -200,7 +311,8 @@ public final class Preloader {
 			try {
 				controller.init(scene);
 			} catch (Exception ex) {
-				System.err.println("Error while initializing controller for " + filename);
+				log.log(LogLevel.ERROR, "Error while initializing controller for " 
+						+ filename + " Exeception: " + ex.getMessage());
 			}
 			
 			synchronized (SCREENS) {
@@ -209,8 +321,8 @@ public final class Preloader {
 			
 			return scene;
 		} catch (IOException e) {
-			System.err.println("Error loading screen:" + filename);
-			e.printStackTrace();
+			log.log(LogLevel.ERROR, "Error loading screen: " 
+					+ " Exeception: " + e.getMessage());
 			return null;
 		}
 	}
@@ -227,14 +339,18 @@ public final class Preloader {
 	 * @throws LoaderException
 	 * 		if a screen is still being loaded, and while waiting for it to be done loaded,
 	 * 		we get interrupted.
+	 * 
+	 * @return
+	 * 		the Scene of the screen that was switched to.
 	 */
-	public static void switchTo(String filename, int length) {
+	public static Scene switchTo(String filename, int length) {
 		Scene scene;
 		synchronized (SCREENS) {
 			scene = SCREENS.get(filename);
 		}
 		
 		if (scene == null) {
+			log.log(LogLevel.ERROR, "No screen with name " + filename + " is loaded!");
 			throw new IllegalArgumentException("No screen with name " + filename + " is loaded!");
 		} else if (scene == EMPTY_SCENE) {
 			//Screen is being loaded, so sleep for a bit and try again
@@ -246,12 +362,14 @@ public final class Preloader {
 						scene = SCREENS.get(filename);
 					}
 				} catch (InterruptedException ex) {
+					log.log(LogLevel.ERROR, "Interrupted while waiting for screen to get loaded!");
 					throw new LoaderException("Interrupted while waiting for screen to get loaded!", ex);
 				}
 			}
 		}
 		
 		showScreen(scene, length);
+		return scene;
 	}
 	
 	/**
@@ -261,8 +379,11 @@ public final class Preloader {
 	 * 			filename of the fxml file.
 	 * @param length
 	 * 			If &gt; 0, fade in the new screen, else just show it.
+	 * 
+	 * @return
+	 * 		the Scene of the screen that is being shown.
 	 */
-	public static void loadAndShowScreen(String filename, int length) {
+	public static Scene loadAndShowScreen(String filename, int length) {
 		Scene scene;
 		synchronized (SCREENS) {
 			scene = SCREENS.get(filename);
@@ -273,6 +394,7 @@ public final class Preloader {
 		}
 		
 		showScreen(scene, length);
+		return scene;
 	}
 	
 	/**

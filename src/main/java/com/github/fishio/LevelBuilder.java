@@ -3,6 +3,8 @@ package com.github.fishio;
 import java.util.Random;
 
 import javafx.scene.image.Image;
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
 
 
 /**
@@ -12,7 +14,7 @@ import javafx.scene.image.Image;
 public final class LevelBuilder {
 
 	private static Random rand = new Random();
-
+	private static Log log = Log.getLogger();
 	// Fish statistics
 
 	// movement
@@ -38,18 +40,22 @@ public final class LevelBuilder {
 	 * Creates a random EnemyFish. This fish will get a sprite and always spawn
 	 * outside the screen and always move towards the inside.
 	 * 
-	 * @param ba
+	 * @param ca
 	 *            A Bounding Area which decides about what size the fish will
 	 *            have.
 	 * @return random Enemyfish
 	 */
-	public static EnemyFish randomizedFish(ICollisionArea ba) {
+	public static EnemyFish randomizedFish(ICollisionArea ca) {
 		//randomize fish properties 
-		int minSize = (int) (ba.getSize() * 0.5);
-		int maxSize = (int) (ba.getSize() * 2.5);
+		int minSize = (int) (ca.getSize() * 0.2);
+		int maxSize = (int) (ca.getSize() * 4.5);
 
 		int size = rand.nextInt(maxSize - minSize + 1) + minSize;
-		Image sprite = getRandomSprite();
+		String spriteString = getRandomSprite();
+		Image sprite = Preloader.getImageOrLoad(spriteString);
+		boolean[][] data = Preloader.getAlphaDataOrLoad(spriteString);
+		double relSize = Preloader.getSpriteAlphaRatioOrLoad(spriteString);
+		//TODO use setSize() instead of width/height calculations
 		double ratio = sprite.getWidth() / sprite.getHeight();
 		double width = Math.sqrt(size * ratio);
 		double height = size / width;
@@ -80,9 +86,10 @@ public final class LevelBuilder {
 			break;
 		}
 
-		EnemyFish eFish = new EnemyFish(new BoundingBox(position.x, position.y, 
-				position.x + width , position.y + height), sprite , vx, vy);
-
+		EnemyFish eFish = new EnemyFish(new CollisionMask(position, width, height, data, relSize), sprite , vx, vy);
+		log.log(LogLevel.TRACE, "Created Enemfish: Properties{[position = " + position.toString() 
+				+ "],[height = " + height + "],[width = " + width + "],[Vx = " + vx + "],[Vy = " + vy 
+				+ "]}.");
 		//TODO Check for decent properties
 		//eFish.checkProperties()
 		return eFish;
@@ -92,9 +99,9 @@ public final class LevelBuilder {
 	 * @return
 	 * 		a random fish sprite.
 	 */
-	private static Image getRandomSprite() {
+	private static String getRandomSprite() {
 		final int i = rand.nextInt(FISH_SPRITES);
-		return Preloader.getImageOrLoad("sprites/fish/fish" + i + ".png");
+		return "sprites/fish/fish" + i + ".png";
 	}
 
 	/**

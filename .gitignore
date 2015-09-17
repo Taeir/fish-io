@@ -6,3 +6,5 @@ Thumbs.db
 .classpath
 .project
 /bin/
+
+logs/*.txt

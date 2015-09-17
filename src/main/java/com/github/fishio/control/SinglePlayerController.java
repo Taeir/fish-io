@@ -4,6 +4,8 @@ import com.github.fishio.FishIO;
 import com.github.fishio.PlayingField;
 import com.github.fishio.Preloader;
 import com.github.fishio.SinglePlayerPlayingField;
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
 
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
@@ -11,6 +13,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -23,6 +26,8 @@ import javafx.util.Duration;
  */
 public class SinglePlayerController implements ScreenController {
 
+	private Log log = Log.getLogger();
+	
 	@FXML
 	private Canvas gameCanvas;
 	@FXML
@@ -31,6 +36,19 @@ public class SinglePlayerController implements ScreenController {
 	private Label scoreField;
 	@FXML
 	private Label endScore;
+	
+	
+	@FXML
+	private Button btnPause;
+	@FXML
+	private Button btnMute;
+	@FXML
+	private Button btnMenu;
+	
+	@FXML
+	private Button btnDSRestart;
+	@FXML
+	private Button btnDSMenu;
 
 	private PlayingField pf;
 
@@ -45,6 +63,7 @@ public class SinglePlayerController implements ScreenController {
 	public void onSwitchTo() {
 		FishIO.getInstance().getPrimaryStage().setTitle("Fish.io Singleplayer");
 		pf.startGame();
+		log.log(LogLevel.INFO, "Started Game.");
 	}
 
 	/**
@@ -57,7 +76,9 @@ public class SinglePlayerController implements ScreenController {
 	public void onPause(ActionEvent event) {
 		if (pf.isRunning()) {
 			pf.stopGame();
+			log.log(LogLevel.INFO, "Player paused the game.");
 		} else {
+			log.log(LogLevel.INFO, "Player resumed the game.");
 			pf.startGame();
 		}
 	}
@@ -125,6 +146,7 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	public void backToMenu() {
 		pf.stopGame();
+		log.log(LogLevel.INFO, "Player pressed backToMenu button");
 		FishIO.getInstance().openMainMenu();
 	}
 
@@ -134,7 +156,9 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	public void restartGame() {
 		//Stop the game, clear all items, and start it again.
-		pf.stopGame();
+		try {
+			pf.stopGameAndWait();
+		} catch (InterruptedException ex) { }
 		pf.clear();
 		
 		//Start the render thread (it takes some time to appear).
@@ -155,4 +179,67 @@ public class SinglePlayerController implements ScreenController {
 		endScore.setText("score: " + score + " points");
 	}
 
+	/**
+	 * @return
+	 * 		if the death screen is being shown.
+	 */
+	public boolean isDeathScreenShown() {
+		return deathScreen.isVisible();
+	}
+
+	/**
+	 * @return the deathScreen
+	 */
+	public VBox getDeathScreen() {
+		return deathScreen;
+	}
+
+	/**
+	 * @return the scoreField
+	 */
+	public Label getScoreField() {
+		return scoreField;
+	}
+
+	/**
+	 * @return the btnPause
+	 */
+	public Button getBtnPause() {
+		return btnPause;
+	}
+
+	/**
+	 * @return the btnMute
+	 */
+	public Button getBtnMute() {
+		return btnMute;
+	}
+
+	/**
+	 * @return the btnMenu
+	 */
+	public Button getBtnMenu() {
+		return btnMenu;
+	}
+
+	/**
+	 * @return the btnDSRestart
+	 */
+	public Button getBtnDSRestart() {
+		return btnDSRestart;
+	}
+
+	/**
+	 * @return the btnDSMenu
+	 */
+	public Button getBtnDSMenu() {
+		return btnDSMenu;
+	}
+
+	/**
+	 * @return the playingfield
+	 */
+	public PlayingField getPlayingField() {
+		return pf;
+	}
 }

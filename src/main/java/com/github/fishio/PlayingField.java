@@ -1,8 +1,11 @@
 package com.github.fishio;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 import com.github.fishio.listeners.TickListener;
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
 
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
@@ -34,6 +37,7 @@ public abstract class PlayingField {
 	private ArrayList<IMovable> movables = new ArrayList<>();
 	private ArrayList<Entity> entities = new ArrayList<>();
 	private ArrayList<ICollidable> collidables = new ArrayList<>();
+	private Log log = Log.getLogger();
 
 	private Image background;
 	private int enemyCount;
@@ -59,7 +63,8 @@ public abstract class PlayingField {
 	 */
 	public PlayingField(int fps, Canvas canvas) {
 		this.fps = fps;
-
+		log.log(LogLevel.INFO, "Set Playing field fps to: " + fps + ".");
+		
 		if (canvas == null) {
 			this.canvas = new Canvas(WINDOW_X, WINDOW_Y);
 		} else {
@@ -70,7 +75,9 @@ public abstract class PlayingField {
 		enemyCount = 0;
 
 		createGameThread();
+		log.log(LogLevel.INFO, "Created GameThread().");
 		createRenderThread();
+		log.log(LogLevel.INFO, "Created RenderThread().");
 	}
 
 	/**
@@ -97,6 +104,7 @@ public abstract class PlayingField {
 
 		//If render thread was running, start the new one and stop the old one.
 		if (oldRenderThread.getStatus() == Status.RUNNING) {
+			log.log(LogLevel.INFO, "Stopped old RenderThread, started new One.");
 			renderThread.play();
 			oldRenderThread.stop();
 		}
@@ -160,7 +168,7 @@ public abstract class PlayingField {
 			addEntities();
 
 			//Check for collisions
-			checkCollisions();
+			checkPlayerCollisions();
 
 			//Cleanup dead entities.
 			cleanupDead();
@@ -187,19 +195,20 @@ public abstract class PlayingField {
 		//draw background image
 		gc.drawImage(background, 0, 0);
 
-		//Render all drawables
-		for (IDrawable d : drawables) {
-			d.render(gc);
+		//Render all drawables, in reverse order
+		ListIterator<IDrawable> li = drawables.listIterator(drawables.size());
+		while (li.hasPrevious()) {
+			li.previous().render(gc);
 		}
 	}
 
 	/**
-	 * Checks for collisions.
+	 * Checks for player collisions.
 	 */
-	public void checkCollisions() {
-		for (int i = 0; i < collidables.size() - 1; i++) {
-			for (int j = i + 1; j < collidables.size(); j++) {
-				ICollidable c1 = collidables.get(i);
+	public void checkPlayerCollisions() {
+		for (int i = 0; i < getPlayers().size(); i++) {
+			for (int j = 0; j < collidables.size(); j++) {
+				ICollidable c1 = getPlayers().get(i);
 				ICollidable c2 = collidables.get(j);
 				if (c1 != c2 && c1.doesCollides(c2)) {
 					c1.onCollide(c2);
@@ -223,6 +232,7 @@ public abstract class PlayingField {
 		for (Entity e : tbr) {
 			remove(e);
 			enemyCount--;
+			log.log(LogLevel.DEBUG, "Removed enemy fish. Enemycount: " + enemyCount + ".");
 		}
 	}
 
@@ -237,6 +247,7 @@ public abstract class PlayingField {
 			EnemyFish eFish = LevelBuilder.randomizedFish(getPlayers().get(0).getBoundingArea());
 			add(eFish);
 			enemyCount++;
+			log.log(LogLevel.DEBUG, "Added enemy fish. Enemycount: " +  enemyCount + ".");
 		}
 	}
 
@@ -314,7 +325,7 @@ public abstract class PlayingField {
 				tl.preTick();
 			} catch (Exception ex) {
 				//TODO Handle exception differently
-				System.err.println("Error in preTick!");
+				log.log(LogLevel.ERROR, "Error in preTick:\t" + ex.getMessage());
 				ex.printStackTrace();
 			}
 		}
@@ -369,8 +380,33 @@ public abstract class PlayingField {
 	 * Starts the game.
 	 */
 	public void startGame() {
-		renderThread.play();
-		gameThread.play();
+		if (renderThread.getStatus() != Status.RUNNING) {
+			renderThread.play();
+		}
+		
+		if (!isRunning()) {
+			gameThread.play();
+		}
+	}
+	
+	/**
+	 * Starts the game and waits for it to be running.
+	 * 
+	 * @throws InterruptedException
+	 * 		if the waiting is interrupted.
+	 * 
+	 * @see #startGame()
+	 */
+	public void startGameAndWait() throws InterruptedException {
+		Duration position = gameThread.getCurrentTime();
+		
+		startGame();
+		
+		//If the play head is at the same position, the game thread has not
+		//ran a cycle yet, so we wait a bit and check again.
+		while (position.equals(gameThread.getCurrentTime())) {
+			Thread.sleep(25L);
+		}
 	}
 
 	/**
@@ -379,6 +415,23 @@ public abstract class PlayingField {
 	public void stopGame() {
 		gameThread.stop();
 		renderThread.stop();
+	}
+	
+	/**
+	 * Stops (pauses) the game, and waits for the game to fully stop.
+	 * 
+	 * @throws InterruptedException
+	 * 		if the waiting is interrupted.
+	 * 
+	 * @see #stopGame()
+	 */
+	public void stopGameAndWait() throws InterruptedException {
+		stopGame();
+		
+		//While we are still running, we wait.
+		while (isRunning()) {
+			Thread.sleep(25L);
+		}
 	}
 	
 	/**
