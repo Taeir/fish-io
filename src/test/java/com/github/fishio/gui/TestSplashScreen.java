@@ -25,6 +25,9 @@ public class TestSplashScreen extends GuiTest {
 		//Skip the splash screen
 		press(KeyCode.SPACE);
 		
+		//Stop pressing space
+		release(KeyCode.SPACE);
+		
 		//Now the main menu should be shown.
 		assertCurrentScene(getMainMenuScene());
 	}
@@ -46,17 +49,20 @@ public class TestSplashScreen extends GuiTest {
 		//Skip the splash screen
 		press(KeyCode.K);
 		
+		//Stop pressing k
+		release(KeyCode.K);
+		
 		//Now the main menu should be shown.
 		assertCurrentScene(getMainMenuScene());
 	}
 	
 	/**
-	 * Test for the following scenario, with key ENTER.<br>
+	 * Test for the following scenario, with key SHIFT.<br>
 	 * <br>
 	 * Scenario S1.3: Splash Skip 3<br>
 	 * Given the user has launched the Fish.IO GUI,<br>
 	 * and   the splash screen is shown;<br>
-	 * When  the user presses any key;<br>
+	 * When  the user presses the shift key;<br>
 	 * Then  the main menu screen should be shown.
 	 */
 	@Test
@@ -65,7 +71,10 @@ public class TestSplashScreen extends GuiTest {
 		assertCurrentScene(getSplashScene());
 		
 		//Skip the splash screen
-		press(KeyCode.ENTER);
+		press(KeyCode.SHIFT);
+		
+		//Stop pressing shift
+		release(KeyCode.SHIFT);
 		
 		//Now the main menu should be shown.
 		assertCurrentScene(getMainMenuScene());

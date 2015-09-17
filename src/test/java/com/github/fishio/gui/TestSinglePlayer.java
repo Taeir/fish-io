@@ -2,6 +2,7 @@ package com.github.fishio.gui;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 
@@ -21,36 +22,41 @@ import com.github.fishio.PlayerFish;
 public class TestSinglePlayer extends GuiTest {
 	
 	/**
-	 * Skip the splash screen, switch to the single player screen and
-	 * restart the game before every test.
+	 * Switch to the singlePlayer screen upon start.
+	 */
+	public TestSinglePlayer() {
+		super("singlePlayer");
+	}
+	
+	/**
+	 * Restart the game before every test.
+	 * 
+	 * @throws Exception
+	 * 		if an exception occurs while setting up.
 	 */
 	@Before
-	public void setUpSinglePlayer() {
-		//Skip the splash screen.
-		skipSplash();
-		
-		//Switch to the single player screen
-		switchToScreen("singlePlayer");
-		
-		//Check that we are on the single player screen.
-		assertCurrentScene(getSinglePlayerScene());
-		
-		//Restart the game.
-		getSinglePlayerController().getPlayingField().stopGame();
+	public void setUpSinglePlayer() throws Exception {
+		//Stop and clear the game.
+		getSinglePlayerController().getPlayingField().stopGameAndWait();
 		getSinglePlayerController().getPlayingField().clear();
-		getSinglePlayerController().getPlayingField().startGame();
 		
-		//Sleep a bit
-		sleepFail(20L);
+		//Hide the death screen
+		getSinglePlayerController().getDeathScreen().setVisible(false);
+		
+		//Start the game.
+		getSinglePlayerController().getPlayingField().startGameAndWait();
 	}
 	
 	/**
 	 * Stop the game after every test.
+	 * 
+	 * @throws Exception
+	 * 		if an exception occurs while waiting for the game thread to stop.
 	 */
 	@After
-	public void breakDownSinglePlayer() {
+	public void breakDownSinglePlayer() throws Exception {
 		//Stop the game
-		getSinglePlayerController().getPlayingField().stopGame();
+		getSinglePlayerController().getPlayingField().stopGameAndWait();
 	}
 
 	/**
@@ -113,10 +119,17 @@ public class TestSinglePlayer extends GuiTest {
 		assertTrue(getPlayer() != null && !getPlayer().isDead());
 		
 		//Pause the game
-		getSinglePlayerController().getPlayingField().stopGame();
+		try {
+			getSinglePlayerController().getPlayingField().stopGameAndWait();
+		} catch (InterruptedException ex) {
+			fail();
+		}
 		
 		//Click on the pause button
 		clickOn(getSinglePlayerController().getBtnPause(), MouseButton.PRIMARY);
+		
+		//Wait for the game to actually unpause.
+		sleepFail(500L);
 		
 		//The game should be running again.
 		assertTrue(getSinglePlayerController().getPlayingField().isRunning());
@@ -159,6 +172,9 @@ public class TestSinglePlayer extends GuiTest {
 		//Click on the menu button
 		clickOn(getSinglePlayerController().getBtnMenu(), MouseButton.PRIMARY);
 		
+		//Wait for the game to actually stop.
+		sleepFail(500L);
+		
 		//The menu should be shown
 		assertCurrentScene(getMainMenuScene());
 		
@@ -188,6 +204,9 @@ public class TestSinglePlayer extends GuiTest {
 		
 		//Click on the menu button on the death screen.
 		clickOn(getSinglePlayerController().getBtnDSMenu(), MouseButton.PRIMARY);
+		
+		//Wait for the game to actually stop.
+		sleepFail(500L);
 		
 		//The menu should be shown
 		assertCurrentScene(getMainMenuScene());

@@ -1,6 +1,5 @@
 package com.github.fishio.gui;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import javafx.scene.input.MouseButton;
@@ -11,15 +10,10 @@ import javafx.scene.input.MouseButton;
 public class TestMainMenu extends GuiTest {
 	
 	/**
-	 * Runs before all the tests.<br>
-	 * <br>
-	 * This method simply skips the splash screen, so that we are on the
-	 * main menu before every test.
+	 * Set the start screen to the mainMenu.
 	 */
-	@Before
-	public void beforeMainMenu() {
-		//Skip the splash screen
-		skipSplash();
+	public TestMainMenu() {
+		super("mainMenu");
 	}
 	
 	/**
