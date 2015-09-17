@@ -7,7 +7,7 @@ import org.junit.Test;
 import javafx.scene.input.MouseButton;
 
 /**
- * Test class for the HelpScreen.
+ * Test class for the AchievementScreen.
  */
 public class TestAchievementScreen extends GuiTest {
 	
