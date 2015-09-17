@@ -4,8 +4,11 @@ import com.github.fishio.FishIO;
 import com.github.fishio.PlayingField;
 import com.github.fishio.Preloader;
 import com.github.fishio.SinglePlayerPlayingField;
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
 
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,6 +27,8 @@ import javafx.util.Duration;
  */
 public class SinglePlayerController implements ScreenController {
 
+	private Log log = Log.getLogger();
+	
 	@FXML
 	private Canvas gameCanvas;
 	@FXML
@@ -59,6 +64,7 @@ public class SinglePlayerController implements ScreenController {
 	public void onSwitchTo() {
 		FishIO.getInstance().getPrimaryStage().setTitle("Fish.io Singleplayer");
 		pf.startGame();
+		log.log(LogLevel.INFO, "Started Game.");
 	}
 
 	/**
@@ -71,7 +77,9 @@ public class SinglePlayerController implements ScreenController {
 	public void onPause(ActionEvent event) {
 		if (pf.isRunning()) {
 			pf.stopGame();
+			log.log(LogLevel.INFO, "Player paused the game.");
 		} else {
+			log.log(LogLevel.INFO, "Player resumed the game.");
 			pf.startGame();
 		}
 	}
@@ -139,6 +147,7 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	public void backToMenu() {
 		pf.stopGame();
+		log.log(LogLevel.INFO, "Player pressed backToMenu button");
 		FishIO.getInstance().openMainMenu();
 	}
 
@@ -169,8 +178,15 @@ public class SinglePlayerController implements ScreenController {
 	 * 			the new score to be displayed on the screen.
 	 */
 	public void updateScoreDisplay(int score) {
-		scoreField.setText("score:" + score);
-		endScore.setText("score: " + score + " points");
+		if (Platform.isFxApplicationThread()) {
+			scoreField.setText("score:" + score);
+			endScore.setText("score: " + score + " points");
+		} else {
+			Platform.runLater(() -> {
+				scoreField.setText("score:" + score);
+				endScore.setText("score: " + score + " points");
+			});
+		}
 	}
 
 	/**

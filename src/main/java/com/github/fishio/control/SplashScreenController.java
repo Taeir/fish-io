@@ -13,6 +13,8 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import com.github.fishio.Preloader;
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
 
 /**
  * The splashScreenController class manages the splash screens.
@@ -23,6 +25,8 @@ import com.github.fishio.Preloader;
  */
 public class SplashScreenController implements ScreenController {
 
+	private Log log = Log.getLogger();
+	
 	@FXML
 	private VBox company;
 	@FXML
@@ -45,7 +49,7 @@ public class SplashScreenController implements ScreenController {
 		scene.setOnKeyPressed(event -> {
 			//Consume the event, so that it doesn't get passed along.
 			event.consume();
-			
+			log.log(LogLevel.INFO, "Player pressed key, skipping splashScreen.");
 			endSplash();
 		});
 		
