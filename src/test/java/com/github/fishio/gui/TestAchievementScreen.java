@@ -1,31 +1,34 @@
 package com.github.fishio.gui;
 
-//TO DO: get this to work with GuiTest.
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
+import javafx.scene.input.MouseButton;
 
 /**
- * Test class for the Achievement screen.
+ * Test class for the HelpScreen.
  */
-// public class TestAchievementScreen extends GuiTest {
+public class TestAchievementScreen extends GuiTest {
+	
+	/**
+	 * Creates the help screen GUI test, with the achievement screen as the
+	 * start screen.
+	 */
+	public TestAchievementScreen() {
+		super("achievementScreen");
+	}
 
 	/**
 	 * Test back to main menu button.
 	 */
-// @Test
-// public void test() {
-		//Skip the splash screen.
-// skipSplash();
+	@Test
+	public void test() {
+		// Click on the back to menu button.
+		clickOn(getAchievementScreenController().getBtnBackToMenu(), MouseButton.PRIMARY);
 		
-		//Switch to the single player screen
-// switchToScreen("AchievementScene");
-		
-		//Check that we are on the single player screen.
-// assertTrue(isCurrentScene(getAchievementScene()));
-		
-// clickOn(getAchievementScreenController().getBtnBackToMenu(),
-// MouseButton.PRIMARY);
-		
-		//We should now be on the single player screen.
-// assertTrue(isCurrentScene(getMainMenuScene()));
-// }
-
-// }
+		// We should now be on the main menu screen.
+		assertTrue(isCurrentScene(getMainMenuScene()));
+	}
+	
+}
