@@ -104,6 +104,7 @@ public abstract class PlayingField {
 
 		//If render thread was running, start the new one and stop the old one.
 		if (oldRenderThread.getStatus() == Status.RUNNING) {
+			log.log(LogLevel.INFO, "Stopped old RenderThread, started new One.");
 			renderThread.play();
 			oldRenderThread.stop();
 		}
