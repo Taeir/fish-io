@@ -199,6 +199,10 @@ public class SinglePlayerController implements ScreenController {
 		
 		PlayerFish player = pf.getPlayers().get(0);
 		
+		//Reset the bounding box of the player fish.
+		ICollisionArea area = ((SinglePlayerPlayingField) pf).getStartCollisionArea();
+		player.setBoundingArea(area);
+		
 		//Reset the speed of the fish.
 		player.setSpeedVector(new Vec2d(0, 0));
 		
