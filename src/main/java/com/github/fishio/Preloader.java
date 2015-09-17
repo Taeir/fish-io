@@ -119,7 +119,7 @@ public final class Preloader {
 		try {
 			image = new Image(file);
 		} catch (Exception ex) {
-			log.log(LogLevel.WARNING, "Error while trying to load image: " + file);
+			log.log(LogLevel.ERROR, "Error while trying to load image: " + file);
 			return;
 		}
 		if (pixelData) {
