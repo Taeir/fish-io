@@ -90,16 +90,16 @@ public class TestMainMenu extends GuiTest {
 	 * <br>
 	 * Scenario S2.5: Achievements<br>
 	 * Given the user is on the Main Menu Screen;<br>
-	 * When  the user presses the "Achievements" button;<br>
-	 * Then  nothing should happen.
+	 * When the user presses the "Achievements" button;<br>
+	 * Then the Achievement screen must be shown.
 	 */
 	@Test
 	public void testShowAchievements() {
 		//Click on the achievements button
 		clickOn(getMainMenuController().getBtnShowAchievements(), MouseButton.PRIMARY);
 		
-		//We should still be on the multi player screen, since the show achievements button is disabled.
-		assertCurrentScene(getMainMenuScene());
+		// We should now be on the achievement screen.
+		assertCurrentScene(getAchievementScene());
 	}
 
 	/**
@@ -149,7 +149,7 @@ public class TestMainMenu extends GuiTest {
 		//Click on the help button
 		clickOn(getMainMenuController().getBtnShowHelp(), MouseButton.PRIMARY);
 		
-		//We should still be on the multi player screen, since the help button is disabled.
+		// We should now be on the help screen.
 		assertCurrentScene(getHelpScene());
 	}
 }

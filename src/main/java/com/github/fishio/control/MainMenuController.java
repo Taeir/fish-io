@@ -95,7 +95,7 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void showAchievements() {
-		//TODO (not now)
+		Preloader.switchTo("achievementScreen", 400);
 	}
 
 	/**
