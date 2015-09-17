@@ -22,12 +22,11 @@ import javafx.util.Duration;
  * Represents the PlayingField.
  */
 public abstract class PlayingField {
-
 	public static final int WINDOW_X = 1280;
 	public static final int WINDOW_Y = 670;
 	public static final double GAME_TPS = 60;
 
-	private Timeline gameThread;
+	private GameRunnable gameRunnable;
 	private Timeline renderThread;
 	private int fps;
 
@@ -76,8 +75,9 @@ public abstract class PlayingField {
 		//count enemies
 		enemyCount = 0;
 
-		createGameThread();
+		gameRunnable = new GameRunnable(true);
 		log.log(LogLevel.INFO, "Created GameThread().");
+		
 		createRenderThread();
 		log.log(LogLevel.INFO, "Created RenderThread().");
 	}
@@ -154,35 +154,10 @@ public abstract class PlayingField {
 	}
 
 	/**
-	 * Creates the game thread.
+	 * Creates a new gamerunnable.
 	 */
-	protected final void createGameThread() {
-		Duration dur = Duration.millis(1000.0 / GAME_TPS);
-
-		KeyFrame frame = new KeyFrame(dur, event -> {
-			//Call listeners pretick
-			preListeners(false);
-
-			//Move all movables
-			moveMovables();
-
-			//Add new entities
-			addEntities();
-
-			//Check for collisions
-			checkPlayerCollisions();
-
-			//Cleanup dead entities.
-			cleanupDead();
-
-			//Call listeners posttick
-			postListeners(false);
-		}, new KeyValue[0]);
-
-		Timeline tl = new Timeline(frame);
-		tl.setCycleCount(-1);
-
-		gameThread = tl;
+	protected final void createGameRunnable() {
+		gameRunnable = new GameRunnable();
 	}
 
 	/**
@@ -256,6 +231,7 @@ public abstract class PlayingField {
 			//TODO add scalible enemyFish
 			EnemyFish eFish = LevelBuilder.randomizedFish(getPlayers().get(0).getBoundingArea());
 			add(eFish);
+			
 			enemyCount++;
 			log.log(LogLevel.DEBUG, "Added enemy fish. Enemycount: " +  enemyCount + ".");
 		}
@@ -365,36 +341,121 @@ public abstract class PlayingField {
 			}
 		}
 	}
-
+	
 	/**
-	 * Gives back the renderthread.
-	 * 
-	 * @return the renderthread.
+	 * Starts rendering (updating the screen).
+	 * The game itself will be unaffected by this call.
 	 */
-	public Timeline getRenderThread() {
-		return renderThread;
-	}
-
-	/**
-	 * Returns the gamethread.
-	 * 
-	 * @return the gamethread.
-	 */
-	public Timeline getGameThread() {
-		return gameThread;
-	}
-
-	/**
-	 * Starts the game.
-	 */
-	public void startGame() {
+	public void startRendering() {
 		if (renderThread.getStatus() != Status.RUNNING) {
 			renderThread.play();
 		}
-		
-		if (!isRunning()) {
-			gameThread.play();
+	}
+	
+	/**
+	 * Stops rendering (updating the screen).
+	 * The game itself will be unaffected by this call.
+	 */
+	public void stopRendering() {
+		if (renderThread.getStatus() == Status.RUNNING) {
+			renderThread.stop();
 		}
+	}
+	
+	/**
+	 * @return
+	 * 		if the render thread is running or not.
+	 */
+	public boolean isRendering() {
+		return renderThread.getStatus() == Status.RUNNING;
+	}
+	
+	/**
+	 * Starts the game thread.<br>
+	 * <br>
+	 * If the game thread is not running, it is started.<br>
+	 * If the game thread is stopping, this method waits for it to stop and
+	 * starts it again after that.<br>
+	 * Otherwise, this method will have no effect.
+	 */
+	public void startGameThread() {
+		//If already running
+		if (isRunning()) {
+			//If we have not called stop yet, we can simply return.
+			if (!isStopping()) {
+				return;
+			} else {
+				//We have to stop the old game thread.
+				try {
+					gameRunnable.stopAndWait();
+				} catch (InterruptedException ex) {
+					log.log(LogLevel.ERROR,
+							"Error while starting game thread: interrupted while waiting for gameRunnable to stop.");
+				}
+			}
+		}
+		
+		createGameRunnable();
+		new Thread(gameRunnable).start();
+	}
+	
+	/**
+	 * Sets the stop status of the game thread to true.<br>
+	 * <br>
+	 * If the game thread was running at the time of this call, it will
+	 * stop sometime in the future. Otherwise, this method has no effect.
+	 * 
+	 * @see #stopGameThreadAndWait()
+	 */
+	public void stopGameThread() {
+		gameRunnable.stop();
+	}
+	
+	/**
+	 * Sets the stop status of the game thread to true, and waits for the
+	 * game thread to stop.<br>
+	 * <br>
+	 * If the game thread was not running at the time of this call, this 
+	 * method has no effect.
+	 * 
+	 * @throws InterruptedException
+	 * 		if we are interrupted while waiting for the game thread to stop.
+	 * 
+	 * @see #stopGameThread()
+	 */
+	public void stopGameThreadAndWait() throws InterruptedException {
+		gameRunnable.stopAndWait();
+	}
+	
+	/**
+	 * @return
+	 * 		if the game thread is running or not (stopped / paused)
+	 */
+	public boolean isRunning() {
+		return !gameRunnable.isStopped();
+	}
+	
+	/**
+	 * @return
+	 * 		<code>true</code> if the game is stopping,
+	 * 		<code>false</code> otherwise.
+	 */
+	public boolean isStopping() {
+		return gameRunnable.isStopping();
+	}
+
+	/**
+	 * Starts the game.<br>
+	 * <br>
+	 * If the render thread has not started, it is started right before
+	 * the game is started.
+	 */
+	public void startGame() {
+		//Start the rendering first
+		startRendering();
+		
+		//Start the game thread after that.
+		startGameThread();
 	}
 	
 	/**
@@ -406,23 +467,19 @@ public abstract class PlayingField {
 	 * @see #startGame()
 	 */
 	public void startGameAndWait() throws InterruptedException {
-		Duration position = gameThread.getCurrentTime();
-		
 		startGame();
 		
-		//If the play head is at the same position, the game thread has not
-		//ran a cycle yet, so we wait a bit and check again.
-		while (position.equals(gameThread.getCurrentTime())) {
+		while (!isRunning()) {
 			Thread.sleep(25L);
 		}
 	}
 
 	/**
-	 * Stops (pauses) the game.
+	 * Stops (pauses) the game and the rendering.
 	 */
 	public void stopGame() {
-		gameThread.stop();
-		renderThread.stop();
+		stopGameThread();
+		stopRendering();
 	}
 	
 	/**
@@ -434,20 +491,11 @@ public abstract class PlayingField {
 	 * @see #stopGame()
 	 */
 	public void stopGameAndWait() throws InterruptedException {
+		//Stop the game and render thread
 		stopGame();
 		
-		//While we are still running, we wait.
-		while (isRunning()) {
-			Thread.sleep(25L);
-		}
-	}
-	
-	/**
-	 * @return
-	 * 		if the game is running or not (stopped / paused)
-	 */
-	public boolean isRunning() {
-		return gameThread.getStatus() == Status.RUNNING;
+		//Wait until the game thread has stopped.
+		stopGameThreadAndWait();
 	}
 
 	/**
@@ -582,5 +630,118 @@ public abstract class PlayingField {
 		}
 
 		background = image;
+	}
+	
+	/**
+	 * Special Runnable class for the GameThread.
+	 */
+	private class GameRunnable implements Runnable {
+		private volatile boolean stop;
+		private volatile boolean done;
+		
+		public GameRunnable() { }
+		
+		public GameRunnable(boolean fake) {
+			this.done = fake;
+			this.stop = fake;
+		}
+
+		/**
+		 * Set the stop status of this GameRunnable to true.
+		 */
+		public void stop() {
+			this.stop = true;
+		}
+		
+		/**
+		 * @return
+		 * 		true if this game runnable is stopping.
+		 */
+		public boolean isStopping() {
+			return this.stop;
+		}
+		
+		/**
+		 * @return
+		 * 		true if this game runnable has stopped.
+		 */
+		public boolean isStopped() {
+			return this.done;
+		}
+		
+		/**
+		 * Sets the stop status of this GameRunnable to true, and waits
+		 * until it has actually stopped.
+		 * 
+		 * @throws InterruptedException
+		 * 		if we are interrupted while waiting.
+		 */
+		public void stopAndWait() throws InterruptedException {
+			//We have already stopped.
+			if (isStopped()) {
+				return;
+			}
+			
+			//Mark that we want to stop
+			stop();
+			
+			//Wait until we have stopped.
+			while (!isStopped()) {
+				Thread.sleep(25L);
+			}
+		}
+		
+		@Override
+		public void run() {
+			//If we have already ran before, we throw an exception.
+			if (isStopped()) {
+				throw new IllegalStateException("This GameRunnable has already been stopped!");
+			}
+			
+			try {
+				long start, end;
+				double waitTime = 1000.0 / GAME_TPS;
+				
+				while (!stop) {
+					start = System.currentTimeMillis();
+	
+					//Call listeners pretick
+					preListeners(false);
+	
+					//Move all movables
+					moveMovables();
+	
+					//Add new entities
+					addEntities();
+	
+					//Check for stop again halfway.
+					if (stop) {
+						break;
+					}
+					
+					//Check for collisions
+					checkPlayerCollisions();
+	
+					//Cleanup dead entities.
+					cleanupDead();
+	
+					//Call listeners posttick
+					postListeners(false);
+					
+					end = System.currentTimeMillis();
+					
+					//Sleep if we have time to spare.
+					long dur = end - start;
+					if (dur < waitTime) {
+						try {
+							Thread.sleep(Math.round(waitTime - dur));
+						} catch (InterruptedException ex) { }
+					}
+				}
+			} finally {
+				//Reset stopping
+				done = true;
+			}
+		}
 	}
 }
