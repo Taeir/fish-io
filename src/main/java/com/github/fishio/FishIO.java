@@ -103,6 +103,9 @@ public class FishIO extends Application {
 	 * Set up new logger.
 	 */
 	protected final void initiateLogger() {
+		//Remove any Handlers if, for GUI tests.
+		log.removeAllHandlers();
+		
 		//Set Handlers with formatters
 		log.addHandler(consoleHandler);
 		log.addHandler(textFileHandler);

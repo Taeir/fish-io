@@ -28,6 +28,9 @@ public class TestLog {
 		mockedHandler1 = Mockito.mock(ConsoleHandler.class);
 		mockedHandler2 = Mockito.mock(ConsoleHandler.class);
 		log = Log.getLogger();
+		//Clean up logger.
+		log.removeAllHandlers();
+		log.setLogLevel(LogLevel.WARNING);
 	}
 	
 	/**
