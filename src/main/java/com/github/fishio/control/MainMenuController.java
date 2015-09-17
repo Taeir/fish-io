@@ -58,7 +58,7 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void startSinglePlayer() {
-		log.log(LogLevel.INFO, "Player Pressed the SingPlayer Button");
+		log.log(LogLevel.INFO, "Player Pressed the SinglePlayer Button.");
 		Preloader.switchTo("singlePlayer", 400);
 	}
 
@@ -95,6 +95,7 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void showAchievements() {
+		log.log(LogLevel.INFO, "Player Pressed the achievementScreen Button.");
 		Preloader.switchTo("achievementScreen", 400);
 	}
 
