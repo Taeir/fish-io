@@ -66,12 +66,12 @@ public class FishIO extends Application {
 	 * Closes the program.
 	 */
 	public void closeApplication() {
+		log.log(LogLevel.INFO, "Game shutting Down.");
 		try {
 			textFileHandler.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		log.log(LogLevel.INFO, "Game shutting Down.");
 		this.primaryStage.close();
 	}
 
