@@ -1,7 +1,9 @@
 package com.github.fishio;
 
 import java.util.ArrayList;
-import java.util.ListIterator;
+import java.util.Iterator;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.github.fishio.listeners.TickListener;
 import com.github.fishio.logging.Log;
@@ -31,12 +33,12 @@ public abstract class PlayingField {
 
 	private Canvas canvas;
 
-	private ArrayList<TickListener> gameListeners = new ArrayList<>();
-	private ArrayList<TickListener> renderListeners = new ArrayList<>();
-	private ArrayList<IDrawable> drawables = new ArrayList<>();
-	private ArrayList<IMovable> movables = new ArrayList<>();
-	private ArrayList<Entity> entities = new ArrayList<>();
-	private ArrayList<ICollidable> collidables = new ArrayList<>();
+	private ConcurrentLinkedQueue<TickListener> gameListeners = new ConcurrentLinkedQueue<>();
+	private ConcurrentLinkedQueue<TickListener> renderListeners = new ConcurrentLinkedQueue<>();
+	private ConcurrentLinkedDeque<IDrawable> drawables = new ConcurrentLinkedDeque<>();
+	private ConcurrentLinkedQueue<IMovable> movables = new ConcurrentLinkedQueue<>();
+	private ConcurrentLinkedQueue<Entity> entities = new ConcurrentLinkedQueue<>();
+	private ConcurrentLinkedQueue<ICollidable> collidables = new ConcurrentLinkedQueue<>();
 	private Log log = Log.getLogger();
 
 	private Image background;
@@ -196,9 +198,9 @@ public abstract class PlayingField {
 		gc.drawImage(background, 0, 0);
 
 		//Render all drawables, in reverse order
-		ListIterator<IDrawable> li = drawables.listIterator(drawables.size());
-		while (li.hasPrevious()) {
-			li.previous().render(gc);
+		Iterator<IDrawable> it = drawables.descendingIterator();
+		while (it.hasNext()) {
+			it.next().render(gc);
 		}
 	}
 
@@ -206,13 +208,13 @@ public abstract class PlayingField {
 	 * Checks for player collisions.
 	 */
 	public void checkPlayerCollisions() {
-		for (int i = 0; i < getPlayers().size(); i++) {
-			for (int j = 0; j < collidables.size(); j++) {
-				ICollidable c1 = getPlayers().get(i);
-				ICollidable c2 = collidables.get(j);
-				if (c1 != c2 && c1.doesCollides(c2)) {
-					c1.onCollide(c2);
-					c2.onCollide(c1);
+		//Iterate over the players
+		for (PlayerFish player : getPlayers()) {
+			//Iterate over the collidables
+			for (ICollidable c : collidables) {
+				if (player != c && player.doesCollides(c)) {
+					player.onCollide(c);
+					c.onCollide(player);
 				}
 			}
 		}
@@ -222,16 +224,24 @@ public abstract class PlayingField {
 	 * Cleans up dead entities.
 	 */
 	public void cleanupDead() {
-		ArrayList<Entity> tbr = new ArrayList<Entity>();
-		for (Entity e : entities) {
-			if (e.isDead()) {
-				tbr.add(e);
+		Iterator<Entity> it = entities.iterator();
+		while (it.hasNext()) {
+			Entity e = it.next();
+			
+			if (!e.isDead()) {
+				continue;
 			}
-		}
-
-		for (Entity e : tbr) {
+			
+			//Remove from entities list
+			it.remove();
+			
+			//Remove from other lists.
 			remove(e);
+			
+			//Decrease enemy count.
 			enemyCount--;
+			
+			//Log action.
 			log.log(LogLevel.DEBUG, "Removed enemy fish. Enemycount: " + enemyCount + ".");
 		}
 	}
@@ -312,14 +322,13 @@ public abstract class PlayingField {
 	 * 		if false, calls the game listeners.
 	 */
 	public void preListeners(boolean render) {
-		ArrayList<TickListener> list;
+		ConcurrentLinkedQueue<TickListener> list;
 		if (render) {
 			list = renderListeners;
 		} else {
 			list = gameListeners;
 		}
 
-		//TODO Concurrency
 		for (TickListener tl : list) {
 			try {
 				tl.preTick();
@@ -339,14 +348,13 @@ public abstract class PlayingField {
 	 * 		if false, calls the game listeners.
 	 */
 	public void postListeners(boolean render) {
-		ArrayList<TickListener> list;
+		ConcurrentLinkedQueue<TickListener> list;
 		if (render) {
 			list = renderListeners;
 		} else {
 			list = gameListeners;
 		}
 
-		//TODO Concurrency
 		for (TickListener tl : list) {
 			try {
 				tl.postTick();
@@ -459,7 +467,7 @@ public abstract class PlayingField {
 	 */
 	public void add(Object o) {
 		if (o instanceof IDrawable) {
-			drawables.add((IDrawable) o);
+			drawables.addFirst((IDrawable) o);
 		}
 
 		if (o instanceof IMovable) {
