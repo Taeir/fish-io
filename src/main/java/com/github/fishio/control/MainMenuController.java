@@ -2,6 +2,8 @@ package com.github.fishio.control;
 
 import com.github.fishio.FishIO;
 import com.github.fishio.Preloader;
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -14,6 +16,8 @@ import javafx.scene.control.Button;
  * @since 03-09-2015
  */
 public class MainMenuController implements ScreenController {
+	
+	private Log log = Log.getLogger();
 	
 	@FXML
 	private Button btnSingleplayer;
@@ -54,6 +58,7 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void startSinglePlayer() {
+		log.log(LogLevel.INFO, "Player Pressed the SingPlayer Button");
 		Preloader.switchTo("singlePlayer", 400);
 	}
 
@@ -117,6 +122,7 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void showHelp() {
+		log.log(LogLevel.INFO, "Player Pressed the Help Button");
 		Preloader.switchTo("helpScreen", 400);
 	}
 
@@ -126,6 +132,7 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void exitGame() {
+		log.log(LogLevel.INFO, "Player Pressed the Exit Button");
 		FishIO.getInstance().closeApplication();
 	}
 	
