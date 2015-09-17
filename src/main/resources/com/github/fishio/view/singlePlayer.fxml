@@ -14,7 +14,15 @@
          <children>
             <HBox maxHeight="50.0" maxWidth="1.7976931348623157E308" minHeight="50.0" minWidth="640.0" nodeOrientation="RIGHT_TO_LEFT" spacing="10.0" style="-fx-background-color: #AAAAAA;">
                <children>
-                  <Label fx:id="scoreField" alignment="TOP_LEFT" text="score: 0">
+                  <Label fx:id="scoreField" alignment="TOP_LEFT" text="Score: 0">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="2.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Label fx:id="livesField" alignment="TOP_LEFT" text="Lives: 3">
                      <font>
                         <Font size="20.0" />
                      </font>
@@ -41,6 +49,7 @@
                </font>
             </Label>
             <Label fx:id="endScore" text="score: 0 points" />
+            <Button fx:id="btnDSRevive" minWidth="100.0" mnemonicParsing="false" onAction="#revive" text="Revive" />
             <Button fx:id="btnDSRestart" minWidth="100.0" mnemonicParsing="false" onAction="#restartGame" text="Restart">
                <VBox.margin>
                   <Insets top="50.0" />
