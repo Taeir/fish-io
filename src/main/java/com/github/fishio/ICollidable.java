@@ -21,6 +21,16 @@ public interface ICollidable {
 	ICollisionArea getBoundingArea();
 	
 	/**
+	 * Sets the Bounding area.
+	 * 
+	 * @param area
+	 * 		the new Bounding Area.
+	 * 
+	 * @see #getBoundingArea()
+	 */
+	void setBoundingArea(ICollisionArea area);
+	
+	/**
 	 * This method checks whether the collidable object collides with the given
 	 * collidable.
 	 * 
