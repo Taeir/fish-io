@@ -122,7 +122,7 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void showHelp() {
-		log.log(LogLevel.INFO, "Player Pressed the Help Button");
+		log.log(LogLevel.INFO, "Player Pressed the Help Button.");
 		Preloader.switchTo("helpScreen", 400);
 	}
 
@@ -132,7 +132,7 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void exitGame() {
-		log.log(LogLevel.INFO, "Player Pressed the Exit Button");
+		log.log(LogLevel.INFO, "Player Pressed the Exit Button.");
 		FishIO.getInstance().closeApplication();
 	}
 	

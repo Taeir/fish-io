@@ -1,6 +1,8 @@
 package com.github.fishio.control;
 
 import com.github.fishio.Preloader;
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -12,6 +14,8 @@ import javafx.scene.control.Label;
  */
 public class HelpScreenController implements ScreenController {
 
+	private Log log = Log.getLogger();
+	
 	@FXML
 	private Label helpText;
 	
@@ -41,6 +45,7 @@ public class HelpScreenController implements ScreenController {
 	 */
 	@FXML
 	public void backToMenu() {
+		log.log(LogLevel.INFO, "Player Pressed the back to menu Button.");
 		Preloader.switchTo("mainMenu", 400);
 	}
 
