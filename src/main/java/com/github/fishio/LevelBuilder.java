@@ -38,18 +38,22 @@ public final class LevelBuilder {
 	 * Creates a random EnemyFish. This fish will get a sprite and always spawn
 	 * outside the screen and always move towards the inside.
 	 * 
-	 * @param ba
+	 * @param ca
 	 *            A Bounding Area which decides about what size the fish will
 	 *            have.
 	 * @return random Enemyfish
 	 */
-	public static EnemyFish randomizedFish(ICollisionArea ba) {
+	public static EnemyFish randomizedFish(ICollisionArea ca) {
 		//randomize fish properties 
-		int minSize = (int) (ba.getSize() * 0.5);
-		int maxSize = (int) (ba.getSize() * 2.5);
+		int minSize = (int) (ca.getSize() * 0.2);
+		int maxSize = (int) (ca.getSize() * 4.5);
 
 		int size = rand.nextInt(maxSize - minSize + 1) + minSize;
-		Image sprite = getRandomSprite();
+		String spriteString = getRandomSprite();
+		Image sprite = Preloader.getImageOrLoad(spriteString);
+		boolean[][] data = Preloader.getAlphaDataOrLoad(spriteString);
+		double relSize = Preloader.getSpriteAlphaRatioOrLoad(spriteString);
+		//TODO use setSize() instead of width/height calculations
 		double ratio = sprite.getWidth() / sprite.getHeight();
 		double width = Math.sqrt(size * ratio);
 		double height = size / width;
@@ -80,8 +84,7 @@ public final class LevelBuilder {
 			break;
 		}
 
-		EnemyFish eFish = new EnemyFish(new BoundingBox(position.x, position.y, 
-				position.x + width , position.y + height), sprite , vx, vy);
+		EnemyFish eFish = new EnemyFish(new CollisionMask(position, width, height, data, relSize), sprite , vx, vy);
 
 		//TODO Check for decent properties
 		//eFish.checkProperties()
@@ -92,9 +95,9 @@ public final class LevelBuilder {
 	 * @return
 	 * 		a random fish sprite.
 	 */
-	private static Image getRandomSprite() {
+	private static String getRandomSprite() {
 		final int i = rand.nextInt(FISH_SPRITES);
-		return Preloader.getImageOrLoad("sprites/fish/fish" + i + ".png");
+		return "sprites/fish/fish" + i + ".png";
 	}
 
 	/**

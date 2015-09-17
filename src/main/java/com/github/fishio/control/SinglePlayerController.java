@@ -165,7 +165,9 @@ public class SinglePlayerController implements ScreenController {
 		getBtnPause().setDisable(false);
 		
 		//Stop the game, clear all items, and start it again.
-		pf.stopGame();
+		try {
+			pf.stopGameAndWait();
+		} catch (InterruptedException ex) { }
 		pf.clear();
 		
 		//Start the render thread (it takes some time to appear).

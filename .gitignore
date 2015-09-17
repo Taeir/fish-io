@@ -6,3 +6,6 @@ Thumbs.db
 .classpath
 .project
 /bin/
+
+src/test/java/com/github/fishio/logging/TEMP/test.txt
+logs/*.txt

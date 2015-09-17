@@ -13,9 +13,9 @@ import javafx.scene.canvas.Canvas;
 public class SinglePlayerPlayingField extends PlayingField {
 
 	private PlayerFish player;
-	
+
 	private final SinglePlayerController screenController;
-	
+
 	/**
 	 * Creates the playing field for a single player.
 	 * 
@@ -29,12 +29,12 @@ public class SinglePlayerPlayingField extends PlayingField {
 	 */
 	public SinglePlayerPlayingField(int fps, Canvas canvas, SinglePlayerController screenController) {
 		super(fps, canvas);
-		
+
 		this.screenController = screenController;
-		
+
 		//Adding the playerFish
 		addPlayerFish();
-		
+
 		//Checking if the playerFish died
 		registerGameListener(new TickListener() {
 			@Override
@@ -45,7 +45,7 @@ public class SinglePlayerPlayingField extends PlayingField {
 				if (player.isDead()) {
 					//Stop the game thread.
 					getGameThread().stop();
-					
+
 					//Stop the render thread after the animation is done.
 					//This is in order to prevent the rendering from stopping prematurely.
 					SinglePlayerPlayingField.this.screenController.showDeathScreen(true,
@@ -54,14 +54,15 @@ public class SinglePlayerPlayingField extends PlayingField {
 			}
 		});
 	}
-	
+
 	/**
 	 * Creates and adds the player fish.
 	 */
 	protected final void addPlayerFish() {
-		this.player = new PlayerFish(
-new BoundingBox(new Vec2d(640, 335), 60, 30),
-				FishIO.getInstance().getPrimaryStage(),
+		ICollisionArea ca = new CollisionMask(new Vec2d(640, 335), 60, 30, 
+				Preloader.getAlphaDataOrLoad("sprites/fish/playerFish.png"),
+				Preloader.getSpriteAlphaRatioOrLoad("sprites/fish/playerFish.png"));
+		this.player = new PlayerFish(ca, FishIO.getInstance().getPrimaryStage(), 
 				Preloader.getImageOrLoad("sprites/fish/playerFish.png"));
 		
 		this.player.scoreProperty().addListener(
@@ -69,11 +70,11 @@ new BoundingBox(new Vec2d(640, 335), 60, 30),
 		
 		add(this.player);
 	}
-	
+
 	@Override
 	public void clear() {
 		super.clear();
-		
+
 		//Also add the playerfish again.
 		addPlayerFish();
 	}

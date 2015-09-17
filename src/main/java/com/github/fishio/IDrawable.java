@@ -1,5 +1,7 @@
 package com.github.fishio;
 
+import java.util.HashSet;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -61,20 +63,33 @@ public interface IDrawable {
 
 		// debug rendering
 		if (DEBUG) {
+			gc.setFill(Color.RED);			
+			gc.fillText("angle: " + String.valueOf(angle),			//angle display 
+					cx, cy - (0.5 * ca.getHeight() + 10));
+			gc.fillText("size: " + String.valueOf(ca.getSize()),	//size display
+					cx, cy - (0.5 * ca.getHeight() + 25));
+
+			if (ca instanceof CollisionMask) {
+				gc.setFill(Color.FUCHSIA);
+				HashSet<Vec2d> mask = ((CollisionMask) ca).getMask();
+				for (Vec2d v : mask) {
+					gc.fillOval(v.x, v.y, 1, 1);
+				}
+			}
+
 			gc.setFill(Color.CYAN);
 			gc.fillOval(cx, cy, 2, 2);	//draw sprite center
-			gc.setFill(Color.RED);
-
-			gc.fillText(String.valueOf(angle), cx, cy - 10);	//angle display
 			
 			angle = Math.toRadians(angle);
-			
+
 			// draw CollisionArea box corners
 			Vec2d tl = ca.getTopLeft();
 			Vec2d tr = ca.getTopRight();
 			Vec2d bl = ca.getBottomLeft();
 			Vec2d br = ca.getBottomRight();
-			
+
+
+			gc.setFill(Color.RED);	
 			gc.fillOval(tl.x, tl.y, 2, 2);
 			gc.fillOval(tr.x, tr.y, 2, 2);
 			gc.fillOval(bl.x, bl.y, 2, 2);

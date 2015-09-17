@@ -1,9 +1,42 @@
 package com.github.fishio;
 
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+
 /**
  * Interface used to represent collision areas of entities.
  */
 public interface ICollisionArea {
+	
+	/**
+	 * Calculates if a box intersection occurred between this and another CollisionArea.
+	 * @param other 
+	 * 		The other collisionArea
+	 * @return
+	 * 		True if they collide, false otherwise.
+	 */
+	default boolean boxIntersects(ICollisionArea other) {
+		Shape rect1 = new Rectangle((int) (getCenterX() - 0.5 * getWidth()), 
+				(int) (getCenterY() - 0.5 * getHeight()), 
+				(int) getWidth(), (int) getHeight());
+		Rectangle rect2 = new Rectangle((int) (other.getCenterX() - 0.5 * other.getWidth()), 
+				(int) (other.getCenterY() - 0.5 * other.getHeight()), 
+				(int) other.getWidth(), (int) other.getHeight());
+
+		AffineTransform t1 = new AffineTransform();
+		AffineTransform t2 = new AffineTransform();
+		
+		t1.rotate(Math.toRadians(this.getRotation()), 
+				this.getCenterX(), this.getCenterY()); //rotate self
+		t2.rotate(Math.toRadians(other.getRotation()), 
+				other.getCenterX(), other.getCenterY()); //rotate around other
+		
+		rect1 = t1.createTransformedShape(rect1);
+		rect1 = t2.createTransformedShape(rect1);
+
+		return rect1.intersects(rect2);
+	}
 	
 	/**
 	 * Performs a few checks to find out whether the Bounding Box has any
@@ -110,14 +143,50 @@ public interface ICollisionArea {
 	 * @return
 	 * 		the rotation of the boundingArea.
 	 */
-	double setRotation(IMovable m);
+	default double setRotation(IMovable m) {
+		Vec2d sv = m.getSpeedVector();
+		if (sv.x == 0) {
+			if (sv.y > 0) {
+				return setRotation(270);
+			} else if (sv.y < 0) {
+				return setRotation(90);
+			} else {
+				return setRotation(0);
+			}
+		} else if (sv.y == 0) {
+			if (sv.x >= 0) {
+				return setRotation(0);
+			} else {
+				return setRotation(180);
+			}
+		} else {
+			return setRotation(Math.toDegrees(Math.atan(sv.y / sv.x)));
+		}
+	}
 	
+	/**
+	 * Sets the rotation of the CollisionArea.
+	 * @param angle
+	 * 		The new angle in degrees.
+	 * @return
+	 * 		The set value of the angle.
+	 */
+	double setRotation(double angle);
+
 	/**
 	 * @return
 	 * 		the rotation of the boundingArea in degrees.
 	 */
 	double getRotation();
 	
+	/**
+	 * Set the size of the collisionArea.
+	 * 
+	 * @param size
+	 * 		The new size.
+	 */
+	void setSize(double size);
+
 	/**
 	 * @return
 	 * 		the largest x coordinate of this ICollisionArea.

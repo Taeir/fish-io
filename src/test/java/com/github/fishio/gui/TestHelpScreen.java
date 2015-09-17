@@ -1,6 +1,7 @@
 package com.github.fishio.gui;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+
 import javafx.scene.input.MouseButton;
 
 import org.junit.Test;
@@ -9,24 +10,24 @@ import org.junit.Test;
  * Test class for the HelpScreen.
  */
 public class TestHelpScreen extends GuiTest {
+	
+	/**
+	 * Creates the help screen GUI test, with the help screen
+	 * as the start screen.
+	 */
+	public TestHelpScreen() {
+		super("helpScreen");
+	}
 
 	/**
 	 * Test back to main menu button.
 	 */
 	@Test
 	public void test() {
-		//Skip the splash screen.
-		skipSplash();
-		
-		//Switch to the single player screen
-		switchToScreen("helpScreen");
-		
-		//Check that we are on the single player screen.
-		assertTrue(isCurrentScene(getHelpScene()));
-		
+		//Click on the back to menu button.
 		clickOn(getHelpScreenController().getBtnBackToMenu(), MouseButton.PRIMARY);
 		
-		//We should now be on the single player screen.
+		//We should now be on the main menu screen.
 		assertTrue(isCurrentScene(getMainMenuScene()));
 	}
 

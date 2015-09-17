@@ -47,15 +47,15 @@ public class PlayerFish extends Entity implements IMovable {
 	/**
 	 * Creates the Player fish which the user will be able to control.
 	 * 
-	 * @param bb
-	 *            The (inital) bounding box of the PlayerFish
+	 * @param ca
+	 *            The (inital) bounding area of the PlayerFish
 	 * @param stage
 	 *            The scene in which the player fish is located at
 	 * @param sprite
 	 *            The sprite of the player fish
 	 */
-	public PlayerFish(ICollisionArea bb, Stage stage, Image sprite) {
-		super(bb);		
+	public PlayerFish(ICollisionArea ca, Stage stage, Image sprite) {
+		super(ca);		
 
 		this.sprite = sprite;
 
