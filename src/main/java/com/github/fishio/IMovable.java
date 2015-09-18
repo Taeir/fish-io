@@ -40,16 +40,6 @@ public interface IMovable extends IPositional {
 	}
 	
 	/**
-	 * Sets the direction this object is moving in.
-	 * 
-	 * @param dir
-	 *            the new direction.
-	 */
-	default void setDirection(Direction dir) {
-		setDirection(dir.getNormalVector());
-	}
-	
-	/**
 	 * Gives back the speed of the object, defined by the length of the
 	 * SpeedVector.
 	 * 
