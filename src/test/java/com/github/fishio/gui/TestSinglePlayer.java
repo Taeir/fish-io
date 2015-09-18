@@ -41,6 +41,9 @@ public class TestSinglePlayer extends GuiTest {
 		getSinglePlayerController().getPlayingField().stopGameAndWait();
 		getSinglePlayerController().getPlayingField().clear();
 		
+		//We make the playerFish invincible, to prevent him from dieing randomly.
+		getPlayer().setInvincible(-1);
+		
 		//Hide the death screen
 		getSinglePlayerController().getDeathScreen().setVisible(false);
 		
@@ -194,6 +197,9 @@ public class TestSinglePlayer extends GuiTest {
 	 */
 	@Test
 	public void testDeathScreenMenu() {
+		//Remove invincibility first
+		getPlayer().setInvincible(0);
+		
 		//Kill the fish
 		getPlayer().setDead();
 		
@@ -228,6 +234,9 @@ public class TestSinglePlayer extends GuiTest {
 	 */
 	@Test
 	public void testDeathScreenRestart() {
+		//Remove invincibility first
+		getPlayer().setInvincible(0);
+		
 		//Kill the fish
 		getPlayer().setDead();
 		
@@ -270,7 +279,7 @@ public class TestSinglePlayer extends GuiTest {
 		//Set the score to 2.
 		getPlayer().scoreProperty().set(2);
 		
-		//Kill the fish
+		//Remove a life from the fish
 		getPlayer().removeLife();
 		
 		//Wait for a bit
