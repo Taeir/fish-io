@@ -8,6 +8,7 @@ import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -162,10 +163,12 @@ public class SinglePlayerController implements ScreenController {
 		pf.clear();
 		
 		//Start the render thread (it takes some time to appear).
-		pf.getRenderThread().play();
-		
+		pf.startRendering();
+
 		//Hide the deathscreen. When the animation is done, start the game thread.
-		showDeathScreen(false, event -> pf.getGameThread().play());
+		showDeathScreen(false, event -> {
+			pf.startGame();
+		});
 	}
 	
 	/**
@@ -175,8 +178,15 @@ public class SinglePlayerController implements ScreenController {
 	 * 			the new score to be displayed on the screen.
 	 */
 	public void updateScoreDisplay(int score) {
-		scoreField.setText("score:" + score);
-		endScore.setText("score: " + score + " points");
+		if (Platform.isFxApplicationThread()) {
+			scoreField.setText("score:" + score);
+			endScore.setText("score: " + score + " points");
+		} else {
+			Platform.runLater(() -> {
+				scoreField.setText("score:" + score);
+				endScore.setText("score: " + score + " points");
+			});
+		}
 	}
 
 	/**

@@ -1,7 +1,9 @@
 package com.github.fishio;
 
 import java.util.ArrayList;
-import java.util.ListIterator;
+import java.util.Iterator;
+import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import com.github.fishio.listeners.TickListener;
 import com.github.fishio.logging.Log;
@@ -20,23 +22,22 @@ import javafx.util.Duration;
  * Represents the PlayingField.
  */
 public abstract class PlayingField {
-
 	public static final int WINDOW_X = 1280;
 	public static final int WINDOW_Y = 670;
 	public static final double GAME_TPS = 60;
 
-	private Timeline gameThread;
+	private GameRunnable gameRunnable;
 	private Timeline renderThread;
 	private int fps;
 
 	private Canvas canvas;
 
-	private ArrayList<TickListener> gameListeners = new ArrayList<>();
-	private ArrayList<TickListener> renderListeners = new ArrayList<>();
-	private ArrayList<IDrawable> drawables = new ArrayList<>();
-	private ArrayList<IMovable> movables = new ArrayList<>();
-	private ArrayList<Entity> entities = new ArrayList<>();
-	private ArrayList<ICollidable> collidables = new ArrayList<>();
+	private ConcurrentLinkedQueue<TickListener> gameListeners = new ConcurrentLinkedQueue<>();
+	private ConcurrentLinkedQueue<TickListener> renderListeners = new ConcurrentLinkedQueue<>();
+	private ConcurrentLinkedDeque<IDrawable> drawables = new ConcurrentLinkedDeque<>();
+	private ConcurrentLinkedQueue<IMovable> movables = new ConcurrentLinkedQueue<>();
+	private ConcurrentLinkedQueue<Entity> entities = new ConcurrentLinkedQueue<>();
+	private ConcurrentLinkedQueue<ICollidable> collidables = new ConcurrentLinkedQueue<>();
 	private Log log = Log.getLogger();
 
 	private Image background;
@@ -74,8 +75,9 @@ public abstract class PlayingField {
 		//count enemies
 		enemyCount = 0;
 
-		createGameThread();
+		gameRunnable = new GameRunnable(true);
 		log.log(LogLevel.INFO, "Created GameThread().");
+		
 		createRenderThread();
 		log.log(LogLevel.INFO, "Created RenderThread().");
 	}
@@ -152,35 +154,10 @@ public abstract class PlayingField {
 	}
 
 	/**
-	 * Creates the game thread.
+	 * Creates a new gamerunnable.
 	 */
-	protected final void createGameThread() {
-		Duration dur = Duration.millis(1000.0 / GAME_TPS);
-
-		KeyFrame frame = new KeyFrame(dur, event -> {
-			//Call listeners pretick
-			preListeners(false);
-
-			//Move all movables
-			moveMovables();
-
-			//Add new entities
-			addEntities();
-
-			//Check for collisions
-			checkPlayerCollisions();
-
-			//Cleanup dead entities.
-			cleanupDead();
-
-			//Call listeners posttick
-			postListeners(false);
-		}, new KeyValue[0]);
-
-		Timeline tl = new Timeline(frame);
-		tl.setCycleCount(-1);
-
-		gameThread = tl;
+	protected final void createGameRunnable() {
+		gameRunnable = new GameRunnable();
 	}
 
 	/**
@@ -196,9 +173,9 @@ public abstract class PlayingField {
 		gc.drawImage(background, 0, 0);
 
 		//Render all drawables, in reverse order
-		ListIterator<IDrawable> li = drawables.listIterator(drawables.size());
-		while (li.hasPrevious()) {
-			li.previous().render(gc);
+		Iterator<IDrawable> it = drawables.descendingIterator();
+		while (it.hasNext()) {
+			it.next().render(gc);
 		}
 	}
 
@@ -206,13 +183,13 @@ public abstract class PlayingField {
 	 * Checks for player collisions.
 	 */
 	public void checkPlayerCollisions() {
-		for (int i = 0; i < getPlayers().size(); i++) {
-			for (int j = 0; j < collidables.size(); j++) {
-				ICollidable c1 = getPlayers().get(i);
-				ICollidable c2 = collidables.get(j);
-				if (c1 != c2 && c1.doesCollides(c2)) {
-					c1.onCollide(c2);
-					c2.onCollide(c1);
+		//Iterate over the players
+		for (PlayerFish player : getPlayers()) {
+			//Iterate over the collidables
+			for (ICollidable c : collidables) {
+				if (player != c && player.doesCollides(c)) {
+					player.onCollide(c);
+					c.onCollide(player);
 				}
 			}
 		}
@@ -222,16 +199,24 @@ public abstract class PlayingField {
 	 * Cleans up dead entities.
 	 */
 	public void cleanupDead() {
-		ArrayList<Entity> tbr = new ArrayList<Entity>();
-		for (Entity e : entities) {
-			if (e.isDead()) {
-				tbr.add(e);
+		Iterator<Entity> it = entities.iterator();
+		while (it.hasNext()) {
+			Entity e = it.next();
+			
+			if (!e.isDead()) {
+				continue;
 			}
-		}
-
-		for (Entity e : tbr) {
+			
+			//Remove from entities list
+			it.remove();
+			
+			//Remove from other lists.
 			remove(e);
+			
+			//Decrease enemy count.
 			enemyCount--;
+			
+			//Log action.
 			log.log(LogLevel.DEBUG, "Removed enemy fish. Enemycount: " + enemyCount + ".");
 		}
 	}
@@ -246,6 +231,7 @@ public abstract class PlayingField {
 			//TODO add scalible enemyFish
 			EnemyFish eFish = LevelBuilder.randomizedFish(getPlayers().get(0).getBoundingArea());
 			add(eFish);
+			
 			enemyCount++;
 			log.log(LogLevel.DEBUG, "Added enemy fish. Enemycount: " +  enemyCount + ".");
 		}
@@ -312,14 +298,13 @@ public abstract class PlayingField {
 	 * 		if false, calls the game listeners.
 	 */
 	public void preListeners(boolean render) {
-		ArrayList<TickListener> list;
+		ConcurrentLinkedQueue<TickListener> list;
 		if (render) {
 			list = renderListeners;
 		} else {
 			list = gameListeners;
 		}
 
-		//TODO Concurrency
 		for (TickListener tl : list) {
 			try {
 				tl.preTick();
@@ -339,14 +324,13 @@ public abstract class PlayingField {
 	 * 		if false, calls the game listeners.
 	 */
 	public void postListeners(boolean render) {
-		ArrayList<TickListener> list;
+		ConcurrentLinkedQueue<TickListener> list;
 		if (render) {
 			list = renderListeners;
 		} else {
 			list = gameListeners;
 		}
 
-		//TODO Concurrency
 		for (TickListener tl : list) {
 			try {
 				tl.postTick();
@@ -357,36 +341,121 @@ public abstract class PlayingField {
 			}
 		}
 	}
-
+	
 	/**
-	 * Gives back the renderthread.
-	 * 
-	 * @return the renderthread.
+	 * Starts rendering (updating the screen).
+	 * The game itself will be unaffected by this call.
 	 */
-	public Timeline getRenderThread() {
-		return renderThread;
-	}
-
-	/**
-	 * Returns the gamethread.
-	 * 
-	 * @return the gamethread.
-	 */
-	public Timeline getGameThread() {
-		return gameThread;
-	}
-
-	/**
-	 * Starts the game.
-	 */
-	public void startGame() {
+	public void startRendering() {
 		if (renderThread.getStatus() != Status.RUNNING) {
 			renderThread.play();
 		}
-		
-		if (!isRunning()) {
-			gameThread.play();
+	}
+	
+	/**
+	 * Stops rendering (updating the screen).
+	 * The game itself will be unaffected by this call.
+	 */
+	public void stopRendering() {
+		if (renderThread.getStatus() == Status.RUNNING) {
+			renderThread.stop();
 		}
+	}
+	
+	/**
+	 * @return
+	 * 		if the render thread is running or not.
+	 */
+	public boolean isRendering() {
+		return renderThread.getStatus() == Status.RUNNING;
+	}
+	
+	/**
+	 * Starts the game thread.<br>
+	 * <br>
+	 * If the game thread is not running, it is started.<br>
+	 * If the game thread is stopping, this method waits for it to stop and
+	 * starts it again after that.<br>
+	 * Otherwise, this method will have no effect.
+	 */
+	public void startGameThread() {
+		//If already running
+		if (isRunning()) {
+			//If we have not called stop yet, we can simply return.
+			if (!isStopping()) {
+				return;
+			} else {
+				//We have to stop the old game thread.
+				try {
+					gameRunnable.stopAndWait();
+				} catch (InterruptedException ex) {
+					log.log(LogLevel.ERROR,
+							"Error while starting game thread: interrupted while waiting for gameRunnable to stop.");
+				}
+			}
+		}
+		
+		createGameRunnable();
+		new Thread(gameRunnable).start();
+	}
+	
+	/**
+	 * Sets the stop status of the game thread to true.<br>
+	 * <br>
+	 * If the game thread was running at the time of this call, it will
+	 * stop sometime in the future. Otherwise, this method has no effect.
+	 * 
+	 * @see #stopGameThreadAndWait()
+	 */
+	public void stopGameThread() {
+		gameRunnable.stop();
+	}
+	
+	/**
+	 * Sets the stop status of the game thread to true, and waits for the
+	 * game thread to stop.<br>
+	 * <br>
+	 * If the game thread was not running at the time of this call, this 
+	 * method has no effect.
+	 * 
+	 * @throws InterruptedException
+	 * 		if we are interrupted while waiting for the game thread to stop.
+	 * 
+	 * @see #stopGameThread()
+	 */
+	public void stopGameThreadAndWait() throws InterruptedException {
+		gameRunnable.stopAndWait();
+	}
+	
+	/**
+	 * @return
+	 * 		if the game thread is running or not (stopped / paused)
+	 */
+	public boolean isRunning() {
+		return !gameRunnable.isStopped();
+	}
+	
+	/**
+	 * @return
+	 * 		<code>true</code> if the game is stopping,
+	 * 		<code>false</code> otherwise.
+	 */
+	public boolean isStopping() {
+		return gameRunnable.isStopping();
+	}
+
+	/**
+	 * Starts the game.<br>
+	 * <br>
+	 * If the render thread has not started, it is started right before
+	 * the game is started.
+	 */
+	public void startGame() {
+		//Start the rendering first
+		startRendering();
+		
+		//Start the game thread after that.
+		startGameThread();
 	}
 	
 	/**
@@ -398,23 +467,19 @@ public abstract class PlayingField {
 	 * @see #startGame()
 	 */
 	public void startGameAndWait() throws InterruptedException {
-		Duration position = gameThread.getCurrentTime();
-		
 		startGame();
 		
-		//If the play head is at the same position, the game thread has not
-		//ran a cycle yet, so we wait a bit and check again.
-		while (position.equals(gameThread.getCurrentTime())) {
+		while (!isRunning()) {
 			Thread.sleep(25L);
 		}
 	}
 
 	/**
-	 * Stops (pauses) the game.
+	 * Stops (pauses) the game and the rendering.
 	 */
 	public void stopGame() {
-		gameThread.stop();
-		renderThread.stop();
+		stopGameThread();
+		stopRendering();
 	}
 	
 	/**
@@ -426,20 +491,11 @@ public abstract class PlayingField {
 	 * @see #stopGame()
 	 */
 	public void stopGameAndWait() throws InterruptedException {
+		//Stop the game and render thread
 		stopGame();
 		
-		//While we are still running, we wait.
-		while (isRunning()) {
-			Thread.sleep(25L);
-		}
-	}
-	
-	/**
-	 * @return
-	 * 		if the game is running or not (stopped / paused)
-	 */
-	public boolean isRunning() {
-		return gameThread.getStatus() == Status.RUNNING;
+		//Wait until the game thread has stopped.
+		stopGameThreadAndWait();
 	}
 
 	/**
@@ -459,7 +515,7 @@ public abstract class PlayingField {
 	 */
 	public void add(Object o) {
 		if (o instanceof IDrawable) {
-			drawables.add((IDrawable) o);
+			drawables.addFirst((IDrawable) o);
 		}
 
 		if (o instanceof IMovable) {
@@ -574,5 +630,118 @@ public abstract class PlayingField {
 		}
 
 		background = image;
+	}
+	
+	/**
+	 * Special Runnable class for the GameThread.
+	 */
+	private class GameRunnable implements Runnable {
+		private volatile boolean stop;
+		private volatile boolean done;
+		
+		public GameRunnable() { }
+		
+		public GameRunnable(boolean fake) {
+			this.done = fake;
+			this.stop = fake;
+		}
+
+		/**
+		 * Set the stop status of this GameRunnable to true.
+		 */
+		public void stop() {
+			this.stop = true;
+		}
+		
+		/**
+		 * @return
+		 * 		true if this game runnable is stopping.
+		 */
+		public boolean isStopping() {
+			return this.stop;
+		}
+		
+		/**
+		 * @return
+		 * 		true if this game runnable has stopped.
+		 */
+		public boolean isStopped() {
+			return this.done;
+		}
+		
+		/**
+		 * Sets the stop status of this GameRunnable to true, and waits
+		 * until it has actually stopped.
+		 * 
+		 * @throws InterruptedException
+		 * 		if we are interrupted while waiting.
+		 */
+		public void stopAndWait() throws InterruptedException {
+			//We have already stopped.
+			if (isStopped()) {
+				return;
+			}
+			
+			//Mark that we want to stop
+			stop();
+			
+			//Wait until we have stopped.
+			while (!isStopped()) {
+				Thread.sleep(25L);
+			}
+		}
+		
+		@Override
+		public void run() {
+			//If we have already ran before, we throw an exception.
+			if (isStopped()) {
+				throw new IllegalStateException("This GameRunnable has already been stopped!");
+			}
+			
+			try {
+				long start, end;
+				double waitTime = 1000.0 / GAME_TPS;
+				
+				while (!stop) {
+					start = System.currentTimeMillis();
+	
+					//Call listeners pretick
+					preListeners(false);
+	
+					//Move all movables
+					moveMovables();
+	
+					//Add new entities
+					addEntities();
+	
+					//Check for stop again halfway.
+					if (stop) {
+						break;
+					}
+					
+					//Check for collisions
+					checkPlayerCollisions();
+	
+					//Cleanup dead entities.
+					cleanupDead();
+	
+					//Call listeners posttick
+					postListeners(false);
+					
+					end = System.currentTimeMillis();
+					
+					//Sleep if we have time to spare.
+					long dur = end - start;
+					if (dur < waitTime) {
+						try {
+							Thread.sleep(Math.round(waitTime - dur));
+						} catch (InterruptedException ex) { }
+					}
+				}
+			} finally {
+				//Reset stopping
+				done = true;
+			}
+		}
 	}
 }
