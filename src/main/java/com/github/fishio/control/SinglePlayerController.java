@@ -25,9 +25,6 @@ import javafx.util.Duration;
 
 /**
  * The controller class of the single player game.
- * 
- * @author Chiel Bruin
- * @since 03-09-2015
  */
 public class SinglePlayerController implements ScreenController {
 
@@ -71,6 +68,15 @@ public class SinglePlayerController implements ScreenController {
 	@Override
 	public void onSwitchTo() {
 		FishIO.getInstance().getPrimaryStage().setTitle("Fish.io Singleplayer");
+		
+		//Reset the pause button
+		getBtnPause().setText("Pause");
+		getBtnPause().setDisable(false);
+		
+		//Hide the death screen
+		deathScreen.setVisible(false);
+		
+		//Start the game.
 		pf.startGame();
 		log.log(LogLevel.INFO, "Started Game.");
 	}
@@ -84,11 +90,17 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	public void onPause(ActionEvent event) {
 		if (pf.isRunning()) {
-			pf.stopGame();
+			try {
+				pf.stopGameAndWait();
+			} catch (InterruptedException ex) { }
+			getBtnPause().setText("Unpause");
+			
 			log.log(LogLevel.INFO, "Player paused the game.");
 		} else {
 			log.log(LogLevel.INFO, "Player resumed the game.");
+			
 			pf.startGame();
+			getBtnPause().setText("Pause");
 		}
 	}
 
@@ -127,6 +139,9 @@ public class SinglePlayerController implements ScreenController {
 		FadeTransition fade = new FadeTransition(Duration.millis(400), deathScreen);
 		
 		if (visible) {
+			//Disable pause button
+			getBtnPause().setDisable(true);
+			
 			//Show deathscreen fully transparent and fade it in
 			deathScreen.setOpacity(0.0);
 			deathScreen.setVisible(true);
@@ -185,8 +200,10 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	public void backToMenu() {
 		pf.stopGame();
+		pf.clear();
+		
 		log.log(LogLevel.INFO, "Player pressed backToMenu button");
-		FishIO.getInstance().openMainMenu();
+		Preloader.switchTo("mainMenu", 400);
 	}
 	
 	/**
@@ -218,6 +235,10 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void restartGame() {
+		//Reset the pause button
+		getBtnPause().setText("Pause");
+		getBtnPause().setDisable(false);
+		
 		//Stop the game, clear all items, and start it again.
 		try {
 			pf.stopGameAndWait();
@@ -265,35 +286,40 @@ public class SinglePlayerController implements ScreenController {
 	}
 
 	/**
-	 * @return the deathScreen
+	 * @return
+	 * 		the deathScreen box.
 	 */
 	public VBox getDeathScreen() {
 		return deathScreen;
 	}
 
 	/**
-	 * @return the scoreField
+	 * @return
+	 * 		the score label.
 	 */
 	public Label getScoreField() {
 		return scoreField;
 	}
 
 	/**
-	 * @return the btnPause
+	 * @return
+	 * 		the pause button.
 	 */
 	public Button getBtnPause() {
 		return btnPause;
 	}
 
 	/**
-	 * @return the btnMute
+	 * @return
+	 * 		the mute/unmute button.
 	 */
 	public Button getBtnMute() {
 		return btnMute;
 	}
 
 	/**
-	 * @return the btnMenu
+	 * @return
+	 * 		the button that goes back to the menu.
 	 */
 	public Button getBtnMenu() {
 		return btnMenu;
@@ -308,21 +334,24 @@ public class SinglePlayerController implements ScreenController {
 	}
 
 	/**
-	 * @return the btnDSRestart
+	 * @return
+	 * 		the button on the death screen that restarts the game.
 	 */
 	public Button getBtnDSRestart() {
 		return btnDSRestart;
 	}
 
 	/**
-	 * @return the btnDSMenu
+	 * @return
+	 * 		the button on the death screen that returns to the main menu.
 	 */
 	public Button getBtnDSMenu() {
 		return btnDSMenu;
 	}
 
 	/**
-	 * @return the playingfield
+	 * @return
+	 * 		the playingfield
 	 */
 	public PlayingField getPlayingField() {
 		return pf;

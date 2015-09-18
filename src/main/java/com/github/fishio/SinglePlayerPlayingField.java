@@ -64,9 +64,8 @@ public class SinglePlayerPlayingField extends PlayingField {
 		this.player = new PlayerFish(ca, FishIO.getInstance().getPrimaryStage(), 
 				Preloader.getImageOrLoad("sprites/fish/playerFish.png"));
 
-		this.player.scoreProperty().addListener((observable, oldValue, newValue) -> {
-			screenController.updateScoreDisplay(newValue.intValue());
-		});
+		this.player.scoreProperty().addListener(
+				(observable, oldValue, newValue) -> screenController.updateScoreDisplay(newValue.intValue()));
 		
 		//Listen for changes in the lives.
 		this.player.livesProperty().addListener((observable, oldValue, newValue) -> {
