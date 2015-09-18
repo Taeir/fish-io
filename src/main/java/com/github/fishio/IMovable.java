@@ -62,9 +62,12 @@ public interface IMovable extends IPositional {
 	/**
 	 * Sets the speed this object is moving at.
 	 * 
+	 * @deprecated If the speed is 0, this method does not work properly.
+	 * 
 	 * @param speed
 	 * 		the new speed.
 	 */
+	@Deprecated
 	default void setSpeed(double speed) {
 		Vec2d norm = getSpeedVector().normalize();
 		norm.x = norm.x * speed;

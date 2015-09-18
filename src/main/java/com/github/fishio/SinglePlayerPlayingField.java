@@ -11,7 +11,9 @@ import javafx.scene.canvas.Canvas;
  * Represents a playing field designed for single player.
  */
 public class SinglePlayerPlayingField extends PlayingField {
-
+	public static final int START_X = 640;
+	public static final int START_Y = 335;
+	
 	private PlayerFish player;
 	private final ArrayList<PlayerFish> players = new ArrayList<PlayerFish>(1);
 	private final SinglePlayerController screenController;
@@ -58,14 +60,29 @@ public class SinglePlayerPlayingField extends PlayingField {
 	 * Creates and adds the player fish.
 	 */
 	protected final void addPlayerFish() {
-		ICollisionArea ca = new CollisionMask(new Vec2d(640, 335), 60, 30, 
-				Preloader.getAlphaDataOrLoad("sprites/fish/playerFish.png"),
-				Preloader.getSpriteAlphaRatioOrLoad("sprites/fish/playerFish.png"));
+		ICollisionArea ca = getStartCollisionArea();
 		this.player = new PlayerFish(ca, FishIO.getInstance().getPrimaryStage(), 
 				Preloader.getImageOrLoad("sprites/fish/playerFish.png"));
 
 		this.player.scoreProperty().addListener((observable, oldValue, newValue) -> {
 			screenController.updateScoreDisplay(newValue.intValue());
+		});
+		
+		//Listen for changes in the lives.
+		this.player.livesProperty().addListener((observable, oldValue, newValue) -> {
+			//Update lives display
+			screenController.updateLivesDisplay(newValue.intValue());
+			
+			//Death is handled elsewhere
+			if (newValue.intValue() == 0) {
+				return;
+			}
+			
+			//If we lost a life
+			if (newValue.intValue() < oldValue.intValue()) {
+				stopGame();
+				screenController.showDeathScreen(true, null);
+			}
 		});
 		
 		if (this.players.isEmpty()) {
@@ -75,6 +92,16 @@ public class SinglePlayerPlayingField extends PlayingField {
 		}
 
 		add(this.player);
+	}
+	
+	/**
+	 * @return
+	 * 		the starting collision area of a playerfish.
+	 */
+	public ICollisionArea getStartCollisionArea() {
+		return new CollisionMask(new Vec2d(START_X, START_Y), 60, 30, 
+				Preloader.getAlphaDataOrLoad("sprites/fish/playerFish.png"),
+				Preloader.getSpriteAlphaRatioOrLoad("sprites/fish/playerFish.png"));
 	}
 
 	@Override

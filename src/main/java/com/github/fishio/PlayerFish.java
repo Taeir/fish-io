@@ -43,6 +43,10 @@ public class PlayerFish extends Entity implements IMovable {
 
 	private static final double GROWTH_SPEED = 500;
 	private static final double FISH_EAT_THRESHOLD = 1.2;
+	private static final int START_LIVES = 3;
+	public static final int MAX_LIVES = 5;
+	
+	private SimpleIntegerProperty lives = new SimpleIntegerProperty(START_LIVES);
 
 	/**
 	 * Creates the Player fish which the user will be able to control.
@@ -256,6 +260,13 @@ public class PlayerFish extends Entity implements IMovable {
 
 	@Override
 	public void hitWall() { }
+	
+	@Override
+	public void setDead() {
+		super.setDead();
+		
+		lives.set(0);
+	}
 
 	@Override
 	public boolean canMoveThroughWall() {
@@ -279,7 +290,8 @@ public class PlayerFish extends Entity implements IMovable {
 				double dSize = GROWTH_SPEED * osize / tsize;
 				getBoundingArea().increaseSize(dSize);
 			} else if (osize > tsize * FISH_EAT_THRESHOLD) {
-				this.setDead();
+				//Remove a life.
+				this.removeLife();
 			}
 		}
 	}
@@ -319,6 +331,50 @@ public class PlayerFish extends Entity implements IMovable {
 		} else {
 			drawRotatedImage(gc, sprite, getBoundingArea(), vy < 0);
 		}
+	}
+	
+	/**
+	 * Removes a life.
+	 * 
+	 * @return
+	 * 		<code>true</code> if this playerfish is now dead.
+	 * 		<code>false</code> otherwise.
+	 */
+	public boolean removeLife() {
+		int nvalue = Math.max(lives.get() - 1, 0);
+		lives.set(nvalue);
+		
+		if (nvalue == 0) {
+			setDead();
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Adds a life.
+	 */
+	public void addLife() {
+		lives.set(Math.min(lives.get() + 1, MAX_LIVES));
+	}
+	
+	/**
+	 * @return
+	 * 		the amount of lives left.
+	 */
+	public int getLives() {
+		return lives.get();
+	}
+	
+	/**
+	 * Getter for the lives property.
+	 * 
+	 * @return
+	 * 		the amount of lives left.
+	 */
+	public SimpleIntegerProperty livesProperty() {
+		return lives;
 	}
 
 }

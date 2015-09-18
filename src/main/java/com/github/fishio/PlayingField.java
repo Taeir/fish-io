@@ -577,6 +577,40 @@ public abstract class PlayingField {
 		
 		enemyCount = 0;
 	}
+	
+	/**
+	 * Clears everything but player fish from this PlayingField.
+	 */
+	public void clearEnemies() {
+		for (Entity e : entities) {
+			if (e instanceof PlayerFish) {
+				continue;
+			}
+			
+			e.setDead();
+		}
+		
+		GraphicsContext gc = canvas.getGraphicsContext2D();
+		for (IDrawable d : drawables) {
+			if (d instanceof PlayerFish) {
+				continue;
+			}
+			
+			d.drawDeath(gc);
+		}
+		
+		entities.clear();
+		drawables.clear();
+		movables.clear();
+		collidables.clear();
+		
+		enemyCount = 0;
+		
+		//Re-add the players
+		for (PlayerFish player : getPlayers()) {
+			add(player);
+		}
+	}
 
 	/**
 	 * Registers the given TickListener for the game thread.

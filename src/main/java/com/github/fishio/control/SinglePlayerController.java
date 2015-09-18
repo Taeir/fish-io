@@ -1,9 +1,13 @@
 package com.github.fishio.control;
 
 import com.github.fishio.FishIO;
+import com.github.fishio.ICollisionArea;
+import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
 import com.github.fishio.Preloader;
 import com.github.fishio.SinglePlayerPlayingField;
+import com.github.fishio.Util;
+import com.github.fishio.Vec2d;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
@@ -36,6 +40,8 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	private Label scoreField;
 	@FXML
+	private Label livesField;
+	@FXML
 	private Label endScore;
 	
 	
@@ -46,6 +52,8 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	private Button btnMenu;
 	
+	@FXML
+	private Button btnDSRevive;
 	@FXML
 	private Button btnDSRestart;
 	@FXML
@@ -94,12 +102,22 @@ public class SinglePlayerController implements ScreenController {
 	 * 			Can be <code>null</code>.
 	 */
 	public void showDeathScreen(boolean visible, EventHandler<ActionEvent> onDone) {
+		//Check if on FX thread.
+		if (!Platform.isFxApplicationThread()) {
+			Platform.runLater(() -> showDeathScreen(visible, onDone));
+			return;
+		}
+		
 		if (visible && deathScreen.isVisible() && deathScreen.getOpacity() == 1.0) {
+			updateReviveButton();
+			
 			if (onDone != null) {
 				onDone.handle(new ActionEvent());
 			}
 			return;
 		} else if (!visible && !deathScreen.isVisible()) {
+			updateReviveButton();
+			
 			if (onDone != null) {
 				onDone.handle(new ActionEvent());
 			}
@@ -116,9 +134,7 @@ public class SinglePlayerController implements ScreenController {
 			fade.setFromValue(0.0);
 			fade.setToValue(1.0);
 			
-			if (onDone != null) {
-				fade.setOnFinished(onDone);
-			}
+			fade.setOnFinished(onDone);
 		} else {
 			//Show deathscreen fully visible and fade it out
 			deathScreen.setOpacity(1.0);
@@ -137,8 +153,30 @@ public class SinglePlayerController implements ScreenController {
 			});
 		}
 		
+		//Revive button
+		updateReviveButton();
+		
 		//Start animation
 		fade.play();
+	}
+	
+	/**
+	 * Updates the revive button. It is enabled when applicable.
+	 */
+	private void updateReviveButton() {
+		//If there are no players in the game, we disable the revive button.
+		if (pf.getPlayers().isEmpty()) {
+			btnDSRevive.setDisable(true);
+			return;
+		}
+		
+		//If player has lives left, we enable the revive button.
+		PlayerFish player = pf.getPlayers().get(0);
+		if (player.getLives() > 0) {
+			btnDSRevive.setDisable(false);
+		} else {
+			btnDSRevive.setDisable(true);
+		}
 	}
 
 	/**
@@ -149,6 +187,30 @@ public class SinglePlayerController implements ScreenController {
 		pf.stopGame();
 		log.log(LogLevel.INFO, "Player pressed backToMenu button");
 		FishIO.getInstance().openMainMenu();
+	}
+	
+	/**
+	 * Revives the player.
+	 */
+	@FXML
+	public void revive() {
+		//Remove all enemies.
+		pf.clearEnemies();
+		
+		PlayerFish player = pf.getPlayers().get(0);
+		
+		//Reset the bounding box of the player fish.
+		ICollisionArea area = ((SinglePlayerPlayingField) pf).getStartCollisionArea();
+		player.setBoundingArea(area);
+		
+		//Reset the speed of the fish.
+		player.setSpeedVector(new Vec2d(0, 0));
+		
+		//Start the render thread (it takes some time to appear).
+		pf.startRendering();
+		
+		//Hide the deathscreen. When the animation is done, start the game thread.
+		showDeathScreen(false, event -> pf.startGameThread());
 	}
 
 	/**
@@ -178,15 +240,20 @@ public class SinglePlayerController implements ScreenController {
 	 * 			the new score to be displayed on the screen.
 	 */
 	public void updateScoreDisplay(int score) {
-		if (Platform.isFxApplicationThread()) {
-			scoreField.setText("score:" + score);
-			endScore.setText("score: " + score + " points");
-		} else {
-			Platform.runLater(() -> {
-				scoreField.setText("score:" + score);
-				endScore.setText("score: " + score + " points");
-			});
-		}
+		Util.onJavaFX(() -> {
+			scoreField.setText("Score: " + score);
+			endScore.setText("Score: " + score + " points");
+		});
+	}
+	
+	/**
+	 * Update the displayed life count.
+	 * 
+	 * @param lives
+	 * 		the new life count.
+	 */
+	public void updateLivesDisplay(int lives) {
+		Util.onJavaFX(() -> livesField.setText("Lives: " + lives));
 	}
 
 	/**
@@ -230,6 +297,14 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	public Button getBtnMenu() {
 		return btnMenu;
+	}
+	
+	/**
+	 * @return
+	 * 		the revive button on the deathscreen.
+	 */
+	public Button getBtnDSRevive() {
+		return btnDSRevive;
 	}
 
 	/**
