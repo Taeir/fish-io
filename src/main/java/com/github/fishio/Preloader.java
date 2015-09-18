@@ -3,6 +3,8 @@ package com.github.fishio;
 import java.io.IOException;
 import java.util.HashMap;
 
+import com.github.fishio.control.ScreenController;
+
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,12 +13,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
-import com.github.fishio.control.ScreenController;
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
 
 /**
  * Class to preload sprites.
  */
 public final class Preloader {
+	
+	private static Log log = Log.getLogger();
 	private Preloader() { }
 	
 	/**
@@ -54,6 +59,7 @@ public final class Preloader {
 			loadScreen("mainMenu");
 			loadScreen("singlePlayer");
 			loadScreen("helpScreen");
+			loadScreen("achievementScreen");
 			
 			//We don't load the splash screen, because it is shown immediately.
 		});
@@ -113,7 +119,7 @@ public final class Preloader {
 		try {
 			image = new Image(file);
 		} catch (Exception ex) {
-			System.err.println("Error while trying to load image " + file);
+			log.log(LogLevel.ERROR, "Error while trying to load image: " + file);
 			return;
 		}
 		if (pixelData) {
@@ -230,6 +236,7 @@ public final class Preloader {
 			if (image != null) {
 				return image;
 			} else {
+				log.log(LogLevel.ERROR, "No image loaded for " + file + "!");
 				throw new IllegalArgumentException("No image loaded for " + file + "!");
 			}
 		}
@@ -275,6 +282,7 @@ public final class Preloader {
 						oldScene = SCREENS.get(filename);
 					}
 				} catch (InterruptedException ex) {
+					log.log(LogLevel.ERROR, "Interrupted while waiting for screen to get loaded!");
 					throw new LoaderException("Interrupted while waiting for screen to get loaded!", ex);
 				}
 			} while (oldScene == EMPTY_SCENE);
@@ -290,7 +298,7 @@ public final class Preloader {
 			Pane rootLayout = (Pane) loader.load();
 			ScreenController controller = ((ScreenController) loader.getController());
 			if (controller == null) {
-				System.err.println("Screen controller not found for " + filename);
+				log.log(LogLevel.ERROR, "Screen controller not found for " + filename);
 				return null;
 			}
 
@@ -303,7 +311,8 @@ public final class Preloader {
 			try {
 				controller.init(scene);
 			} catch (Exception ex) {
-				System.err.println("Error while initializing controller for " + filename);
+				log.log(LogLevel.ERROR, "Error while initializing controller for " 
+						+ filename + " Exeception: " + ex.getMessage());
 			}
 			
 			synchronized (SCREENS) {
@@ -312,8 +321,8 @@ public final class Preloader {
 			
 			return scene;
 		} catch (IOException e) {
-			System.err.println("Error loading screen:" + filename);
-			e.printStackTrace();
+			log.log(LogLevel.ERROR, "Error loading screen: " 
+					+ " Exeception: " + e.getMessage());
 			return null;
 		}
 	}
@@ -341,6 +350,7 @@ public final class Preloader {
 		}
 		
 		if (scene == null) {
+			log.log(LogLevel.ERROR, "No screen with name " + filename + " is loaded!");
 			throw new IllegalArgumentException("No screen with name " + filename + " is loaded!");
 		} else if (scene == EMPTY_SCENE) {
 			//Screen is being loaded, so sleep for a bit and try again
@@ -352,6 +362,7 @@ public final class Preloader {
 						scene = SCREENS.get(filename);
 					}
 				} catch (InterruptedException ex) {
+					log.log(LogLevel.ERROR, "Interrupted while waiting for screen to get loaded!");
 					throw new LoaderException("Interrupted while waiting for screen to get loaded!", ex);
 				}
 			}

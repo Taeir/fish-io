@@ -24,7 +24,7 @@ public class FishIO extends Application {
 	private ConsoleHandler consoleHandler = new ConsoleHandler(new TimeStampFormat());
 	private TxtFileHandler textFileHandler = 
 			new TxtFileHandler(new TimeStampFormat(), new File("logs" +  File.separator + "log.txt"));
-	private LogLevel logLevel = LogLevel.DEBUG;
+	private LogLevel logLevel = LogLevel.INFO;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -66,6 +66,7 @@ public class FishIO extends Application {
 	 * Closes the program.
 	 */
 	public void closeApplication() {
+		log.log(LogLevel.INFO, "Game shutting Down.");
 		try {
 			textFileHandler.close();
 		} catch (IOException e) {
