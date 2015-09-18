@@ -43,10 +43,10 @@ public class PlayerFish extends Entity implements IMovable {
 
 	private static final double GROWTH_SPEED = 500;
 	private static final double FISH_EAT_THRESHOLD = 1.2;
-	private static final int LIVES = 3;
+	private static final int START_LIVES = 3;
 	public static final int MAX_LIVES = 5;
 	
-	private SimpleIntegerProperty lives = new SimpleIntegerProperty(LIVES);
+	private SimpleIntegerProperty lives = new SimpleIntegerProperty(START_LIVES);
 
 	/**
 	 * Creates the Player fish which the user will be able to control.
