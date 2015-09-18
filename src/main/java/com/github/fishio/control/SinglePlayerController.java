@@ -207,10 +207,10 @@ public class SinglePlayerController implements ScreenController {
 		player.setSpeedVector(new Vec2d(0, 0));
 		
 		//Start the render thread (it takes some time to appear).
-		pf.getRenderThread().play();
+		pf.startRendering();
 		
 		//Hide the deathscreen. When the animation is done, start the game thread.
-		showDeathScreen(false, event -> pf.getGameThread().play());
+		showDeathScreen(false, event -> pf.startGameThread());
 	}
 
 	/**
@@ -225,10 +225,12 @@ public class SinglePlayerController implements ScreenController {
 		pf.clear();
 		
 		//Start the render thread (it takes some time to appear).
-		pf.getRenderThread().play();
-		
+		pf.startRendering();
+
 		//Hide the deathscreen. When the animation is done, start the game thread.
-		showDeathScreen(false, event -> pf.getGameThread().play());
+		showDeathScreen(false, event -> {
+			pf.startGame();
+		});
 	}
 	
 	/**
