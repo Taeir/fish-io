@@ -16,7 +16,8 @@ import javafx.stage.Stage;
  * Tests the PlayerFish class.
  */
 public class TestPlayerFish {
-
+	//TODO Change some of the Mockito mocks and testing calls with verify(never), to simple getters.
+	//TODO - Comment made by Taeir - 2015/09/18
 	private PlayerFish pf;
 	
 	/**
