@@ -82,7 +82,9 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	public void onPause(ActionEvent event) {
 		if (pf.isRunning()) {
-			pf.stopGame();
+			try {
+				pf.stopGameAndWait();
+			} catch (InterruptedException ex) { }
 			getBtnPause().setText("Unpause");
 			
 			log.log(LogLevel.INFO, "Player paused the game.");
@@ -182,10 +184,12 @@ public class SinglePlayerController implements ScreenController {
 		pf.clear();
 		
 		//Start the render thread (it takes some time to appear).
-		pf.getRenderThread().play();
-		
+		pf.startRendering();
+
 		//Hide the deathscreen. When the animation is done, start the game thread.
-		showDeathScreen(false, event -> pf.getGameThread().play());
+		showDeathScreen(false, event -> {
+			pf.startGame();
+		});
 	}
 	
 	/**

@@ -13,7 +13,7 @@ import javafx.scene.canvas.Canvas;
 public class SinglePlayerPlayingField extends PlayingField {
 
 	private PlayerFish player;
-
+	private final ArrayList<PlayerFish> players = new ArrayList<PlayerFish>(1);
 	private final SinglePlayerController screenController;
 
 	/**
@@ -44,12 +44,11 @@ public class SinglePlayerPlayingField extends PlayingField {
 			public void postTick() {
 				if (player.isDead()) {
 					//Stop the game thread.
-					getGameThread().stop();
+					stopGameThread();
 
 					//Stop the render thread after the animation is done.
 					//This is in order to prevent the rendering from stopping prematurely.
-					SinglePlayerPlayingField.this.screenController.showDeathScreen(true,
-							event -> getRenderThread().stop());
+					SinglePlayerPlayingField.this.screenController.showDeathScreen(true, event -> stopRendering());
 				}
 			}
 		});
@@ -64,10 +63,16 @@ public class SinglePlayerPlayingField extends PlayingField {
 				Preloader.getSpriteAlphaRatioOrLoad("sprites/fish/playerFish.png"));
 		this.player = new PlayerFish(ca, FishIO.getInstance().getPrimaryStage(), 
 				Preloader.getImageOrLoad("sprites/fish/playerFish.png"));
-		
+
 		this.player.scoreProperty().addListener(
 				(observable, oldValue, newValue) -> screenController.updateScoreDisplay(newValue.intValue()));
 		
+		if (this.players.isEmpty()) {
+			this.players.add(this.player);
+		} else {
+			this.players.set(0, this.player);
+		}
+
 		add(this.player);
 	}
 
@@ -81,8 +86,6 @@ public class SinglePlayerPlayingField extends PlayingField {
 
 	@Override
 	public ArrayList<PlayerFish> getPlayers() {
-		ArrayList<PlayerFish> res = new ArrayList<>();
-		res.add(player);
-		return res;
+		return players;
 	}
 }
