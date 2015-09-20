@@ -2,6 +2,8 @@ package com.github.fishio;
 
 import java.util.ArrayList;
 
+import com.github.fishio.achievements.Observer;
+import com.github.fishio.achievements.Subject;
 import com.github.fishio.control.SinglePlayerController;
 import com.github.fishio.listeners.TickListener;
 
@@ -10,11 +12,13 @@ import javafx.scene.canvas.Canvas;
 /**
  * Represents a playing field designed for single player.
  */
-public class SinglePlayerPlayingField extends PlayingField {
+public class SinglePlayerPlayingField extends PlayingField implements Subject {
 
 	private PlayerFish player;
 
 	private final SinglePlayerController screenController;
+	
+	private ArrayList<Observer> observers = new ArrayList<Observer>();
 
 	/**
 	 * Creates the playing field for a single player.
@@ -50,6 +54,9 @@ public class SinglePlayerPlayingField extends PlayingField {
 					//This is in order to prevent the rendering from stopping prematurely.
 					SinglePlayerPlayingField.this.screenController.showDeathScreen(true,
 							event -> getRenderThread().stop());
+							
+					// Notify the achievement system that the player died.
+					notifyObservers();
 				}
 			}
 		});
@@ -85,5 +92,25 @@ public class SinglePlayerPlayingField extends PlayingField {
 		ArrayList<PlayerFish> res = new ArrayList<>();
 		res.add(player);
 		return res;
+	}
+	
+	@Override
+	public void attach(Observer observer) {
+		observers.add(observer);
+		
+	}
+	
+	@Override
+	public void detach(Observer observer) {
+		observers.remove(observer);
+		
+	}
+	
+	@Override
+	public void notifyObservers() {
+		for (Observer ob : observers) {
+			ob.update();
+		}
+		
 	}
 }
