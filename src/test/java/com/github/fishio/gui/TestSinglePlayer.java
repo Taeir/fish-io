@@ -1,5 +1,6 @@
 package com.github.fishio.gui;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -242,6 +243,51 @@ public class TestSinglePlayer extends GuiTest {
 		//The player should not be null and not be dead.
 		assertFalse(getPlayer() == null);
 		assertFalse(getPlayer().isDead());
+		
+		//Wait for the death screen to disappear.
+		sleepFail(1000L);
+		
+		//The death screen should be gone
+		assertFalse(getSinglePlayerController().isDeathScreenShown());
+		
+		//The game should be running.
+		assertTrue(getSinglePlayerController().getPlayingField().isRunning());
+	}
+	
+	/**
+	 * Test for the following scenario:<br>
+	 * <br>
+	 * Scenario S3.6: death screen revive<br>
+	 * Given the user is on the Single Player Screen,<br>
+	 * and   the death screen is being shown;<br>
+	 * When  the user presses the "Revive" button on the death screen;<br>
+	 * Then  the death screen should disappear,<br>
+	 * and   the game should restart,<br>
+	 * and   the score should not reset.
+	 */
+	@Test
+	public void testDeathScreenRevive() {
+		//Set the score to 2.
+		getPlayer().scoreProperty().set(2);
+		
+		//Kill the fish
+		getPlayer().removeLife();
+		
+		//Wait for a bit
+		sleepFail(1000L);
+		
+		//The death screen should be displayed
+		assertTrue(getSinglePlayerController().isDeathScreenShown());
+		
+		//Click on the revive button on the death screen.
+		clickOn(getSinglePlayerController().getBtnDSRevive(), MouseButton.PRIMARY);
+		
+		//The player should not be null and not be dead.
+		assertFalse(getPlayer() == null);
+		assertFalse(getPlayer().isDead());
+		
+		//The score should not reset.
+		assertEquals(2, getPlayer().scoreProperty().get());
 		
 		//Wait for the death screen to disappear.
 		sleepFail(1000L);

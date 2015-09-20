@@ -2,6 +2,7 @@ package com.github.fishio;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
@@ -15,7 +16,8 @@ import javafx.stage.Stage;
  * Tests the PlayerFish class.
  */
 public class TestPlayerFish {
-
+	//TODO Change some of the Mockito mocks and testing calls with verify(never), to simple getters.
+	//TODO - Comment made by Taeir - 2015/09/18
 	private PlayerFish pf;
 	
 	/**
@@ -84,7 +86,8 @@ public class TestPlayerFish {
 	
 	/**
 	 * Tests {@link PlayerFish#canMoveThroughWall()}
-	 * using a larger EnemyFish to collide with.
+	 * using a larger EnemyFish to collide with, when the player has one
+	 * life left.
 	 */
 	@Test
 	public void testCollideWithLargerEnemyFish() {
@@ -92,9 +95,43 @@ public class TestPlayerFish {
 				null, 0.0, 0.0));
 		when(ef.getBoundingArea().getSize()).thenReturn(6.1);
 		
+		//Set the amount of lives to 1
+		pf.livesProperty().set(1);
+		
+		//Collide with an enemy
 		pf.onCollide(ef);
 		
-		Mockito.verify(pf).setDead();
+		//The player should have no more lives left.
+		assertEquals(0, pf.getLives());
+		
+		//The player should be dead.
+		assertTrue(pf.isDead());
+		
+		Mockito.verify(ef, never()).setDead();
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#canMoveThroughWall()}
+	 * using a larger EnemyFish to collide with, when the player has
+	 * multiple lives left.
+	 */
+	@Test
+	public void testCollideWithLargerEnemyFish2() {
+		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(BoundingBox.class), 
+				null, 0.0, 0.0));
+		when(ef.getBoundingArea().getSize()).thenReturn(6.1);
+		
+		//Set the amount of lives to 2.
+		pf.livesProperty().set(2);
+		
+		//Collide with an enemy
+		pf.onCollide(ef);
+		
+		//The player should have one less life.
+		assertEquals(1, pf.getLives());
+		
+		//The player should not be dead.
+		assertFalse(pf.isDead());
 		Mockito.verify(ef, never()).setDead();
 	}
 	
@@ -143,6 +180,60 @@ public class TestPlayerFish {
 
 		pf.onCollide(ef);
 		
+		Mockito.verify(pf, never()).removeLife();
 		Mockito.verify(pf, never()).setDead();
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#addLife()}.
+	 */
+	@Test
+	public void testAddLife1() {
+		pf.livesProperty().set(1);
+		pf.addLife();
+		
+		assertEquals(2, pf.getLives());
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#addLife()} when attempting to add a life
+	 * above the maximum.
+	 */
+	@Test
+	public void testAddLife2() {
+		pf.livesProperty().set(PlayerFish.MAX_LIVES);
+		pf.addLife();
+		
+		assertEquals(PlayerFish.MAX_LIVES, pf.getLives());
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#removeLife()}.
+	 */
+	@Test
+	public void testRemoveLife() {
+		pf.livesProperty().set(2);
+		
+		//The fish should not be dead.
+		assertFalse(pf.removeLife());
+		
+		//The amount of lives should have been decreased.
+		assertEquals(1, pf.getLives());
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#removeLife()} when the Player has only one
+	 * life left.
+	 */
+	@Test
+	public void testRemoveLife2() {
+		pf.livesProperty().set(1);
+		
+		//The fish should be dead.
+		assertTrue(pf.removeLife());
+		assertTrue(pf.isDead());
+		
+		//The amount of lives should have been decreased.
+		assertEquals(0, pf.getLives());
 	}
 }

@@ -2,6 +2,7 @@ package com.github.fishio.logging;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
 import java.text.ParseException;
@@ -44,13 +45,14 @@ public class TestTimeStampFormat {
 		// Date before test
 		Date beforeTest = new Date();
 		
-		Date test = null;
+		Date test = new Date();
 		try {
 			// Parse date returned from getTimeStamp method
 			test = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
 				.parse(timeStampFormat.getTimeStamp());
 		} catch (ParseException e) {
 			e.printStackTrace();
+			fail();
 		}
 		
 		// Date after test

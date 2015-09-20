@@ -7,7 +7,7 @@ package com.github.fishio.achievements;
  */
 class EnemyKillObserver implements Observer {
 	
-	private Subject PlayerFish;
+	private Subject playerFish;
 	private int enemydeathcounter = 0;
 	
 	/**
@@ -17,8 +17,8 @@ class EnemyKillObserver implements Observer {
 	 *            The subject this observer has to be notified by.
 	 */
 	public EnemyKillObserver(Subject subject) {
-		this.PlayerFish = subject;
-		this.PlayerFish.attach(this);
+		this.playerFish = subject;
+		this.playerFish.attach(this);
 	}
 	
 	@Override

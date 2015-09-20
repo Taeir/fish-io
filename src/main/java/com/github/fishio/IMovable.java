@@ -40,16 +40,6 @@ public interface IMovable extends IPositional {
 	}
 	
 	/**
-	 * Sets the direction this object is moving in.
-	 * 
-	 * @param dir
-	 *            the new direction.
-	 */
-	default void setDirection(Direction dir) {
-		setDirection(dir.getNormalVector());
-	}
-	
-	/**
 	 * Gives back the speed of the object, defined by the length of the
 	 * SpeedVector.
 	 * 
@@ -62,9 +52,12 @@ public interface IMovable extends IPositional {
 	/**
 	 * Sets the speed this object is moving at.
 	 * 
+	 * @deprecated If the speed is 0, this method does not work properly.
+	 * 
 	 * @param speed
 	 * 		the new speed.
 	 */
+	@Deprecated
 	default void setSpeed(double speed) {
 		Vec2d norm = getSpeedVector().normalize();
 		norm.x = norm.x * speed;
