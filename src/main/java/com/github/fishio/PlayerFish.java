@@ -1,5 +1,10 @@
 package com.github.fishio;
 
+import java.util.ArrayList;
+
+import com.github.fishio.achievements.Observer;
+import com.github.fishio.achievements.Subject;
+
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -11,10 +16,12 @@ import javafx.stage.Stage;
  * Represents a fish that the user can control using
  * the keyboard.
  */
-public class PlayerFish extends Entity implements IMovable {
+public class PlayerFish extends Entity implements IMovable, Subject {
 
 	private double vx;
 	private double vy;
+	
+	private ArrayList<Observer> observers = new ArrayList<Observer>();
 
 	/**
 	 * These factors have values for whether each of the arrow keys is pressed.
@@ -275,6 +282,7 @@ public class PlayerFish extends Entity implements IMovable {
 
 			if (tsize > osize * FISH_EAT_THRESHOLD) {
 				fish.setDead();
+				notifyObservers();
 				this.addPoints((int) (osize / 200));
 				double dSize = GROWTH_SPEED * osize / tsize;
 				getBoundingArea().increaseSize(dSize);
@@ -319,6 +327,26 @@ public class PlayerFish extends Entity implements IMovable {
 		} else {
 			drawRotatedImage(gc, sprite, getBoundingArea(), vy < 0);
 		}
+	}
+	
+	@Override
+	public void attach(Observer observer) {
+		observers.add(observer);
+		
+	}
+	
+	@Override
+	public void detach(Observer observer) {
+		observers.remove(observer);
+		
+	}
+	
+	@Override
+	public void notifyObservers() {
+		for (Observer ob : observers) {
+			ob.update();
+		}
+		
 	}
 
 }
