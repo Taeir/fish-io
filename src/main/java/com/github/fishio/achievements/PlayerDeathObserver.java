@@ -1,13 +1,13 @@
 package com.github.fishio.achievements;
 
 /**
- * This class is an Observer. It attaches to the SinglePlayerPlaying field and
- * gets an update when a player dies.
+ * This class is an Observer. It attaches to the SinglePlayerPlayingField and
+ * gets an update when a player dies in single player mode.
  *
  */
 class PlayerDeathObserver implements Observer {
 	
-	private Subject singlePlayerFish;
+	private Subject singlePlayerPlayingField;
 	private int playerdeathcounter = 0;
 	
 	/**
@@ -17,8 +17,8 @@ class PlayerDeathObserver implements Observer {
 	 *            The subject this observer has to be notified by.
 	 */
 	public PlayerDeathObserver(Subject subject) {
-		this.singlePlayerFish = subject;
-		this.singlePlayerFish.attach(this);
+		this.singlePlayerPlayingField = subject;
+		this.singlePlayerPlayingField.attach(this);
 	}
 	
 	@Override
