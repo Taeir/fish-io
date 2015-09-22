@@ -129,4 +129,9 @@ public class TestConsoleHandler extends TestIHandler {
 		ConsoleHandler ch2 = new ConsoleHandler();
 		assertTrue(handler.equals(ch2));
 	}
+
+	@Override
+	IHandler getIHandler() {
+		return new ConsoleHandler();
+	}
 }

@@ -228,4 +228,16 @@ public class TestTxtFileHandler extends TestIHandler {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	IHandler getIHandler() {
+		TemporaryFolder tempFolder = new TemporaryFolder();
+		try {
+			tempFolder.create();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new TxtFileHandler(new File(tempFolder.getRoot(), "test.txt"));
+	}
 }
