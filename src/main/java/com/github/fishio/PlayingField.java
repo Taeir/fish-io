@@ -246,6 +246,14 @@ public abstract class PlayingField {
 	}
 	
 	/**
+	 * @return
+	 * 		the Renderer for this PlayingField.
+	 */
+	public Renderer getRenderer() {
+		return renderer;
+	}
+	
+	/**
 	 * Starts rendering (updating the screen).
 	 * The game itself will be unaffected by this call.
 	 */
@@ -267,6 +275,14 @@ public abstract class PlayingField {
 	 */
 	public boolean isRendering() {
 		return renderer.isRendering();
+	}
+	
+	/**
+	 * @return
+	 * 		the GameThread for this PlayingField.
+	 */
+	public GameThread getGameThread() {
+		return gameThread;
 	}
 	
 	/**
