@@ -698,6 +698,21 @@ public abstract class PlayingField {
 	}
 	
 	/**
+	 * @return
+	 * 		<code>true</code> if there is a player fish alive.
+	 * 		<code>false</code> otherwise.
+	 */
+	public boolean isPlayerAlive() {
+		for (PlayerFish pf : getPlayers()) {
+			if (!pf.isDead()) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
 	 * Special Runnable class for the GameThread.
 	 */
 	private class GameRunnable implements Runnable {
