@@ -2,7 +2,6 @@ package com.github.fishio.power_ups;
 
 import static org.junit.Assert.assertSame;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
