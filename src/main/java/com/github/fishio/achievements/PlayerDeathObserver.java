@@ -25,7 +25,7 @@ class PlayerDeathObserver implements Observer {
 	
 	@Override
 	public void update(State old, State now, Collection<String> properties) {
-		if (!properties.contains("death")) {
+		if (!properties.contains("PlayerDeath")) {
 			return;
 		}
 		

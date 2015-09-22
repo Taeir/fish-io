@@ -298,7 +298,7 @@ public class PlayerFish extends Entity implements IMovable, Subject {
 				State old = getState();
 				
 				fish.setDead();
-				notifyObservers(old, getState());
+				notifyObservers(old, getState(), "EnemyDeath");
 				this.addPoints((int) (osize / 200));
 				double dSize = GROWTH_SPEED * osize / tsize;
 				getBoundingArea().increaseSize(dSize);
@@ -401,7 +401,7 @@ public class PlayerFish extends Entity implements IMovable, Subject {
 	@Override
 	public State getState() {
 		State state = new State();
-		state.add("dead", isDead()).add("score", score.get()).add("lives", getLives());
+		state.add("EnemyDeath", isDead()).add("score", score.get()).add("lives", getLives());
 		return state;
 	}
 

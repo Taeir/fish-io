@@ -64,7 +64,7 @@ public class SinglePlayerPlayingField extends PlayingField implements Subject {
 							
 					// Notify the achievement system that the player died.
 					State state = getState();
-					notifyObservers(state, state, "playerDead");
+					notifyObservers(state, state, "playerDeath");
 					
 				}
 			}
@@ -139,7 +139,7 @@ public class SinglePlayerPlayingField extends PlayingField implements Subject {
 	@Override
 	public State getState() {
 		State state = new State();
-		state.add("playerDead", player.isDead());
+		state.add("playerDeath", player.isDead());
 		return state;
 	}
 }
