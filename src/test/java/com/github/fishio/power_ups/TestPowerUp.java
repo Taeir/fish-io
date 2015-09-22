@@ -13,28 +13,20 @@ import com.github.fishio.PlayingField;
  * Test class for the PowerUp class.
  */
 public abstract class TestPowerUp {
-
-	private PowerUp pu;
+	
+	private PowerUp pu = getPowerUp();
 	
 	/**
-	 * Sets the pu field of this class.
+	 * @return
+	 * 		The PowerUp object used for testing.
 	 */
-	@Before
-	public abstract void setUp();
+	public abstract PowerUp getPowerUp();
 	
 	/**
 	 * @return
 	 * 		The PlayingField used to initialise the PowerUp.
 	 */
 	public abstract PlayingField getPlayingField();
-	
-	/**
-	 * @return
-	 * 		The PowerUp that is used to test.
-	 */
-	protected PowerUp getPowerUp() {
-		return pu;
-	}
 	
 	/**
 	 * Tests the getPField method.
