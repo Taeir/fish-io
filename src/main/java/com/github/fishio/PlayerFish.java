@@ -1,5 +1,7 @@
 package com.github.fishio;
 
+import com.github.fishio.power_ups.PowerUp;
+
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -300,10 +302,13 @@ public class PlayerFish extends Entity implements IMovable {
 				if (isInvincible()) {
 					return;
 				}
-				
 				//Remove a life.
 				this.removeLife();
 			}
+		}
+		
+		if (other instanceof PowerUp) {
+			((PowerUp) other).setDead();
 		}
 	}
 
