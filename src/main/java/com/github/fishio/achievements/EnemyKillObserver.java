@@ -1,5 +1,7 @@
 package com.github.fishio.achievements;
 
+import java.util.Collection;
+
 /**
  * This class is an Observer. It attaches to the PlayerFish class and gets an
  * update when an enemy fish dies due to the player fish (kill).
@@ -22,7 +24,11 @@ class EnemyKillObserver implements Observer {
 	}
 	
 	@Override
-	public void update() {
+	public void update(State old, State now, Collection<String> properties) {
+		if (!properties.contains("death")) {
+			return;
+		}
+		
 		enemydeathcounter++;
 	}
 	

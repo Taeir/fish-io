@@ -1,8 +1,10 @@
 package com.github.fishio;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.github.fishio.achievements.Observer;
+import com.github.fishio.achievements.State;
 import com.github.fishio.achievements.Subject;
 
 import javafx.beans.property.SimpleIntegerProperty;
@@ -266,7 +268,8 @@ public class PlayerFish extends Entity implements IMovable, Subject {
 	}
 
 	@Override
-	public void hitWall() { }
+	public void hitWall() {
+	}
 	
 	@Override
 	public void setDead() {
@@ -292,14 +295,18 @@ public class PlayerFish extends Entity implements IMovable, Subject {
 			double osize = fish.getBoundingArea().getSize();
 
 			if (tsize > osize * FISH_EAT_THRESHOLD) {
+				State old = getState();
+				
 				fish.setDead();
-				notifyObservers();
+				notifyObservers(old, getState());
 				this.addPoints((int) (osize / 200));
 				double dSize = GROWTH_SPEED * osize / tsize;
 				getBoundingArea().increaseSize(dSize);
 			} else if (osize > tsize * FISH_EAT_THRESHOLD) {
 				//Remove a life.
+				State old = getState();
 				this.removeLife();
+				notifyObservers(old, getState(), "lives");
 			}
 		}
 	}
@@ -384,26 +391,18 @@ public class PlayerFish extends Entity implements IMovable, Subject {
 	 */
 	public SimpleIntegerProperty livesProperty() {
 		return lives;
-		
 	}
 	
 	@Override
-	public void attach(Observer observer) {
-		observers.add(observer);
-		
+	public List<Observer> getObservers() {
+		return observers;
 	}
 	
 	@Override
-	public void detach(Observer observer) {
-		observers.remove(observer);
-		
-	}
-	
-	@Override
-	public void notifyObservers() {
-		for (Observer ob : observers) {
-			ob.update();
-		}
+	public State getState() {
+		State state = new State();
+		state.add("dead", isDead()).add("score", score.get()).add("lives", getLives());
+		return state;
 	}
 
 }

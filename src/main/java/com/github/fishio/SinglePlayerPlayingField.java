@@ -1,8 +1,10 @@
 package com.github.fishio;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.github.fishio.achievements.Observer;
+import com.github.fishio.achievements.State;
 import com.github.fishio.achievements.Subject;
 import com.github.fishio.control.SinglePlayerController;
 import com.github.fishio.listeners.TickListener;
@@ -61,7 +63,8 @@ public class SinglePlayerPlayingField extends PlayingField implements Subject {
 					SinglePlayerPlayingField.this.screenController.showDeathScreen(true, event -> stopRendering());
 							
 					// Notify the achievement system that the player died.
-					notifyObservers();
+					State state = getState();
+					notifyObservers(state, state, "playerDead");
 					
 				}
 			}
@@ -129,22 +132,14 @@ public class SinglePlayerPlayingField extends PlayingField implements Subject {
 	}
 	
 	@Override
-	public void attach(Observer observer) {
-		observers.add(observer);
-		
+	public List<Observer> getObservers() {
+		return observers;
 	}
 	
 	@Override
-	public void detach(Observer observer) {
-		observers.remove(observer);
-		
-	}
-	
-	@Override
-	public void notifyObservers() {
-		for (Observer ob : observers) {
-			ob.update();
-		}
-		
+	public State getState() {
+		State state = new State();
+		state.add("playerDead", player.isDead());
+		return state;
 	}
 }
