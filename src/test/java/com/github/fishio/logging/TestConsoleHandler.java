@@ -71,7 +71,7 @@ public class TestConsoleHandler extends TestIHandler {
 	 */
 	@Test
 	public void testEqualsItself() {
-		assertTrue(handler.equals(handler));
+		assertEquals(handler, handler);
 	}
 	
 	/**
@@ -107,7 +107,7 @@ public class TestConsoleHandler extends TestIHandler {
 	public void testEqualsNullFormatter2() {
 		ConsoleHandler ch2 = new ConsoleHandler(null);
 		handler.setFormat(null);
-		assertTrue(handler.equals(ch2));
+		assertEquals(handler, ch2);
 	}
 	
 	
@@ -127,7 +127,7 @@ public class TestConsoleHandler extends TestIHandler {
 	@Test
 	public void testEqualsEqual() {
 		ConsoleHandler ch2 = new ConsoleHandler();
-		assertTrue(handler.equals(ch2));
+		assertEquals(handler, ch2);
 	}
 
 	@Override
