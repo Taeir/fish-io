@@ -8,6 +8,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 
+import com.github.fishio.game.GameState;
+import com.github.fishio.game.GameThread;
 import com.github.fishio.gui.Renderer;
 import com.github.fishio.listeners.TickListener;
 import com.github.fishio.logging.Log;
@@ -21,7 +23,7 @@ public abstract class PlayingField {
 	public static final int WINDOW_Y = 670;
 	public static final double GAME_TPS = 60;
 
-	private GameRunnable gameRunnable;
+	private GameThread gameThread;
 	private Renderer renderer;
 
 	private ConcurrentLinkedQueue<TickListener> gameListeners = new ConcurrentLinkedQueue<>();
@@ -58,8 +60,8 @@ public abstract class PlayingField {
 		//count enemies
 		enemyCount = 0;
 
-		gameRunnable = new GameRunnable(true);
-		log.log(LogLevel.INFO, "Created GameThread().");
+		gameThread = new GameThread(this);
+		log.log(LogLevel.INFO, "Created GameThread");
 		
 		renderer = new Renderer(this, canvas, fps);
 		log.log(LogLevel.INFO, "Created Renderer");
@@ -101,13 +103,6 @@ public abstract class PlayingField {
 	 */
 	public int getHeigth() {
 		return WINDOW_Y;
-	}
-
-	/**
-	 * Creates a new gamerunnable.
-	 */
-	protected final void createGameRunnable() {
-		gameRunnable = new GameRunnable();
 	}
 
 	/**
@@ -337,24 +332,20 @@ public abstract class PlayingField {
 	 * Otherwise, this method will have no effect.
 	 */
 	public void startGameThread() {
-		//If already running
-		if (isRunning()) {
-			//If we have not called stop yet, we can simply return.
-			if (!isStopping()) {
-				return;
-			} else {
-				//We have to stop the old game thread.
-				try {
-					gameRunnable.stopAndWait();
-				} catch (InterruptedException ex) {
-					log.log(LogLevel.ERROR,
-							"Error while starting game thread: interrupted while waiting for gameRunnable to stop.");
-				}
+		if (gameThread.getState() == GameState.STOPPING) {
+			try {
+				gameThread.stopAndWait();
+			} catch (InterruptedException ex) {
+				log.log(LogLevel.ERROR,
+						"Error while stopping game thread: interrupted while waiting for game thread to stop.");
 			}
 		}
 		
-		createGameRunnable();
-		new Thread(gameRunnable).start();
+		//Reset the gameThread, so it can be restarted again.
+		gameThread.reset();
+		
+		//Start the game thread.
+		gameThread.start();
 	}
 	
 	/**
@@ -366,7 +357,7 @@ public abstract class PlayingField {
 	 * @see #stopGameThreadAndWait()
 	 */
 	public void stopGameThread() {
-		gameRunnable.stop();
+		gameThread.stop();
 	}
 	
 	/**
@@ -382,7 +373,7 @@ public abstract class PlayingField {
 	 * @see #stopGameThread()
 	 */
 	public void stopGameThreadAndWait() throws InterruptedException {
-		gameRunnable.stopAndWait();
+		gameThread.stopAndWait();
 	}
 	
 	/**
@@ -390,16 +381,7 @@ public abstract class PlayingField {
 	 * 		if the game thread is running or not (stopped / paused)
 	 */
 	public boolean isRunning() {
-		return !gameRunnable.isStopped();
-	}
-	
-	/**
-	 * @return
-	 * 		<code>true</code> if the game is stopping,
-	 * 		<code>false</code> otherwise.
-	 */
-	public boolean isStopping() {
-		return gameRunnable.isStopping();
+		return gameThread.isRunning();
 	}
 
 	/**
@@ -565,7 +547,7 @@ public abstract class PlayingField {
 	 * 		the TickListener to register.
 	 */
 	public void registerGameListener(TickListener tl) {
-		gameListeners.add(tl);
+		gameThread.registerListener(tl);
 	}
 
 	/**
@@ -575,7 +557,7 @@ public abstract class PlayingField {
 	 * 		the TickListener to unregister.
 	 */
 	public void unregisterGameListener(TickListener tl) {
-		gameListeners.remove(tl);
+		gameThread.unregisterListener(tl);
 	}
 
 	/**
@@ -636,118 +618,5 @@ public abstract class PlayingField {
 		}
 		
 		return false;
-	}
-	
-	/**
-	 * Special Runnable class for the GameThread.
-	 */
-	private class GameRunnable implements Runnable {
-		private volatile boolean stop;
-		private volatile boolean done;
-		
-		public GameRunnable() { }
-		
-		public GameRunnable(boolean fake) {
-			this.done = fake;
-			this.stop = fake;
-		}
-
-		/**
-		 * Set the stop status of this GameRunnable to true.
-		 */
-		public void stop() {
-			this.stop = true;
-		}
-		
-		/**
-		 * @return
-		 * 		true if this game runnable is stopping.
-		 */
-		public boolean isStopping() {
-			return this.stop;
-		}
-		
-		/**
-		 * @return
-		 * 		true if this game runnable has stopped.
-		 */
-		public boolean isStopped() {
-			return this.done;
-		}
-		
-		/**
-		 * Sets the stop status of this GameRunnable to true, and waits
-		 * until it has actually stopped.
-		 * 
-		 * @throws InterruptedException
-		 * 		if we are interrupted while waiting.
-		 */
-		public void stopAndWait() throws InterruptedException {
-			//We have already stopped.
-			if (isStopped()) {
-				return;
-			}
-			
-			//Mark that we want to stop
-			stop();
-			
-			//Wait until we have stopped.
-			while (!isStopped()) {
-				Thread.sleep(25L);
-			}
-		}
-		
-		@Override
-		public void run() {
-			//If we have already ran before, we throw an exception.
-			if (isStopped()) {
-				throw new IllegalStateException("This GameRunnable has already been stopped!");
-			}
-			
-			try {
-				long start, end;
-				double waitTime = 1000.0 / GAME_TPS;
-				
-				while (!stop) {
-					start = System.currentTimeMillis();
-	
-					//Call listeners pretick
-					preListeners(false);
-	
-					//Move all movables
-					moveMovables();
-	
-					//Add new entities
-					addEntities();
-	
-					//Check for stop again halfway.
-					if (stop) {
-						break;
-					}
-					
-					//Check for collisions
-					checkPlayerCollisions();
-	
-					//Cleanup dead entities.
-					cleanupDead();
-	
-					//Call listeners posttick
-					postListeners(false);
-					
-					end = System.currentTimeMillis();
-					
-					//Sleep if we have time to spare.
-					long dur = end - start;
-					if (dur < waitTime) {
-						try {
-							Thread.sleep(Math.round(waitTime - dur));
-						} catch (InterruptedException ex) { }
-					}
-				}
-			} finally {
-				//Reset stopping
-				done = true;
-			}
-		}
 	}
 }

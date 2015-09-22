@@ -210,7 +210,7 @@ public class GameThread implements Runnable, Listenable {
 				start = System.currentTimeMillis();
 
 				//Call listeners pretick
-				playingField.preListeners(false);
+				callPreTick("GameThread");
 
 				//Move all movables
 				playingField.moveMovables();
@@ -230,7 +230,7 @@ public class GameThread implements Runnable, Listenable {
 				playingField.cleanupDead();
 
 				//Call listeners posttick
-				playingField.postListeners(false);
+				callPostTick("GameThread");
 				
 				end = System.currentTimeMillis();
 				
