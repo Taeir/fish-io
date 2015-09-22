@@ -47,6 +47,8 @@ public class PlayerFish extends Entity implements IMovable {
 	public static final int MAX_LIVES = 5;
 	
 	private SimpleIntegerProperty lives = new SimpleIntegerProperty(START_LIVES);
+	
+	private long invincible;
 
 	/**
 	 * Creates the Player fish which the user will be able to control.
@@ -263,6 +265,11 @@ public class PlayerFish extends Entity implements IMovable {
 	
 	@Override
 	public void setDead() {
+		//If invincible, ignore death.
+		if (isInvincible()) {
+			return;
+		}
+		
 		super.setDead();
 		
 		lives.set(0);
@@ -290,6 +297,10 @@ public class PlayerFish extends Entity implements IMovable {
 				double dSize = GROWTH_SPEED * osize / tsize;
 				getBoundingArea().increaseSize(dSize);
 			} else if (osize > tsize * FISH_EAT_THRESHOLD) {
+				if (isInvincible()) {
+					return;
+				}
+				
 				//Remove a life.
 				this.removeLife();
 			}
@@ -375,6 +386,43 @@ public class PlayerFish extends Entity implements IMovable {
 	 */
 	public SimpleIntegerProperty livesProperty() {
 		return lives;
+	}
+	
+	/**
+	 * Make this PlayerFish invincible until endTime.
+	 * 
+	 * @param endTime
+	 * 		the time in milliseconds when this PlayerFish should stop 
+	 * 		being invincible. If <code>-1</code>, the invincibility
+	 * 		lasts forever.
+	 */
+	public void setInvincible(long endTime) {
+		if (endTime == -1) {
+			invincible = Long.MAX_VALUE;
+		} else {
+			invincible = endTime;
+		}
+	}
+	
+	/**
+	 * @return
+	 * 		the time in milliseconds when this PlayerFish should stop
+	 * 		being invincible.
+	 */
+	public long getInvincible() {
+		if (!isInvincible()) {
+			invincible = 0L;
+		}
+		
+		return invincible;
+	}
+	
+	/**
+	 * @return
+	 * 		if this PlayerFish is currently invincible.
+	 */
+	public boolean isInvincible() {
+		return invincible != 0L && invincible > System.currentTimeMillis();
 	}
 
 }
