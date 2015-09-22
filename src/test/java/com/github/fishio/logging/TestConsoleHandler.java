@@ -131,7 +131,7 @@ public class TestConsoleHandler extends TestIHandler {
 	}
 
 	@Override
-	IHandler getIHandler() {
+	public IHandler getIHandler() {
 		return new ConsoleHandler();
 	}
 }

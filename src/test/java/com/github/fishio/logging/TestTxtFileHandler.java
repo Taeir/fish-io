@@ -6,9 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 import org.mockito.Mockito;
 
 import static org.junit.Assert.assertTrue;
@@ -26,19 +24,16 @@ public class TestTxtFileHandler extends TestIHandler {
 	
 	//TODO add factory methods for get and set methods
 	
-	/**
-	 * Create temporary folder for testing.
-	 */
-	@Rule
-	public TemporaryFolder folder = new TemporaryFolder();
+	
 	
 	/**
 	 * Set up handler and a buffered writer.
+	 * @throws Exception 
+	 * 		if an error occurs when creating the file.
 	 */
 	@Before
-	public void setUp() {
-		handler = new TxtFileHandler(
-				new File(folder.getRoot(), "test.txt"));
+	public void setUp() throws Exception {
+		handler = new TxtFileHandler(folder.newFile("test.txt"));
 	}	
 	
 	/**
@@ -230,14 +225,7 @@ public class TestTxtFileHandler extends TestIHandler {
 	}
 
 	@Override
-	IHandler getIHandler() {
-		TemporaryFolder tempFolder = new TemporaryFolder();
-		try {
-			tempFolder.create();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return new TxtFileHandler(new File(tempFolder.getRoot(), "test.txt"));
+	public IHandler getIHandler() {
+		return new TxtFileHandler(new File(folder.getRoot(), "test.txt"));
 	}
 }
