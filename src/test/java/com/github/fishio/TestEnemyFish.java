@@ -171,4 +171,21 @@ public class TestEnemyFish {
 		enemy1.setFrozen(false);
 		assertEquals(new Vec2d(1, 1), enemy1.getSpeedVector());
 	}
+	
+	/**
+	 * Tests the selfControlling feature of the EnemyFish.
+	 */
+	@Test
+	public void testSelfControllingOff() {
+		assertTrue(enemy1.isSelfControlling());
+		
+		enemy1.setSelfControlling(false);
+		
+		assertFalse(enemy1.isSelfControlling());
+		
+		enemy1.setSpeedVector(new Vec2d(1, 1));
+		enemy1.preMove(); //Because selfControlling is false, this should now have no effect.
+		assertEquals(new Vec2d(1, 1), enemy1.getSpeedVector());
+		
+	}
 }

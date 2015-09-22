@@ -83,7 +83,7 @@ public class EnemyFish extends Entity implements IMovable {
 	@Override
 	public void preMove() {
 		
-		if (frozen || selfControlling) {
+		if (frozen || !selfControlling) {
 			return;
 		}
 		
