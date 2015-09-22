@@ -8,6 +8,9 @@ import java.util.List;
  *
  */
 public interface Subject {
+	/**
+	 * @return the observers subscribed to this subject.
+	 */
 	List<Observer> getObservers();
 	
 	/**
@@ -33,6 +36,13 @@ public interface Subject {
 	/**
 	 * Gives all the attached Observers a notification when something changes.
 	 * 
+	 * @param oldState
+	 *            The state of the subject before it changed.
+	 * @param newState
+	 *            The state of the subject just after it changed.
+	 * @param changed
+	 *            The interest field that changed. Will be used by the observers
+	 *            to only work with interest field they use.
 	 */
 	default void notifyObservers(State oldState, State newState, String... changed) {
 		List<String> changedList = Arrays.asList(changed);
