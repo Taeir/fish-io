@@ -271,6 +271,12 @@ public class PlayerFish extends Entity implements IMovable, Subject {
 
 	@Override
 	public void hitWall() {
+		State old = getState();
+		old.add("HitWall", false);
+		
+		State newState = getState();
+		newState.add("HitWall", true);
+		notifyObservers(old, newState, "HitWall");
 	}
 	
 	@Override
