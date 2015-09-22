@@ -31,14 +31,22 @@ public interface Listenable {
 	
 	/**
 	 * Call the preTick method of all registered listeners.
+	 * 
+	 * @param logPrefix
+	 * 		the prefix to use for logging error messages.
 	 */
-	default void callPreTick() {
+	default void callPreTick(String logPrefix) {
 		for (TickListener tl : getListeners()) {
 			try {
 				tl.preTick();
 			} catch (Exception ex) {
+				if (logPrefix != null) {
+					Log.getLogger().log(LogLevel.ERROR, "[" + logPrefix + "] Error in preTick:\t" + ex.getMessage());
+				} else {
+					Log.getLogger().log(LogLevel.ERROR, "Error in preTick:\t" + ex.getMessage());
+				}
+				
 				//TODO Handle exception differently
-				Log.getLogger().log(LogLevel.ERROR, "Error in preTick:\t" + ex.getMessage());
 				ex.printStackTrace();
 			}
 		}
@@ -46,14 +54,22 @@ public interface Listenable {
 	
 	/**
 	 * Call the postTick method of all registered listeners.
+	 * 
+	 * @param logPrefix
+	 * 		the prefix to use for logging error messages.
 	 */
-	default void callPostTick() {
+	default void callPostTick(String logPrefix) {
 		for (TickListener tl : getListeners()) {
 			try {
 				tl.preTick();
 			} catch (Exception ex) {
+				if (logPrefix != null) {
+					Log.getLogger().log(LogLevel.ERROR, "[" + logPrefix + "] Error in preTick:\t" + ex.getMessage());
+				} else {
+					Log.getLogger().log(LogLevel.ERROR, "Error in preTick:\t" + ex.getMessage());
+				}
+				
 				//TODO Handle exception differently
-				Log.getLogger().log(LogLevel.ERROR, "Error in preTick:\t" + ex.getMessage());
 				ex.printStackTrace();
 			}
 		}
