@@ -1,5 +1,6 @@
 package com.github.fishio.power_ups;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -17,8 +18,6 @@ import static org.junit.Assert.assertFalse;
  */
 public abstract class TestDurationPowerUp extends TestPowerUp {
 
-	private DurationPowerUp pu = getDurationPowerUp();
-	
 	/**
 	 * @return
 	 * 		The DurationPowerUp used for testing.
@@ -26,7 +25,14 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	public abstract DurationPowerUp getDurationPowerUp();
 	
 	@Override
+	public PowerUp getPowerUp() {
+		return getDurationPowerUp();
+	}
+	
+	@Override
 	public void testExecuteEffect() {
+		DurationPowerUp pu = getDurationPowerUp();
+		
 		assertFalse(pu.isActive());
 		
 		PlayerFish pf = Mockito.mock(PlayerFish.class);
@@ -34,15 +40,6 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 		
 		assertTrue(pu.isActive());
 		Mockito.verify(pu).startEffect(pf);
-	}
-
-	/**
-	 * Tests the PowerUp to make sure it's registered.
-	 */
-	@Test
-	public void testRegistered() {
-		PlayingField pf = getPlayingField();
-		Mockito.verify(pf).registerGameListener(pu);
 	}
 	
 	/**
@@ -80,6 +77,8 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 */
 	@Test
 	public void testPreTickNotActive() {
+		DurationPowerUp pu = getDurationPowerUp();
+		
 		pu.preTick();
 		
 		assertEquals(0, pu.getTickCounter());
@@ -87,11 +86,30 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	}
 	
 	/**
-	 * Tests the preTick method on the very first tick while the
-	 * counter .
+	 * Tests the preTick method on the second tick while the PowerUp
+	 * is active.
+	 */
+	@Test
+	public void testPreTickActiveOnPoint() {
+		DurationPowerUp pu = getDurationPowerUp();
+		
+		pu.setActive(true);
+		pu.setTickCounter(1);
+		
+		pu.preTick();
+		
+		assertEquals(1, pu.getTickCounter());
+		Mockito.verify(pu).preTickEffect();
+	}
+	
+	/**
+	 * Tests the preTick method on the very first tick while the PowerUp
+	 * is active.
 	 */
 	@Test
 	public void testPreTickActiveOffPoint() {
+		DurationPowerUp pu = getDurationPowerUp();
+		
 		pu.setActive(true);
 		
 		pu.preTick();
@@ -105,6 +123,8 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 */
 	@Test
 	public void testPostTickNotActive() {
+		DurationPowerUp pu = getDurationPowerUp();
+		
 		pu.postTick();
 		
 		assertEquals(0, pu.getTickCounter());
@@ -119,6 +139,8 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 */
 	@Test
 	public void testPostTickActiveOnPoint() {
+		DurationPowerUp pu = getDurationPowerUp();
+		
 		pu.setActive(true);
 		pu.setTickCounter(pu.getTimeTicks() - 1); // The on-point
 		
@@ -140,6 +162,8 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 */
 	@Test
 	public void testPostTickActiveOffPoint() {
+		DurationPowerUp pu = getDurationPowerUp();
+		
 		pu.setActive(true);
 		pu.setTickCounter(pu.getTimeTicks() - 2); // The off-point
 		

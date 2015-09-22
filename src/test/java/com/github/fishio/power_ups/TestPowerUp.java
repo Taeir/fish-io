@@ -13,8 +13,6 @@ import com.github.fishio.PlayingField;
  */
 public abstract class TestPowerUp {
 	
-	private PowerUp pu = getPowerUp();
-	
 	/**
 	 * @return
 	 * 		The PowerUp object used for testing.
@@ -32,6 +30,8 @@ public abstract class TestPowerUp {
 	 */
 	@Test
 	public void testGetPField() {
+		PowerUp pu = getPowerUp();
+		
 		assertSame(getPlayingField(), pu.getPField());
 	}
 	
@@ -46,6 +46,8 @@ public abstract class TestPowerUp {
 	 */
 	@Test
 	public void testOnCollide() {
+		PowerUp pu = getPowerUp();
+		
 		PlayerFish pf = Mockito.mock(PlayerFish.class);
 		
 		pu.onCollide(pf);
