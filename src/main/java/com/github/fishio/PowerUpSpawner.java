@@ -69,7 +69,7 @@ public class PowerUpSpawner implements TickListener {
 			
 			int powerUpCount = 1;
 			switch (rand.nextInt(powerUpCount)) {
-			case 1:
+			case 0:
 				pf.add(new PuFreeze(bb, pf));
 				break;
 			default:

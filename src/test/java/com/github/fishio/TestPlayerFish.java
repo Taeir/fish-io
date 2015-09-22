@@ -10,6 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.github.fishio.power_ups.PowerUp;
+
 import javafx.stage.Stage;
 
 /**
@@ -181,6 +183,20 @@ public class TestPlayerFish {
 		pf.onCollide(ef);
 		
 		Mockito.verify(pf, never()).removeLife();
+		Mockito.verify(pf, never()).setDead();
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#onCollide(ICollidable)}
+	 * using a powerUp.
+	 */
+	@Test
+	public void testCollideWithPowerUp() {
+		PowerUp pu = Mockito.mock(PowerUp.class);
+		
+		pf.onCollide(pu);
+		
+		Mockito.verify(pu).setDead();
 		Mockito.verify(pf, never()).setDead();
 	}
 	
