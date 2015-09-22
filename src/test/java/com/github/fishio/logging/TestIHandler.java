@@ -32,7 +32,6 @@ public abstract class TestIHandler {
 	public void testGetSetFormatter() {
 		IHandler handler = getIHandler();
 		DefaultFormat df = new DefaultFormat();
-		System.out.println(handler);
 		handler.setFormat(df);
 		assertSame(df, handler.getFormat());
 	}
