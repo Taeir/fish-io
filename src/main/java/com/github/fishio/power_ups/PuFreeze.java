@@ -34,6 +34,9 @@ public class PuFreeze extends DurationPowerUp {
 		return DURATION;
 	}
 
+	/**
+	 * Freezes all EnemyFishes on the field.
+	 */
 	@Override
 	public void startEffect(PlayerFish pf) {
 		for (Entity e : getPField().getEntities()) {
