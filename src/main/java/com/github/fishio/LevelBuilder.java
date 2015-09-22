@@ -87,9 +87,7 @@ public final class LevelBuilder {
 		}
 
 		EnemyFish eFish = new EnemyFish(new CollisionMask(position, width, height, data, relSize), sprite , vx, vy);
-		log.log(LogLevel.TRACE, "Created Enemfish: Properties{[position = " + position.toString() 
-				+ "],[height = " + height + "],[width = " + width + "],[Vx = " + vx + "],[Vy = " + vy 
-				+ "]}.");
+		
 		//TODO Check for decent properties
 		//eFish.checkProperties()
 		return eFish;

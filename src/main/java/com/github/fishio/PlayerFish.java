@@ -11,7 +11,7 @@ import javafx.stage.Stage;
  * Represents a fish that the user can control using
  * the keyboard.
  */
-public class PlayerFish extends Entity implements IMovable {
+public class PlayerFish extends Fish {
 
 	private double vx;
 	private double vy;
@@ -285,8 +285,8 @@ public class PlayerFish extends Entity implements IMovable {
 
 	@Override
 	public void onCollide(ICollidable other) {
-		if (other instanceof EnemyFish) {
-			EnemyFish fish = (EnemyFish) other;
+		if (other instanceof Fish) {
+			Fish fish = (Fish) other;
 			if (fish.isDead()) {
 				return;
 			}
@@ -295,7 +295,7 @@ public class PlayerFish extends Entity implements IMovable {
 			double osize = fish.getBoundingArea().getSize();
 
 			if (tsize > osize * FISH_EAT_THRESHOLD) {
-				fish.kill();
+				eat(fish);
 				this.addPoints((int) (osize / 200));
 				double dSize = GROWTH_SPEED * osize / tsize;
 				getBoundingArea().increaseSize(dSize);
@@ -303,9 +303,7 @@ public class PlayerFish extends Entity implements IMovable {
 				if (isInvincible()) {
 					return;
 				}
-				
-				//Remove a life.
-				this.kill();
+				fish.eat(this);
 			}
 		}
 	}

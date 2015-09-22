@@ -1,5 +1,8 @@
 package com.github.fishio;
 
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -9,6 +12,7 @@ import javafx.scene.paint.Color;
 public abstract class Entity implements ICollidable, IPositional, IDrawable {
 	private boolean dead;
 	private ICollisionArea ba;
+	protected Log logger = Log.getLogger();
 	
 	/**
 	 * This constructor creates an entity in the game.
@@ -36,6 +40,7 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable {
 	 * Marks this Entity as dead.
 	 */
 	public void kill() {
+		logger.log(LogLevel.TRACE, this.getClass().getSimpleName() + " got killed");
 		dead = true;
 	}
 	

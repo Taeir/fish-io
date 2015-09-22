@@ -1,5 +1,8 @@
 package com.github.fishio;
 
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -7,10 +10,12 @@ import javafx.scene.image.Image;
  * EnemyFish class. This class contains all methods concerning non-player or
  * enemy fish on the screen.
  */
-public class EnemyFish extends Entity implements IMovable {
+public class EnemyFish extends Fish {
 
 	private static final double DIRECTION_CHANGE_CHANCE = 0.1;
 
+	private Log logger = Log.getLogger();
+	
 	private double vx;
 	private double vy;
 	private Image sprite;
@@ -32,6 +37,9 @@ public class EnemyFish extends Entity implements IMovable {
 		this.sprite = sprite;
 		vx = startvx;
 		vy = startvy;
+		logger.log(LogLevel.TRACE, "Created Enemfish: Properties{[position = " + ca.getCenterX() 
+				+ ", " + ca.getCenterY() + "],[height = " + ca.getHeight() + "],[width = "
+				+ ca.getWidth() + "],[Vx = " + vx + "],[Vy = " + vy + "]}.");
 	}
 
 	@Override
@@ -64,6 +72,7 @@ public class EnemyFish extends Entity implements IMovable {
 	 */
 	@Override
 	public void hitWall() {
+		logger.log(LogLevel.TRACE, "EnemyFish collided with wall.");
 		kill();
 	}
 
