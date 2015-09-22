@@ -5,18 +5,13 @@ import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import javafx.scene.canvas.Canvas;
+import javafx.scene.image.Image;
+
+import com.github.fishio.gui.Renderer;
 import com.github.fishio.listeners.TickListener;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
-
-import javafx.animation.Animation.Status;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.util.Duration;
 
 /**
  * Represents the PlayingField.
@@ -27,20 +22,17 @@ public abstract class PlayingField {
 	public static final double GAME_TPS = 60;
 
 	private GameRunnable gameRunnable;
-	private Timeline renderThread;
-	private int fps;
-
-	private Canvas canvas;
+	private Renderer renderer;
 
 	private ConcurrentLinkedQueue<TickListener> gameListeners = new ConcurrentLinkedQueue<>();
 	private ConcurrentLinkedQueue<TickListener> renderListeners = new ConcurrentLinkedQueue<>();
 	private ConcurrentLinkedDeque<IDrawable> drawables = new ConcurrentLinkedDeque<>();
+	private ConcurrentLinkedDeque<IDrawable> deadDrawables = new ConcurrentLinkedDeque<>();
 	private ConcurrentLinkedQueue<IMovable> movables = new ConcurrentLinkedQueue<>();
 	private ConcurrentLinkedQueue<Entity> entities = new ConcurrentLinkedQueue<>();
 	private ConcurrentLinkedQueue<ICollidable> collidables = new ConcurrentLinkedQueue<>();
 	private Log log = Log.getLogger();
 
-	private Image background;
 	private int enemyCount;
 	private static final int MAX_ENEMY_COUNT = 10;
 
@@ -63,23 +55,14 @@ public abstract class PlayingField {
 	 *            the canvas to use, can be <code>null</code> to create one.
 	 */
 	public PlayingField(int fps, Canvas canvas) {
-		this.fps = fps;
-		log.log(LogLevel.INFO, "Set Playing field fps to: " + fps + ".");
-		
-		if (canvas == null) {
-			this.canvas = new Canvas(WINDOW_X, WINDOW_Y);
-		} else {
-			this.canvas = canvas;
-		}
-
 		//count enemies
 		enemyCount = 0;
 
 		gameRunnable = new GameRunnable(true);
 		log.log(LogLevel.INFO, "Created GameThread().");
 		
-		createRenderThread();
-		log.log(LogLevel.INFO, "Created RenderThread().");
+		renderer = new Renderer(this, canvas, fps);
+		log.log(LogLevel.INFO, "Created Renderer");
 	}
 
 	/**
@@ -88,7 +71,7 @@ public abstract class PlayingField {
 	 * @return the (target) framerate in frames per second.
 	 */
 	public int getFPS() {
-		return fps;
+		return renderer.getFps();
 	}
 
 	/**
@@ -99,17 +82,7 @@ public abstract class PlayingField {
 	 * 		the new framerate
 	 */
 	public void setFPS(int fps) {
-		this.fps = fps;
-
-		Timeline oldRenderThread = renderThread;
-		createRenderThread();
-
-		//If render thread was running, start the new one and stop the old one.
-		if (oldRenderThread.getStatus() == Status.RUNNING) {
-			log.log(LogLevel.INFO, "Stopped old RenderThread, started new One.");
-			renderThread.play();
-			oldRenderThread.stop();
-		}
+		renderer.setFps(fps);
 	}
 
 	/**
@@ -131,52 +104,10 @@ public abstract class PlayingField {
 	}
 
 	/**
-	 * Creates the rendering thread.
-	 */
-	protected final void createRenderThread() {
-		Duration dur = Duration.millis(1000.0 / getFPS());
-
-		KeyFrame frame = new KeyFrame(dur, event -> {
-			//Call listeners pretick
-			preListeners(true);
-
-			//Re-render items
-			redraw();
-
-			//Call listeners posttick
-			postListeners(true);
-		}, new KeyValue[0]);
-
-		Timeline tl = new Timeline(frame);
-		tl.setCycleCount(-1);
-
-		renderThread = tl;
-	}
-
-	/**
 	 * Creates a new gamerunnable.
 	 */
 	protected final void createGameRunnable() {
 		gameRunnable = new GameRunnable();
-	}
-
-	/**
-	 * Called to redraw the screen.
-	 */
-	public void redraw() {
-		GraphicsContext gc = canvas.getGraphicsContext2D();
-
-		//Clear screen
-		gc.clearRect(0, 0, WINDOW_X, WINDOW_Y);
-
-		//draw background image
-		gc.drawImage(background, 0, 0);
-
-		//Render all drawables, in reverse order
-		Iterator<IDrawable> it = drawables.descendingIterator();
-		while (it.hasNext()) {
-			it.next().render(gc);
-		}
 	}
 
 	/**
@@ -378,9 +309,7 @@ public abstract class PlayingField {
 	 * The game itself will be unaffected by this call.
 	 */
 	public void startRendering() {
-		if (renderThread.getStatus() != Status.RUNNING) {
-			renderThread.play();
-		}
+		renderer.startRendering();
 	}
 	
 	/**
@@ -388,9 +317,7 @@ public abstract class PlayingField {
 	 * The game itself will be unaffected by this call.
 	 */
 	public void stopRendering() {
-		if (renderThread.getStatus() == Status.RUNNING) {
-			renderThread.stop();
-		}
+		renderer.stopRendering();
 	}
 	
 	/**
@@ -398,7 +325,7 @@ public abstract class PlayingField {
 	 * 		if the render thread is running or not.
 	 */
 	public boolean isRendering() {
-		return renderThread.getStatus() == Status.RUNNING;
+		return renderer.isRendering();
 	}
 	
 	/**
@@ -530,15 +457,6 @@ public abstract class PlayingField {
 	}
 
 	/**
-	 * Gives back the canvas of the Playing Field.
-	 * 
-	 * @return the canvas that is the PlayingField.
-	 */
-	public Canvas getCanvas() {
-		return canvas;
-	}
-
-	/**
 	 * Adds the given object to this Playing Field.
 	 * 
 	 * @param o
@@ -592,13 +510,11 @@ public abstract class PlayingField {
 	 * This removes all Entities and Drawables.
 	 */
 	public void clear() {
-		GraphicsContext gc = canvas.getGraphicsContext2D();
+		//Add all drawables to the drawDeaths.
+		deadDrawables.addAll(drawables);
+
 		for (Entity e : entities) {
 			e.setDead();
-		}
-
-		for (IDrawable d : drawables) {
-			d.drawDeath(gc);
 		}
 
 		entities.clear();
@@ -620,14 +536,13 @@ public abstract class PlayingField {
 			
 			e.setDead();
 		}
-		
-		GraphicsContext gc = canvas.getGraphicsContext2D();
+
 		for (IDrawable d : drawables) {
 			if (d instanceof PlayerFish) {
 				continue;
 			}
 			
-			d.drawDeath(gc);
+			deadDrawables.add(d);
 		}
 		
 		entities.clear();
@@ -670,7 +585,7 @@ public abstract class PlayingField {
 	 * 		the TickListener to register.
 	 */
 	public void registerRenderListener(TickListener tl) {
-		gameListeners.add(tl);
+		renderer.registerListener(tl);
 	}
 
 	/**
@@ -680,7 +595,23 @@ public abstract class PlayingField {
 	 * 		the TickListener to unregister.
 	 */
 	public void unregisterRenderListener(TickListener tl) {
-		gameListeners.remove(tl);
+		renderer.unregisterListener(tl);
+	}
+	
+	/**
+	 * @return
+	 * 		the drawables on this playing field.
+	 */
+	public ConcurrentLinkedDeque<IDrawable> getDrawables() {
+		return drawables;
+	}
+	
+	/**
+	 * @return
+	 * 		the drawables that died last game tick.
+	 */
+	public ConcurrentLinkedDeque<IDrawable> getDeadDrawables() {
+		return deadDrawables;
 	}
 
 	/**
@@ -689,12 +620,7 @@ public abstract class PlayingField {
 	 * 			The background image.
 	 */
 	public void setBackground(Image image) {
-		if (image.isError()) {
-			System.err.println("Error loading the new background!\nUsing old one instead");
-			return;
-		}
-
-		background = image;
+		renderer.setBackground(image);
 	}
 	
 	/**
