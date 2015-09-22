@@ -49,6 +49,9 @@ public class TestSinglePlayer extends GuiTest {
 		
 		//Start the game.
 		getSinglePlayerController().getPlayingField().startGameAndWait();
+		
+		//Reset pause
+		getSinglePlayerController().updatePauseButton();
 	}
 	
 	/**
