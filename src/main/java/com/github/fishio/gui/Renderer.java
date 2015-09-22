@@ -93,13 +93,13 @@ public class Renderer implements Listenable {
 
 		KeyFrame frame = new KeyFrame(dur, event -> {
 			//Call listeners pretick
-			callPreTick();
+			callPreTick("Renderer");
 
 			//Render all drawables
 			redraw();
 
 			//Call listeners posttick
-			callPostTick();
+			callPostTick("Renderer");
 		});
 
 		Timeline tl = new Timeline(frame);
