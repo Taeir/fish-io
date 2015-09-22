@@ -21,10 +21,7 @@ import static org.mockito.Mockito.when;
 public class TestTxtFileHandler extends TestIHandler {
 
 	private TxtFileHandler handler;
-	
-	//TODO add factory methods for get and set methods
-	
-	
+	private String filename = "test.txt";
 	
 	/**
 	 * Set up handler and a buffered writer.
@@ -33,7 +30,7 @@ public class TestTxtFileHandler extends TestIHandler {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		handler = new TxtFileHandler(folder.newFile("test.txt"));
+		handler = new TxtFileHandler(folder.newFile(filename));
 	}	
 	
 	/**
@@ -52,7 +49,7 @@ public class TestTxtFileHandler extends TestIHandler {
 	@Test
 	public void testTxtFileHandlerCustom() {
 		TxtFileHandler handler2 = new TxtFileHandler(new TimeStampFormat(),
-				new File(folder.getRoot(), "test.txt"));
+				new File(folder.getRoot(), filename));
 		assertTrue(handler2.getFormat() instanceof TimeStampFormat);
 		try {
 			handler2.close();
@@ -69,7 +66,7 @@ public class TestTxtFileHandler extends TestIHandler {
 		BufferedWriter bw2 = null;
 		try {
 			bw2 = new BufferedWriter(new FileWriter(
-					new File(folder.getRoot(), "test.txt")));
+					new File(folder.getRoot(), filename)));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -83,13 +80,13 @@ public class TestTxtFileHandler extends TestIHandler {
 	@Test
 	public void testOutput() {
 		IFormatter formatter = Mockito.mock(DefaultFormat.class);
-		when(formatter.formatOutput(LogLevel.ERROR, "Test")).thenReturn("Test Output");
+		when(formatter.formatOutput(LogLevel.ERROR, filename)).thenReturn("Test Output");
 		BufferedWriter mockedBW = Mockito.mock(BufferedWriter.class);
 		
 		handler.setFormat(formatter);
 		handler.setBufferedWriter(mockedBW);
 		handler.output(LogLevel.ERROR, "Test");
-		Mockito.verify(formatter).formatOutput(LogLevel.ERROR, "Test");
+		Mockito.verify(formatter).formatOutput(LogLevel.ERROR, filename);
 		try {
 			Mockito.verify(mockedBW).write("Test Output");
 		} catch (IOException e) {
@@ -131,7 +128,7 @@ public class TestTxtFileHandler extends TestIHandler {
 	 */
 	@Test
 	public void testEqualsItself() {
-		assertTrue(handler.equals(handler));
+		assertEquals(handler, handler);
 	}
 	
 	/**
@@ -157,7 +154,7 @@ public class TestTxtFileHandler extends TestIHandler {
 	@Test
 	public void testEqualsFormatNull() {
 		TxtFileHandler handler2 = new TxtFileHandler(new TimeStampFormat(),
-				new File(folder.getRoot(), "test.txt"));
+				new File(folder.getRoot(), filename));
 		
 		handler.setFormat(null);
 		assertFalse(handler.equals(handler2));
@@ -175,11 +172,11 @@ public class TestTxtFileHandler extends TestIHandler {
 	@Test
 	public void testEqualsFormatNullBoth() {
 		TxtFileHandler handler2 = new TxtFileHandler(new TimeStampFormat(),
-				new File(folder.getRoot(), "test.txt"));
+				new File(folder.getRoot(), filename));
 		
 		handler.setFormat(null);
 		handler2.setFormat(null);
-		assertTrue(handler.equals(handler2));
+		assertEquals(handler, handler2);
 		try {
 			handler2.close();
 		} catch (IOException e) {
@@ -211,12 +208,12 @@ public class TestTxtFileHandler extends TestIHandler {
 	@Test
 	public void testEqualsEqual() {
 		TxtFileHandler handler2 = new TxtFileHandler(new TimeStampFormat(),
-				new File(folder.getRoot(), "test.txt"));
+				new File(folder.getRoot(), filename));
 		DefaultFormat df = new DefaultFormat();
 		handler.setFormat(df);
 		handler2.setFormat(df);
 		
-		assertTrue(handler.equals(handler2));
+		assertEquals(handler, handler2);
 		try {
 			handler2.close();
 		} catch (IOException e) {
@@ -226,6 +223,6 @@ public class TestTxtFileHandler extends TestIHandler {
 
 	@Override
 	public IHandler getIHandler() {
-		return new TxtFileHandler(new File(folder.getRoot(), "test.txt"));
+		return new TxtFileHandler(new File(folder.getRoot(), filename));
 	}
 }
