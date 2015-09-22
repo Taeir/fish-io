@@ -43,6 +43,14 @@ public abstract class DurationPowerUp extends PowerUp implements TickListener {
 	
 	/**
 	 * @return
+	 * 		Whether the effect of this PowerUp is currently active or not.
+	 */
+	public boolean isActive() {
+		return active;
+	}
+	
+	/**
+	 * @return
 	 * 		The duration of the PowerUp in seconds.
 	 */
 	public abstract int getDuration();
@@ -81,8 +89,7 @@ public abstract class DurationPowerUp extends PowerUp implements TickListener {
 		if (tickCounter >= 1) {
 			preTickEffect();
 		}
-		
-		tickCounter++;
+			
 	}
 	
 	@Override
@@ -91,6 +98,8 @@ public abstract class DurationPowerUp extends PowerUp implements TickListener {
 		if (!active) {
 			return;
 		}
+
+		tickCounter++;
 		
 		if (tickCounter >= timeTicks) {
 			getPField().unregisterGameListener(this);
@@ -100,6 +109,50 @@ public abstract class DurationPowerUp extends PowerUp implements TickListener {
 		}
 		
 		postTickEffect();
+	}
+	
+	/**
+	 * Returns the amount of ticks this PowerUp has processed.
+	 * Used only for testing purposes.
+	 * 
+	 * @return
+	 * 		The amount of ticks this PowerUp has processed.
+	 */
+	public int getTickCounter() {
+		return tickCounter;
+	}
+	
+	/**
+	 * Sets the tickCounter.
+	 * Used only for testing purposes.
+	 * 
+	 * @param amount
+	 * 		The amount to set
+	 */
+	public void setTickCounter(int amount) {
+		tickCounter = amount;
+	}
+	
+	/**
+	 * Returns the duration of the effect of this PowerUp in ticks.
+	 * Used only for testing purposes.
+	 * 
+	 * @return
+	 * 		The duration of the effect of this PowerUp in ticks
+	 */
+	public int getTimeTicks() {
+		return timeTicks;
+	}
+	
+	/**
+	 * Sets whether this PowerUp is active or not.
+	 * 
+	 * @param active
+	 * 		True if the effect should start. False if it should stop.
+	 * 		
+	 */
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 	
 }

@@ -24,7 +24,7 @@ public abstract class TestPowerUp {
 	
 	/**
 	 * @return
-	 * 		The PlayingField used to initialise the PowerUp.
+	 * 		The (mocked) PlayingField used to initialise the PowerUp.
 	 */
 	public abstract PlayingField getPlayingField();
 	
@@ -53,4 +53,5 @@ public abstract class TestPowerUp {
 		
 		Mockito.verify(pu).executeEffect(pf);
 	}
+	
 }
