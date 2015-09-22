@@ -35,7 +35,7 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable {
 	/**
 	 * Marks this Entity as dead.
 	 */
-	public void setDead() {
+	public void kill() {
 		dead = true;
 	}
 	

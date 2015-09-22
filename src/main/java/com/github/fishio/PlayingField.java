@@ -594,7 +594,7 @@ public abstract class PlayingField {
 	public void clear() {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
 		for (Entity e : entities) {
-			e.setDead();
+			e.kill();
 		}
 
 		for (IDrawable d : drawables) {
@@ -618,7 +618,7 @@ public abstract class PlayingField {
 				continue;
 			}
 			
-			e.setDead();
+			e.kill();
 		}
 		
 		GraphicsContext gc = canvas.getGraphicsContext2D();

@@ -283,7 +283,7 @@ public class TestSinglePlayer extends GuiTest {
 		getPlayer().scoreProperty().set(2);
 		
 		//Remove a life from the fish
-		getPlayer().removeLife();
+		getPlayer().kill();
 		
 		//Wait for a bit
 		sleepFail(1000L);

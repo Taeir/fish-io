@@ -264,15 +264,18 @@ public class PlayerFish extends Entity implements IMovable {
 	public void hitWall() { }
 	
 	@Override
-	public void setDead() {
+	public void kill() {
 		//If invincible, ignore death.
 		if (isInvincible()) {
 			return;
 		}
+		int nvalue = Math.max(lives.get() - 1, 0);
+		lives.set(nvalue);
 		
-		super.setDead();
-		
-		lives.set(0);
+		if (nvalue == 0) {
+			super.kill();			
+			return;
+		}		
 	}
 
 	@Override
@@ -292,7 +295,7 @@ public class PlayerFish extends Entity implements IMovable {
 			double osize = fish.getBoundingArea().getSize();
 
 			if (tsize > osize * FISH_EAT_THRESHOLD) {
-				fish.setDead();
+				fish.kill();
 				this.addPoints((int) (osize / 200));
 				double dSize = GROWTH_SPEED * osize / tsize;
 				getBoundingArea().increaseSize(dSize);
@@ -302,7 +305,7 @@ public class PlayerFish extends Entity implements IMovable {
 				}
 				
 				//Remove a life.
-				this.removeLife();
+				this.kill();
 			}
 		}
 	}
@@ -351,16 +354,8 @@ public class PlayerFish extends Entity implements IMovable {
 	 * 		<code>true</code> if this playerfish is now dead.
 	 * 		<code>false</code> otherwise.
 	 */
-	public boolean removeLife() {
-		int nvalue = Math.max(lives.get() - 1, 0);
-		lives.set(nvalue);
-		
-		if (nvalue == 0) {
-			setDead();
-			return true;
-		}
-		
-		return false;
+	public void setDead() {
+		super.kill();
 	}
 	
 	/**

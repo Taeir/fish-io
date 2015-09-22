@@ -64,7 +64,7 @@ public class EnemyFish extends Entity implements IMovable {
 	 */
 	@Override
 	public void hitWall() {
-		setDead();
+		kill();
 	}
 
 	/** 
