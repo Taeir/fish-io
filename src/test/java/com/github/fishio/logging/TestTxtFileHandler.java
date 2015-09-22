@@ -85,7 +85,7 @@ public class TestTxtFileHandler extends TestIHandler {
 		
 		handler.setFormat(formatter);
 		handler.setBufferedWriter(mockedBW);
-		handler.output(LogLevel.ERROR, "Test");
+		handler.output(LogLevel.ERROR, filename);
 		Mockito.verify(formatter).formatOutput(LogLevel.ERROR, filename);
 		try {
 			Mockito.verify(mockedBW).write("Test Output");
