@@ -29,7 +29,7 @@ public class GameThread implements Runnable, Listenable {
 	
 	/**
 	 * @param playingField
-	 * 		the playingField to use this GameRunnable for.
+	 * 		the playingField to use this GameThread for.
 	 */
 	public GameThread(PlayingField playingField) {
 		this.playingField = playingField;
@@ -37,7 +37,7 @@ public class GameThread implements Runnable, Listenable {
 	
 	/**
 	 * @param playingField
-	 * 		the playingField to use this GameRunnable for.
+	 * 		the playingField to use this GameThread for.
 	 * @param fake
 	 * 		if <code>true</code>, done and stop are set to <code>true</code>.
 	 */
@@ -48,13 +48,13 @@ public class GameThread implements Runnable, Listenable {
 	}
 	
 	/**
-	 * Starts this GameRunnable, by creating a new thread for itself and
+	 * Starts this GameThread, by creating a new thread for itself and
 	 * starting it.<br>
 	 * <br>
-	 * If this GameRunnable is STARTING or RUNNING, this method has no 
+	 * If this GameThread is STARTING or RUNNING, this method has no 
 	 * effect.
 	 * <br>
-	 * If this GameRunnable is STOPPING, this method will wait until the
+	 * If this GameThread is STOPPING, this method will wait until the
 	 * state changes to STOPPED, and then starts a new game thread.
 	 */
 	public void start() {
@@ -83,10 +83,10 @@ public class GameThread implements Runnable, Listenable {
 	}
 	
 	/**
-	 * Start the Game Thread and wait until it is started.
+	 * Start the GameThread and wait until it is started.
 	 * 
 	 * @throws InterruptedException
-	 * 		if we are interrupted while waiting for the game thread to 
+	 * 		if we are interrupted while waiting for the GameThread to 
 	 * 		start.
 	 */
 	public void startAndWait() throws InterruptedException {
@@ -103,7 +103,7 @@ public class GameThread implements Runnable, Listenable {
 	}
 
 	/**
-	 * Set the stop status of this GameRunnable to true.
+	 * Set the stop status of this GameThread to true.
 	 */
 	public void stop() {
 		//If we have already stopped, or are not running, we don't have to do anything.
@@ -120,11 +120,11 @@ public class GameThread implements Runnable, Listenable {
 	}
 	
 	/**
-	 * Sets the stop status of this GameRunnable to true, and waits until
+	 * Sets the stop status of this GameThread to true, and waits until
 	 * it has actually stopped.<br>
 	 * <br>
-	 * If this Game Runnable is not STARTING or RUNNING, this method has 
-	 * no effect.
+	 * If this GameThread is not STARTING or RUNNING, this method has no 
+	 * effect.
 	 * 
 	 * @throws InterruptedException
 	 * 		if we are interrupted while waiting.
@@ -147,10 +147,10 @@ public class GameThread implements Runnable, Listenable {
 	}
 	
 	/**
-	 * Resets this GameRunnables so that it can be started again.<br>
+	 * Resets this GameThread so that it can be started again.<br>
 	 * <br>
-	 * This method will have no effect if the state of this GameRunnable
-	 * is STARTING, RUNNING or STOPPING.
+	 * This method will have no effect if the state of this GameThread is
+	 * STARTING, RUNNING or STOPPING.
 	 */
 	public void reset() {
 		if (thread == null) {
@@ -169,7 +169,7 @@ public class GameThread implements Runnable, Listenable {
 	
 	/**
 	 * @return
-	 * 		<code>true</code> if this game runnable has stopped.
+	 * 		<code>true</code> if this GameThread has stopped.
 	 */
 	public boolean isStopped() {
 		return this.thread == null || this.done;
@@ -177,7 +177,7 @@ public class GameThread implements Runnable, Listenable {
 	
 	/**
 	 * @return
-	 * 		<code>true</code> if this game runnable is still running.
+	 * 		<code>true</code> if this GameThread is still running.
 	 * 		<code>false</code> otherwise.
 	 */
 	public boolean isRunning() {
