@@ -263,6 +263,9 @@ public class PlayerFish extends Fish {
 	@Override
 	public void hitWall() { }
 	
+	/**
+	 * Removes a life.
+	 */
 	@Override
 	public void kill() {
 		//If invincible, ignore death.
@@ -346,11 +349,7 @@ public class PlayerFish extends Fish {
 	}
 	
 	/**
-	 * Removes a life.
-	 * 
-	 * @return
-	 * 		<code>true</code> if this playerfish is now dead.
-	 * 		<code>false</code> otherwise.
+	 * Insta-kills the fish.
 	 */
 	public void setDead() {
 		super.kill();

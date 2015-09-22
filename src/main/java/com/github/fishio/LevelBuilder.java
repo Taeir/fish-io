@@ -3,8 +3,6 @@ package com.github.fishio;
 import java.util.Random;
 
 import javafx.scene.image.Image;
-import com.github.fishio.logging.Log;
-import com.github.fishio.logging.LogLevel;
 
 
 /**
@@ -14,7 +12,6 @@ import com.github.fishio.logging.LogLevel;
 public final class LevelBuilder {
 
 	private static Random rand = new Random();
-	private static Log log = Log.getLogger();
 	// Fish statistics
 
 	// movement
