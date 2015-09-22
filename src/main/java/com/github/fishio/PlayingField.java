@@ -26,8 +26,6 @@ public abstract class PlayingField {
 	private GameThread gameThread;
 	private Renderer renderer;
 
-	private ConcurrentLinkedQueue<TickListener> gameListeners = new ConcurrentLinkedQueue<>();
-	private ConcurrentLinkedQueue<TickListener> renderListeners = new ConcurrentLinkedQueue<>();
 	private ConcurrentLinkedDeque<IDrawable> drawables = new ConcurrentLinkedDeque<>();
 	private ConcurrentLinkedDeque<IDrawable> deadDrawables = new ConcurrentLinkedDeque<>();
 	private ConcurrentLinkedQueue<IMovable> movables = new ConcurrentLinkedQueue<>();
@@ -244,58 +242,6 @@ public abstract class PlayingField {
 		
 		if (box.getMinY() < 0) {
 			box.move(new Vec2d(0, box.getMinY()));
-		}
-	}
-
-	/**
-	 * Calls all listeners pre tick.
-	 * 
-	 * @param render
-	 * 		if true, calls the render listeners.
-	 * 		if false, calls the game listeners.
-	 */
-	public void preListeners(boolean render) {
-		ConcurrentLinkedQueue<TickListener> list;
-		if (render) {
-			list = renderListeners;
-		} else {
-			list = gameListeners;
-		}
-
-		for (TickListener tl : list) {
-			try {
-				tl.preTick();
-			} catch (Exception ex) {
-				//TODO Handle exception differently
-				log.log(LogLevel.ERROR, "Error in preTick:\t" + ex.getMessage());
-				ex.printStackTrace();
-			}
-		}
-	}
-
-	/**
-	 * Calls all listeners post tick.
-	 * 
-	 * @param render
-	 * 		if true, calls the render listeners.
-	 * 		if false, calls the game listeners.
-	 */
-	public void postListeners(boolean render) {
-		ConcurrentLinkedQueue<TickListener> list;
-		if (render) {
-			list = renderListeners;
-		} else {
-			list = gameListeners;
-		}
-
-		for (TickListener tl : list) {
-			try {
-				tl.postTick();
-			} catch (Exception ex) {
-				//TODO Handle exception differently
-				System.err.println("Error in postTick!");
-				ex.printStackTrace();
-			}
 		}
 	}
 	
