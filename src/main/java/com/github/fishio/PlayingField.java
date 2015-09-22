@@ -249,7 +249,7 @@ public abstract class PlayingField {
 	 * @return
 	 * 		All the entities in this field.
 	 */
-	public List<Entity> getEntites() {
+	public List<Entity> getEntities() {
 		return new ArrayList<Entity>(entities);
 	}
 
