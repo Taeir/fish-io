@@ -3,6 +3,8 @@ package com.github.fishio;
 import java.util.Random;
 
 import javafx.scene.image.Image;
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
 
 
 /**
@@ -12,7 +14,7 @@ import javafx.scene.image.Image;
 public final class LevelBuilder {
 
 	private static Random rand = new Random();
-
+	private static Log log = Log.getLogger();
 	// Fish statistics
 
 	// movement
@@ -85,7 +87,9 @@ public final class LevelBuilder {
 		}
 
 		EnemyFish eFish = new EnemyFish(new CollisionMask(position, width, height, data, relSize), sprite , vx, vy);
-
+		log.log(LogLevel.TRACE, "Created Enemfish: Properties{[position = " + position.toString() 
+				+ "],[height = " + height + "],[width = " + width + "],[Vx = " + vx + "],[Vy = " + vy 
+				+ "]}.");
 		//TODO Check for decent properties
 		//eFish.checkProperties()
 		return eFish;

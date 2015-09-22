@@ -1,5 +1,10 @@
 package com.github.fishio;
 
+import java.util.ArrayList;
+
+import com.github.fishio.achievements.Observer;
+import com.github.fishio.achievements.Subject;
+
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -11,10 +16,12 @@ import javafx.stage.Stage;
  * Represents a fish that the user can control using
  * the keyboard.
  */
-public class PlayerFish extends Entity implements IMovable {
+public class PlayerFish extends Entity implements IMovable, Subject {
 
 	private double vx;
 	private double vy;
+	
+	private ArrayList<Observer> observers = new ArrayList<Observer>();
 
 	/**
 	 * These factors have values for whether each of the arrow keys is pressed.
@@ -43,6 +50,10 @@ public class PlayerFish extends Entity implements IMovable {
 
 	private static final double GROWTH_SPEED = 500;
 	private static final double FISH_EAT_THRESHOLD = 1.2;
+	private static final int START_LIVES = 3;
+	public static final int MAX_LIVES = 5;
+	
+	private SimpleIntegerProperty lives = new SimpleIntegerProperty(START_LIVES);
 
 	/**
 	 * Creates the Player fish which the user will be able to control.
@@ -256,6 +267,13 @@ public class PlayerFish extends Entity implements IMovable {
 
 	@Override
 	public void hitWall() { }
+	
+	@Override
+	public void setDead() {
+		super.setDead();
+		
+		lives.set(0);
+	}
 
 	@Override
 	public boolean canMoveThroughWall() {
@@ -275,11 +293,13 @@ public class PlayerFish extends Entity implements IMovable {
 
 			if (tsize > osize * FISH_EAT_THRESHOLD) {
 				fish.setDead();
+				notifyObservers();
 				this.addPoints((int) (osize / 200));
 				double dSize = GROWTH_SPEED * osize / tsize;
 				getBoundingArea().increaseSize(dSize);
 			} else if (osize > tsize * FISH_EAT_THRESHOLD) {
-				this.setDead();
+				//Remove a life.
+				this.removeLife();
 			}
 		}
 	}
@@ -318,6 +338,71 @@ public class PlayerFish extends Entity implements IMovable {
 			drawRotatedImage(gc, sprite, getBoundingArea(), true);
 		} else {
 			drawRotatedImage(gc, sprite, getBoundingArea(), vy < 0);
+		}
+	}
+	
+
+	/**
+	 * Removes a life.
+	 * 
+	 * @return
+	 * 		<code>true</code> if this playerfish is now dead.
+	 * 		<code>false</code> otherwise.
+	 */
+	public boolean removeLife() {
+		int nvalue = Math.max(lives.get() - 1, 0);
+		lives.set(nvalue);
+		
+		if (nvalue == 0) {
+			setDead();
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Adds a life.
+	 */
+	public void addLife() {
+		lives.set(Math.min(lives.get() + 1, MAX_LIVES));
+	}
+	
+	/**
+	 * @return
+	 * 		the amount of lives left.
+	 */
+	public int getLives() {
+		return lives.get();
+	}
+	
+	/**
+	 * Getter for the lives property.
+	 * 
+	 * @return
+	 * 		the amount of lives left.
+	 */
+	public SimpleIntegerProperty livesProperty() {
+		return lives;
+		
+	}
+	
+	@Override
+	public void attach(Observer observer) {
+		observers.add(observer);
+		
+	}
+	
+	@Override
+	public void detach(Observer observer) {
+		observers.remove(observer);
+		
+	}
+	
+	@Override
+	public void notifyObservers() {
+		for (Observer ob : observers) {
+			ob.update();
 		}
 	}
 

@@ -45,6 +45,11 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable {
 	}
 	
 	@Override
+	public void setBoundingArea(ICollisionArea area) {
+		this.ba = area;
+	}
+	
+	@Override
 	public void drawDeath(GraphicsContext gc) {
 		//TODO animations
 	}

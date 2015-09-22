@@ -1,11 +1,18 @@
 package com.github.fishio.control;
 
 import com.github.fishio.FishIO;
+import com.github.fishio.ICollisionArea;
+import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
 import com.github.fishio.Preloader;
 import com.github.fishio.SinglePlayerPlayingField;
+import com.github.fishio.Util;
+import com.github.fishio.Vec2d;
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
 
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,18 +25,19 @@ import javafx.util.Duration;
 
 /**
  * The controller class of the single player game.
- * 
- * @author Chiel Bruin
- * @since 03-09-2015
  */
 public class SinglePlayerController implements ScreenController {
 
+	private Log log = Log.getLogger();
+	
 	@FXML
 	private Canvas gameCanvas;
 	@FXML
 	private VBox deathScreen;
 	@FXML
 	private Label scoreField;
+	@FXML
+	private Label livesField;
 	@FXML
 	private Label endScore;
 	
@@ -41,6 +49,8 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	private Button btnMenu;
 	
+	@FXML
+	private Button btnDSRevive;
 	@FXML
 	private Button btnDSRestart;
 	@FXML
@@ -58,7 +68,17 @@ public class SinglePlayerController implements ScreenController {
 	@Override
 	public void onSwitchTo() {
 		FishIO.getInstance().getPrimaryStage().setTitle("Fish.io Singleplayer");
+		
+		//Reset the pause button
+		getBtnPause().setText("Pause");
+		getBtnPause().setDisable(false);
+		
+		//Hide the death screen
+		deathScreen.setVisible(false);
+		
+		//Start the game.
 		pf.startGame();
+		log.log(LogLevel.INFO, "Started Game.");
 	}
 
 	/**
@@ -70,9 +90,17 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	public void onPause(ActionEvent event) {
 		if (pf.isRunning()) {
-			pf.stopGame();
+			try {
+				pf.stopGameAndWait();
+			} catch (InterruptedException ex) { }
+			getBtnPause().setText("Unpause");
+			
+			log.log(LogLevel.INFO, "Player paused the game.");
 		} else {
+			log.log(LogLevel.INFO, "Player resumed the game.");
+			
 			pf.startGame();
+			getBtnPause().setText("Pause");
 		}
 	}
 
@@ -86,12 +114,22 @@ public class SinglePlayerController implements ScreenController {
 	 * 			Can be <code>null</code>.
 	 */
 	public void showDeathScreen(boolean visible, EventHandler<ActionEvent> onDone) {
+		//Check if on FX thread.
+		if (!Platform.isFxApplicationThread()) {
+			Platform.runLater(() -> showDeathScreen(visible, onDone));
+			return;
+		}
+		
 		if (visible && deathScreen.isVisible() && deathScreen.getOpacity() == 1.0) {
+			updateReviveButton();
+			
 			if (onDone != null) {
 				onDone.handle(new ActionEvent());
 			}
 			return;
 		} else if (!visible && !deathScreen.isVisible()) {
+			updateReviveButton();
+			
 			if (onDone != null) {
 				onDone.handle(new ActionEvent());
 			}
@@ -101,6 +139,9 @@ public class SinglePlayerController implements ScreenController {
 		FadeTransition fade = new FadeTransition(Duration.millis(400), deathScreen);
 		
 		if (visible) {
+			//Disable pause button
+			getBtnPause().setDisable(true);
+			
 			//Show deathscreen fully transparent and fade it in
 			deathScreen.setOpacity(0.0);
 			deathScreen.setVisible(true);
@@ -108,9 +149,7 @@ public class SinglePlayerController implements ScreenController {
 			fade.setFromValue(0.0);
 			fade.setToValue(1.0);
 			
-			if (onDone != null) {
-				fade.setOnFinished(onDone);
-			}
+			fade.setOnFinished(onDone);
 		} else {
 			//Show deathscreen fully visible and fade it out
 			deathScreen.setOpacity(1.0);
@@ -129,8 +168,30 @@ public class SinglePlayerController implements ScreenController {
 			});
 		}
 		
+		//Revive button
+		updateReviveButton();
+		
 		//Start animation
 		fade.play();
+	}
+	
+	/**
+	 * Updates the revive button. It is enabled when applicable.
+	 */
+	private void updateReviveButton() {
+		//If there are no players in the game, we disable the revive button.
+		if (pf.getPlayers().isEmpty()) {
+			btnDSRevive.setDisable(true);
+			return;
+		}
+		
+		//If player has lives left, we enable the revive button.
+		PlayerFish player = pf.getPlayers().get(0);
+		if (player.getLives() > 0) {
+			btnDSRevive.setDisable(false);
+		} else {
+			btnDSRevive.setDisable(true);
+		}
 	}
 
 	/**
@@ -139,7 +200,34 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	public void backToMenu() {
 		pf.stopGame();
-		FishIO.getInstance().openMainMenu();
+		pf.clear();
+		
+		log.log(LogLevel.INFO, "Player pressed backToMenu button");
+		Preloader.switchTo("mainMenu", 400);
+	}
+	
+	/**
+	 * Revives the player.
+	 */
+	@FXML
+	public void revive() {
+		//Remove all enemies.
+		pf.clearEnemies();
+		
+		PlayerFish player = pf.getPlayers().get(0);
+		
+		//Reset the bounding box of the player fish.
+		ICollisionArea area = ((SinglePlayerPlayingField) pf).getStartCollisionArea();
+		player.setBoundingArea(area);
+		
+		//Reset the speed of the fish.
+		player.setSpeedVector(new Vec2d(0, 0));
+		
+		//Start the render thread (it takes some time to appear).
+		pf.startRendering();
+		
+		//Hide the deathscreen. When the animation is done, start the game thread.
+		showDeathScreen(false, event -> pf.startGameThread());
 	}
 
 	/**
@@ -147,6 +235,10 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void restartGame() {
+		//Reset the pause button
+		getBtnPause().setText("Pause");
+		getBtnPause().setDisable(false);
+		
 		//Stop the game, clear all items, and start it again.
 		try {
 			pf.stopGameAndWait();
@@ -154,10 +246,12 @@ public class SinglePlayerController implements ScreenController {
 		pf.clear();
 		
 		//Start the render thread (it takes some time to appear).
-		pf.getRenderThread().play();
-		
+		pf.startRendering();
+
 		//Hide the deathscreen. When the animation is done, start the game thread.
-		showDeathScreen(false, event -> pf.getGameThread().play());
+		showDeathScreen(false, event -> {
+			pf.startGame();
+		});
 	}
 	
 	/**
@@ -167,8 +261,20 @@ public class SinglePlayerController implements ScreenController {
 	 * 			the new score to be displayed on the screen.
 	 */
 	public void updateScoreDisplay(int score) {
-		scoreField.setText("score:" + score);
-		endScore.setText("score: " + score + " points");
+		Util.onJavaFX(() -> {
+			scoreField.setText("Score: " + score);
+			endScore.setText("Score: " + score + " points");
+		});
+	}
+	
+	/**
+	 * Update the displayed life count.
+	 * 
+	 * @param lives
+	 * 		the new life count.
+	 */
+	public void updateLivesDisplay(int lives) {
+		Util.onJavaFX(() -> livesField.setText("Lives: " + lives));
 	}
 
 	/**
@@ -180,56 +286,72 @@ public class SinglePlayerController implements ScreenController {
 	}
 
 	/**
-	 * @return the deathScreen
+	 * @return
+	 * 		the deathScreen box.
 	 */
 	public VBox getDeathScreen() {
 		return deathScreen;
 	}
 
 	/**
-	 * @return the scoreField
+	 * @return
+	 * 		the score label.
 	 */
 	public Label getScoreField() {
 		return scoreField;
 	}
 
 	/**
-	 * @return the btnPause
+	 * @return
+	 * 		the pause button.
 	 */
 	public Button getBtnPause() {
 		return btnPause;
 	}
 
 	/**
-	 * @return the btnMute
+	 * @return
+	 * 		the mute/unmute button.
 	 */
 	public Button getBtnMute() {
 		return btnMute;
 	}
 
 	/**
-	 * @return the btnMenu
+	 * @return
+	 * 		the button that goes back to the menu.
 	 */
 	public Button getBtnMenu() {
 		return btnMenu;
 	}
+	
+	/**
+	 * @return
+	 * 		the revive button on the deathscreen.
+	 */
+	public Button getBtnDSRevive() {
+		return btnDSRevive;
+	}
 
 	/**
-	 * @return the btnDSRestart
+	 * @return
+	 * 		the button on the death screen that restarts the game.
 	 */
 	public Button getBtnDSRestart() {
 		return btnDSRestart;
 	}
 
 	/**
-	 * @return the btnDSMenu
+	 * @return
+	 * 		the button on the death screen that returns to the main menu.
 	 */
 	public Button getBtnDSMenu() {
 		return btnDSMenu;
 	}
 
 	/**
-	 * @return the playingfield
+	 * @return
+	 * 		the playingfield
 	 */
 	public PlayingField getPlayingField() {
 		return pf;

@@ -5,9 +5,6 @@ import javafx.scene.Scene;
 /**
  * Interface ScreenController.
  * Must be implemented by all screencontrollers!
- * 
- * @author Chiel Bruin
- * @since 03-09-2015
  */
 public interface ScreenController {
 	/**
