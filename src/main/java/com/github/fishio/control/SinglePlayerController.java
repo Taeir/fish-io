@@ -255,6 +255,25 @@ public class SinglePlayerController implements ScreenController {
 	}
 	
 	/**
+	 * Updates the pause button to the correct state.
+	 */
+	public void updatePauseButton() {
+		if (!pf.isPlayerAlive()) {
+			//All player fish are dead
+			getBtnPause().setText("Pause");
+			getBtnPause().setDisable(true);
+		} else if (pf.isRunning()) {
+			//There is a player fish alive and the game is running
+			getBtnPause().setText("Pause");
+			getBtnPause().setDisable(false);
+		} else {
+			//There is a player fish alive and the game is not running
+			getBtnPause().setText("Unpause");
+			getBtnPause().setDisable(false);
+		}
+	}
+	
+	/**
 	 * Update the displayed score.
 	 * 
 	 * @param score
