@@ -7,6 +7,8 @@ import javafx.beans.property.SimpleObjectProperty;
 import com.github.fishio.PlayingField;
 import com.github.fishio.listeners.Listenable;
 import com.github.fishio.listeners.TickListener;
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
 
 /**
  * A stateful runnable that represents the game thread.
@@ -239,7 +241,9 @@ public class GameThread implements Runnable, Listenable {
 				if (dur < waitTime) {
 					try {
 						Thread.sleep(Math.round(waitTime - dur));
-					} catch (InterruptedException ex) { }
+					} catch (InterruptedException ex) {
+						Log.getLogger().log(LogLevel.DEBUG, "[GameThread] Exception while sleeping until next cycle");
+					}
 				}
 			}
 		} finally {
