@@ -3,6 +3,7 @@ package com.github.fishio;
 import java.util.Random;
 
 import com.github.fishio.listeners.TickListener;
+import com.github.fishio.power_ups.PowerUp;
 import com.github.fishio.power_ups.PuFreeze;
 import com.github.fishio.power_ups.PuSuperSpeed;
 
@@ -21,6 +22,8 @@ public class PowerUpSpawner implements TickListener {
 	
 	private static final int WIDTH = 25;
 	private static final int HEIGHT = 25;
+	
+	private Random rand = new Random();
 	
 	/**
 	 * The amount of seconds between each time
@@ -60,26 +63,32 @@ public class PowerUpSpawner implements TickListener {
 		tickCounter++;
 		
 		if (tickCounter % intervalTicks == 0) {
-			
-			Random rand = new Random();
-			
-			int x = rand.nextInt(maxX - minX + 1) + minX;
-			int y = rand.nextInt(maxY - minY + 1) + minY;
-			
-			BoundingBox bb = new BoundingBox(new Vec2d(x, y), WIDTH, HEIGHT);
-			
-			int powerUpCount = 2;
-			switch (rand.nextInt(powerUpCount)) {
-			case 0:
-				pf.add(new PuFreeze(bb, pf));
-				break;
-			case 1:
-				pf.add(new PuSuperSpeed(bb, pf));
-				break;
-			default:
-				break;
-			}
+			pf.add(getRandomPowerUp());
 		}
+	}
+	
+	/**
+	 * @return
+	 * 		A random PowerUp instances of the existing PowerUp classes.
+	 */
+	public PowerUp getRandomPowerUp() {
+		
+		//Creating the BoundingBox for the PowerUp with a random start location.
+		int x = rand.nextInt(maxX - minX + 1) + minX;
+		int y = rand.nextInt(maxY - minY + 1) + minY;
+		BoundingBox bb = new BoundingBox(new Vec2d(x, y), WIDTH, HEIGHT);
+		
+		//Choosing a random PowerUp.
+		int powerUpCount = 2;
+		switch (rand.nextInt(powerUpCount)) {
+		case 0:
+			return new PuFreeze(bb, pf);
+		case 1:
+			return new PuSuperSpeed(bb, pf);
+		default:
+			return null;
+		}
+		
 	}
 	
 }
