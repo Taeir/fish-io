@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.github.fishio.listeners.TickListener;
 import com.github.fishio.power_ups.PuFreeze;
+import com.github.fishio.power_ups.PuSuperSpeed;
 
 /**
  * A PowerUpSpawner repeatedly spawns random PowerUps
@@ -56,6 +57,8 @@ public class PowerUpSpawner implements TickListener {
 
 	@Override
 	public void postTick() {
+		System.out.println("test");
+		
 		tickCounter++;
 		
 		if (tickCounter % intervalTicks == 0) {
@@ -67,10 +70,13 @@ public class PowerUpSpawner implements TickListener {
 			
 			BoundingBox bb = new BoundingBox(new Vec2d(x, y), WIDTH, HEIGHT);
 			
-			int powerUpCount = 1;
+			int powerUpCount = 2;
 			switch (rand.nextInt(powerUpCount)) {
 			case 0:
 				pf.add(new PuFreeze(bb, pf));
+				break;
+			case 1:
+				pf.add(new PuSuperSpeed(bb, pf));
 				break;
 			default:
 				break;
