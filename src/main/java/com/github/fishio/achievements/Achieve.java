@@ -12,11 +12,15 @@ public class Achieve {
 	
 	private Achievement playerDeath = new Achievement("playerDeath");
 	private Achievement enemyKill = new Achievement("enemyKill");
+	
 	/**
 	 * Changes the achievement level of the playerDeath achievement when certain
 	 * requirements have been met.
+	 * 
+	 * @param playerDeath
+	 *            The Achievement associated with the playerDeath observer.
 	 */
-	public void checkPlayerDeath() {
+	public static void checkPlayerDeath(Achievement playerDeath) {
 		
 		if (PlayerDeathObserver.getCounter() >= 100) {
 			playerDeath.setLevel(5);
