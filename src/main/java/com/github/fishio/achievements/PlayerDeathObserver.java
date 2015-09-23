@@ -10,7 +10,7 @@ import java.util.Collection;
 class PlayerDeathObserver implements Observer {
 	
 	private Subject singlePlayerPlayingField;
-	private int playerdeathcounter = 0;
+	private static int playerdeathcounter = 0;
 	
 	/**
 	 * Attaches the observer to the subject.
@@ -28,19 +28,15 @@ class PlayerDeathObserver implements Observer {
 		if (!properties.contains("PlayerDeath")) {
 			return;
 		}
-		
 		playerdeathcounter++;
 	}
 	
 	/**
-	 * Gives the class whom asked for it the status of the death counter of the
-	 * player fish.
+	 * A method which return the death counter of the player fish.
 	 * 
-	 * @return The amount of times the player has died.
+	 * @return the death counter of the player fish.
 	 */
-	public int getPlayerDeathCounter() {
+	public static int getCounter() {
 		return playerdeathcounter;
 	}
-	
-
 }

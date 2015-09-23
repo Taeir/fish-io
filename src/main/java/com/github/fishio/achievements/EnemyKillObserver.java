@@ -10,7 +10,7 @@ import java.util.Collection;
 class EnemyKillObserver implements Observer {
 	
 	private Subject playerFish;
-	private int enemykillcounter = 0;
+	private static int enemykillcounter = 0;
 	
 	/**
 	 * Attaches the observer to the subject.
@@ -38,7 +38,7 @@ class EnemyKillObserver implements Observer {
 	 * 
 	 * @return The amount of times the player has died.
 	 */
-	public int getPlayerDeathCounter() {
+	public static int getCounter() {
 		return enemykillcounter;
 	}
 

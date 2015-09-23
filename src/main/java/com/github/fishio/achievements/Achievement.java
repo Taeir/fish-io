@@ -8,19 +8,20 @@ package com.github.fishio.achievements;
 public class Achievement {
 	
 	private String achievement;
-	private boolean rulesmet = false;
+	private int level = 0;
 
 	/**
-	 * Constructor for an Achievement
+	 * Constructor for an Achievement.
 	 * 
 	 * @param name
 	 *            The name or title of the Achievement
-	 * @param achieved
-	 *            Whether the user has obtained this achievement or not
+	 * @param level
+	 *            The level of achievement that is obtained. Level 0 means not
+	 *            obtained yet.
 	 */
-	public Achievement(String name, boolean achieved) {
+	public Achievement(String name, int level) {
 		this.achievement = name;
-		this.rulesmet = achieved;
+		this.level = level;
 	}
 	
 	/**
@@ -32,7 +33,7 @@ public class Achievement {
 	 */
 	public Achievement(String name) {
 		this.achievement = name;
-		rulesmet = false;
+		this.level = 0;
 	}
 	
 	/**
@@ -45,22 +46,24 @@ public class Achievement {
 	}
 	
 	/**
-	 * Method which returns whether the achievement's rules have been met.
+	 * Method which returns the level of the achievement. Level 0 means not
+	 * achieved yet. In total there are 3 or 5 levels, depending on the
+	 * achievement.
 	 * 
-	 * @return true if the rules have been met, false if they have not been met.
+	 * @return a value in the range from 0 up until 5.
 	 */
-	public boolean getAchieved() {
-		return rulesmet;
+	public int getLevel() {
+		return level;
 	}
 	
 	/**
 	 * Method which set the whether the rules of the achievement are met to true
 	 * or false.
 	 * 
-	 * @param achieved
-	 *            sets the rulesmet field to true or false.
+	 * @param levelachieved
+	 *            sets the achieved level of the achievement.
 	 */
-	public void setAchieved(boolean achieved) {
-		rulesmet = achieved;
+	public void setLevel(int levelachieved) {
+		level = levelachieved;
 	}
 }
