@@ -57,8 +57,6 @@ public class PowerUpSpawner implements TickListener {
 
 	@Override
 	public void postTick() {
-		System.out.println("test");
-		
 		tickCounter++;
 		
 		if (tickCounter % intervalTicks == 0) {
