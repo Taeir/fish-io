@@ -4,13 +4,13 @@ import java.util.Collection;
 
 /**
  * This class is an Observer. It attaches to the SinglePlayerPlayingField and
- * gets an update when a player hits the boundary of the playing field.
+ * gets an update when a player uses a live.
  *
  */
-class HitWallObserver implements Observer {
+class LivesConsumptionObserver implements Observer {
 	
 	private Subject playerFish;
-	private int playerhitwallcounter = 0;
+	private int livesconsumptioncounter = 0;
 	
 	/**
 	 * Attaches the observer to the subject.
@@ -18,7 +18,7 @@ class HitWallObserver implements Observer {
 	 * @param subject
 	 *            The subject this observer has to be notified by.
 	 */
-	public HitWallObserver(Subject subject) {
+	public LivesConsumptionObserver(Subject subject) {
 		this.playerFish = subject;
 		this.playerFish.attach(this);
 	}
@@ -29,18 +29,17 @@ class HitWallObserver implements Observer {
 			return;
 		}
 		
-		playerhitwallcounter++;
+		livesconsumptioncounter++;
 	}
 	
 	/**
-	 * Gives the class whom asked for it the status of the hitwall counter of
-	 * the player fish.
+	 * Gives the class whom asked for it the status of the lives consumption
+	 * counter of the player fish.
 	 * 
-	 * @return The amount of times the player has hit the wall.
+	 * @return The amount of times the player has used a live.
 	 */
 	public int getPlayerDeathCounter() {
-		return playerhitwallcounter;
+		return livesconsumptioncounter;
 	}
 
 }
-
