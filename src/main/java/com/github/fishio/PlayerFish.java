@@ -39,9 +39,9 @@ public class PlayerFish extends Entity implements IMovable {
 	 * The speed at which the speed of the fish increases /
 	 * decreases depending on what keys are pressed by the user.
 	 */
-	private static final double ACCELERATION = 0.1;
+	private double acceleration = 0.1;
 
-	private static final double MAX_SPEED = 4;
+	private double maxSpeed = 4;
 
 	private static final double GROWTH_SPEED = 500;
 	private static final double FISH_EAT_THRESHOLD = 1.2;
@@ -100,17 +100,17 @@ public class PlayerFish extends Entity implements IMovable {
 	 * pressed by the user.
 	 */
 	public void adjustXSpeed() {
-		if (leftPressed && -vx < MAX_SPEED) {
-			vx -= ACCELERATION;
+		if (leftPressed && -vx < maxSpeed) {
+			vx -= acceleration;
 		}
-		if (rightPressed && vx < MAX_SPEED) {
-			vx += ACCELERATION;
+		if (rightPressed && vx < maxSpeed) {
+			vx += acceleration;
 		}
 
 		if (vx < 0 && (!leftPressed || rightPressed)) {
-			vx += ACCELERATION;
+			vx += acceleration;
 		} else if (vx > 0 && (!rightPressed || leftPressed)) {
-			vx -= ACCELERATION;
+			vx -= acceleration;
 		}
 
 		if (vx < 0.1 && vx > -0.1) {
@@ -124,18 +124,18 @@ public class PlayerFish extends Entity implements IMovable {
 	 * pressed by the user.
 	 */
 	public void adjustYSpeed() {
-		if (downPressed && -vy < MAX_SPEED) {
-			vy -= ACCELERATION;
+		if (downPressed && -vy < maxSpeed) {
+			vy -= acceleration;
 		}
 
-		if (upPressed && vy < MAX_SPEED) {
-			vy += ACCELERATION;
+		if (upPressed && vy < maxSpeed) {
+			vy += acceleration;
 		}
 
 		if (vy < 0 && (!downPressed || upPressed)) {
-			vy += ACCELERATION;
+			vy += acceleration;
 		} else if (vy > 0 && (!upPressed || downPressed)) {
-			vy -= ACCELERATION;
+			vy -= acceleration;
 		}
 
 		if (vy < 0.1 && vy > -0.1) {
@@ -169,7 +169,35 @@ public class PlayerFish extends Entity implements IMovable {
 	 * @return the acceleration of the fish.
 	 */
 	public double getAcceleration() {
-		return ACCELERATION;
+		return acceleration;
+	}
+	
+	/**
+	 * Sets the acceleration of this PlayerFish.
+	 * 
+	 * @param acceleration
+	 * 		The new acceleration of this PlayerFish
+	 */
+	public void setAcceleration(double acceleration) {
+		this.acceleration = acceleration;
+	}
+	
+	/**
+	 * @return
+	 * 		the maximum speed of this PlayerFish
+	 */
+	public double getMaxSpeed() {
+		return maxSpeed;
+	}
+	
+	/**
+	 * Sets the maximum speed of this PlayerFish.
+	 * 
+	 * @param maxSpeed
+	 * 		The new maximum speed of this PlayerFish.
+	 */
+	public void setMaxSpeed(double maxSpeed) {
+		this.maxSpeed = maxSpeed;
 	}
 
 	/**
