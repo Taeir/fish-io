@@ -32,6 +32,9 @@ public class TestPuFreeze extends TestDurationPowerUp {
 	public void setUp() {
 		this.pf = Mockito.mock(PlayingField.class);
 		this.pu = Mockito.spy(new PuFreeze(null, pf));
+		
+		//To prevent nullPointerException, mock the target of the PowerUp.
+		this.pu.setTarget(Mockito.mock(PlayerFish.class));
 	}
 	
 	@Override
@@ -57,7 +60,7 @@ public class TestPuFreeze extends TestDurationPowerUp {
 		when(pf.getEntities()).thenReturn(entities);
 		
 		//Invoking the startEffect method
-		pu.startEffect((PlayerFish) entities.get(1));
+		pu.startEffect();
 		
 		EnemyFish ef1 = (EnemyFish) entities.get(0);
 		EnemyFish ef2 = (EnemyFish) entities.get(3);

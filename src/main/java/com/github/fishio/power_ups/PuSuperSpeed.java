@@ -12,10 +12,8 @@ import com.github.fishio.PlayingField;
 public class PuSuperSpeed extends DurationPowerUp {
 
 	private static final int DURATION = 10;
-	private static final double ACCELERATION_FACTOR = 5;
-	private static final double MAX_SPEED_FACTOR = 5;
-	
-	private PlayerFish pf;
+	public static final double ACCELERATION_FACTOR = 5;
+	public static final double MAX_SPEED_FACTOR = 5;
 	
 	/**
 	 * Creates a new PowerUp of the SuperSpeed type.
@@ -42,8 +40,8 @@ public class PuSuperSpeed extends DurationPowerUp {
 	 * 		The PlayerFish this PowerUp collides with.
 	 */
 	@Override
-	public void startEffect(PlayerFish pf) {
-		this.pf = pf;
+	public void startEffect() {
+		PlayerFish pf = super.getTarget();
 		
 		pf.setAcceleration(pf.getAcceleration() * ACCELERATION_FACTOR);
 		pf.setMaxSpeed(pf.getMaxSpeed() * MAX_SPEED_FACTOR);
@@ -61,6 +59,8 @@ public class PuSuperSpeed extends DurationPowerUp {
 	 */
 	@Override
 	public void endEffect() {
+		PlayerFish pf = super.getTarget();
+		
 		pf.setAcceleration(pf.getAcceleration() / ACCELERATION_FACTOR);
 		pf.setMaxSpeed(pf.getMaxSpeed() / MAX_SPEED_FACTOR);
 	}

@@ -16,6 +16,8 @@ public abstract class DurationPowerUp extends PowerUp implements TickListener {
 	private boolean active;
 	private int tickCounter;
 	
+	private PlayerFish target;
+	
 	/**
 	 * Creates a new DurationPowerUp.
 	 * 
@@ -36,9 +38,14 @@ public abstract class DurationPowerUp extends PowerUp implements TickListener {
 	
 	@Override
 	public void executeEffect(PlayerFish pf) {
-		active = true;
+		//This PowerUp is now active
+		this.active = true;
 		
-		startEffect(pf);
+		//The target PlayerFish is the one we collided with
+		this.target = pf;
+		
+		//Begin the startEffect
+		startEffect();
 	}
 	
 	/**
@@ -57,12 +64,9 @@ public abstract class DurationPowerUp extends PowerUp implements TickListener {
 	
 	/**
 	 * The effect that should happen right after the collision
-	 * with the PlayerFish happens.
-	 * 
-	 * @param pf
-	 * 		The PlayerFish that the PowerUp collided with
+	 * with a PlayerFish happens.
 	 */
-	public abstract void startEffect(PlayerFish pf);
+	public abstract void startEffect();
 	
 	/**
 	 * The effect that should happen each time before a game tick.
@@ -153,6 +157,25 @@ public abstract class DurationPowerUp extends PowerUp implements TickListener {
 	 */
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+	
+	/**
+	 * @return
+	 * 		The PlayerFish this PowerUp collided with.
+	 */
+	public PlayerFish getTarget() {
+		return target;
+	}
+	
+	/**
+	 * Sets the PlayerFish this PowerUp should target.
+	 * Should mainly be used for testing purposes.
+	 * 
+	 * @param target
+	 * 		The target that should be set.
+	 */
+	public void setTarget(PlayerFish target) {
+		this.target = target;
 	}
 	
 }

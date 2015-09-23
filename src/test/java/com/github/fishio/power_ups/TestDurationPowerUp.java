@@ -10,6 +10,7 @@ import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
@@ -39,7 +40,7 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 		pu.executeEffect(pf);
 		
 		assertTrue(pu.isActive());
-		Mockito.verify(pu).startEffect(pf);
+		Mockito.verify(pu).startEffect();
 	}
 	
 	/**
@@ -177,5 +178,34 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 		//Making sure the PowerUp is still longer ticking in the PlayingField.
 		PlayingField pf = getPlayingField();
 		Mockito.verify(pf, never()).unregisterGameListener(pu);
+	}
+	
+	/**
+	 * Tests the getTarget method.
+	 */
+	@Test
+	public void testGetTarget() {
+		DurationPowerUp pu = getDurationPowerUp();
+		
+		PlayerFish pf = Mockito.mock(PlayerFish.class);
+		
+		pu.executeEffect(pf);
+		
+		assertSame(pf, pu.getTarget());
+	}
+	
+	/**
+	 * Tests both the setter and the getter of the target in DurationPowerUp.
+	 */
+	@Test
+	public void testGetSetTarget() {
+		DurationPowerUp pu = getDurationPowerUp();
+		
+		PlayerFish pf = Mockito.mock(PlayerFish.class);
+		
+		pu.executeEffect(Mockito.mock(PlayerFish.class));
+		pu.setTarget(pf);
+		
+		assertSame(pf, pu.getTarget());
 	}
 }
