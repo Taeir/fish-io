@@ -16,7 +16,6 @@ public class EnemyFish extends Entity implements IMovable {
 	private Image sprite;
 	
 	private boolean frozen;
-	private boolean selfControlling;
 
 	/**
 	 * Main constructor of the enemy fish.
@@ -35,8 +34,6 @@ public class EnemyFish extends Entity implements IMovable {
 		this.sprite = sprite;
 		vx = startvx;
 		vy = startvy;
-		
-		this.selfControlling = true;
 	}
 
 	@Override
@@ -83,7 +80,7 @@ public class EnemyFish extends Entity implements IMovable {
 	@Override
 	public void preMove() {
 		
-		if (frozen || !selfControlling) {
+		if (frozen) {
 			return;
 		}
 		
@@ -139,27 +136,6 @@ public class EnemyFish extends Entity implements IMovable {
 	 */
 	public void setFrozen(boolean frozen) {
 		this.frozen = frozen;
-	}
-	
-	/**
-	 * Sets whether this EnemyFish is controlling it's speed vector
-	 * all by itself. By disabling this option, other classes are
-	 * able to use the setSpeedVector method in order to control this
-	 * fish.
-	 * 
-	 * @param selfControlling
-	 * 		Whether this fish can control its own speed vector.
-	 */
-	public void setSelfControlling(boolean selfControlling) {
-		this.selfControlling = selfControlling;
-	}
-	
-	/**
-	 * @return
-	 * 		Whether this fish is able to adjust its own speed vector.
-	 */
-	public boolean isSelfControlling() {
-		return selfControlling;
 	}
 
 	@Override

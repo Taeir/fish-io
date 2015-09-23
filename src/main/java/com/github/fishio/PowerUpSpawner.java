@@ -25,7 +25,7 @@ public class PowerUpSpawner implements TickListener {
 	 * The amount of seconds between each time
 	 * a PowerUp is spawned.
 	 */
-	private static final int INTERVAL = 60;
+	private static final int INTERVAL = 10;
 
 	private final int intervalTicks;
 	private int tickCounter;
