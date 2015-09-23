@@ -271,6 +271,12 @@ public class PlayerFish extends Entity implements IMovable, Subject {
 
 	@Override
 	public void hitWall() {
+		State old = getState();
+		old.add("HitWall", false);
+		
+		State newState = getState();
+		newState.add("HitWall", true);
+		notifyObservers(old, newState, "HitWall");
 	}
 	
 	@Override
@@ -317,7 +323,7 @@ public class PlayerFish extends Entity implements IMovable, Subject {
 				//Remove a life.
 				State old = getState();
 				this.removeLife();
-				notifyObservers(old, getState(), "lives");
+				notifyObservers(old, getState(), "Lives");
 			}
 		}
 	}
@@ -413,7 +419,7 @@ public class PlayerFish extends Entity implements IMovable, Subject {
 	@Override
 	public State getState() {
 		State state = new State();
-		state.add("EnemyKill", isDead()).add("score", score.get()).add("lives", getLives());
+		state.add("EnemyKill", isDead()).add("score", score.get()).add("Lives", getLives());
 		return state;
 	}
 	/**
