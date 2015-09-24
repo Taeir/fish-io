@@ -11,21 +11,68 @@ import org.junit.Test;
 public class TestAchievement {
 	
 	/**
-	 * Tests the {@link Achievement#Achievement(String, int)} constructor.
+	 * Tests the {@link Achievement#Achievement(String, int)} constructor for
+	 * two seperately defined Achievements.
 	 */
 	@Test
-	public void testAchievement1() {
+	public void testAchievementconstructor1_twoAchievements() {
 		Achievement achievetest1 = new Achievement("Testachievement", 3);
+		Achievement achievetest2 = new Achievement("Testachievement", 3);
+		assertEquals(achievetest1, achievetest2);
 	}
 	
 	/**
-	 * Tests the {@link Achievement#Achievement(String)} constructor.
+	 * Tests the {@link Achievement#Achievement(String, int)} constructor for
+	 * its name field.
 	 */
 	@Test
-	public void testAchievement2() {
-		Achievement achievetest2 = new Achievement("Testachievement");
+	public void testAchievementconstructor1_name() {
+		Achievement achievetest1 = new Achievement("Testachievement", 3);
+		assertEquals(achievetest1.getName(), "Testachievement");
 	}
 	
+	/**
+	 * Tests the {@link Achievement#Achievement(String, int)} constructor for
+	 * its level field.
+	 */
+	@Test
+	public void testAchievementconstructor1_level() {
+		Achievement achievetest1 = new Achievement("Testachievement", 3);
+		assertEquals(3, achievetest1.getLevel(), 0.0);
+	}
+	
+	/**
+	 * Tests the {@link Achievement#Achievement(String)} constructor for two
+	 * seperately defined Achievements.
+	 */
+	@Test
+	public void testAchievementconstructor2_twoAchievements() {
+		Achievement achievetest1 = new Achievement("Testachievement");
+		Achievement achievetest2 = new Achievement("Testachievement");
+		assertEquals(achievetest1, achievetest2);
+	}
+	
+	/**
+	 * Tests the {@link Achievement#Achievement(String)} constructor for its
+	 * name field.
+	 */
+	@Test
+	public void testAchievementconstructor2_name() {
+		Achievement achievetest1 = new Achievement("Testachievement");
+		assertEquals(achievetest1.getName(), "Testachievement");
+	}
+	
+	/**
+	 * Tests the {@link Achievement#Achievement(String)} constructor for its
+	 * level field.
+	 */
+	@Test
+	public void testAchievementconstructor2_level() {
+		Achievement achievetest1 = new Achievement("Testachievement");
+		assertEquals(0, achievetest1.getLevel(), 0.0);
+	}
+	
+
 	/**
 	 * Tests the {@link Achievement#getName()} method.
 	 */

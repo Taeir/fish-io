@@ -8,7 +8,11 @@ import com.github.fishio.logging.LogLevel;
  * in order for the achievement to be obtained.
  *
  */
-public class Achieve {
+public final class Achieve {
+	
+	private Achieve() {
+	
+	}
 	
 	/**
 	 * Changes the achievement level of the playerDeath achievement when certain
@@ -17,7 +21,7 @@ public class Achieve {
 	 * @param playerDeath
 	 *            The Achievement associated with the playerDeath observer.
 	 */
-	public static void checkPlayerDeath(Achievement playerDeath) {
+	static void checkPlayerDeath(Achievement playerDeath) {
 		
 		if (PlayerDeathObserver.getCounter() >= 100) {
 			playerDeath.setLevel(5);
@@ -48,7 +52,7 @@ public class Achieve {
 	 * @param enemyKill
 	 *            The Achievement associated with the enemyKill observer.
 	 */
-	public static void checkEnemyKill(Achievement enemyKill) {
+	static void checkEnemyKill(Achievement enemyKill) {
 		
 		if (EnemyKillObserver.getCounter() >= 500) {
 			enemyKill.setLevel(5);
