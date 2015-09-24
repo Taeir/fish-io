@@ -10,7 +10,7 @@ notifications:
   webhooks:
     - http://octopull.rmhartog.me/api/travis/webhook
 before_install:
-  - '[ "$BUILD_PR_BRANCH" = "true" ] && { [ "$TRAVIS_PULL_REQUEST" != "false" ] || exit 1; } && git checkout HEAD^2 && echo "OCTOPULL_SHA=$(git rev-parse HEAD)"; true'
+  - '[ "$BUILD_PR_BRANCH" = "true" ] && { [ "$TRAVIS_PULL_REQUEST" != "false" ] || exit 0; } && git checkout HEAD^2 && echo "OCTOPULL_SHA=$(git rev-parse HEAD)"; true'
   - if [ $USE_FRAMEBUFFER = "true" ]; then export DISPLAY=:99.0 && sh -e /etc/init.d/xvfb start; fi
 env:
   - BUILD_PR_BRANCH=true USE_FRAMEBUFFER=true
