@@ -40,8 +40,8 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable {
 	 * Marks this Entity as dead.
 	 */
 	public void kill() {
-		logger.log(LogLevel.TRACE, this.getClass().getSimpleName() + " got killed");
 		dead = true;
+		logger.log(LogLevel.TRACE, this.getClass().getSimpleName() + " got killed");
 	}
 	
 	@Override

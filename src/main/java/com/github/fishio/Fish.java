@@ -22,8 +22,8 @@ public abstract class Fish extends Entity implements IMovable {
 	 * 		The other fish that is being eaten.
 	 */
 	public void eat(Fish other) {
-		logger.log(LogLevel.TRACE, this.getClass().getSimpleName() + " ate " + other.getClass().getSimpleName());
 		other.kill();
+		logger.log(LogLevel.TRACE, this.getClass().getSimpleName() + " ate " + other.getClass().getSimpleName());
 	}
 
 }

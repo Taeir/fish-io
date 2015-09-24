@@ -268,6 +268,9 @@ public class PlayerFish extends Fish {
 	 */
 	@Override
 	public void kill() {
+		if (isDead()) {
+			return;
+		}
 		//If invincible, ignore death.
 		if (isInvincible()) {
 			return;
@@ -296,7 +299,7 @@ public class PlayerFish extends Fish {
 
 			double tsize = this.getBoundingArea().getSize();
 			double osize = fish.getBoundingArea().getSize();
-
+			
 			if (tsize > osize * FISH_EAT_THRESHOLD) {
 				eat(fish);
 				this.addPoints((int) (osize / 200));
