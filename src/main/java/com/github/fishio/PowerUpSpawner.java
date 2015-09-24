@@ -18,8 +18,6 @@ public class PowerUpSpawner implements TickListener {
 	
 	private final int minX;
 	private final int maxX;
-	private final int minY;
-	private final int maxY;
 	
 	private static final int WIDTH = 25;
 	private static final int HEIGHT = 25;
@@ -58,8 +56,6 @@ public class PowerUpSpawner implements TickListener {
 		
 		this.minX = 0;
 		this.maxX = pf.getWidth();
-		this.minY = 0;
-		this.maxY = pf.getHeigth();
 	}
 
 	@Override
