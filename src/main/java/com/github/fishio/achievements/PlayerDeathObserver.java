@@ -39,4 +39,15 @@ class PlayerDeathObserver implements Observer {
 	public static int getCounter() {
 		return playerdeathcounter;
 	}
+	
+	/**
+	 * Sets the death counter of the player fish. For testing purposes only.
+	 * 
+	 * @param counter
+	 *            Number which sets the deathcounter to a specific value for
+	 *            testing.
+	 */
+	public static void setCounter(int counter) {
+		playerdeathcounter = counter;
+	}
 }

@@ -41,5 +41,17 @@ class EnemyKillObserver implements Observer {
 	public static int getCounter() {
 		return enemykillcounter;
 	}
+	
+	/**
+	 * Sets the enemy fish kill counter of the player fish. For testing purposes
+	 * only.
+	 * 
+	 * @param counter
+	 *            Number which sets the enemykillcounter to a specific value for
+	 *            testing.
+	 */
+	public static void setCounter(int counter) {
+		enemykillcounter = counter;
+	}
 
 }

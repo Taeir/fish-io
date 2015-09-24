@@ -4,14 +4,11 @@ import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
 /**
- * This class creates a set of Achievements and sets the rules that have to be
- * met in order for the achievement to be obtained.
+ * This class loads a set of Achievements and sets the rules that have to be met
+ * in order for the achievement to be obtained.
  *
  */
 public class Achieve {
-	
-	private Achievement playerDeath = new Achievement("playerDeath");
-	private Achievement enemyKill = new Achievement("enemyKill");
 	
 	/**
 	 * Changes the achievement level of the playerDeath achievement when certain
@@ -45,10 +42,13 @@ public class Achieve {
 	}
 	
 	/**
-	 * Changes the achievement level of the playerDeath achievement when certain
+	 * Changes the achievement level of the enemyKill achievement when certain
 	 * requirements have been met.
+	 * 
+	 * @param enemyKill
+	 *            The Achievement associated with the enemyKill observer.
 	 */
-	public void checkEnemyKill() {
+	public static void checkEnemyKill(Achievement enemyKill) {
 		
 		if (EnemyKillObserver.getCounter() >= 500) {
 			enemyKill.setLevel(5);
