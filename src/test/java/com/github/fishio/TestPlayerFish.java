@@ -77,10 +77,11 @@ public class TestPlayerFish {
 	@Test
 	public void testCollideWithOtherPlayerFish() {
 		PlayerFish pf2 = Mockito.spy(new PlayerFish(Mockito.mock(BoundingBox.class), Mockito.mock(Stage.class), null));
-		
+		when(pf2.getBoundingArea().getSize()).thenReturn(1000000.0);
+		pf.livesProperty().set(1);
 		pf.onCollide(pf2);
-		
-		Mockito.verify(pf, never()).kill();
+	
+		assertTrue(pf.isDead());
 		Mockito.verify(pf2, never()).kill();
 	}
 	
