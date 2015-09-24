@@ -19,8 +19,8 @@ public class PowerUpSpawner implements TickListener {
 	private final int minX;
 	private final int maxX;
 	
-	private static final int WIDTH = 25;
-	private static final int HEIGHT = 25;
+	public static final int WIDTH = 25;
+	public static final int HEIGHT = 25;
 	
 	/**
 	 * The amount of different PowerUps that are supported.
