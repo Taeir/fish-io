@@ -11,7 +11,7 @@ import javafx.stage.Stage;
  * Represents a fish that the user can control using
  * the keyboard.
  */
-public class PlayerFish extends Fish {
+public class PlayerFish extends Entity implements IEatable, IMovable {
 
 	private double vx;
 	private double vy;
@@ -291,25 +291,18 @@ public class PlayerFish extends Fish {
 
 	@Override
 	public void onCollide(ICollidable other) {
-		if (other instanceof Fish) {
-			Fish fish = (Fish) other;
-			if (fish.isDead()) {
-				return;
-			}
+		if (other instanceof IEatable) {
+			IEatable eatable = (IEatable) other;
+		
+			if (eatable.canBeEatenBy(this)) {
+				eatable.eat();
+				this.addPoints((int) (eatable.getSize() / 200));
+				double dSize = GROWTH_SPEED * eatable.getSize() / getSize();
+				getBoundingArea().increaseSize(dSize);				
+			} 
 
-			double tsize = this.getBoundingArea().getSize();
-			double osize = fish.getBoundingArea().getSize();
-			
-			if (tsize > osize * FISH_EAT_THRESHOLD) {
-				eat(fish);
-				this.addPoints((int) (osize / 200));
-				double dSize = GROWTH_SPEED * osize / tsize;
-				getBoundingArea().increaseSize(dSize);
-			} else if (osize > tsize * FISH_EAT_THRESHOLD) {
-				if (isInvincible()) {
-					return;
-				}
-				fish.eat(this);
+			if (this.canBeEatenBy(eatable)) {
+				eatable.eat(this);
 			}
 		}
 	}
@@ -418,6 +411,27 @@ public class PlayerFish extends Fish {
 	 */
 	public boolean isInvincible() {
 		return invincible != 0L && invincible > System.currentTimeMillis();
+	}
+
+	@Override
+	public boolean canBeEatenBy(IEatable other) {
+		if (isInvincible()) {
+			return false;
+		}		
+		if (other.getSize() > getSize() * FISH_EAT_THRESHOLD) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void eat() {
+		kill();
+	}
+
+	@Override
+	public double getSize() {
+		return getBoundingArea().getSize();
 	}
 
 }
