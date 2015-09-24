@@ -19,7 +19,7 @@ env:
 matrix:
   allow_failures:
     - env:
-      - BUILD_PR_BRANCH=true
+      - BUILD_PR_BRANCH=true USE_FRAMEBUFFER=true
 
 after_script:
   - echo "== CHECKSTYLE_RESULT =="; cat "target/checkstyle-result.xml"; echo "== END_CHECKSTYLE_RESULT =="
