@@ -26,6 +26,7 @@ public class FishIO extends Application {
 			new TxtFileHandler(new TimeStampFormat(), new File("logs" +  File.separator + "log.txt"));
 	private LogLevel logLevel = LogLevel.WARNING;
 
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		instance = this;

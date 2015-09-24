@@ -19,6 +19,7 @@ public class TestLog {
 	private Log log; 
 	private ConsoleHandler mockedHandler1;
 	private ConsoleHandler mockedHandler2;
+	private String test = "LogMessage";
 	
 	/**
 	 * Initialize the logger and handler.
@@ -80,7 +81,7 @@ public class TestLog {
 	 */
 	@Test
 	public void testLogNoHandlers() {
-		log.log(LogLevel.ERROR, "TestLogNoHandlers");
+		log.log(LogLevel.ERROR, test);
 	}
 	
 	/**
@@ -130,8 +131,8 @@ public class TestLog {
 	public void testLogSingleHandlersSingleLog() {
 		//Attach handler
 		log.addHandler(mockedHandler1);
-		log.log(LogLevel.ERROR, "TestLogSingleHandler");
-		Mockito.verify(mockedHandler1).output(LogLevel.ERROR, "TestLogSingleHandler");
+		log.log(LogLevel.ERROR, test);
+		Mockito.verify(mockedHandler1).output(LogLevel.ERROR, test);
 	}
 	
 	/**
@@ -141,9 +142,9 @@ public class TestLog {
 	public void testLogSingleHandlersMultipleLogs() {
 		//Attach handler
 		log.addHandler(mockedHandler1);
-		log.log(LogLevel.ERROR, "TestLogSingleHandler");
-		log.log(LogLevel.ERROR, "TestLogSingleHandler");
-		Mockito.verify(mockedHandler1, times(2)).output(LogLevel.ERROR, "TestLogSingleHandler");
+		log.log(LogLevel.ERROR, test);
+		log.log(LogLevel.ERROR, test);
+		Mockito.verify(mockedHandler1, times(2)).output(LogLevel.ERROR, test);
 	}
 	
 	/**
@@ -154,10 +155,9 @@ public class TestLog {
 		//Attach handlers
 		log.addHandler(mockedHandler1);
 		log.addHandler(mockedHandler2);
-		
-		log.log(LogLevel.ERROR, "TestLogMultipleHandlers1");
-		Mockito.verify(mockedHandler1).output(LogLevel.ERROR, "TestLogMultipleHandlers1");
-		Mockito.verify(mockedHandler2).output(LogLevel.ERROR, "TestLogMultipleHandlers1");
+		log.log(LogLevel.ERROR, test);
+		Mockito.verify(mockedHandler1).output(LogLevel.ERROR, test);
+		Mockito.verify(mockedHandler2).output(LogLevel.ERROR, test);
 	}
 	
 	/**
@@ -170,10 +170,10 @@ public class TestLog {
 		log.addHandler(mockedHandler1);
 		log.addHandler(mockedHandler2);
 		
-		log.log(LogLevel.DEBUG, "TestLogMultipleHandlers1");
-		log.log(LogLevel.DEBUG, "TestLogMultipleHandlers1");
-		Mockito.verify(mockedHandler1, never()).output(LogLevel.ERROR, "TestLogMultipleHandlers1");
-		Mockito.verify(mockedHandler2, never()).output(LogLevel.ERROR, "TestLogMultipleHandlers1");
+		log.log(LogLevel.DEBUG, test);
+		log.log(LogLevel.DEBUG, test);
+		Mockito.verify(mockedHandler1, never()).output(LogLevel.ERROR, test);
+		Mockito.verify(mockedHandler2, never()).output(LogLevel.ERROR, test);
 	}
 	
 	/**
@@ -185,10 +185,10 @@ public class TestLog {
 		log.addHandler(mockedHandler1);
 		log.addHandler(mockedHandler2);
 		
-		log.log(LogLevel.ERROR, "TestLogMultipleHandlers1");
-		log.log(LogLevel.ERROR, "TestLogMultipleHandlers1");
-		Mockito.verify(mockedHandler1, times(2)).output(LogLevel.ERROR, "TestLogMultipleHandlers1");
-		Mockito.verify(mockedHandler2, times(2)).output(LogLevel.ERROR, "TestLogMultipleHandlers1");
+		log.log(LogLevel.ERROR, test);
+		log.log(LogLevel.ERROR, test);
+		Mockito.verify(mockedHandler1, times(2)).output(LogLevel.ERROR, test);
+		Mockito.verify(mockedHandler2, times(2)).output(LogLevel.ERROR, test);
 	}
 	
 }
