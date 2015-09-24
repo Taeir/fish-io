@@ -23,6 +23,12 @@ public class PowerUpSpawner implements TickListener {
 	private static final int WIDTH = 25;
 	private static final int HEIGHT = 25;
 	
+	/**
+	 * The amount of different PowerUps that are supported.
+	 * This field should be updated with each new PowerUp added.
+	 */
+	private static final int POWERUP_COUNT = 2; 
+	
 	private Random rand = new Random();
 	
 	/**
@@ -79,8 +85,7 @@ public class PowerUpSpawner implements TickListener {
 		BoundingBox bb = new BoundingBox(new Vec2d(x, y), WIDTH, HEIGHT);
 		
 		//Choosing a random PowerUp.
-		int powerUpCount = 2;
-		switch (rand.nextInt(powerUpCount)) {
+		switch (rand.nextInt(POWERUP_COUNT)) {
 		case 0:
 			return new PuFreeze(bb, pf);
 		case 1:
@@ -89,6 +94,35 @@ public class PowerUpSpawner implements TickListener {
 			return null;
 		}
 		
+	}
+	
+	
+	/**
+	 * Sets the Random object used by this class.
+	 * Useful for testing (setting a mocked Random object,
+	 * then stubbing it).
+	 * 
+	 * @param rand
+	 * 		The random to set
+	 */
+	public void setRandom(Random rand) {
+		this.rand = rand;
+	}
+	
+	/**
+	 * @return
+	 * 		The amount of PowerUps supported by this PowerUpSpawner.
+	 */
+	public int getPowerUpCount() {
+		return POWERUP_COUNT;
+	}
+	
+	/**
+	 * @return
+	 * 		The time in seconds before a new PowerUp spawns.
+	 */
+	public int getInterval() {
+		return INTERVAL;
 	}
 	
 }
