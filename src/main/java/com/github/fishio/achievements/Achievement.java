@@ -66,4 +66,35 @@ public class Achievement {
 	public void setLevel(int levelachieved) {
 		level = levelachieved;
 	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		
+		result = prime * result;
+		return result + achievement.hashCode();
+		}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Achievement other = (Achievement) obj;
+		if (!achievement.equals(other.achievement)) {
+			return false;
+		}
+		if (level != other.level) {
+			return false;
+		}
+		return true;
+	}
 }
