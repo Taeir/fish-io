@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.github.fishio.listeners.TickListener;
 import com.github.fishio.power_ups.PowerUp;
+import com.github.fishio.power_ups.PuExtraLife;
 import com.github.fishio.power_ups.PuFreeze;
 import com.github.fishio.power_ups.PuSuperSpeed;
 
@@ -27,7 +28,7 @@ public class PowerUpSpawner implements TickListener {
 	 * The amount of different PowerUps that are supported.
 	 * This field should be updated with each new PowerUp added.
 	 */
-	private static final int POWERUP_COUNT = 2; 
+	private static final int POWERUP_COUNT = 3; 
 	
 	private Random rand = new Random();
 	
@@ -35,7 +36,7 @@ public class PowerUpSpawner implements TickListener {
 	 * The amount of seconds between each time
 	 * a PowerUp is spawned.
 	 */
-	private static final int INTERVAL = 10;
+	private static final int INTERVAL = 30;
 
 	private final int intervalTicks;
 	private int tickCounter;
@@ -79,9 +80,10 @@ public class PowerUpSpawner implements TickListener {
 	 */
 	public PowerUp getRandomPowerUp() {
 		
-		//Creating the BoundingBox for the PowerUp with a random start location.
+		//Creating the BoundingBox for the PowerUp with a on the
+		//top of the screen and with a random x location.
 		int x = rand.nextInt(maxX - minX + 1) + minX;
-		int y = rand.nextInt(maxY - minY + 1) + minY;
+		int y = -HEIGHT; //(top of the screen: y=0, to spawn outside it, we need Ytop - height)
 		BoundingBox bb = new BoundingBox(new Vec2d(x, y), WIDTH, HEIGHT);
 		
 		//Choosing a random PowerUp.
@@ -90,6 +92,8 @@ public class PowerUpSpawner implements TickListener {
 			return new PuFreeze(bb, pf);
 		case 1:
 			return new PuSuperSpeed(bb, pf);
+		case 2:
+			return new PuExtraLife(bb, pf);
 		default:
 			return null;
 		}

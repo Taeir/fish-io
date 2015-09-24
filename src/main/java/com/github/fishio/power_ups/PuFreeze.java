@@ -5,6 +5,7 @@ import com.github.fishio.Entity;
 import com.github.fishio.ICollisionArea;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
+import com.github.fishio.Vec2d;
 
 /**
  * A PowerUp with the effect that it freezes all

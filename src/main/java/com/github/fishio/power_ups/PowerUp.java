@@ -3,16 +3,23 @@ package com.github.fishio.power_ups;
 import com.github.fishio.Entity;
 import com.github.fishio.ICollidable;
 import com.github.fishio.ICollisionArea;
+import com.github.fishio.IMovable;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
+import com.github.fishio.Vec2d;
 
 /**
  * A PowerUp is an entity that, when colliding with a player fish,
  * executes a certain (positive) effect. 
  */
-public abstract class PowerUp extends Entity {
+public abstract class PowerUp extends Entity implements IMovable {
 
 	private PlayingField pfield;
+	
+	private Vec2d speedVector;
+	
+	public static final double DEFAULT_VX = 0;
+	public static final double DEFAULT_VY = -2;
 	
 	/**
 	 * Creates a new PowerUp.
@@ -26,6 +33,8 @@ public abstract class PowerUp extends Entity {
 		super(ba);
 		
 		this.pfield = pfield;
+		
+		this.speedVector = new Vec2d(DEFAULT_VX, DEFAULT_VY);
 	}
 	
 	/**
@@ -51,5 +60,28 @@ public abstract class PowerUp extends Entity {
 			executeEffect((PlayerFish) other);
 		}
 	}
+	
+	@Override
+	public Vec2d getSpeedVector() {
+		return new Vec2d(speedVector);
+	}
+
+	@Override
+	public void setSpeedVector(Vec2d vector) {
+		this.speedVector = vector;
+	}
+
+	@Override
+	public boolean canMoveThroughWall() {
+		return true;
+	}
+
+	@Override
+	public void hitWall() { 
+		setDead();
+	}
+
+	@Override
+	public void preMove() { }
 	
 }
