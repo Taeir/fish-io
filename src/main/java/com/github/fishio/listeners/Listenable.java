@@ -61,7 +61,7 @@ public interface Listenable {
 	default void callPostTick(String logPrefix) {
 		for (TickListener tl : getListeners()) {
 			try {
-				tl.preTick();
+				tl.postTick();
 			} catch (Exception ex) {
 				if (logPrefix != null) {
 					Log.getLogger().log(LogLevel.ERROR, "[" + logPrefix + "] Error in preTick:\t" + ex.getMessage());

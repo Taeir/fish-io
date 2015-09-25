@@ -152,7 +152,7 @@ public abstract class PlayingField {
 		//add enemy entities
 		while (enemyCount < MAX_ENEMY_COUNT) {
 			//TODO add scalible enemyFish
-			EnemyFish eFish = LevelBuilder.randomizedFish(getPlayers().get(0).getBoundingArea());
+			EnemyFish eFish = EnemyFishFactory.randomizedFish(getPlayers().get(0).getBoundingArea());
 			add(eFish);
 			
 			enemyCount++;
@@ -442,7 +442,7 @@ public abstract class PlayingField {
 		deadDrawables.addAll(drawables);
 
 		for (Entity e : entities) {
-			e.setDead();
+			e.kill();
 		}
 
 		entities.clear();
@@ -462,7 +462,7 @@ public abstract class PlayingField {
 				continue;
 			}
 			
-			e.setDead();
+			e.kill();
 		}
 
 		for (IDrawable d : drawables) {

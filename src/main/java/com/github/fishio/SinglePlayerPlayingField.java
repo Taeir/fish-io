@@ -8,7 +8,9 @@ import javafx.scene.canvas.Canvas;
 /**
  * Represents a playing field designed for single player.
  */
+
 public class SinglePlayerPlayingField extends PlayingField {
+
 	public static final int START_X = 640;
 	public static final int START_Y = 335;
 	

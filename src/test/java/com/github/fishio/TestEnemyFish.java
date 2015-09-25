@@ -3,14 +3,16 @@ package com.github.fishio;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
  * This class tests the EnemyFish class.
  */
-public class TestEnemyFish {
+public class TestEnemyFish implements TestIEatable {
 	
 	private BoundingBox bb1;
 	private EnemyFish enemy1;
@@ -22,7 +24,7 @@ public class TestEnemyFish {
 	@Before
 	public void createfishbefore() {
 		bb1 = new BoundingBox(1.0, 2.0, 3.0, 4.0);
-		enemy1 = new EnemyFish(bb1, null, 3.0, 5.0);
+		enemy1 = Mockito.spy(new EnemyFish(bb1, null, 3.0, 5.0));
 	}
 	
 	/**
@@ -81,10 +83,10 @@ public class TestEnemyFish {
 	 */
 	@Test
 	public void testlimitVx1() {
-		Vec2d vec1 = new Vec2d(LevelBuilder.MAX_EFISH_SPEED + 1, 2);
+		Vec2d vec1 = new Vec2d(EnemyFishFactory.MAX_EFISH_SPEED + 1, 2);
 		enemy1.setSpeedVector(vec1);
 		enemy1.limitVx();
-		assertEquals(LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
+		assertEquals(EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
 	}
 	
 	/**
@@ -93,10 +95,10 @@ public class TestEnemyFish {
 	 */
 	@Test
 	public void testlimitVx2() {
-		Vec2d vec1 = new Vec2d(-LevelBuilder.MAX_EFISH_SPEED - 1, 2);
+		Vec2d vec1 = new Vec2d(-EnemyFishFactory.MAX_EFISH_SPEED - 1, 2);
 		enemy1.setSpeedVector(vec1);
 		enemy1.limitVx();
-		assertEquals(-LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
+		assertEquals(-EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
 	}
 	
 	/**
@@ -105,10 +107,10 @@ public class TestEnemyFish {
 	 */
 	@Test
 	public void testlimitVy1() {
-		Vec2d vec1 = new Vec2d(2, LevelBuilder.MAX_EFISH_SPEED + 1);
+		Vec2d vec1 = new Vec2d(2, EnemyFishFactory.MAX_EFISH_SPEED + 1);
 		enemy1.setSpeedVector(vec1);
 		enemy1.limitVy();
-		assertEquals(LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
+		assertEquals(EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
 	}
 	
 	/**
@@ -117,10 +119,10 @@ public class TestEnemyFish {
 	 */
 	@Test
 	public void testlimitVy2() {
-		Vec2d vec1 = new Vec2d(2, -LevelBuilder.MAX_EFISH_SPEED - 1);
+		Vec2d vec1 = new Vec2d(2, -EnemyFishFactory.MAX_EFISH_SPEED - 1);
 		enemy1.setSpeedVector(vec1);
 		enemy1.limitVy();
-		assertEquals(-LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
+		assertEquals(-EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
 	}
 	
 	/**
@@ -129,11 +131,11 @@ public class TestEnemyFish {
 	 */
 	@Test
 	public void testlimitSpeed1() {
-		Vec2d vec1 = new Vec2d(LevelBuilder.MAX_EFISH_SPEED + 1, LevelBuilder.MAX_EFISH_SPEED + 1);
+		Vec2d vec1 = new Vec2d(EnemyFishFactory.MAX_EFISH_SPEED + 1, EnemyFishFactory.MAX_EFISH_SPEED + 1);
 		enemy1.setSpeedVector(vec1);
 		enemy1.limitSpeed();
-		assertEquals(LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
-		assertEquals(LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
+		assertEquals(EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
+		assertEquals(EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
 	}
 	
 	/**
@@ -142,10 +144,75 @@ public class TestEnemyFish {
 	 */
 	@Test
 	public void testlimitSpeed2() {
-		Vec2d vec1 = new Vec2d(-LevelBuilder.MAX_EFISH_SPEED - 1, -LevelBuilder.MAX_EFISH_SPEED - 1);
+		Vec2d vec1 = new Vec2d(-EnemyFishFactory.MAX_EFISH_SPEED - 1, -EnemyFishFactory.MAX_EFISH_SPEED - 1);
 		enemy1.setSpeedVector(vec1);
 		enemy1.limitSpeed();
-		assertEquals(-LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
-		assertEquals(-LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
+		assertEquals(-EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
+		assertEquals(-EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
+	}
+	
+	/**
+	 * Tests {@link EnemyFish#eat()}.
+	 */
+	@Test
+	public void testEat() {
+		enemy1.eat();
+		assertTrue(enemy1.isDead());
+	}
+	
+	/**
+	 * Tests {@link EnemyFish#kill()}.
+	 */
+	@Test
+	public void testKill() {
+		enemy1.kill();
+		assertTrue(enemy1.isDead());
+	}
+	
+	@Override
+	public void testCanBeEatenBy() {
+		testCanBeEatenByLarger();
+		testCanBeEatenBySame();
+		testCanBeEatenBySmaller();
+	}
+	
+	/**
+	 * Tests {@link EnemyFish#canBeEatenBy(IEatable)}.
+	 * Test for larger enemy.
+	 */
+	public void testCanBeEatenByLarger() {
+		IEatable other = Mockito.mock(IEatable.class);
+		when(other.getSize()).thenReturn(10.0);
+		assertTrue(enemy1.canBeEatenBy(other));
+	}
+	
+	/**
+	 * Tests {@link EnemyFish#canBeEatenBy(IEatable)}.
+	 * Test with fish with same size.
+	 */
+	public void testCanBeEatenBySame() {
+		IEatable other = Mockito.mock(IEatable.class);
+		when(other.getSize()).thenReturn(4.0);
+		assertFalse(enemy1.canBeEatenBy(other));
+	}
+	
+	/**
+	 * Tests {@link EnemyFish#canBeEatenBy(IEatable)}.
+	 * Test with a smaller fish.
+	 */
+	public void testCanBeEatenBySmaller() {
+		IEatable other = Mockito.mock(IEatable.class);
+		when(other.getSize()).thenReturn(3.0);
+		assertFalse(enemy1.canBeEatenBy(other));
+	}
+	
+	@Override
+	public void testGetSize() {
+		assertEquals(4, enemy1.getSize(), 0.0000001D);
+	}
+
+	@Override
+	public IEatable getTestObject() {
+		return enemy1;
 	}
 }
