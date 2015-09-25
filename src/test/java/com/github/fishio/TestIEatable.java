@@ -1,43 +1,45 @@
 package com.github.fishio;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 /**
- * Test class for the default methods in IEatable.
+ * Test interface for the default methods in IEatable.
  */
-public class TestIEatable {
-	private IEatable eatable;
+public interface TestIEatable {
 	
 	/**
-	 * Before method for this class.
+	 * @return
+	 * 		The IEatable Object used for testing.
 	 */
-	@Before
-	public void before() {
-		eatable = new IEatable() {
-			@Override
-			public boolean canBeEatenBy(IEatable other) {
-				return false;
-			}
-			@Override
-			public void eat() {
-			}
-			@Override
-			public double getSize() {
-				return 0;
-			}
-		};
-	}
+	IEatable getTestObject();
+	
+	/**
+	 * Tests the canBeEatenBy method.
+	 */
+	@Test
+	void testCanBeEatenBy();
+	
+	/**
+	 * Tests the eat method.
+	 */
+	@Test
+	void testEat();
 	
 	/**
 	 * Tests {@link IEatable#eat(IEatable)}.
 	 */
 	@Test
-	public void testDefaultEat() {
+	default void testEatOther() {
+		IEatable eatable = getTestObject();
 		IEatable other = Mockito.mock(IEatable.class);
 		eatable.eat(other);
 		Mockito.verify(other).eat();
 	}
-
+	
+	/**
+	 * Tests the getSize method.
+	 */
+	@Test
+	void testGetSize();
 }

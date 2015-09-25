@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 /**
  * Tests the PlayerFish class.
  */
-public class TestPlayerFish {
+public class TestPlayerFish implements TestIEatable {
 	//TODO Change some of the Mockito mocks and testing calls with verify(never), to simple getters.
 	//TODO - Comment made by Taeir - 2015/09/18
 	private PlayerFish pf;
@@ -34,7 +34,7 @@ public class TestPlayerFish {
 	 * Tests {@link PlayerFish#getSize()}.
 	 */
 	@Test
-	public void testGetStandardSize() {
+	public void testGetSize() {
 		assertEquals(5.0, pf.getSize(), 1E-8);
 	}
 	
@@ -137,11 +137,20 @@ public class TestPlayerFish {
 		assertEquals(time, pf.getInvincible());
 	}
 	
+
+
+	@Override
+	public void testCanBeEatenBy() {
+		testCanBeEatenByLargerEnemy();
+		testCanBeEatenBySameEnemy();
+		testCanBeEatenBySmallerEnemy();
+		testCanBeEatenByInvincible();
+	}
+	
 	/**
 	 * Tests {@link PlayerFish#canBeEatenBy(IEatable).
 	 * Test for larger enemy.
 	 */
-	@Test
 	public void testCanBeEatenByLargerEnemy() {
 		IEatable other = Mockito.mock(IEatable.class);
 		when(other.getSize()).thenReturn(10.0);
@@ -152,7 +161,6 @@ public class TestPlayerFish {
 	 * Tests {@link PlayerFish#canBeEatenBy(IEatable).
 	 * Test with enemy with same size.
 	 */
-	@Test
 	public void testCanBeEatenBySameEnemy() {
 		IEatable other = Mockito.mock(IEatable.class);
 		when(other.getSize()).thenReturn(5.0);
@@ -163,7 +171,6 @@ public class TestPlayerFish {
 	 * Tests {@link PlayerFish#canBeEatenBy(IEatable).
 	 * Test with a smaller enemy.
 	 */
-	@Test
 	public void testCanBeEatenBySmallerEnemy() {
 		IEatable other = Mockito.mock(IEatable.class);
 		when(other.getSize()).thenReturn(4.0);
@@ -174,7 +181,6 @@ public class TestPlayerFish {
 	 * Tests {@link PlayerFish#canBeEatenBy(IEatable).
 	 * Test for when the player fish is invincible
 	 */
-	@Test
 	public void testCanBeEatenByInvincible() {
 		IEatable other = Mockito.mock(IEatable.class);
 		when(other.getSize()).thenReturn(4.0);
@@ -388,5 +394,10 @@ public class TestPlayerFish {
 		
 		//The amount of lives should have been decreased.
 		assertEquals(0, pf.getLives());
+	}
+
+	@Override
+	public IEatable getTestObject() {
+		return pf;
 	}
 }

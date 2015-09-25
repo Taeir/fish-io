@@ -12,7 +12,7 @@ import org.mockito.Mockito;
 /**
  * This class tests the EnemyFish class.
  */
-public class TestEnemyFish {
+public class TestEnemyFish implements TestIEatable {
 	
 	private BoundingBox bb1;
 	private EnemyFish enemy1;
@@ -24,7 +24,7 @@ public class TestEnemyFish {
 	@Before
 	public void createfishbefore() {
 		bb1 = new BoundingBox(1.0, 2.0, 3.0, 4.0);
-		enemy1 = new EnemyFish(bb1, null, 3.0, 5.0);
+		enemy1 = Mockito.spy(new EnemyFish(bb1, null, 3.0, 5.0));
 	}
 	
 	/**
@@ -169,11 +169,17 @@ public class TestEnemyFish {
 		assertTrue(enemy1.isDead());
 	}
 	
+	@Override
+	public void testCanBeEatenBy() {
+		testCanBeEatenByLarger();
+		testCanBeEatenBySame();
+		testCanBeEatenBySmaller();
+	}
+	
 	/**
 	 * Tests {@link EnemyFish#canBeEatenBy(IEatable)}.
 	 * Test for larger enemy.
 	 */
-	@Test
 	public void testCanBeEatenByLarger() {
 		IEatable other = Mockito.mock(IEatable.class);
 		when(other.getSize()).thenReturn(10.0);
@@ -184,7 +190,6 @@ public class TestEnemyFish {
 	 * Tests {@link EnemyFish#canBeEatenBy(IEatable)}.
 	 * Test with fish with same size.
 	 */
-	@Test
 	public void testCanBeEatenBySame() {
 		IEatable other = Mockito.mock(IEatable.class);
 		when(other.getSize()).thenReturn(4.0);
@@ -195,10 +200,19 @@ public class TestEnemyFish {
 	 * Tests {@link EnemyFish#canBeEatenBy(IEatable)}.
 	 * Test with a smaller fish.
 	 */
-	@Test
 	public void testCanBeEatenBySmaller() {
 		IEatable other = Mockito.mock(IEatable.class);
 		when(other.getSize()).thenReturn(3.0);
 		assertFalse(enemy1.canBeEatenBy(other));
+	}
+	
+	@Override
+	public void testGetSize() {
+		assertEquals(4, enemy1.getSize(), 0.0000001D);
+	}
+
+	@Override
+	public IEatable getTestObject() {
+		return enemy1;
 	}
 }
