@@ -31,6 +31,146 @@ public class TestPlayerFish {
 	}
 	
 	/**
+	 * Tests {@link PlayerFish#getSize()}.
+	 */
+	@Test
+	public void testGetStandardSize() {
+		assertEquals(5.0, pf.getSize(), 1E-8);
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#eat()}.
+	 */
+	@Test
+	public void testEat() {
+		pf.eat();
+		Mockito.verify(pf).kill();
+	}
+	
+	//TODO test moving with keys
+	
+	@Test
+	public void testSwimUp() {
+		pf.setUpPressed(true);
+		pf.adjustYSpeed();
+		assertTrue(pf.getSpeedVector().y > 0);
+	}
+	
+	@Test
+	public void testSwimDown() {
+		pf.setDownPressed(true);
+		pf.adjustYSpeed();
+		assertTrue(pf.getSpeedVector().y < 0);
+	}
+	
+	@Test
+	public void testSwimRight() {
+		pf.setRightPressed(true);
+		pf.adjustXSpeed();
+		assertTrue(pf.getSpeedVector().x > 0);
+	}
+	
+	@Test
+	public void testSwimLeft() {
+		pf.setLeftPressed(true);
+		pf.adjustXSpeed();
+		assertTrue(pf.getSpeedVector().x < 0);
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#setDead()}.
+	 */
+	@Test
+	public void testSetDead() {
+		pf.setDead();
+		assertTrue(pf.isDead());
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#setDead()}.
+	 * Test with a lot of lives.
+	 */
+	@Test
+	public void testSetDeadLives() {
+		pf.livesProperty().set(Integer.MAX_VALUE);
+		pf.setDead();
+		assertTrue(pf.isDead());		
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#setInvincible()}.
+	 */
+	@Test
+	public void testInvincibleOver() {
+		pf.setInvincible(System.currentTimeMillis() - 100);
+		assertFalse(pf.isInvincible());
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#getInvincible()}.
+	 */
+	@Test
+	public void testGetInvincibleOver() {
+		pf.setInvincible(System.currentTimeMillis() - 100);
+		assertEquals(0, pf.getInvincible());
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#getInvincible()}.
+	 */
+	@Test
+	public void testGetInvincibleActive() {
+		long time = System.currentTimeMillis() + 100;
+		pf.setInvincible(time);
+		assertEquals(time, pf.getInvincible());
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#canBeEatenBy(IEatable).
+	 * Test for larger enemy.
+	 */
+	@Test
+	public void testCanBeEatenByLargerEnemy() {
+		IEatable other = Mockito.mock(IEatable.class);
+		when(other.getSize()).thenReturn(10.0);
+		assertTrue(pf.canBeEatenBy(other));
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#canBeEatenBy(IEatable).
+	 * Test with enemy with same size.
+	 */
+	@Test
+	public void testCanBeEatenBySameEnemy() {
+		IEatable other = Mockito.mock(IEatable.class);
+		when(other.getSize()).thenReturn(5.0);
+		assertFalse(pf.canBeEatenBy(other));
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#canBeEatenBy(IEatable).
+	 * Test with a smaller enemy.
+	 */
+	@Test
+	public void testCanBeEatenBySmallerEnemy() {
+		IEatable other = Mockito.mock(IEatable.class);
+		when(other.getSize()).thenReturn(4.0);
+		assertFalse(pf.canBeEatenBy(other));
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#canBeEatenBy(IEatable).
+	 * Test for when the player fish is invincible
+	 */
+	@Test
+	public void testCanBeEatenByInvincible() {
+		IEatable other = Mockito.mock(IEatable.class);
+		when(other.getSize()).thenReturn(4.0);
+		pf.setInvincible(-1);
+		assertFalse(pf.canBeEatenBy(other));
+	}
+	
+	/**
 	 * Tests {@link PlayerFish#getSpeedVector()}.
 	 */
 	@Test
