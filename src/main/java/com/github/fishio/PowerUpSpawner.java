@@ -53,7 +53,6 @@ public class PowerUpSpawner implements TickListener {
 	 */
 	public PowerUpSpawner(PlayingField pf) {
 		this.pf = pf;
-		pf.registerGameListener(this);
 		
 		this.intervalTicks = INTERVAL * pf.getFPS();
 		this.tickCounter = 0;
@@ -62,6 +61,8 @@ public class PowerUpSpawner implements TickListener {
 		this.maxX = pf.getWidth();
 		
 		this.log = Log.getLogger();
+		
+		pf.registerGameListener(this);
 	}
 
 	@Override
