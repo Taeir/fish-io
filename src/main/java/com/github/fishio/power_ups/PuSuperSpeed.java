@@ -1,5 +1,7 @@
 package com.github.fishio.power_ups;
 
+import javafx.scene.image.Image;
+
 import com.github.fishio.ICollisionArea;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
@@ -24,9 +26,11 @@ public class PuSuperSpeed extends DurationPowerUp {
 	 * 		The CollisonArea of the PowerUp.
 	 * @param pfield
 	 * 		The PlayingField in which this PowerUp is located.
+	 * @param sprite
+	 * 		The sprite of this PowerUp.
 	 */
-	public PuSuperSpeed(ICollisionArea ba, PlayingField pfield) {
-		super(ba, pfield);
+	public PuSuperSpeed(ICollisionArea ba, PlayingField pfield, Image sprite) {
+		super(ba, pfield, sprite);
 	}
 
 	@Override

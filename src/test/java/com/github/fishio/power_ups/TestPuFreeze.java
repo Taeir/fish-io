@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.scene.image.Image;
+
 import org.junit.Before;
 import org.mockito.Mockito;
 
@@ -31,7 +33,7 @@ public class TestPuFreeze extends TestDurationPowerUp {
 	@Before
 	public void setUp() {
 		this.pf = Mockito.mock(PlayingField.class);
-		this.pu = Mockito.spy(new PuFreeze(null, pf));
+		this.pu = Mockito.spy(new PuFreeze(null, pf, Mockito.mock(Image.class)));
 		
 		//To prevent nullPointerException, mock the target of the PowerUp.
 		this.pu.setTarget(Mockito.mock(PlayerFish.class));
