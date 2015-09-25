@@ -6,7 +6,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.github.fishio.listeners.Listenable;
@@ -39,7 +38,6 @@ public interface IListenableTest {
 	/**
 	 * Test for {@link Listenable#getListeners()}.
 	 */
-	@Test
 	default void testGetListeners() {
 		Listenable l = getListenable();
 		
@@ -50,7 +48,6 @@ public interface IListenableTest {
 	/**
 	 * Test for {@link Listenable#registerListener(TickListener)}.
 	 */
-	@Test
 	default void testRegisterListener() {
 		Listenable l = getListenable();
 		
@@ -65,7 +62,6 @@ public interface IListenableTest {
 	/**
 	 * Test for {@link Listenable#unregisterListener(TickListener)}.
 	 */
-	@Test
 	default void testUnregisterListener() {
 		Listenable l = getListenable();
 		
@@ -86,7 +82,6 @@ public interface IListenableTest {
 	/**
 	 * Test for {@link Listenable#callPreTick(String)}.
 	 */
-	@Test
 	default void testCallPreTick() {
 		Listenable l = getListenable();
 		
@@ -108,13 +103,12 @@ public interface IListenableTest {
 	 * Test for {@link Listenable#callPreTick(String)}, when
 	 * {@link TickListener#preTick()} throws an exception.
 	 */
-	@Test
 	default void testCallPreTick2() {
 		Listenable l = getListenable();
 		
 		//Create a TickListener that throws an exception when preTick is called.
 		TickListener tl = mock(TickListener.class);
-		Mockito.doThrow(new RuntimeException()).when(tl).preTick();
+		Mockito.doThrow(new RuntimeException("Ignore this error")).when(tl).preTick();
 		l.registerListener(tl);
 		
 		//Call pretick, no exception should occur.
@@ -130,7 +124,6 @@ public interface IListenableTest {
 	/**
 	 * Test for {@link Listenable#callPostTick(String)}.
 	 */
-	@Test
 	default void testCallPostTick() {
 		Listenable l = getListenable();
 		
@@ -152,13 +145,12 @@ public interface IListenableTest {
 	 * Test for {@link Listenable#callPostTick(String)}, when
 	 * {@link TickListener#postTick()} throws an exception.
 	 */
-	@Test
 	default void testCallPostTick2() {
 		Listenable l = getListenable();
 		
 		//Create a TickListener that throws an exception when postTick is called.
 		TickListener tl = mock(TickListener.class);
-		Mockito.doThrow(new RuntimeException()).when(tl).postTick();
+		Mockito.doThrow(new RuntimeException("Ignore this error")).when(tl).postTick();
 		l.registerListener(tl);
 		
 		//Call postTick
