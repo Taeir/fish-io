@@ -3,6 +3,8 @@ package com.github.fishio;
 import java.util.Random;
 
 import com.github.fishio.listeners.TickListener;
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
 import com.github.fishio.power_ups.PowerUp;
 import com.github.fishio.power_ups.PuExtraLife;
 import com.github.fishio.power_ups.PuFreeze;
@@ -21,6 +23,8 @@ public class PowerUpSpawner implements TickListener {
 	
 	public static final int WIDTH = 25;
 	public static final int HEIGHT = 25;
+	
+	private Log log;
 	
 	/**
 	 * The amount of different PowerUps that are supported.
@@ -56,6 +60,8 @@ public class PowerUpSpawner implements TickListener {
 		
 		this.minX = 0;
 		this.maxX = pf.getWidth();
+		
+		this.log = Log.getLogger();
 	}
 
 	@Override
@@ -66,7 +72,9 @@ public class PowerUpSpawner implements TickListener {
 		tickCounter++;
 		
 		if (tickCounter % intervalTicks == 0) {
+			PowerUp pu = getRandomPowerUp();
 			pf.add(getRandomPowerUp());
+			log.log(LogLevel.DEBUG, "Added a PowerUp of type \"" + pu.getName() + "\"");
 		}
 	}
 	

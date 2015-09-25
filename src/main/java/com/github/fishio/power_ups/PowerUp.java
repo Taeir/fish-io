@@ -7,6 +7,8 @@ import com.github.fishio.IMovable;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
 import com.github.fishio.Vec2d;
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
 
 /**
  * A PowerUp is an entity that, when colliding with a player fish,
@@ -20,6 +22,8 @@ public abstract class PowerUp extends Entity implements IMovable {
 	
 	public static final double DEFAULT_VX = 0;
 	public static final double DEFAULT_VY = -2;
+	
+	private final Log log = Log.getLogger();
 	
 	/**
 	 * Creates a new PowerUp.
@@ -54,10 +58,17 @@ public abstract class PowerUp extends Entity implements IMovable {
 	 */
 	public abstract void executeEffect(PlayerFish pfish);
 	
+	/**
+	 * @return
+	 * 		A name for this PowerUp.
+	 */
+	public abstract String getName();
+	
 	@Override
 	public void onCollide(ICollidable other) {
 		if (other instanceof PlayerFish) {
 			executeEffect((PlayerFish) other);
+			log.log(LogLevel.DEBUG, "Effect of \"" + getName() + "\" started");
 		}
 	}
 	

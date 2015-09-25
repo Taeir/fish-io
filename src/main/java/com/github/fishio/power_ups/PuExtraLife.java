@@ -10,6 +10,8 @@ import com.github.fishio.PlayingField;
  */
 public class PuExtraLife extends PowerUp {
 
+	private final String name = "Extra Life";
+	
 	/**
 	 * Creates a new PowerUp of the Extra Life type.
 	 * 
@@ -25,6 +27,11 @@ public class PuExtraLife extends PowerUp {
 	@Override
 	public void executeEffect(PlayerFish pfish) {
 		pfish.addLife();
+	}
+
+	@Override
+	public String getName() {
+		return name;
 	}
 
 }

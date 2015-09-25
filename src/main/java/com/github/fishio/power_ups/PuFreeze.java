@@ -11,6 +11,8 @@ import com.github.fishio.PlayingField;
  */
 public class PuFreeze extends DurationPowerUp {
 
+	private final String name = "Freeze";
+	
 	/**
 	 * The duration of the effect in seconds.
 	 */
@@ -58,6 +60,11 @@ public class PuFreeze extends DurationPowerUp {
 				((EnemyFish) e).setFrozen(false);
 			}
 		}
+	}
+
+	@Override
+	public String getName() {
+		return name;
 	}
 
 }
