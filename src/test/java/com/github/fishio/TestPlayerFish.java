@@ -10,8 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.github.fishio.power_ups.PowerUp;
-
 import javafx.stage.Stage;
 
 /**

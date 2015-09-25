@@ -1,6 +1,5 @@
 package com.github.fishio.power_ups;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
