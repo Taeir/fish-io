@@ -2,6 +2,7 @@ package com.github.fishio;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -166,6 +167,14 @@ public abstract class PlayingField {
 	 * @return all the players in this field.
 	 */
 	public abstract ArrayList<PlayerFish> getPlayers();
+	
+	/**
+	 * @return
+	 * 		All the entities in this field.
+	 */
+	public List<Entity> getEntities() {
+		return new ArrayList<Entity>(entities);
+	}
 
 	/**
 	 * Moves Movable items.

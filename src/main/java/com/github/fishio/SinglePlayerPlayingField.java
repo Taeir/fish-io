@@ -49,6 +49,8 @@ public class SinglePlayerPlayingField extends PlayingField {
 				}
 			}
 		});
+		
+		new PowerUpSpawner(this);
 	}
 
 	/**

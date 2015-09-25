@@ -200,6 +200,29 @@ public class TestPlayerFish implements TestIEatable {
 	}
 	
 	/**
+	 * Tests the getter and setter for acceleration.
+	 */
+	@Test
+	public void testGetSetAcceleration() {
+		assertEquals(0.1, pf.getAcceleration(), 0.0D);
+		
+		pf.setAcceleration(0.2);
+		
+		assertEquals(0.2, pf.getAcceleration(), 0.0D);
+	}
+	
+	/**
+	 * Tests the getter and setter for maxSpeed.
+	 */
+	@Test
+	public void testGetSetMaxSpeed() {
+		assertEquals(4, pf.getMaxSpeed(), 0.0D);
+		
+		pf.setMaxSpeed(5);
+		assertEquals(5, pf.getMaxSpeed(), 0.0D);
+	}
+	
+	/**
 	 * Tests {@link PlayerFish#setSpeedVector(Vec2d)}.
 	 */
 	@Test
