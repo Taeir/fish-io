@@ -13,6 +13,7 @@ import com.github.fishio.logging.LogLevel;
 
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -27,8 +28,40 @@ import javafx.util.Duration;
  * The controller class of the single player game.
  */
 public class SinglePlayerController implements ScreenController {
+	private static final String PAUSE_TEXT = "Pause";
+	private static final String UNPAUSE_TEXT = "Unpause";
 
 	private Log log = Log.getLogger();
+	
+	private SinglePlayerPlayingField pf;
+	
+	/**
+	 * ChangeListener that can be attached to the
+	 * {@link SinglePlayerPlayingField#playerProperty()} to make sure the
+	 * correct GUI items are updated when the player fish is replaced by
+	 * a new one.
+	 */
+	private final ChangeListener<PlayerFish> playerChangeListener = (player, oldPlayer, newPlayer) -> {
+		//Listen for changes in the score
+		newPlayer.scoreProperty().addListener((o, oldScore, newScore) -> updateScoreDisplay(newScore.intValue()));
+		
+		//Listen for changes in the lives.
+		newPlayer.livesProperty().addListener((observable, oldValue, newValue) -> {
+			//Update lives display
+			updateLivesDisplay(newValue.intValue());
+			
+			//If we lost a life (this includes death (0 lives))
+			if (newValue.intValue() < oldValue.intValue()) {
+				//Stop the game
+				pf.stopGameThread();
+				
+				//Show the death screen, and when done, stop rendering as well.
+				showDeathScreen(true, event -> pf.stopRendering());
+			}
+		});
+		
+		//TODO add listener to deathProperty of fish?
+	};
 	
 	@FXML
 	private Canvas gameCanvas;
@@ -56,13 +89,18 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	private Button btnDSMenu;
 
-	private PlayingField pf;
-
 	@Override
 	public void init(Scene scene) {
 		//setup the playing field
-		pf = new SinglePlayerPlayingField(60, gameCanvas, this);
+		pf = new SinglePlayerPlayingField(60, gameCanvas);
 		pf.setBackground(Preloader.getImageOrLoad("background.png"));
+		
+		//If the player fish changes, this listener will be called.
+		pf.playerProperty().addListener(playerChangeListener);
+		
+		//The change listener has to be force called once. The player has already been created,
+		//but we still want to add the listeners.
+		playerChangeListener.changed(pf.playerProperty(), pf.getPlayer(), pf.getPlayer());
 	}
 	
 	@Override
@@ -70,7 +108,7 @@ public class SinglePlayerController implements ScreenController {
 		FishIO.getInstance().getPrimaryStage().setTitle("Fish.io Singleplayer");
 		
 		//Reset the pause button
-		getBtnPause().setText("Pause");
+		getBtnPause().setText(PAUSE_TEXT);
 		getBtnPause().setDisable(false);
 		
 		//Hide the death screen
@@ -93,14 +131,14 @@ public class SinglePlayerController implements ScreenController {
 			try {
 				pf.stopGameAndWait();
 			} catch (InterruptedException ex) { }
-			getBtnPause().setText("Unpause");
+			getBtnPause().setText(UNPAUSE_TEXT);
 			
 			log.log(LogLevel.INFO, "Player paused the game.");
 		} else {
 			log.log(LogLevel.INFO, "Player resumed the game.");
 			
 			pf.startGame();
-			getBtnPause().setText("Pause");
+			getBtnPause().setText(PAUSE_TEXT);
 		}
 	}
 
@@ -123,16 +161,12 @@ public class SinglePlayerController implements ScreenController {
 		if (visible && deathScreen.isVisible() && deathScreen.getOpacity() == 1.0) {
 			updateReviveButton();
 			
-			if (onDone != null) {
-				onDone.handle(new ActionEvent());
-			}
+			Util.callEventHandler(onDone);
 			return;
 		} else if (!visible && !deathScreen.isVisible()) {
 			updateReviveButton();
 			
-			if (onDone != null) {
-				onDone.handle(new ActionEvent());
-			}
+			Util.callEventHandler(onDone);
 			return;
 		}
 		
@@ -162,9 +196,7 @@ public class SinglePlayerController implements ScreenController {
 			fade.setOnFinished(event -> {
 				deathScreen.setVisible(false);
 				
-				if (onDone != null) {
-					onDone.handle(event);
-				}
+				Util.callEventHandler(onDone);
 			});
 		}
 		
@@ -217,7 +249,7 @@ public class SinglePlayerController implements ScreenController {
 		PlayerFish player = pf.getPlayers().get(0);
 		
 		//Reset the bounding box of the player fish.
-		ICollisionArea area = ((SinglePlayerPlayingField) pf).getStartCollisionArea();
+		ICollisionArea area = pf.getStartCollisionArea();
 		player.setBoundingArea(area);
 		
 		//Reset the speed of the fish.
@@ -236,7 +268,7 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	public void restartGame() {
 		//Reset the pause button
-		getBtnPause().setText("Pause");
+		getBtnPause().setText(PAUSE_TEXT);
 		getBtnPause().setDisable(false);
 		
 		//Stop the game, clear all items, and start it again.
@@ -260,15 +292,15 @@ public class SinglePlayerController implements ScreenController {
 	public void updatePauseButton() {
 		if (!pf.isPlayerAlive()) {
 			//All player fish are dead
-			getBtnPause().setText("Pause");
+			getBtnPause().setText(PAUSE_TEXT);
 			getBtnPause().setDisable(true);
 		} else if (pf.isRunning()) {
 			//There is a player fish alive and the game is running
-			getBtnPause().setText("Pause");
+			getBtnPause().setText(PAUSE_TEXT);
 			getBtnPause().setDisable(false);
 		} else {
 			//There is a player fish alive and the game is not running
-			getBtnPause().setText("Unpause");
+			getBtnPause().setText(UNPAUSE_TEXT);
 			getBtnPause().setDisable(false);
 		}
 	}

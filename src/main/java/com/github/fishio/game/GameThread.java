@@ -29,7 +29,7 @@ public class GameThread implements Runnable, Listenable {
 	
 	/**
 	 * @param playingField
-	 * 		the playingField to use this GameRunnable for.
+	 * 		the playingField to use this GameThread for.
 	 */
 	public GameThread(PlayingField playingField) {
 		this.playingField = playingField;
@@ -37,7 +37,7 @@ public class GameThread implements Runnable, Listenable {
 	
 	/**
 	 * @param playingField
-	 * 		the playingField to use this GameRunnable for.
+	 * 		the playingField to use this GameThread for.
 	 * @param fake
 	 * 		if <code>true</code>, done and stop are set to <code>true</code>.
 	 */
@@ -48,28 +48,31 @@ public class GameThread implements Runnable, Listenable {
 	}
 	
 	/**
-	 * Starts this GameRunnable, by creating a new thread for itself and
+	 * Starts this GameThread, by creating a new thread for itself and
 	 * starting it.<br>
 	 * <br>
-	 * If this GameRunnable is STARTING, RUNNING or STOPPING, this method 
-	 * has no effect and returns <code>false</code>.<br>
+	 * If this GameThread is STARTING or RUNNING, this method has no 
+	 * effect.
 	 * <br>
-	 * If this GameRunnable
-	 * @return
-	 * 		<code>true</code> if this GameRunnable was started.
-	 * 		<code>false</code> otherwise.
+	 * If this GameThread is STOPPING, this method will wait until the
+	 * state changes to STOPPED, and then starts a new game thread.
 	 */
-	public boolean start() {
-		if (thread != null) {
-			return false;
-		}
-		
+	public void start() {
 		//We are asked to stop (already), so we 
 		if (stop) {
-			done = true;
-			stateProperty.set(GameState.STOPPED);
-			return false;
+			//Wait until we have stopped
+			try {
+				stopAndWait();
+			} catch (InterruptedException ex) {
+				//Log interruptions, but don't do anything with them.
+				Log.getLogger().log(LogLevel.ERROR,
+						"[GameThread] Error while trying to start GameThread: interrupted while waiting for game "
+						+ "thread to stop.");
+			}
 		}
+		
+		//Reset, so that we can start again.
+		reset();
 		
 		//Set that we are starting
 		stateProperty.set(GameState.STARTING);
@@ -77,11 +80,30 @@ public class GameThread implements Runnable, Listenable {
 		//Create a new thread and start it.
 		thread = new Thread(this);
 		thread.start();
-		return true;
+	}
+	
+	/**
+	 * Start the GameThread and wait until it is started.
+	 * 
+	 * @throws InterruptedException
+	 * 		if we are interrupted while waiting for the GameThread to 
+	 * 		start.
+	 */
+	public void startAndWait() throws InterruptedException {
+		//Start the game thread
+		start();
+		
+		//Store reset counter for thread safety.
+		int curReset = resetCounter;
+		
+		//Wait for the game thread to start.
+		while (!isRunning() && curReset == resetCounter) {
+			Thread.sleep(25L);
+		}
 	}
 
 	/**
-	 * Set the stop status of this GameRunnable to true.
+	 * Set the stop status of this GameThread to true.
 	 */
 	public void stop() {
 		//If we have already stopped, or are not running, we don't have to do anything.
@@ -95,18 +117,40 @@ public class GameThread implements Runnable, Listenable {
 		if (isRunning()) {
 			stateProperty.set(GameState.STOPPING);
 		}
-		
-		//If we are in state STOPPING, we don't have to change it.
-		//We cannot be in state STOPPED, since stop and done are both false.
-		//If we are in state STARTING, the thread will switch the state to
-		//STOPPED immediately.
 	}
 	
 	/**
-	 * Resets this GameRunnables so that it can be started again.<br>
+	 * Sets the stop status of this GameThread to true, and waits until
+	 * it has actually stopped.<br>
 	 * <br>
-	 * This method will have no effect if the state of this GameRunnable
-	 * is STARTING, RUNNING or STOPPING.
+	 * If this GameThread is not STARTING or RUNNING, this method has no 
+	 * effect.
+	 * 
+	 * @throws InterruptedException
+	 * 		if we are interrupted while waiting.
+	 */
+	public void stopAndWait() throws InterruptedException {
+		//Store resetCounter.
+		int curReset = resetCounter;
+		
+		//Mark that we want to stop
+		stop();
+		
+		//Wait until we have stopped, or reset has been called.
+		while (!isStopped() && curReset == resetCounter) {
+			if (thread != null) {
+				thread.join(25L);
+			} else {
+				Thread.sleep(25L);
+			}
+		}
+	}
+	
+	/**
+	 * Resets this GameThread so that it can be started again.<br>
+	 * <br>
+	 * This method will have no effect if the state of this GameThread is
+	 * STARTING, RUNNING or STOPPING.
 	 */
 	public void reset() {
 		if (thread == null) {
@@ -125,7 +169,7 @@ public class GameThread implements Runnable, Listenable {
 	
 	/**
 	 * @return
-	 * 		<code>true</code> if this game runnable has stopped.
+	 * 		<code>true</code> if this GameThread has stopped.
 	 */
 	public boolean isStopped() {
 		return this.thread == null || this.done;
@@ -133,7 +177,7 @@ public class GameThread implements Runnable, Listenable {
 	
 	/**
 	 * @return
-	 * 		<code>true</code> if this game runnable is still running.
+	 * 		<code>true</code> if this GameThread is still running.
 	 * 		<code>false</code> otherwise.
 	 */
 	public boolean isRunning() {
@@ -156,36 +200,6 @@ public class GameThread implements Runnable, Listenable {
 	 */
 	public SimpleObjectProperty<GameState> stateProperty() {
 		return stateProperty;
-	}
-	
-	/**
-	 * Sets the stop status of this GameRunnable to true, and waits until
-	 * it has actually stopped.<br>
-	 * <br>
-	 * If this Game Runnable is not STARTING or RUNNING, this method has 
-	 * no effect.
-	 * 
-	 * @throws InterruptedException
-	 * 		if we are interrupted while waiting.
-	 */
-	public void stopAndWait() throws InterruptedException {
-		//We have already stopped.
-		if (getState() == GameState.STOPPED) {
-			return;
-		}
-		
-		//Store resetCounter.
-		int curReset = resetCounter;
-		
-		//Mark that we want to stop
-		stop();
-		
-		//Wait until we have stopped, or reset has been called.
-		while (!isStopped() && curReset == resetCounter) {
-			if (thread != null) {
-				thread.join(25L);
-			}
-		}
 	}
 	
 	@Override

@@ -1,5 +1,11 @@
 package com.github.fishio;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.github.fishio.achievements.Observer;
+import com.github.fishio.achievements.State;
+import com.github.fishio.achievements.Subject;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
@@ -9,7 +15,9 @@ import javafx.scene.paint.Color;
 /**
  * Represents an entity in the game.
  */
-public abstract class Entity implements ICollidable, IPositional, IDrawable {
+public abstract class Entity implements ICollidable, IPositional, IDrawable, Subject {
+	private List<Observer> observers = new ArrayList<Observer>();
+	
 	private boolean dead;
 	private ICollisionArea ba;
 	protected Log logger = Log.getLogger();
@@ -40,8 +48,18 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable {
 	 * Marks this Entity as dead.
 	 */
 	public void kill() {
+		//We cannot die twice.
+		if (dead) {
+			return;
+		}
+		
+		State oldState = getState();
+		
 		dead = true;
 		logger.log(LogLevel.TRACE, this.getClass().getSimpleName() + " got killed");
+		
+		//Notify observers that we have died.
+		notifyObservers(oldState, getState(), "dead");
 	}
 	
 	@Override
@@ -69,5 +87,17 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable {
 		//No sprite rendering
 		gc.setFill(Color.RED);
 		gc.fillRect(getX(), getY(), getWidth(), getHeight());
+	}
+	
+	@Override
+	public List<Observer> getObservers() {
+		return observers;
+	}
+	
+	@Override
+	public State getState() {
+		State state = new State();
+		state.add("dead", isDead());
+		return state;
 	}
 }

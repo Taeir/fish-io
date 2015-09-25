@@ -1,9 +1,5 @@
 package com.github.fishio;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.github.fishio.achievements.Observer;
 import com.github.fishio.achievements.State;
 import com.github.fishio.achievements.Subject;
 
@@ -22,8 +18,6 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 
 	private double vx;
 	private double vy;
-	
-	private ArrayList<Observer> observers = new ArrayList<Observer>();
 
 	/**
 	 * These factors have values for whether each of the arrow keys is pressed.
@@ -395,15 +389,9 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 		return lives;
 	}
 	
-
-	@Override
-	public List<Observer> getObservers() {
-		return observers;
-	}
-	
 	@Override
 	public State getState() {
-		State state = new State();
+		State state = super.getState();
 		state.add("EnemyKill", isDead()).add("score", score.get()).add("Lives", getLives());
 		return state;
 	}
@@ -459,8 +447,8 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 	@Override
 	public void eat() {
 		State old = getState();
-		notifyObservers(old, getState(), "Lives");
 		kill();
+		notifyObservers(old, getState(), "Lives");
 	}
 
 	@Override
