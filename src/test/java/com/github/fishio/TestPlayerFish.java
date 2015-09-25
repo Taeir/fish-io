@@ -49,6 +49,9 @@ public class TestPlayerFish {
 	
 	//TODO test moving with keys
 	
+	/**
+	 * Test if the fish swims up when up is pressed.
+	 */
 	@Test
 	public void testSwimUp() {
 		pf.setUpPressed(true);
@@ -56,6 +59,9 @@ public class TestPlayerFish {
 		assertTrue(pf.getSpeedVector().y > 0);
 	}
 	
+	/**
+	 * Test if the fish swims down when down is pressed.
+	 */
 	@Test
 	public void testSwimDown() {
 		pf.setDownPressed(true);
@@ -63,6 +69,9 @@ public class TestPlayerFish {
 		assertTrue(pf.getSpeedVector().y < 0);
 	}
 	
+	/**
+	 * Test if the fish swims right when right is pressed.
+	 */
 	@Test
 	public void testSwimRight() {
 		pf.setRightPressed(true);
@@ -70,6 +79,9 @@ public class TestPlayerFish {
 		assertTrue(pf.getSpeedVector().x > 0);
 	}
 	
+	/**
+	 * Test if the fish swims left when left is pressed.
+	 */
 	@Test
 	public void testSwimLeft() {
 		pf.setLeftPressed(true);
