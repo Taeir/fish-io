@@ -1,44 +1,34 @@
-package com.github.fishio.gui;
+package com.github.fishio.listeners;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import org.junit.Test;
 import org.mockito.Mockito;
-
-import com.github.fishio.listeners.Listenable;
-import com.github.fishio.listeners.TickListener;
 
 /**
  * Interface test for the {@link Listenable} interface.<br>
  * <br>
- * <b>NOTE: all methods in this class must be overridden in order for
- * them to be actually tested.</b><br>
- * <br>
- * This can be done in the following way:<br>
- * <code>
- * &#64;Test<br>
- * &#64;Override<br>
- * public void testGetListeners() {<br>
- * &nbsp;&nbsp;&nbsp;&nbsp;IListenableTest.super.testGetListeners();<br>
- * }
- * </code>
+ * If you need to extend another class, take a look at {@link IListenableTest}.
  */
-public interface IListenableTest {
+public abstract class TestListenable {
 	
 	/**
 	 * @return
 	 * 		a new Listenable of the type that the class implementing this
 	 * 		interface is testing.
 	 */
-	Listenable getListenable();
+	public abstract Listenable getListenable();
 	
 	/**
 	 * Test for {@link Listenable#getListeners()}.
 	 */
-	default void testGetListeners() {
+	@Test
+	public void testGetListeners() {
 		Listenable l = getListenable();
 		
 		//Initially, there should be no listeners.
@@ -48,7 +38,8 @@ public interface IListenableTest {
 	/**
 	 * Test for {@link Listenable#registerListener(TickListener)}.
 	 */
-	default void testRegisterListener() {
+	@Test
+	public void testRegisterListener() {
 		Listenable l = getListenable();
 		
 		//Create a TickListener and register it.
@@ -62,7 +53,8 @@ public interface IListenableTest {
 	/**
 	 * Test for {@link Listenable#unregisterListener(TickListener)}.
 	 */
-	default void testUnregisterListener() {
+	@Test
+	public void testUnregisterListener() {
 		Listenable l = getListenable();
 		
 		//Create a TickListener and register it.
@@ -82,7 +74,8 @@ public interface IListenableTest {
 	/**
 	 * Test for {@link Listenable#callPreTick(String)}.
 	 */
-	default void testCallPreTick() {
+	@Test
+	public void testCallPreTick() {
 		Listenable l = getListenable();
 		
 		//Create a TickListener and register it.
@@ -103,7 +96,8 @@ public interface IListenableTest {
 	 * Test for {@link Listenable#callPreTick(String)}, when
 	 * {@link TickListener#preTick()} throws an exception.
 	 */
-	default void testCallPreTick2() {
+	@Test
+	public void testCallPreTick2() {
 		Listenable l = getListenable();
 		
 		//Create a TickListener that throws an exception when preTick is called.
@@ -124,7 +118,8 @@ public interface IListenableTest {
 	/**
 	 * Test for {@link Listenable#callPostTick(String)}.
 	 */
-	default void testCallPostTick() {
+	@Test
+	public void testCallPostTick() {
 		Listenable l = getListenable();
 		
 		//Create a TickListener and register it.
@@ -145,7 +140,8 @@ public interface IListenableTest {
 	 * Test for {@link Listenable#callPostTick(String)}, when
 	 * {@link TickListener#postTick()} throws an exception.
 	 */
-	default void testCallPostTick2() {
+	@Test
+	public void testCallPostTick2() {
 		Listenable l = getListenable();
 		
 		//Create a TickListener that throws an exception when postTick is called.

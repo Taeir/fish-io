@@ -22,17 +22,19 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.github.fishio.SinglePlayerPlayingField;
-import com.github.fishio.listeners.Listenable;
 
 /**
  * Tests the {@link Renderer} class.
  */
-public class TestRenderer extends GuiTest implements IListenableTest {
+public class TestRenderer extends GuiTest {
 
 	private static SinglePlayerPlayingField sppf;
 	private static Canvas canvas;
 	private Renderer renderer;
 
+	/**
+	 * Show the singlePlayer screen for this test.
+	 */
 	public TestRenderer() {
 		super("singlePlayer");
 	}
@@ -74,53 +76,6 @@ public class TestRenderer extends GuiTest implements IListenableTest {
 		while (renderer.isRendering()) {
 			Thread.sleep(25L);
 		}
-	}
-	
-	@Override
-	public Listenable getListenable() {
-		return new Renderer(sppf, canvas, 60);
-	}
-	
-	@Test
-	@Override
-	public void testGetListeners() {
-		IListenableTest.super.testGetListeners();
-	}
-	
-	@Test
-	@Override
-	public void testRegisterListener() {
-		IListenableTest.super.testRegisterListener();
-	}
-	
-	@Test
-	@Override
-	public void testUnregisterListener() {
-		IListenableTest.super.testUnregisterListener();
-	}
-	
-	@Test
-	@Override
-	public void testCallPreTick() {
-		IListenableTest.super.testCallPreTick();
-	}
-	
-	@Test
-	@Override
-	public void testCallPreTick2() {
-		IListenableTest.super.testCallPreTick2();
-	}
-	
-	@Test
-	@Override
-	public void testCallPostTick() {
-		IListenableTest.super.testCallPostTick();
-	}
-	
-	@Test
-	@Override
-	public void testCallPostTick2() {
-		IListenableTest.super.testCallPostTick2();
 	}
 
 	/**

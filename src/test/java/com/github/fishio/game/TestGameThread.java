@@ -11,13 +11,16 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.github.fishio.SinglePlayerPlayingField;
+import com.github.fishio.listeners.Listenable;
+import com.github.fishio.listeners.TestListenable;
 
 /**
  * Test for the {@link GameThread} class.
  */
-public class TestGameThread {
+public class TestGameThread extends TestListenable {
 
 	private static GameThread gameThread;
+	private static SinglePlayerPlayingField sppf;
 	
 	/**
 	 * Called before any tests are run. Creates a gameThread for a mock
@@ -25,7 +28,7 @@ public class TestGameThread {
 	 */
 	@BeforeClass
 	public static void setUpClass() {
-		SinglePlayerPlayingField sppf = Mockito.mock(SinglePlayerPlayingField.class);
+		sppf = Mockito.mock(SinglePlayerPlayingField.class);
 		gameThread = new GameThread(sppf);
 	}
 	
@@ -39,6 +42,11 @@ public class TestGameThread {
 	@After
 	public void breakDown() throws Exception {
 		gameThread.stopAndWait();
+	}
+	
+	@Override
+	public Listenable getListenable() {
+		return new GameThread(sppf);
 	}
 
 	/**
