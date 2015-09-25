@@ -3,6 +3,7 @@ package com.github.fishio.power_ups;
 import com.github.fishio.EnemyFish;
 import com.github.fishio.Entity;
 import com.github.fishio.ICollisionArea;
+import com.github.fishio.IEatable;
 import com.github.fishio.PlayingField;
 
 /**

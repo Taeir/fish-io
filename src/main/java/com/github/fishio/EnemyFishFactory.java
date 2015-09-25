@@ -3,18 +3,14 @@ package com.github.fishio;
 import java.util.Random;
 
 import javafx.scene.image.Image;
-import com.github.fishio.logging.Log;
-import com.github.fishio.logging.LogLevel;
 
 
 /**
- * The LevelBuilder is an utility class for creating levels. 
- * This class contains a standard level to be created.
+ * The EnemyFishFactory is an utility class for creating EnemyFish.
  */
-public final class LevelBuilder {
+public final class EnemyFishFactory {
 
 	private static Random rand = new Random();
-	private static Log log = Log.getLogger();
 	// Fish statistics
 
 	// movement
@@ -32,7 +28,7 @@ public final class LevelBuilder {
 	/**
 	 * Private constructor to prevent initiation.
 	 */
-	private LevelBuilder() {
+	private EnemyFishFactory() {
 		//to prevent initiation
 	}
 
@@ -87,9 +83,7 @@ public final class LevelBuilder {
 		}
 
 		EnemyFish eFish = new EnemyFish(new CollisionMask(position, width, height, data, relSize), sprite , vx, vy);
-		log.log(LogLevel.TRACE, "Created Enemfish: Properties{[position = " + position.toString() 
-				+ "],[height = " + height + "],[width = " + width + "],[Vx = " + vx + "],[Vy = " + vy 
-				+ "]}.");
+		
 		//TODO Check for decent properties
 		//eFish.checkProperties()
 		return eFish;

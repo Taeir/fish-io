@@ -3,6 +3,7 @@ package com.github.fishio.power_ups;
 import com.github.fishio.Entity;
 import com.github.fishio.ICollidable;
 import com.github.fishio.ICollisionArea;
+import com.github.fishio.IEatable;
 import com.github.fishio.IMovable;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
@@ -14,7 +15,7 @@ import com.github.fishio.logging.LogLevel;
  * A PowerUp is an entity that, when colliding with a player fish,
  * executes a certain (positive) effect. 
  */
-public abstract class PowerUp extends Entity implements IMovable {
+public abstract class PowerUp extends Entity implements IMovable, IEatable {
 
 	private PlayingField pfield;
 	
@@ -65,11 +66,9 @@ public abstract class PowerUp extends Entity implements IMovable {
 	public abstract String getName();
 	
 	@Override
-	public void onCollide(ICollidable other) {
-		if (other instanceof PlayerFish) {
-			executeEffect((PlayerFish) other);
-			log.log(LogLevel.DEBUG, "Effect of \"" + getName() + "\" started");
-		}
+	public void onCollide(ICollidable other) { 
+		executeEffect((PlayerFish) other);
+		log.log(LogLevel.DEBUG, "Effect of \"" + getName() + "\" started");
 	}
 	
 	@Override
@@ -89,10 +88,29 @@ public abstract class PowerUp extends Entity implements IMovable {
 
 	@Override
 	public void hitWall() { 
-		setDead();
+		kill();
 	}
 
 	@Override
 	public void preMove() { }
+	
+
+	@Override
+	public boolean canBeEatenBy(IEatable other) {
+		if (other instanceof PlayerFish) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void eat() {
+		kill();
+	}
+
+	@Override
+	public double getSize() {
+		return 0; // A PowerUp shouldn't have a "size"
+	}
 	
 }

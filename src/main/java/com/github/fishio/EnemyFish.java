@@ -1,5 +1,8 @@
 package com.github.fishio;
 
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -7,10 +10,14 @@ import javafx.scene.image.Image;
  * EnemyFish class. This class contains all methods concerning non-player or
  * enemy fish on the screen.
  */
-public class EnemyFish extends Entity implements IMovable {
+public class EnemyFish extends Entity implements IMovable, IEatable {
 
+
+	private static final double FISH_EAT_THRESHOLD = 1.2;
 	private static final double DIRECTION_CHANGE_CHANCE = 0.1;
 
+	private Log logger = Log.getLogger();
+	
 	private double vx;
 	private double vy;
 	private Image sprite;
@@ -34,6 +41,9 @@ public class EnemyFish extends Entity implements IMovable {
 		this.sprite = sprite;
 		vx = startvx;
 		vy = startvy;
+		logger.log(LogLevel.TRACE, "Created Enemfish: Properties{[position = " + ca.getCenterX() 
+				+ ", " + ca.getCenterY() + "],[height = " + ca.getHeight() + "],[width = "
+				+ ca.getWidth() + "],[Vx = " + vx + "],[Vy = " + vy + "]}.");
 	}
 
 	@Override
@@ -70,7 +80,8 @@ public class EnemyFish extends Entity implements IMovable {
 	 */
 	@Override
 	public void hitWall() {
-		setDead();
+		logger.log(LogLevel.TRACE, "EnemyFish collided with wall.");
+		kill();
 	}
 
 	/** 
@@ -101,9 +112,9 @@ public class EnemyFish extends Entity implements IMovable {
 	 */
 	public void limitVx() {
 		if (vx > 0) {
-			vx = Math.max(LevelBuilder.MIN_EFISH_SPEED, Math.min(vx, LevelBuilder.MAX_EFISH_SPEED));
+			vx = Math.max(EnemyFishFactory.MIN_EFISH_SPEED, Math.min(vx, EnemyFishFactory.MAX_EFISH_SPEED));
 		} else {
-			vx = Math.min(-LevelBuilder.MIN_EFISH_SPEED, Math.max(vx, -LevelBuilder.MAX_EFISH_SPEED));
+			vx = Math.min(-EnemyFishFactory.MIN_EFISH_SPEED, Math.max(vx, -EnemyFishFactory.MAX_EFISH_SPEED));
 		}
 	}
 	
@@ -113,9 +124,9 @@ public class EnemyFish extends Entity implements IMovable {
 	 */
 	public void limitVy() {
 		if (vy > 0) {
-			vy = Math.max(LevelBuilder.MIN_EFISH_SPEED, Math.min(vy, LevelBuilder.MAX_EFISH_SPEED));
+			vy = Math.max(EnemyFishFactory.MIN_EFISH_SPEED, Math.min(vy, EnemyFishFactory.MAX_EFISH_SPEED));
 		} else {
-			vy = Math.min(-LevelBuilder.MIN_EFISH_SPEED, Math.max(vy, -LevelBuilder.MAX_EFISH_SPEED));
+			vy = Math.min(-EnemyFishFactory.MIN_EFISH_SPEED, Math.max(vy, -EnemyFishFactory.MAX_EFISH_SPEED));
 		}
 	}
 	
@@ -145,5 +156,23 @@ public class EnemyFish extends Entity implements IMovable {
 
 	@Override
 	public void onCollide(ICollidable other) { }
+
+	@Override
+	public boolean canBeEatenBy(IEatable other) {
+		if (other.getSize() > getSize() * FISH_EAT_THRESHOLD) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void eat() {
+		kill();
+	}
+
+	@Override
+	public double getSize() {
+		return getBoundingArea().getSize();
+	}
 
 }
