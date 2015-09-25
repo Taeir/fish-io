@@ -16,6 +16,8 @@ public class TestPuSuperSpeed extends TestDurationPowerUp {
 	private PuSuperSpeed pu;
 	private PlayingField pf;
 	
+	private static final double DELTA = 0.0000001D;
+			
 	/**
 	 * Creates a new PoFreeze object to test and sets
 	 * the PlayingField pf field.
@@ -48,9 +50,9 @@ public class TestPuSuperSpeed extends TestDurationPowerUp {
 		pu.startEffect();
 		
 		assertEquals(oldAcceleration *  PuSuperSpeed.ACCELERATION_FACTOR, 
-				pf.getAcceleration(), 0.0000001D);
+				pf.getAcceleration(), DELTA);
 		assertEquals(oldMaxSpeed * PuSuperSpeed.MAX_SPEED_FACTOR, 
-				pf.getMaxSpeed(), 0.0000001D);
+				pf.getMaxSpeed(), DELTA);
 	}
 
 	@Override
@@ -70,8 +72,8 @@ public class TestPuSuperSpeed extends TestDurationPowerUp {
 		pu.endEffect();
 		
 		//Making sure that acceleration and MaxSpeed haven't changed.
-		assertEquals(oldAcceleration, pf.getAcceleration(), 0.0000001D);
-		assertEquals(oldMaxSpeed, pf.getMaxSpeed(), 0.0000001D);
+		assertEquals(oldAcceleration, pf.getAcceleration(), DELTA);
+		assertEquals(oldMaxSpeed, pf.getMaxSpeed(), DELTA);
 	}
 
 	@Override
