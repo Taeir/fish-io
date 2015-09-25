@@ -1,5 +1,12 @@
 package com.github.fishio;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.github.fishio.achievements.Observer;
+import com.github.fishio.achievements.State;
+import com.github.fishio.achievements.Subject;
+
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -11,10 +18,12 @@ import javafx.stage.Stage;
  * Represents a fish that the user can control using
  * the keyboard.
  */
-public class PlayerFish extends Entity implements IMovable {
+public class PlayerFish extends Entity implements IMovable, Subject {
 
 	private double vx;
 	private double vy;
+	
+	private ArrayList<Observer> observers = new ArrayList<Observer>();
 
 	/**
 	 * These factors have values for whether each of the arrow keys is pressed.
@@ -261,7 +270,14 @@ public class PlayerFish extends Entity implements IMovable {
 	}
 
 	@Override
-	public void hitWall() { }
+	public void hitWall() {
+		State old = getState();
+		old.add("HitWall", false);
+		
+		State newState = getState();
+		newState.add("HitWall", true);
+		notifyObservers(old, newState, "HitWall");
+	}
 	
 	@Override
 	public void setDead() {
@@ -292,7 +308,10 @@ public class PlayerFish extends Entity implements IMovable {
 			double osize = fish.getBoundingArea().getSize();
 
 			if (tsize > osize * FISH_EAT_THRESHOLD) {
+				State old = getState();
+				
 				fish.setDead();
+				notifyObservers(old, getState(), "EnemyKill");
 				this.addPoints((int) (osize / 200));
 				double dSize = GROWTH_SPEED * osize / tsize;
 				getBoundingArea().increaseSize(dSize);
@@ -302,7 +321,9 @@ public class PlayerFish extends Entity implements IMovable {
 				}
 				
 				//Remove a life.
+				State old = getState();
 				this.removeLife();
+				notifyObservers(old, getState(), "Lives");
 			}
 		}
 	}
@@ -344,6 +365,7 @@ public class PlayerFish extends Entity implements IMovable {
 		}
 	}
 	
+
 	/**
 	 * Removes a life.
 	 * 
@@ -388,6 +410,18 @@ public class PlayerFish extends Entity implements IMovable {
 		return lives;
 	}
 	
+
+	@Override
+	public List<Observer> getObservers() {
+		return observers;
+	}
+	
+	@Override
+	public State getState() {
+		State state = new State();
+		state.add("EnemyKill", isDead()).add("score", score.get()).add("Lives", getLives());
+		return state;
+	}
 	/**
 	 * Make this PlayerFish invincible until endTime.
 	 * 
@@ -423,6 +457,7 @@ public class PlayerFish extends Entity implements IMovable {
 	 */
 	public boolean isInvincible() {
 		return invincible != 0L && invincible > System.currentTimeMillis();
+		
 	}
 
 }
