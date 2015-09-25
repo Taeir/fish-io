@@ -3,6 +3,7 @@ package com.github.fishio;
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.doReturn;
@@ -98,7 +99,7 @@ public class TestPowerUpSpawner {
 		when(rand.nextInt(pus.getPowerUpCount())).thenReturn(defaultIndex);
 		
 		PowerUp pu = pus.getRandomPowerUp();
-		assertTrue(pu == null);
+		assertNull(pu);
 	}
 	
 	/**
