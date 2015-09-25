@@ -3,7 +3,6 @@ package com.github.fishio.power_ups;
 import com.github.fishio.EnemyFish;
 import com.github.fishio.Entity;
 import com.github.fishio.ICollisionArea;
-import com.github.fishio.IEatable;
 import com.github.fishio.PlayingField;
 
 /**
@@ -12,7 +11,7 @@ import com.github.fishio.PlayingField;
  */
 public class PuFreeze extends DurationPowerUp {
 
-	private final String name = "Freeze";
+	private static final String NAME = "Freeze";
 	
 	/**
 	 * The duration of the effect in seconds.
@@ -65,7 +64,7 @@ public class PuFreeze extends DurationPowerUp {
 
 	@Override
 	public String getName() {
-		return name;
+		return NAME;
 	}
 
 }

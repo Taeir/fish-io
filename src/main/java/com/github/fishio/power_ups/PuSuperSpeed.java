@@ -15,7 +15,7 @@ public class PuSuperSpeed extends DurationPowerUp {
 	public static final double ACCELERATION_FACTOR = 2.5;
 	public static final double MAX_SPEED_FACTOR = 3;
 	
-	private final String name = "Super Speed";
+	private static final String NAME = "Super Speed";
 	
 	/**
 	 * Creates a new PowerUp of the SuperSpeed type.
@@ -69,7 +69,7 @@ public class PuSuperSpeed extends DurationPowerUp {
 
 	@Override
 	public String getName() {
-		return name;
+		return NAME;
 	}
 
 }
