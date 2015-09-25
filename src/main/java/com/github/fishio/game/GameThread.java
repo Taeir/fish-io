@@ -255,7 +255,9 @@ public class GameThread implements Runnable, Listenable {
 				if (dur < waitTime) {
 					try {
 						Thread.sleep(Math.round(waitTime - dur));
-					} catch (InterruptedException ex) { }
+					} catch (InterruptedException ex) {
+						Log.getLogger().log(LogLevel.DEBUG, "[GameThread] Exception while sleeping until next cycle");
+					}
 				}
 			}
 		} finally {

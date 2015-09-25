@@ -1,5 +1,8 @@
 package com.github.fishio;
 
+import com.github.fishio.achievements.State;
+import com.github.fishio.achievements.Subject;
+
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -11,7 +14,7 @@ import javafx.stage.Stage;
  * Represents a fish that the user can control using
  * the keyboard.
  */
-public class PlayerFish extends Entity implements IMovable {
+public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 
 	private double vx;
 	private double vy;
@@ -261,18 +264,34 @@ public class PlayerFish extends Entity implements IMovable {
 	}
 
 	@Override
-	public void hitWall() { }
+	public void hitWall() {
+		State old = getState();
+		old.add("HitWall", false);
+		
+		State newState = getState();
+		newState.add("HitWall", true);
+		notifyObservers(old, newState, "HitWall");
+	}
 	
+	/**
+	 * Removes a life.
+	 */
 	@Override
-	public void setDead() {
+	public void kill() {
+		if (isDead()) {
+			return;
+		}
 		//If invincible, ignore death.
 		if (isInvincible()) {
 			return;
 		}
+		int nvalue = Math.max(lives.get() - 1, 0);
+		lives.set(nvalue);
 		
-		super.setDead();
-		
-		lives.set(0);
+		if (nvalue == 0) {
+			super.kill();			
+			return;
+		}		
 	}
 
 	@Override
@@ -282,27 +301,20 @@ public class PlayerFish extends Entity implements IMovable {
 
 	@Override
 	public void onCollide(ICollidable other) {
-		if (other instanceof EnemyFish) {
-			EnemyFish fish = (EnemyFish) other;
-			if (fish.isDead()) {
-				return;
-			}
+		if (other instanceof IEatable) {
+			IEatable eatable = (IEatable) other;
+		
+			if (eatable.canBeEatenBy(this)) {
+				eatable.eat();
+				this.addPoints((int) (eatable.getSize() / 200));
+				double dSize = GROWTH_SPEED * eatable.getSize() / getSize();
+				getBoundingArea().increaseSize(dSize);	
+				State old = getState();
+				notifyObservers(old, getState(), "EnemyKill");
+			} 
 
-			double tsize = this.getBoundingArea().getSize();
-			double osize = fish.getBoundingArea().getSize();
-
-			if (tsize > osize * FISH_EAT_THRESHOLD) {
-				fish.setDead();
-				this.addPoints((int) (osize / 200));
-				double dSize = GROWTH_SPEED * osize / tsize;
-				getBoundingArea().increaseSize(dSize);
-			} else if (osize > tsize * FISH_EAT_THRESHOLD) {
-				if (isInvincible()) {
-					return;
-				}
-				
-				//Remove a life.
-				this.removeLife();
+			if (this.canBeEatenBy(eatable)) {
+				eatable.eat(this);
 			}
 		}
 	}
@@ -344,23 +356,12 @@ public class PlayerFish extends Entity implements IMovable {
 		}
 	}
 	
+
 	/**
-	 * Removes a life.
-	 * 
-	 * @return
-	 * 		<code>true</code> if this playerfish is now dead.
-	 * 		<code>false</code> otherwise.
+	 * Insta-kills the fish.
 	 */
-	public boolean removeLife() {
-		int nvalue = Math.max(lives.get() - 1, 0);
-		lives.set(nvalue);
-		
-		if (nvalue == 0) {
-			setDead();
-			return true;
-		}
-		
-		return false;
+	public void setDead() {
+		super.kill();
 	}
 	
 	/**
@@ -388,6 +389,12 @@ public class PlayerFish extends Entity implements IMovable {
 		return lives;
 	}
 	
+	@Override
+	public State getState() {
+		State state = super.getState();
+		state.add("EnemyKill", isDead()).add("score", score.get()).add("Lives", getLives());
+		return state;
+	}
 	/**
 	 * Make this PlayerFish invincible until endTime.
 	 * 
@@ -423,6 +430,30 @@ public class PlayerFish extends Entity implements IMovable {
 	 */
 	public boolean isInvincible() {
 		return invincible != 0L && invincible > System.currentTimeMillis();
+		
+	}
+
+	@Override
+	public boolean canBeEatenBy(IEatable other) {
+		if (isInvincible()) {
+			return false;
+		}		
+		if (other.getSize() > getSize() * FISH_EAT_THRESHOLD) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void eat() {
+		State old = getState();
+		kill();
+		notifyObservers(old, getState(), "Lives");
+	}
+
+	@Override
+	public double getSize() {
+		return getBoundingArea().getSize();
 	}
 
 }

@@ -8,7 +8,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 
-import com.github.fishio.game.GameState;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.gui.Renderer;
 import com.github.fishio.listeners.TickListener;
@@ -153,7 +152,7 @@ public abstract class PlayingField {
 		//add enemy entities
 		while (enemyCount < MAX_ENEMY_COUNT) {
 			//TODO add scalible enemyFish
-			EnemyFish eFish = LevelBuilder.randomizedFish(getPlayers().get(0).getBoundingArea());
+			EnemyFish eFish = EnemyFishFactory.randomizedFish(getPlayers().get(0).getBoundingArea());
 			add(eFish);
 			
 			enemyCount++;
@@ -294,19 +293,6 @@ public abstract class PlayingField {
 	 * Otherwise, this method will have no effect.
 	 */
 	public void startGameThread() {
-		if (gameThread.getState() == GameState.STOPPING) {
-			try {
-				gameThread.stopAndWait();
-			} catch (InterruptedException ex) {
-				log.log(LogLevel.ERROR,
-						"Error while stopping game thread: interrupted while waiting for game thread to stop.");
-			}
-		}
-		
-		//Reset the gameThread, so it can be restarted again.
-		gameThread.reset();
-		
-		//Start the game thread.
 		gameThread.start();
 	}
 	
@@ -369,11 +355,9 @@ public abstract class PlayingField {
 	 * @see #startGame()
 	 */
 	public void startGameAndWait() throws InterruptedException {
-		startGame();
+		startRendering();
 		
-		while (!isRunning()) {
-			Thread.sleep(25L);
-		}
+		gameThread.startAndWait();
 	}
 
 	/**
@@ -397,7 +381,7 @@ public abstract class PlayingField {
 		stopGame();
 		
 		//Wait until the game thread has stopped.
-		stopGameThreadAndWait();
+		gameThread.stopAndWait();
 	}
 
 	/**
@@ -458,7 +442,7 @@ public abstract class PlayingField {
 		deadDrawables.addAll(drawables);
 
 		for (Entity e : entities) {
-			e.setDead();
+			e.kill();
 		}
 
 		entities.clear();
@@ -478,7 +462,7 @@ public abstract class PlayingField {
 				continue;
 			}
 			
-			e.setDead();
+			e.kill();
 		}
 
 		for (IDrawable d : drawables) {

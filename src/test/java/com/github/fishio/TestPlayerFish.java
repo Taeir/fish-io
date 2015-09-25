@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 /**
  * Tests the PlayerFish class.
  */
-public class TestPlayerFish {
+public class TestPlayerFish implements TestIEatable {
 	//TODO Change some of the Mockito mocks and testing calls with verify(never), to simple getters.
 	//TODO - Comment made by Taeir - 2015/09/18
 	private PlayerFish pf;
@@ -28,6 +28,164 @@ public class TestPlayerFish {
 	public void setUp() {
 		pf = Mockito.spy(new PlayerFish(Mockito.mock(BoundingBox.class), Mockito.mock(Stage.class), null));
 		when(pf.getBoundingArea().getSize()).thenReturn(5.0);
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#getSize()}.
+	 */
+	@Test
+	public void testGetSize() {
+		assertEquals(5.0, pf.getSize(), 1E-8);
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#eat()}.
+	 */
+	@Test
+	public void testEat() {
+		pf.eat();
+		Mockito.verify(pf).kill();
+	}
+	
+	//TODO test moving with keys
+	
+	/**
+	 * Test if the fish swims up when up is pressed.
+	 */
+	@Test
+	public void testSwimUp() {
+		pf.setUpPressed(true);
+		pf.adjustYSpeed();
+		assertTrue(pf.getSpeedVector().y > 0);
+	}
+	
+	/**
+	 * Test if the fish swims down when down is pressed.
+	 */
+	@Test
+	public void testSwimDown() {
+		pf.setDownPressed(true);
+		pf.adjustYSpeed();
+		assertTrue(pf.getSpeedVector().y < 0);
+	}
+	
+	/**
+	 * Test if the fish swims right when right is pressed.
+	 */
+	@Test
+	public void testSwimRight() {
+		pf.setRightPressed(true);
+		pf.adjustXSpeed();
+		assertTrue(pf.getSpeedVector().x > 0);
+	}
+	
+	/**
+	 * Test if the fish swims left when left is pressed.
+	 */
+	@Test
+	public void testSwimLeft() {
+		pf.setLeftPressed(true);
+		pf.adjustXSpeed();
+		assertTrue(pf.getSpeedVector().x < 0);
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#setDead()}.
+	 */
+	@Test
+	public void testSetDead() {
+		pf.setDead();
+		assertTrue(pf.isDead());
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#setDead()}.
+	 * Test with a lot of lives.
+	 */
+	@Test
+	public void testSetDeadLives() {
+		pf.livesProperty().set(Integer.MAX_VALUE);
+		pf.setDead();
+		assertTrue(pf.isDead());		
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#setInvincible()}.
+	 */
+	@Test
+	public void testInvincibleOver() {
+		pf.setInvincible(System.currentTimeMillis() - 100);
+		assertFalse(pf.isInvincible());
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#getInvincible()}.
+	 */
+	@Test
+	public void testGetInvincibleOver() {
+		pf.setInvincible(System.currentTimeMillis() - 100);
+		assertEquals(0, pf.getInvincible());
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#getInvincible()}.
+	 */
+	@Test
+	public void testGetInvincibleActive() {
+		long time = System.currentTimeMillis() + 100;
+		pf.setInvincible(time);
+		assertEquals(time, pf.getInvincible());
+	}
+	
+
+
+	@Override
+	public void testCanBeEatenBy() {
+		testCanBeEatenByLargerEnemy();
+		testCanBeEatenBySameEnemy();
+		testCanBeEatenBySmallerEnemy();
+		testCanBeEatenByInvincible();
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#canBeEatenBy(IEatable).
+	 * Test for larger enemy.
+	 */
+	public void testCanBeEatenByLargerEnemy() {
+		IEatable other = Mockito.mock(IEatable.class);
+		when(other.getSize()).thenReturn(10.0);
+		assertTrue(pf.canBeEatenBy(other));
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#canBeEatenBy(IEatable).
+	 * Test with enemy with same size.
+	 */
+	public void testCanBeEatenBySameEnemy() {
+		IEatable other = Mockito.mock(IEatable.class);
+		when(other.getSize()).thenReturn(5.0);
+		assertFalse(pf.canBeEatenBy(other));
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#canBeEatenBy(IEatable).
+	 * Test with a smaller enemy.
+	 */
+	public void testCanBeEatenBySmallerEnemy() {
+		IEatable other = Mockito.mock(IEatable.class);
+		when(other.getSize()).thenReturn(4.0);
+		assertFalse(pf.canBeEatenBy(other));
+	}
+	
+	/**
+	 * Tests {@link PlayerFish#canBeEatenBy(IEatable).
+	 * Test for when the player fish is invincible
+	 */
+	public void testCanBeEatenByInvincible() {
+		IEatable other = Mockito.mock(IEatable.class);
+		when(other.getSize()).thenReturn(4.0);
+		pf.setInvincible(-1);
+		assertFalse(pf.canBeEatenBy(other));
 	}
 	
 	/**
@@ -77,11 +235,12 @@ public class TestPlayerFish {
 	@Test
 	public void testCollideWithOtherPlayerFish() {
 		PlayerFish pf2 = Mockito.spy(new PlayerFish(Mockito.mock(BoundingBox.class), Mockito.mock(Stage.class), null));
-		
+		when(pf2.getBoundingArea().getSize()).thenReturn(1000000.0);
+		pf.livesProperty().set(1);
 		pf.onCollide(pf2);
-		
-		Mockito.verify(pf, never()).setDead();
-		Mockito.verify(pf2, never()).setDead();
+	
+		assertTrue(pf.isDead());
+		Mockito.verify(pf2, never()).kill();
 	}
 	
 	/**
@@ -107,7 +266,7 @@ public class TestPlayerFish {
 		//The player should be dead.
 		assertTrue(pf.isDead());
 		
-		Mockito.verify(ef, never()).setDead();
+		Mockito.verify(ef, never()).kill();
 	}
 	
 	/**
@@ -132,7 +291,7 @@ public class TestPlayerFish {
 		
 		//The player should not be dead.
 		assertFalse(pf.isDead());
-		Mockito.verify(ef, never()).setDead();
+		Mockito.verify(ef, never()).kill();
 	}
 	
 	/**
@@ -148,8 +307,8 @@ public class TestPlayerFish {
 		
 		pf.onCollide(ef);
 		
-		Mockito.verify(ef).setDead();
-		Mockito.verify(pf, never()).setDead();
+		Mockito.verify(ef).kill();
+		Mockito.verify(pf, never()).kill();
 		Mockito.verify(bb).increaseSize(pf.getGrowthSpeed() * 3.9 / 5.0);
 	}
 	
@@ -163,8 +322,8 @@ public class TestPlayerFish {
 
 		pf.onCollide(ef);
 		
-		Mockito.verify(ef, never()).setDead();
-		Mockito.verify(pf, never()).setDead();
+		Mockito.verify(ef, never()).kill();
+		Mockito.verify(pf, never()).kill();
 	}
 	
 	/**
@@ -176,12 +335,11 @@ public class TestPlayerFish {
 		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(BoundingBox.class), 
 				null, 0.0, 0.0));
 		when(ef.getBoundingArea().getSize()).thenReturn(5.1);
-		ef.setDead();
+		ef.kill();
 
 		pf.onCollide(ef);
 		
-		Mockito.verify(pf, never()).removeLife();
-		Mockito.verify(pf, never()).setDead();
+		Mockito.verify(pf, never()).kill();
 	}
 	
 	/**
@@ -215,7 +373,8 @@ public class TestPlayerFish {
 		pf.livesProperty().set(2);
 		
 		//The fish should not be dead.
-		assertFalse(pf.removeLife());
+		pf.kill();
+		assertFalse(pf.isDead());
 		
 		//The amount of lives should have been decreased.
 		assertEquals(1, pf.getLives());
@@ -230,10 +389,15 @@ public class TestPlayerFish {
 		pf.livesProperty().set(1);
 		
 		//The fish should be dead.
-		assertTrue(pf.removeLife());
+		pf.kill();
 		assertTrue(pf.isDead());
 		
 		//The amount of lives should have been decreased.
 		assertEquals(0, pf.getLives());
+	}
+
+	@Override
+	public IEatable getTestObject() {
+		return pf;
 	}
 }
