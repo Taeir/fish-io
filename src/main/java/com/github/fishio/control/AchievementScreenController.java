@@ -9,6 +9,7 @@ import com.github.fishio.logging.LogLevel;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.effect.ColorAdjust;
 
 /**
  * Achievement screen controller.
@@ -17,14 +18,21 @@ public class AchievementScreenController implements ScreenController {
 	
 	private Log log = Log.getLogger();
 	
+	@SuppressWarnings("restriction")
+	ColorAdjust colorAdjust1 = new ColorAdjust(0, 0, 0, 1);
+	
 	@FXML
 	private Button btnBackToMenu;
+	
+	
 	
 	@FXML
 	private ImageView achievesmall11;
 	
+	
 	@FXML
 	private ImageView achievesmall12;
+	
 	@FXML
 	private ImageView achievesmall13;
 	@FXML
