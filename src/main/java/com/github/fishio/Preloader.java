@@ -104,6 +104,11 @@ public final class Preloader {
 			for (int i = 1; i < 8; i++) {
 				tryPreLoad("sprites/chieveLarge/Achieve" + i + ".png", true);
 			}
+			
+			// Load PowerUp sprites.
+			for (int i = 0; i < 3; i++) {
+				tryPreLoad("sprites/powerup/pu" + i + ".png", true);
+			}
 		});
 		
 		thread.start();
