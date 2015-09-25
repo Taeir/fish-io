@@ -1,6 +1,7 @@
 package com.github.fishio.control;
 
-import javax.swing.text.html.ImageView;
+
+
 
 import com.github.fishio.Preloader;
 import com.github.fishio.logging.Log;
@@ -9,6 +10,7 @@ import com.github.fishio.logging.LogLevel;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
 
 /**
@@ -18,87 +20,115 @@ public class AchievementScreenController implements ScreenController {
 	
 	private Log log = Log.getLogger();
 	
-	@SuppressWarnings("restriction")
 	ColorAdjust colorAdjust1 = new ColorAdjust(0, 0, 0, 1);
 	
 	@FXML
 	private Button btnBackToMenu;
-	
-	
-	
+
 	@FXML
-	private ImageView achievesmall11;
-	
+	private Label achievesmall11;
 	
 	@FXML
-	private ImageView achievesmall12;
+	private Label achievesmall12;
 	
 	@FXML
-	private ImageView achievesmall13;
+	private Label achievesmall13;
+	
 	@FXML
-	private ImageView achievesmall14;
+	private Label achievesmall14;
+	
 	@FXML
-	private ImageView achievesmall15;
+	private Label achievesmall15;
+	
 	@FXML
-	private ImageView achievesmall21;
+	private Label achievesmall21;
+	
 	@FXML
-	private ImageView achievesmall22;
+	private Label achievesmall22;
+	
 	@FXML
-	private ImageView achievesmall23;
+	private Label achievesmall23;
+	
 	@FXML
-	private ImageView achievesmall24;
+	private Label achievesmall24;
+	
 	@FXML
-	private ImageView achievesmall25;
+	private Label achievesmall25;
+	
 	@FXML
-	private ImageView achievesmall31;
+	private Label achievesmall31;
+	
 	@FXML
-	private ImageView achievesmall32;
+	private Label achievesmall32;
+	
 	@FXML
-	private ImageView achievesmall33;
+	private Label achievesmall33;
+	
 	@FXML
-	private ImageView achievesmall34;
+	private Label achievesmall34;
+	
 	@FXML
-	private ImageView achievesmall35;
+	private Label achievesmall35;
+	
 	@FXML
-	private ImageView achievesmall41;
+	private Label achievesmall41;
+	
 	@FXML
-	private ImageView achievesmall42;
+	private Label achievesmall42;
+	
 	@FXML
-	private ImageView achievesmall43;
+	private Label achievesmall43;
+	
 	@FXML
-	private ImageView achievesmall44;
+	private Label achievesmall44;
+	
 	@FXML
-	private ImageView achievesmall45;
+	private Label achievesmall45;
+	
 	@FXML
-	private ImageView achievesmall51;
+	private Label achievesmall51;
+	
 	@FXML
-	private ImageView achievesmall52;
+	private Label achievesmall52;
+	
 	@FXML
-	private ImageView achievesmall53;
+	private Label achievesmall53;
+	
 	@FXML
-	private ImageView achievesmall54;
+	private Label achievesmall54;
+	
 	@FXML
-	private ImageView achievesmall55;
+	private Label achievesmall55;
+	
 	@FXML
-	private ImageView achievesmall61;
+	private Label achievesmall61;
+	
 	@FXML
-	private ImageView achievesmall62;
+	private Label achievesmall62;
+	
 	@FXML
-	private ImageView achievesmall63;
+	private Label achievesmall63;
+	
 	@FXML
-	private ImageView achievesmall64;
+	private Label achievesmall64;
+	
 	@FXML
-	private ImageView achievesmall65;
+	private Label achievesmall65;
+	
 	@FXML
-	private ImageView achievesmall71;
+	private Label achievesmall71;
+	
 	@FXML
-	private ImageView achievesmall72;
+	private Label achievesmall72;
+	
 	@FXML
-	private ImageView achievesmall73;
+	private Label achievesmall73;
+	
 	@FXML
-	private ImageView achievesmall74;
+	private Label achievesmall74;
+	
 	@FXML
-	private ImageView achievemall75;
+	private Label achievemall75;
 	
 	@Override
 	public void init(Scene scene) {
