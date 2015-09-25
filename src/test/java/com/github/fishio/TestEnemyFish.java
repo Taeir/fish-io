@@ -12,7 +12,7 @@ import org.mockito.Mockito;
 /**
  * This class tests the EnemyFish class.
  */
-public class TestEnemyFish implements TestIEatable {
+public class TestEnemyFish extends TestIEatable {
 	
 	private BoundingBox bb1;
 	private EnemyFish enemy1;
