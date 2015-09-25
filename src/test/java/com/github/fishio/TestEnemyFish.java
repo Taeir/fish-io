@@ -3,9 +3,11 @@ package com.github.fishio;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
  * This class tests the EnemyFish class.
@@ -147,5 +149,57 @@ public class TestEnemyFish {
 		enemy1.limitSpeed();
 		assertEquals(-EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
 		assertEquals(-EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
+	}
+	
+	/**
+	 * Tests {@link EnemyFish#eat()}.
+	 */
+	@Test
+	public void testEat() {
+		enemy1.eat();
+		assertTrue(enemy1.isDead());
+	}
+	
+	/**
+	 * Tests {@link EnemyFish#kill()}.
+	 */
+	@Test
+	public void testKill() {
+		enemy1.kill();
+		assertTrue(enemy1.isDead());
+	}
+	
+	/**
+	 * Tests {@link EnemyFish#canBeEatenBy(IEatable).
+	 * Test for larger enemy.
+	 */
+	@Test
+	public void testCanBeEatenByLarger() {
+		IEatable other = Mockito.mock(IEatable.class);
+		when(other.getSize()).thenReturn(10.0);
+		assertTrue(enemy1.canBeEatenBy(other));
+	}
+	
+	/**
+	 * Tests {@link EnemyFish#canBeEatenBy(IEatable).
+	 * Test with fish with same size.
+	 */
+	@Test
+	public void testCanBeEatenBySame() {
+		IEatable other = Mockito.mock(IEatable.class);
+		when(other.getSize()).thenReturn(4.0);
+		System.out.println(enemy1.getBoundingArea().getSize());
+		assertFalse(enemy1.canBeEatenBy(other));
+	}
+	
+	/**
+	 * Tests {@link EnemyFish#canBeEatenBy(IEatable).
+	 * Test with a smaller fish.
+	 */
+	@Test
+	public void testCanBeEatenBySmaller() {
+		IEatable other = Mockito.mock(IEatable.class);
+		when(other.getSize()).thenReturn(3.0);
+		assertFalse(enemy1.canBeEatenBy(other));
 	}
 }
