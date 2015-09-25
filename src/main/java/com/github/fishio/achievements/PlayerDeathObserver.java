@@ -2,6 +2,8 @@ package com.github.fishio.achievements;
 
 import java.util.Collection;
 
+import com.github.fishio.SinglePlayerPlayingField;
+
 /**
  * This class is an Observer. It attaches to the SinglePlayerPlayingField and
  * gets an update when a player dies in single player mode.
@@ -9,7 +11,7 @@ import java.util.Collection;
  */
 class PlayerDeathObserver implements Observer {
 	
-	private Subject singlePlayerPlayingField;
+	private Subject playerFish;
 	private static int playerdeathcounter = 0;
 	
 	/**
@@ -18,14 +20,31 @@ class PlayerDeathObserver implements Observer {
 	 * @param subject
 	 *            The subject this observer has to be notified by.
 	 */
-	public PlayerDeathObserver(Subject subject) {
-		this.singlePlayerPlayingField = subject;
-		this.singlePlayerPlayingField.attach(this);
+	public PlayerDeathObserver(SinglePlayerPlayingField subject) {
+		this.playerFish = subject.getPlayer();
+		this.playerFish.attach(this);
+		
+		registerPlayerListener(subject);
+	}
+	
+	/**
+	 * Registers a listener for the playerProperty, so that when the
+	 * player changes, this Observer keeps working.
+	 * 
+	 * @param sppf
+	 * 		the SinglePlayerPlayingField to register for.
+	 */
+	protected final void registerPlayerListener(SinglePlayerPlayingField sppf) {
+		sppf.playerProperty().addListener((observable, oldFish, newFish) -> {
+			//Change our subject when the player changes.
+			playerFish = newFish;
+			playerFish.attach(PlayerDeathObserver.this);
+		});
 	}
 	
 	@Override
 	public void update(State old, State now, Collection<String> properties) {
-		if (!properties.contains("PlayerDeath")) {
+		if (!properties.contains("dead")) {
 			return;
 		}
 		playerdeathcounter++;
