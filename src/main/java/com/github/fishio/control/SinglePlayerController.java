@@ -28,6 +28,9 @@ import javafx.util.Duration;
  * The controller class of the single player game.
  */
 public class SinglePlayerController implements ScreenController {
+	private static final String PAUSE_TEXT = "Pause";
+	private static final String UNPAUSE_TEXT = "Unpause";
+
 	private Log log = Log.getLogger();
 	
 	private SinglePlayerPlayingField pf;
@@ -105,7 +108,7 @@ public class SinglePlayerController implements ScreenController {
 		FishIO.getInstance().getPrimaryStage().setTitle("Fish.io Singleplayer");
 		
 		//Reset the pause button
-		getBtnPause().setText("Pause");
+		getBtnPause().setText(PAUSE_TEXT);
 		getBtnPause().setDisable(false);
 		
 		//Hide the death screen
@@ -128,14 +131,14 @@ public class SinglePlayerController implements ScreenController {
 			try {
 				pf.stopGameAndWait();
 			} catch (InterruptedException ex) { }
-			getBtnPause().setText("Unpause");
+			getBtnPause().setText(UNPAUSE_TEXT);
 			
 			log.log(LogLevel.INFO, "Player paused the game.");
 		} else {
 			log.log(LogLevel.INFO, "Player resumed the game.");
 			
 			pf.startGame();
-			getBtnPause().setText("Pause");
+			getBtnPause().setText(PAUSE_TEXT);
 		}
 	}
 
@@ -265,7 +268,7 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	public void restartGame() {
 		//Reset the pause button
-		getBtnPause().setText("Pause");
+		getBtnPause().setText(PAUSE_TEXT);
 		getBtnPause().setDisable(false);
 		
 		//Stop the game, clear all items, and start it again.
@@ -289,15 +292,15 @@ public class SinglePlayerController implements ScreenController {
 	public void updatePauseButton() {
 		if (!pf.isPlayerAlive()) {
 			//All player fish are dead
-			getBtnPause().setText("Pause");
+			getBtnPause().setText(PAUSE_TEXT);
 			getBtnPause().setDisable(true);
 		} else if (pf.isRunning()) {
 			//There is a player fish alive and the game is running
-			getBtnPause().setText("Pause");
+			getBtnPause().setText(PAUSE_TEXT);
 			getBtnPause().setDisable(false);
 		} else {
 			//There is a player fish alive and the game is not running
-			getBtnPause().setText("Unpause");
+			getBtnPause().setText(UNPAUSE_TEXT);
 			getBtnPause().setDisable(false);
 		}
 	}
