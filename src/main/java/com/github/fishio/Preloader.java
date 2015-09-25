@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import com.github.fishio.control.ScreenController;
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
 
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
@@ -12,9 +14,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
-
-import com.github.fishio.logging.Log;
-import com.github.fishio.logging.LogLevel;
 
 /**
  * Class to preload sprites.
@@ -95,6 +94,16 @@ public final class Preloader {
 			tryPreLoad("sprites/float.png", false);
 			tryPreLoad("sprites/seaweed1.png", false);
 			tryPreLoad("sprites/starfish.png", false);
+			
+			// Load achievement icons.
+			for (int i = 1; i < 8; i++) {
+				tryPreLoad("sprites/chieveIcon/Achievesmall" + i + ".png", true);
+			}
+			
+			// Load large achievements.
+			for (int i = 1; i < 8; i++) {
+				tryPreLoad("sprites/chieveLarge/Achieve" + i + ".png", true);
+			}
 		});
 		
 		thread.start();
