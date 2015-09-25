@@ -205,11 +205,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall31;
 	
 	/**
-	 * Changes the color of the HitWall achievement level 1 when it is achieved.
+	 * Changes the color of the hitWall achievement level 1 when it is achieved.
 	 * For now does not change color yet.
 	 */
 	public void setAchievement31picture() {
-		Achievement HitWall = new Achievement("HitWall");
+		Achievement hitWall = new Achievement("hitWall");
 		achievesmall31.setEffect(colorAdjust1);
 	}
 	
@@ -217,11 +217,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall32;
 	
 	/**
-	 * Changes the color of the HitWall achievement level 2 when it is achieved.
+	 * Changes the color of the hitWall achievement level 2 when it is achieved.
 	 * For now does not change color yet.
 	 */
 	public void setAchievement32picture() {
-		Achievement HitWall = new Achievement("HitWall");
+		Achievement hitWall = new Achievement("hitWall");
 		achievesmall32.setEffect(colorAdjust1);
 	}
 	
@@ -229,11 +229,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall33;
 	
 	/**
-	 * Changes the color of the HitWall achievement level 3 when it is achieved.
+	 * Changes the color of the hitWall achievement level 3 when it is achieved.
 	 * For now does not change color yet.
 	 */
 	public void setAchievement33picture() {
-		Achievement HitWall = new Achievement("HitWall");
+		Achievement hitWall = new Achievement("hitWall");
 		achievesmall33.setEffect(colorAdjust1);
 	}
 	
@@ -241,11 +241,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall34;
 	
 	/**
-	 * Changes the color of the HitWall achievement level 4 when it is achieved.
+	 * Changes the color of the hitWall achievement level 4 when it is achieved.
 	 * For now does not change color yet.
 	 */
 	public void setAchievement34picture() {
-		Achievement HitWall = new Achievement("HitWall");
+		Achievement hitWall = new Achievement("hitWall");
 		achievesmall34.setEffect(colorAdjust1);
 	}
 	
@@ -253,11 +253,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall35;
 	
 	/**
-	 * Changes the color of the HitWall achievement level 5 when it is achieved.
+	 * Changes the color of the hitWall achievement level 5 when it is achieved.
 	 * For now does not change color yet.
 	 */
 	public void setAchievement35picture() {
-		Achievement HitWall = new Achievement("HitWall");
+		Achievement hitWall = new Achievement("hitWall");
 		achievesmall35.setEffect(colorAdjust1);
 	}
 	
@@ -265,11 +265,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall41;
 	
 	/**
-	 * Changes the color of the Revive achievement level 1 when it is achieved.
+	 * Changes the color of the revive achievement level 1 when it is achieved.
 	 * For now does not change color yet.
 	 */
 	public void setAchievement41picture() {
-		Achievement Revive = new Achievement("Revive");
+		Achievement revive = new Achievement("revive");
 		achievesmall41.setEffect(colorAdjust1);
 	}
 	
@@ -277,11 +277,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall42;
 	
 	/**
-	 * Changes the color of the Revive achievement level 2 when it is achieved.
+	 * Changes the color of the revive achievement level 2 when it is achieved.
 	 * For now does not change color yet.
 	 */
 	public void setAchievement42picture() {
-		Achievement Revive = new Achievement("Revive");
+		Achievement revive = new Achievement("revive");
 		achievesmall42.setEffect(colorAdjust1);
 	}
 	
@@ -289,11 +289,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall43;
 	
 	/**
-	 * Changes the color of the Revive achievement level 1 when it is achieved.
+	 * Changes the color of the revive achievement level 1 when it is achieved.
 	 * For now does not change color yet.
 	 */
 	public void setAchievement43picture() {
-		Achievement Revive = new Achievement("Revive");
+		Achievement revive = new Achievement("revive");
 		achievesmall43.setEffect(colorAdjust1);
 	}
 	
@@ -301,11 +301,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall44;
 	
 	/**
-	 * Changes the color of the Revive achievement level 1 when it is achieved.
+	 * Changes the color of the revive achievement level 1 when it is achieved.
 	 * For now does not change color yet.
 	 */
 	public void setAchievement44picture() {
-		Achievement Revive = new Achievement("Revive");
+		Achievement revive = new Achievement("revive");
 		achievesmall44.setEffect(colorAdjust1);
 	}
 	
@@ -313,11 +313,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall45;
 	
 	/**
-	 * Changes the color of the Revive achievement level 1 when it is achieved.
+	 * Changes the color of the revive achievement level 1 when it is achieved.
 	 * For now does not change color yet.
 	 */
 	public void setAchievement45picture() {
-		Achievement Revive = new Achievement("Revive");
+		Achievement revive = new Achievement("revive");
 		achievesmall45.setEffect(colorAdjust1);
 	}
 	
@@ -325,11 +325,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall51;
 	
 	/**
-	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * Changes the color of the pun achievement level 1 when it is achieved. For
 	 * now does not change color yet.
 	 */
 	public void setAchievement51picture() {
-		Achievement Pun = new Achievement("Pun");
+		Achievement pun = new Achievement("pun");
 		achievesmall51.setEffect(colorAdjust1);
 	}
 	
@@ -337,11 +337,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall52;
 	
 	/**
-	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * Changes the color of the pun achievement level 1 when it is achieved. For
 	 * now does not change color yet.
 	 */
 	public void setAchievement52picture() {
-		Achievement Pun = new Achievement("Pun");
+		Achievement pun = new Achievement("pun");
 		achievesmall52.setEffect(colorAdjust1);
 	}
 	
@@ -349,11 +349,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall53;
 	
 	/**
-	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * Changes the color of the pun achievement level 1 when it is achieved. For
 	 * now does not change color yet.
 	 */
 	public void setAchievement53picture() {
-		Achievement Pun = new Achievement("Pun");
+		Achievement pun = new Achievement("pun");
 		achievesmall53.setEffect(colorAdjust1);
 	}
 	
@@ -361,11 +361,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall54;
 	
 	/**
-	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * Changes the color of the pun achievement level 1 when it is achieved. For
 	 * now does not change color yet.
 	 */
 	public void setAchievement54picture() {
-		Achievement Pun = new Achievement("Pun");
+		Achievement pun = new Achievement("pun");
 		achievesmall54.setEffect(colorAdjust1);
 	}
 	
@@ -373,11 +373,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall55;
 	
 	/**
-	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * Changes the color of the pun achievement level 1 when it is achieved. For
 	 * now does not change color yet.
 	 */
 	public void setAchievement55picture() {
-		Achievement Pun = new Achievement("Pun");
+		Achievement pun = new Achievement("pun");
 		achievesmall55.setEffect(colorAdjust1);
 	}
 	
@@ -385,11 +385,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall61;
 	
 	/**
-	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * Changes the color of the pun achievement level 1 when it is achieved. For
 	 * now does not change color yet.
 	 */
 	public void setAchievement61picture() {
-		Achievement Pun = new Achievement("Pun");
+		Achievement pun = new Achievement("pun");
 		achievesmall61.setEffect(colorAdjust1);
 	}
 	
@@ -397,11 +397,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall62;
 	
 	/**
-	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * Changes the color of the pun achievement level 1 when it is achieved. For
 	 * now does not change color yet.
 	 */
 	public void setAchievement62picture() {
-		Achievement Pun = new Achievement("Pun");
+		Achievement pun = new Achievement("pun");
 		achievesmall62.setEffect(colorAdjust1);
 	}
 	
@@ -409,11 +409,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall63;
 	
 	/**
-	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * Changes the color of the pun achievement level 1 when it is achieved. For
 	 * now does not change color yet.
 	 */
 	public void setAchievement63picture() {
-		Achievement Pun = new Achievement("Pun");
+		Achievement pun = new Achievement("pun");
 		achievesmall63.setEffect(colorAdjust1);
 	}
 	
@@ -421,11 +421,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall64;
 	
 	/**
-	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * Changes the color of the pun achievement level 1 when it is achieved. For
 	 * now does not change color yet.
 	 */
 	public void setAchievement64picture() {
-		Achievement Pun = new Achievement("Pun");
+		Achievement pun = new Achievement("pun");
 		achievesmall64.setEffect(colorAdjust1);
 	}
 	
@@ -433,11 +433,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall65;
 	
 	/**
-	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * Changes the color of the pun achievement level 1 when it is achieved. For
 	 * now does not change color yet.
 	 */
 	public void setAchievement65picture() {
-		Achievement Pun = new Achievement("Pun");
+		Achievement pun = new Achievement("pun");
 		achievesmall65.setEffect(colorAdjust1);
 	}
 	
@@ -445,11 +445,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall71;
 	
 	/**
-	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * Changes the color of the pun achievement level 1 when it is achieved. For
 	 * now does not change color yet.
 	 */
 	public void setAchievement71picture() {
-		Achievement Pun = new Achievement("Pun");
+		Achievement pun = new Achievement("pun");
 		achievesmall71.setEffect(colorAdjust1);
 	}
 	
@@ -457,11 +457,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall72;
 	
 	/**
-	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * Changes the color of the pun achievement level 1 when it is achieved. For
 	 * now does not change color yet.
 	 */
 	public void setAchievement72picture() {
-		Achievement Pun = new Achievement("Pun");
+		Achievement pun = new Achievement("pun");
 		achievesmall72.setEffect(colorAdjust1);
 	}
 	
@@ -469,11 +469,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall73;
 	
 	/**
-	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * Changes the color of the pun achievement level 1 when it is achieved. For
 	 * now does not change color yet.
 	 */
 	public void setAchievement73picture() {
-		Achievement Pun = new Achievement("Pun");
+		Achievement pun = new Achievement("pun");
 		achievesmall73.setEffect(colorAdjust1);
 	}
 	
@@ -481,11 +481,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall74;
 	
 	/**
-	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * Changes the color of the pun achievement level 1 when it is achieved. For
 	 * now does not change color yet.
 	 */
 	public void setAchievement74picture() {
-		Achievement Pun = new Achievement("Pun");
+		Achievement pun = new Achievement("pun");
 		achievesmall74.setEffect(colorAdjust1);
 	}
 	
@@ -493,11 +493,11 @@ public class AchievementScreenController implements ScreenController {
 	private Label achievesmall75;
 	
 	/**
-	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * Changes the color of the pun achievement level 1 when it is achieved. For
 	 * now does not change color yet.
 	 */
 	public void setAchievement75picture() {
-		Achievement Pun = new Achievement("Pun");
+		Achievement pun = new Achievement("pun");
 		achievesmall75.setEffect(colorAdjust1);
 	}
 	
