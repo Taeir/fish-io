@@ -442,7 +442,7 @@ public abstract class PlayingField {
 		deadDrawables.addAll(drawables);
 
 		for (Entity e : entities) {
-			e.setDead();
+			e.kill();
 		}
 
 		entities.clear();
@@ -462,7 +462,7 @@ public abstract class PlayingField {
 				continue;
 			}
 			
-			e.setDead();
+			e.kill();
 		}
 
 		for (IDrawable d : drawables) {
