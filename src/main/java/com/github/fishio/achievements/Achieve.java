@@ -21,7 +21,7 @@ public final class Achieve {
 	 * @param playerDeath
 	 *            The Achievement associated with the playerDeath observer.
 	 */
-	static void checkPlayerDeath(Achievement playerDeath) {
+	public static void checkPlayerDeath(Achievement playerDeath) {
 		
 		if (PlayerDeathObserver.getCounter() >= 100) {
 			playerDeath.setLevel(5);
@@ -52,7 +52,7 @@ public final class Achieve {
 	 * @param enemyKill
 	 *            The Achievement associated with the enemyKill observer.
 	 */
-	static void checkEnemyKill(Achievement enemyKill) {
+	public static void checkEnemyKill(Achievement enemyKill) {
 		
 		if (EnemyKillObserver.getCounter() >= 500) {
 			enemyKill.setLevel(5);
