@@ -170,7 +170,7 @@ public class TestEnemyFish {
 	}
 	
 	/**
-	 * Tests {@link EnemyFish#canBeEatenBy(IEatable).
+	 * Tests {@link EnemyFish#canBeEatenBy(IEatable)}.
 	 * Test for larger enemy.
 	 */
 	@Test
@@ -181,7 +181,7 @@ public class TestEnemyFish {
 	}
 	
 	/**
-	 * Tests {@link EnemyFish#canBeEatenBy(IEatable).
+	 * Tests {@link EnemyFish#canBeEatenBy(IEatable)}.
 	 * Test with fish with same size.
 	 */
 	@Test
@@ -192,7 +192,7 @@ public class TestEnemyFish {
 	}
 	
 	/**
-	 * Tests {@link EnemyFish#canBeEatenBy(IEatable).
+	 * Tests {@link EnemyFish#canBeEatenBy(IEatable)}.
 	 * Test with a smaller fish.
 	 */
 	@Test
