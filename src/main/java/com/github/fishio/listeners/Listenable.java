@@ -64,9 +64,9 @@ public interface Listenable {
 				tl.postTick();
 			} catch (Exception ex) {
 				if (logPrefix != null) {
-					Log.getLogger().log(LogLevel.ERROR, "[" + logPrefix + "] Error in preTick:\t" + ex.getMessage());
+					Log.getLogger().log(LogLevel.ERROR, "[" + logPrefix + "] Error in postTick:\t" + ex.getMessage());
 				} else {
-					Log.getLogger().log(LogLevel.ERROR, "Error in preTick:\t" + ex.getMessage());
+					Log.getLogger().log(LogLevel.ERROR, "Error in postTick:\t" + ex.getMessage());
 				}
 				
 				//TODO Handle exception differently

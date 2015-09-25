@@ -179,6 +179,14 @@ public class Renderer implements Listenable {
 	}
 	
 	/**
+	 * @return
+	 * 		the current background image. Can be <code>null</code>.
+	 */
+	public Image getBackground() {
+		return background;
+	}
+	
+	/**
 	 * Set the background image of the level.
 	 * @param image
 	 * 			The background image.
