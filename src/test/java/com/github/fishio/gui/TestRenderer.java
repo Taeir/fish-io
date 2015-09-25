@@ -32,20 +32,29 @@ public class TestRenderer extends GuiTest implements IListenableTest {
 	private static SinglePlayerPlayingField sppf;
 	private static Canvas canvas;
 	private Renderer renderer;
+
+	public TestRenderer() {
+		super("singlePlayer");
+	}
 	
 	/**
 	 * Creates a new PlayingField, Canvas and Renderer before every test,
 	 * so that tests do not interfere with each other.
+	 * @throws InterruptedException 
+	 * 		if we are interrupted while waiting for the game to stop.
 	 */
 	@Before
-	public void setUp() {
+	public void setUp() throws InterruptedException {
+		//Stop the game
+		getSinglePlayerController().getPlayingField().stopGameAndWait();
+		
 		//Create a new SinglePlayerPlayingField mock.
 		sppf = Mockito.mock(SinglePlayerPlayingField.class);
 		when(sppf.getDrawables()).thenReturn(new ConcurrentLinkedDeque<>());
 		when(sppf.getDeadDrawables()).thenReturn(new ConcurrentLinkedDeque<>());
 		
 		//Create a new Canvas and spy on it.
-		canvas = spy(new Canvas());
+		canvas = spy(getSinglePlayerController().getPlayingField().getRenderer().getCanvas());
 		
 		//Create the renderer
 		renderer = new Renderer(sppf, canvas, 60);
