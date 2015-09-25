@@ -2,12 +2,14 @@ package com.github.fishio.achievements;
 
 import java.util.Collection;
 
+import com.github.fishio.SinglePlayerPlayingField;
+
 /**
  * This class is an Observer. It attaches to the PlayerFish class and gets an
  * update when an enemy fish dies due to the player fish (kill).
  *
  */
-class EnemyKillObserver implements Observer {
+public class EnemyKillObserver implements Observer {
 	
 	private Subject playerFish;
 	private static int enemykillcounter = 0;
@@ -18,9 +20,27 @@ class EnemyKillObserver implements Observer {
 	 * @param subject
 	 *            The subject this observer has to be notified by.
 	 */
-	public EnemyKillObserver(Subject subject) {
-		this.playerFish = subject;
+	public EnemyKillObserver(SinglePlayerPlayingField subject) {
+		this.playerFish = subject.getPlayer();
 		this.playerFish.attach(this);
+		
+		registerPlayerListener(subject);
+	}
+	
+	/**
+	 * Registers a listener for the playerProperty, so that when the player
+	 * changes, this Observer keeps working.
+	 * 
+	 * @param sppf
+	 *            the SinglePlayerPlayingField to register for.
+	 */
+	protected final void registerPlayerListener(SinglePlayerPlayingField sppf) {
+		sppf.playerProperty().addListener((observable, oldFish, newFish) ->
+		{
+			// Change our subject when the player changes.
+			playerFish = newFish;
+			playerFish.attach(EnemyKillObserver.this);
+		});
 	}
 	
 	@Override
