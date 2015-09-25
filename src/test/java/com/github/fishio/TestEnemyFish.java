@@ -188,7 +188,6 @@ public class TestEnemyFish {
 	public void testCanBeEatenBySame() {
 		IEatable other = Mockito.mock(IEatable.class);
 		when(other.getSize()).thenReturn(4.0);
-		System.out.println(enemy1.getBoundingArea().getSize());
 		assertFalse(enemy1.canBeEatenBy(other));
 	}
 	
