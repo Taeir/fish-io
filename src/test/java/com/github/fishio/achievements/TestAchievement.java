@@ -2,6 +2,7 @@ package com.github.fishio.achievements;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -135,7 +136,7 @@ public class TestAchievement {
 	}
 	
 	/**
-	 * Test equals with other class.
+	 * Test equals with null.
 	 */
 	@Test
 	public void testEqualsNull() {
@@ -154,7 +155,15 @@ public class TestAchievement {
 	 * Test equals with different achievement in second object.
 	 */
 	@Test
-	public void testEqualsDifferentFormatter() {
+	public void testEqualsDifferentAchievement() {
 		assertFalse(achievetest1.equals(new Achievement("Testother", 0)));
+	}
+	
+	/**
+	 * Test equals with different achievement in second object.
+	 */
+	@Test
+	public void testEqualsSameAchievement() {
+		assertTrue(achievetest1.equals(new Achievement("Testachievement", 3)));
 	}
 }

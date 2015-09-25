@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
@@ -23,9 +24,9 @@
          <children>
           <VBox alignment="CENTER" prefHeight="720.0" prefWidth="1280.0" spacing="10.0" GridPane.columnIndex="1">
             <children>
-              <Label fx:id="achievementTitle" prefHeight="54.0" prefWidth="919.0" text="In the near future, you will be able to see the achievements you have obtained on this screen.">
+              <Label fx:id="achievementTitle" prefHeight="54.0" prefWidth="919.0" text="Below you can see which achievements you have obtained." textAlignment="CENTER">
                      <font>
-                        <Font size="22.0" />
+                        <Font size="35.0" />
                      </font>
                   </Label>
               <Button fx:id="btnBackToMenu" mnemonicParsing="false" onAction="#backToMenu" text="Back to menu" />
@@ -49,181 +50,429 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="1">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="2">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="3">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="3">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="4">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="4">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="4">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="4">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="5">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="6">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="5">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="6">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="5">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="6">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="5">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="4" GridPane.rowIndex="6">
-                     <image>
-                        <Image url="@../../../../logo.png" />
-                     </image>
-                  </ImageView>
+                  <Label fx:id="achievesmall11" prefHeight="17.0" prefWidth="208.0">
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall1.png" />
+                           </image>
+                           <viewport>
+                              <Rectangle2D />
+                           </viewport>
+                        </ImageView>
+                     </graphic>
+                     <padding>
+                        <Insets left="50.0" />
+                     </padding>
+                  </Label>
+                  <Label fx:id="achievesmall12" GridPane.columnIndex="1">
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall1.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="achievesmall13" GridPane.columnIndex="2">
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall1.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="achievesmall14" GridPane.columnIndex="3">
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall1.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="achievesmall15" GridPane.columnIndex="4">
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall1.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label fx:id="achievesmall21" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall2.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall22" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall2.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall23" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall2.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall24" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall2.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall25" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall2.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall31" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall3.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall32" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall3.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall33" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall3.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall35" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall3.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall34" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall3.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall41" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall4.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall42" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall4.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall43" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall4.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall44" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall4.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall45" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall4.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall51" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall5.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall52" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall5.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall53" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall5.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall54" GridPane.columnIndex="3" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall5.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall55" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall5.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall61" GridPane.rowIndex="5">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall6.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall62" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall6.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall63" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall6.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall64" GridPane.columnIndex="3" GridPane.rowIndex="5">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall6.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall65" GridPane.columnIndex="4" GridPane.rowIndex="5">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall6.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall71" GridPane.rowIndex="6">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall7.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall72" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall7.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall73" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall7.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall74" GridPane.columnIndex="3" GridPane.rowIndex="6">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall7.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="achievesmall75" GridPane.columnIndex="4" GridPane.rowIndex="6">
+                     <GridPane.margin>
+                        <Insets left="50.0" />
+                     </GridPane.margin>
+                     <graphic>
+                        <ImageView fitWidth="75.0" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../Sprites/chieveIcon/Achievesmall7.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
                </children>
             </GridPane>
          </children>
