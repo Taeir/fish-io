@@ -12,8 +12,8 @@ import com.github.fishio.PlayingField;
 public class PuSuperSpeed extends DurationPowerUp {
 
 	private static final int DURATION = 10;
-	public static final double ACCELERATION_FACTOR = 5;
-	public static final double MAX_SPEED_FACTOR = 5;
+	public static final double ACCELERATION_FACTOR = 2.5;
+	public static final double MAX_SPEED_FACTOR = 3;
 	
 	/**
 	 * Creates a new PowerUp of the SuperSpeed type.
