@@ -1,7 +1,11 @@
 package com.github.fishio;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import com.github.fishio.achievements.Observer;
+import com.github.fishio.achievements.State;
+import com.github.fishio.achievements.Subject;
 import com.github.fishio.control.SinglePlayerController;
 import com.github.fishio.listeners.TickListener;
 
@@ -10,13 +14,18 @@ import javafx.scene.canvas.Canvas;
 /**
  * Represents a playing field designed for single player.
  */
-public class SinglePlayerPlayingField extends PlayingField {
+
+public class SinglePlayerPlayingField extends PlayingField implements Subject {
+
 	public static final int START_X = 640;
 	public static final int START_Y = 335;
 	
+
 	private PlayerFish player;
 	private final ArrayList<PlayerFish> players = new ArrayList<PlayerFish>(1);
 	private final SinglePlayerController screenController;
+	
+	private ArrayList<Observer> observers = new ArrayList<Observer>();
 
 	/**
 	 * Creates the playing field for a single player.
@@ -50,7 +59,13 @@ public class SinglePlayerPlayingField extends PlayingField {
 
 					//Stop the render thread after the animation is done.
 					//This is in order to prevent the rendering from stopping prematurely.
+					
 					SinglePlayerPlayingField.this.screenController.showDeathScreen(true, event -> stopRendering());
+							
+					// Notify the achievement system that the player died.
+					State state = getState();
+					notifyObservers(state, state, "playerDeath");
+					
 				}
 			}
 		});
@@ -114,5 +129,17 @@ public class SinglePlayerPlayingField extends PlayingField {
 	@Override
 	public ArrayList<PlayerFish> getPlayers() {
 		return players;
+	}
+	
+	@Override
+	public List<Observer> getObservers() {
+		return observers;
+	}
+	
+	@Override
+	public State getState() {
+		State state = new State();
+		state.add("playerDeath", player.isDead());
+		return state;
 	}
 }
