@@ -102,4 +102,29 @@ public abstract class TestPowerUp {
 		assertTrue(pu.isDead());
 	}
 	
+	/**
+	 * Tests the eat method. 
+	 */
+	@Test
+	public void testEat() {
+		PowerUp pu = getPowerUp();
+		
+		pu.eat();
+		
+		assertTrue(pu.isDead());
+	}
+	
+	/**
+	 * Tests the getSize method.
+	 */
+	@Test
+	public void testGetSize() {
+		assertEquals(0, getPowerUp().getSize(), 0.0D);
+	}
+	
+	/**
+	 * Tests the getName method.
+	 */
+	@Test
+	public abstract void testGetName();
 }

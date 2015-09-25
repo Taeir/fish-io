@@ -210,19 +210,6 @@ public class TestPlayerFish {
 	}
 	
 	/**
-	 * Tests {@link PlayerFish#onCollide(ICollidable)}
-	 * using a powerUp.
-	 */
-	@Test
-	public void testCollideWithPowerUp() {
-		PowerUp pu = Mockito.mock(PowerUp.class);
-		
-		pf.onCollide(pu);
-		
-		Mockito.verify(pu).eat();
-	}
-	
-	/**
 	 * Tests {@link PlayerFish#addLife()}.
 	 */
 	@Test

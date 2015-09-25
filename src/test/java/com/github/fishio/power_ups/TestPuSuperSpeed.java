@@ -3,7 +3,6 @@ package com.github.fishio.power_ups;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
-import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.github.fishio.PlayerFish;
@@ -78,6 +77,11 @@ public class TestPuSuperSpeed extends TestDurationPowerUp {
 	@Override
 	public PlayingField getPlayingField() {
 		return pf;
+	}
+
+	@Override
+	public void testGetName() {
+		assertEquals("Super Speed", pu.getName());
 	}
 
 }

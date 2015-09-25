@@ -1,5 +1,7 @@
 package com.github.fishio.power_ups;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Before;
 import org.mockito.Mockito;
 
@@ -42,6 +44,11 @@ public class TestPuExtraLife extends TestPowerUp {
 		
 		//A life should have been added to the PlayerFish.
 		Mockito.verify(pf).addLife();
+	}
+
+	@Override
+	public void testGetName() {
+		assertEquals("Extra Life", pu.getName());
 	}
 
 

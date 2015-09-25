@@ -104,4 +104,9 @@ public class TestPuFreeze extends TestDurationPowerUp {
 		return pf;
 	}
 
+	@Override
+	public void testGetName() {
+		assertEquals("Freeze", pu.getName());
+	}
+
 }
