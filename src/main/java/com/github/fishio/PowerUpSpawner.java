@@ -4,7 +4,6 @@ import java.util.Random;
 
 import javafx.scene.image.Image;
 
-import com.github.fishio.gui.GuiTest;
 import com.github.fishio.listeners.TickListener;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
