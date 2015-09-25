@@ -9,7 +9,7 @@ import com.github.fishio.SinglePlayerPlayingField;
  * gets an update when a player dies in single player mode.
  *
  */
-class PlayerDeathObserver implements Observer {
+public class PlayerDeathObserver implements Observer {
 	
 	private Subject playerFish;
 	private static int playerdeathcounter = 0;

@@ -37,19 +37,15 @@ public class AchievementScreenController implements ScreenController {
 	 */
 	public void setAchievement11picture() {
 		Achievement playerDeath = new Achievement("PlayerDeath");
-		System.out.println("1");
+		System.out.println("method reached");
 		achievesmall11.setEffect(colorAdjust1);
-		System.out.println("2");
 		Achieve.checkPlayerDeath(playerDeath);
-		System.out.println("3");
 		if (playerDeath.getLevel() >= 1) {
-			System.out.println("4");
+			System.out.println("if reached");
 			colorAdjust1.setBrightness(0);
-			System.out.println("5");
 			achievesmall11.setEffect(colorAdjust1);
-			System.out.println("6");
 		}
-		System.out.println("7");
+		System.out.println("method end");
 	}
 	
 	@FXML
@@ -208,77 +204,302 @@ public class AchievementScreenController implements ScreenController {
 	@FXML
 	private Label achievesmall31;
 	
+	/**
+	 * Changes the color of the HitWall achievement level 1 when it is achieved.
+	 * For now does not change color yet.
+	 */
+	public void setAchievement31picture() {
+		Achievement HitWall = new Achievement("HitWall");
+		achievesmall31.setEffect(colorAdjust1);
+	}
+	
 	@FXML
 	private Label achievesmall32;
+	
+	/**
+	 * Changes the color of the HitWall achievement level 2 when it is achieved.
+	 * For now does not change color yet.
+	 */
+	public void setAchievement32picture() {
+		Achievement HitWall = new Achievement("HitWall");
+		achievesmall32.setEffect(colorAdjust1);
+	}
 	
 	@FXML
 	private Label achievesmall33;
 	
+	/**
+	 * Changes the color of the HitWall achievement level 3 when it is achieved.
+	 * For now does not change color yet.
+	 */
+	public void setAchievement33picture() {
+		Achievement HitWall = new Achievement("HitWall");
+		achievesmall33.setEffect(colorAdjust1);
+	}
+	
 	@FXML
 	private Label achievesmall34;
+	
+	/**
+	 * Changes the color of the HitWall achievement level 4 when it is achieved.
+	 * For now does not change color yet.
+	 */
+	public void setAchievement34picture() {
+		Achievement HitWall = new Achievement("HitWall");
+		achievesmall34.setEffect(colorAdjust1);
+	}
 	
 	@FXML
 	private Label achievesmall35;
 	
+	/**
+	 * Changes the color of the HitWall achievement level 5 when it is achieved.
+	 * For now does not change color yet.
+	 */
+	public void setAchievement35picture() {
+		Achievement HitWall = new Achievement("HitWall");
+		achievesmall35.setEffect(colorAdjust1);
+	}
+	
 	@FXML
 	private Label achievesmall41;
+	
+	/**
+	 * Changes the color of the Revive achievement level 1 when it is achieved.
+	 * For now does not change color yet.
+	 */
+	public void setAchievement41picture() {
+		Achievement Revive = new Achievement("Revive");
+		achievesmall41.setEffect(colorAdjust1);
+	}
 	
 	@FXML
 	private Label achievesmall42;
 	
+	/**
+	 * Changes the color of the Revive achievement level 2 when it is achieved.
+	 * For now does not change color yet.
+	 */
+	public void setAchievement42picture() {
+		Achievement Revive = new Achievement("Revive");
+		achievesmall42.setEffect(colorAdjust1);
+	}
+	
 	@FXML
 	private Label achievesmall43;
+	
+	/**
+	 * Changes the color of the Revive achievement level 1 when it is achieved.
+	 * For now does not change color yet.
+	 */
+	public void setAchievement43picture() {
+		Achievement Revive = new Achievement("Revive");
+		achievesmall43.setEffect(colorAdjust1);
+	}
 	
 	@FXML
 	private Label achievesmall44;
 	
+	/**
+	 * Changes the color of the Revive achievement level 1 when it is achieved.
+	 * For now does not change color yet.
+	 */
+	public void setAchievement44picture() {
+		Achievement Revive = new Achievement("Revive");
+		achievesmall44.setEffect(colorAdjust1);
+	}
+	
 	@FXML
 	private Label achievesmall45;
+	
+	/**
+	 * Changes the color of the Revive achievement level 1 when it is achieved.
+	 * For now does not change color yet.
+	 */
+	public void setAchievement45picture() {
+		Achievement Revive = new Achievement("Revive");
+		achievesmall45.setEffect(colorAdjust1);
+	}
 	
 	@FXML
 	private Label achievesmall51;
 	
+	/**
+	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * now does not change color yet.
+	 */
+	public void setAchievement51picture() {
+		Achievement Pun = new Achievement("Pun");
+		achievesmall51.setEffect(colorAdjust1);
+	}
+	
 	@FXML
 	private Label achievesmall52;
+	
+	/**
+	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * now does not change color yet.
+	 */
+	public void setAchievement52picture() {
+		Achievement Pun = new Achievement("Pun");
+		achievesmall52.setEffect(colorAdjust1);
+	}
 	
 	@FXML
 	private Label achievesmall53;
 	
+	/**
+	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * now does not change color yet.
+	 */
+	public void setAchievement53picture() {
+		Achievement Pun = new Achievement("Pun");
+		achievesmall53.setEffect(colorAdjust1);
+	}
+	
 	@FXML
 	private Label achievesmall54;
+	
+	/**
+	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * now does not change color yet.
+	 */
+	public void setAchievement54picture() {
+		Achievement Pun = new Achievement("Pun");
+		achievesmall54.setEffect(colorAdjust1);
+	}
 	
 	@FXML
 	private Label achievesmall55;
 	
+	/**
+	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * now does not change color yet.
+	 */
+	public void setAchievement55picture() {
+		Achievement Pun = new Achievement("Pun");
+		achievesmall55.setEffect(colorAdjust1);
+	}
+	
 	@FXML
 	private Label achievesmall61;
+	
+	/**
+	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * now does not change color yet.
+	 */
+	public void setAchievement61picture() {
+		Achievement Pun = new Achievement("Pun");
+		achievesmall61.setEffect(colorAdjust1);
+	}
 	
 	@FXML
 	private Label achievesmall62;
 	
+	/**
+	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * now does not change color yet.
+	 */
+	public void setAchievement62picture() {
+		Achievement Pun = new Achievement("Pun");
+		achievesmall62.setEffect(colorAdjust1);
+	}
+	
 	@FXML
 	private Label achievesmall63;
+	
+	/**
+	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * now does not change color yet.
+	 */
+	public void setAchievement63picture() {
+		Achievement Pun = new Achievement("Pun");
+		achievesmall63.setEffect(colorAdjust1);
+	}
 	
 	@FXML
 	private Label achievesmall64;
 	
+	/**
+	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * now does not change color yet.
+	 */
+	public void setAchievement64picture() {
+		Achievement Pun = new Achievement("Pun");
+		achievesmall64.setEffect(colorAdjust1);
+	}
+	
 	@FXML
 	private Label achievesmall65;
+	
+	/**
+	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * now does not change color yet.
+	 */
+	public void setAchievement65picture() {
+		Achievement Pun = new Achievement("Pun");
+		achievesmall65.setEffect(colorAdjust1);
+	}
 	
 	@FXML
 	private Label achievesmall71;
 	
+	/**
+	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * now does not change color yet.
+	 */
+	public void setAchievement71picture() {
+		Achievement Pun = new Achievement("Pun");
+		achievesmall71.setEffect(colorAdjust1);
+	}
+	
 	@FXML
 	private Label achievesmall72;
+	
+	/**
+	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * now does not change color yet.
+	 */
+	public void setAchievement72picture() {
+		Achievement Pun = new Achievement("Pun");
+		achievesmall72.setEffect(colorAdjust1);
+	}
 	
 	@FXML
 	private Label achievesmall73;
 	
+	/**
+	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * now does not change color yet.
+	 */
+	public void setAchievement73picture() {
+		Achievement Pun = new Achievement("Pun");
+		achievesmall73.setEffect(colorAdjust1);
+	}
+	
 	@FXML
 	private Label achievesmall74;
 	
+	/**
+	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * now does not change color yet.
+	 */
+	public void setAchievement74picture() {
+		Achievement Pun = new Achievement("Pun");
+		achievesmall74.setEffect(colorAdjust1);
+	}
+	
 	@FXML
-	private Label achievemall75;
+	private Label achievesmall75;
+	
+	/**
+	 * Changes the color of the Pun achievement level 1 when it is achieved. For
+	 * now does not change color yet.
+	 */
+	public void setAchievement75picture() {
+		Achievement Pun = new Achievement("Pun");
+		achievesmall75.setEffect(colorAdjust1);
+	}
 	
 	@Override
 	public void init(Scene scene) {
@@ -297,6 +518,32 @@ public class AchievementScreenController implements ScreenController {
 		setAchievement23picture();
 		setAchievement24picture();
 		setAchievement25picture();
+		setAchievement31picture();
+		setAchievement32picture();
+		setAchievement33picture();
+		setAchievement34picture();
+		setAchievement35picture();
+		setAchievement41picture();
+		setAchievement42picture();
+		setAchievement43picture();
+		setAchievement44picture();
+		setAchievement45picture();
+		setAchievement51picture();
+		setAchievement52picture();
+		setAchievement53picture();
+		setAchievement54picture();
+		setAchievement55picture();
+		setAchievement61picture();
+		setAchievement62picture();
+		setAchievement63picture();
+		setAchievement64picture();
+		setAchievement65picture();
+		setAchievement71picture();
+		setAchievement72picture();
+		setAchievement73picture();
+		setAchievement74picture();
+		setAchievement75picture();
+		
 	}
 	
 	/**
