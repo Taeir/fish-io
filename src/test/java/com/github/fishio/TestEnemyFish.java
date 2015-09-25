@@ -81,10 +81,10 @@ public class TestEnemyFish {
 	 */
 	@Test
 	public void testlimitVx1() {
-		Vec2d vec1 = new Vec2d(LevelBuilder.MAX_EFISH_SPEED + 1, 2);
+		Vec2d vec1 = new Vec2d(EnemyFishFactory.MAX_EFISH_SPEED + 1, 2);
 		enemy1.setSpeedVector(vec1);
 		enemy1.limitVx();
-		assertEquals(LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
+		assertEquals(EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
 	}
 	
 	/**
@@ -93,10 +93,10 @@ public class TestEnemyFish {
 	 */
 	@Test
 	public void testlimitVx2() {
-		Vec2d vec1 = new Vec2d(-LevelBuilder.MAX_EFISH_SPEED - 1, 2);
+		Vec2d vec1 = new Vec2d(-EnemyFishFactory.MAX_EFISH_SPEED - 1, 2);
 		enemy1.setSpeedVector(vec1);
 		enemy1.limitVx();
-		assertEquals(-LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
+		assertEquals(-EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
 	}
 	
 	/**
@@ -105,10 +105,10 @@ public class TestEnemyFish {
 	 */
 	@Test
 	public void testlimitVy1() {
-		Vec2d vec1 = new Vec2d(2, LevelBuilder.MAX_EFISH_SPEED + 1);
+		Vec2d vec1 = new Vec2d(2, EnemyFishFactory.MAX_EFISH_SPEED + 1);
 		enemy1.setSpeedVector(vec1);
 		enemy1.limitVy();
-		assertEquals(LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
+		assertEquals(EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
 	}
 	
 	/**
@@ -117,10 +117,10 @@ public class TestEnemyFish {
 	 */
 	@Test
 	public void testlimitVy2() {
-		Vec2d vec1 = new Vec2d(2, -LevelBuilder.MAX_EFISH_SPEED - 1);
+		Vec2d vec1 = new Vec2d(2, -EnemyFishFactory.MAX_EFISH_SPEED - 1);
 		enemy1.setSpeedVector(vec1);
 		enemy1.limitVy();
-		assertEquals(-LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
+		assertEquals(-EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
 	}
 	
 	/**
@@ -129,11 +129,11 @@ public class TestEnemyFish {
 	 */
 	@Test
 	public void testlimitSpeed1() {
-		Vec2d vec1 = new Vec2d(LevelBuilder.MAX_EFISH_SPEED + 1, LevelBuilder.MAX_EFISH_SPEED + 1);
+		Vec2d vec1 = new Vec2d(EnemyFishFactory.MAX_EFISH_SPEED + 1, EnemyFishFactory.MAX_EFISH_SPEED + 1);
 		enemy1.setSpeedVector(vec1);
 		enemy1.limitSpeed();
-		assertEquals(LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
-		assertEquals(LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
+		assertEquals(EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
+		assertEquals(EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
 	}
 	
 	/**
@@ -142,10 +142,10 @@ public class TestEnemyFish {
 	 */
 	@Test
 	public void testlimitSpeed2() {
-		Vec2d vec1 = new Vec2d(-LevelBuilder.MAX_EFISH_SPEED - 1, -LevelBuilder.MAX_EFISH_SPEED - 1);
+		Vec2d vec1 = new Vec2d(-EnemyFishFactory.MAX_EFISH_SPEED - 1, -EnemyFishFactory.MAX_EFISH_SPEED - 1);
 		enemy1.setSpeedVector(vec1);
 		enemy1.limitSpeed();
-		assertEquals(-LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
-		assertEquals(-LevelBuilder.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
+		assertEquals(-EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
+		assertEquals(-EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
 	}
 }

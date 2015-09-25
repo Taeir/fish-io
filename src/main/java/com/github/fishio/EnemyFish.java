@@ -90,9 +90,9 @@ public class EnemyFish extends Entity implements IMovable {
 	 */
 	public void limitVx() {
 		if (vx > 0) {
-			vx = Math.max(LevelBuilder.MIN_EFISH_SPEED, Math.min(vx, LevelBuilder.MAX_EFISH_SPEED));
+			vx = Math.max(EnemyFishFactory.MIN_EFISH_SPEED, Math.min(vx, EnemyFishFactory.MAX_EFISH_SPEED));
 		} else {
-			vx = Math.min(-LevelBuilder.MIN_EFISH_SPEED, Math.max(vx, -LevelBuilder.MAX_EFISH_SPEED));
+			vx = Math.min(-EnemyFishFactory.MIN_EFISH_SPEED, Math.max(vx, -EnemyFishFactory.MAX_EFISH_SPEED));
 		}
 	}
 	
@@ -102,9 +102,9 @@ public class EnemyFish extends Entity implements IMovable {
 	 */
 	public void limitVy() {
 		if (vy > 0) {
-			vy = Math.max(LevelBuilder.MIN_EFISH_SPEED, Math.min(vy, LevelBuilder.MAX_EFISH_SPEED));
+			vy = Math.max(EnemyFishFactory.MIN_EFISH_SPEED, Math.min(vy, EnemyFishFactory.MAX_EFISH_SPEED));
 		} else {
-			vy = Math.min(-LevelBuilder.MIN_EFISH_SPEED, Math.max(vy, -LevelBuilder.MAX_EFISH_SPEED));
+			vy = Math.min(-EnemyFishFactory.MIN_EFISH_SPEED, Math.max(vy, -EnemyFishFactory.MAX_EFISH_SPEED));
 		}
 	}
 	
