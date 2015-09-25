@@ -152,6 +152,28 @@ public class TestEnemyFish implements TestIEatable {
 	}
 	
 	/**
+	 * Tests whether an EnemyFish moves or not when it has been frozen.
+	 */
+	@Test
+	public void testFrozen() {
+		enemy1.setFrozen(true);
+		enemy1.setSpeedVector(new Vec2d(1, 1));
+		assertEquals(new Vec2d(0, 0), enemy1.getSpeedVector());
+	}
+	
+	/**
+	 * Tests whether an EnemyFish moves or not when it has been frozen
+	 * and then unfrozen again.
+	 */
+	@Test
+	public void testUnFreeze() {
+		enemy1.setFrozen(true);
+		enemy1.setSpeedVector(new Vec2d(1, 1));
+		
+		enemy1.setFrozen(false);
+		assertEquals(new Vec2d(1, 1), enemy1.getSpeedVector());
+	}
+	/**
 	 * Tests {@link EnemyFish#eat()}.
 	 */
 	@Test

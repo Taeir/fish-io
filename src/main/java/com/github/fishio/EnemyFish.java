@@ -21,6 +21,8 @@ public class EnemyFish extends Entity implements IMovable, IEatable {
 	private double vx;
 	private double vy;
 	private Image sprite;
+	
+	private boolean frozen;
 
 	/**
 	 * Main constructor of the enemy fish.
@@ -60,6 +62,10 @@ public class EnemyFish extends Entity implements IMovable, IEatable {
 
 	@Override
 	public Vec2d getSpeedVector() {
+		if (frozen) {
+			return new Vec2d();
+		}
+		
 		return new Vec2d(vx, vy);
 	}
 
@@ -84,6 +90,11 @@ public class EnemyFish extends Entity implements IMovable, IEatable {
 	 */
 	@Override
 	public void preMove() {
+		
+		if (frozen) {
+			return;
+		}
+		
 		if (Math.random() < DIRECTION_CHANGE_CHANCE) {
 			//Only change one direction
 			if (Math.random() <= 0.5) {
@@ -126,6 +137,16 @@ public class EnemyFish extends Entity implements IMovable, IEatable {
 	public void limitSpeed() {
 		limitVx();
 		limitVy();
+	}
+	
+	/**
+	 * Sets whether this EnemyFish should stand still or not.
+	 * 
+	 * @param frozen
+	 * 		Whether this EnemyFish should stand still or not.
+	 */
+	public void setFrozen(boolean frozen) {
+		this.frozen = frozen;
 	}
 
 	@Override

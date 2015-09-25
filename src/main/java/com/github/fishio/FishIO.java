@@ -22,7 +22,7 @@ public class FishIO extends Application {
 	
 	private Log log = Log.getLogger();
 	private ConsoleHandler consoleHandler = new ConsoleHandler(new TimeStampFormat());
-	private TxtFileHandler textFileHandler = 
+	private TxtFileHandler textFileHandler =
 			new TxtFileHandler(new TimeStampFormat(), new File("logs" +  File.separator + "log.txt"));
 	private LogLevel logLevel = LogLevel.WARNING;
 
