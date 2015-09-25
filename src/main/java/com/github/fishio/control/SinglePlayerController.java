@@ -161,16 +161,12 @@ public class SinglePlayerController implements ScreenController {
 		if (visible && deathScreen.isVisible() && deathScreen.getOpacity() == 1.0) {
 			updateReviveButton();
 			
-			if (onDone != null) {
-				onDone.handle(new ActionEvent());
-			}
+			Util.callEventHandler(onDone);
 			return;
 		} else if (!visible && !deathScreen.isVisible()) {
 			updateReviveButton();
 			
-			if (onDone != null) {
-				onDone.handle(new ActionEvent());
-			}
+			Util.callEventHandler(onDone);
 			return;
 		}
 		
@@ -200,9 +196,7 @@ public class SinglePlayerController implements ScreenController {
 			fade.setOnFinished(event -> {
 				deathScreen.setVisible(false);
 				
-				if (onDone != null) {
-					onDone.handle(event);
-				}
+				Util.callEventHandler(onDone);
 			});
 		}
 		
