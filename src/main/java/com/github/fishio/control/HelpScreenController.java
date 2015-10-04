@@ -1,13 +1,27 @@
 package com.github.fishio.control;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 import com.github.fishio.Preloader;
+import com.github.fishio.Vec2d;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
 
 /**
  * Help screen controller.
@@ -15,6 +29,10 @@ import javafx.scene.control.Label;
 public class HelpScreenController implements ScreenController {
 
 	private Log log = Log.getLogger();
+	private HashMap<KeyCode, Vec2d> keymap = getKeyMap();
+	
+	@FXML
+	private Label swimUp, swimDown, swimLeft, swimRight;
 	
 	@FXML
 	private Label helpText;
@@ -28,11 +46,69 @@ public class HelpScreenController implements ScreenController {
 	@FXML
 	private Button btnBackToMenu;
 	
+	@FXML
+	private Canvas keyboard;
+	
+	private Scene scene;
+	
 	@Override
-	public void init(Scene scene) { }
+	public void init(Scene scene) { 
+		this.scene = scene;
+	}
 
+	/**
+	 * Shows the connection between a key and its function.
+	 * @param key
+	 * 		the key
+	 * @param y
+	 * 		the y coordinate of the label containing the keys function
+	 */
+	private void displayKeyBinding(KeyCode key, int y) {
+		Vec2d pos = keymap.get(key);
+		if (pos == null) {
+			return;
+		}
+		GraphicsContext gc = keyboard.getGraphicsContext2D();
+		gc.strokeLine(pos.x / 2 + 18, pos.y / 2 + 18, 
+				850, y + 8);
+		Image img = Preloader.getImageOrLoad("keyboard.png");
+		gc.drawImage(img, pos.x, pos.y, 72, 72, 
+				pos.x / 2, pos.y / 2, 36, 36);
+	}
+
+	/**
+	 * @return
+	 * 		a set of (relative) key locations in the keyboard image.
+	 */
+	private HashMap<KeyCode, Vec2d> getKeyMap() {
+		HashMap<KeyCode, Vec2d> map = new HashMap<KeyCode, Vec2d>();
+		map.put(KeyCode.UP, new Vec2d(1418, 345));
+		map.put(KeyCode.DOWN, new Vec2d(1418, 415));
+		map.put(KeyCode.LEFT, new Vec2d(1334, 415));
+		map.put(KeyCode.RIGHT, new Vec2d(1501, 415));
+		//TODO map more keys when allowing key changes
+		return map;
+	}
+
+	/**
+	 * NOTE: KeyCode.KEY must be replaced by Settings.KEY when implemented.
+	 */
 	@Override
-	public void onSwitchTo() { }
+	public void onSwitchTo() {
+		GraphicsContext gc = keyboard.getGraphicsContext2D();
+		ColorAdjust ca = new ColorAdjust();
+		ca.setBrightness(0.5);
+		gc.save();
+		gc.drawImage(Preloader.getImageOrLoad("keyboard.png"), 0, 0, 795, 251);
+		gc.applyEffect(ca);
+		gc.restore();
+		
+		gc.setLineWidth(1.0);
+		displayKeyBinding(KeyCode.UP, 42);
+		displayKeyBinding(KeyCode.DOWN, 58);
+		displayKeyBinding(KeyCode.LEFT, 26);
+		displayKeyBinding(KeyCode.RIGHT, 74);
+	}
 	
 	/**
 	 * Go back to the main menu.
