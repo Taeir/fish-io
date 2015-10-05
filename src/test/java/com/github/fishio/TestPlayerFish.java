@@ -10,6 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.github.fishio.settings.Settings;
+
 import javafx.stage.Stage;
 
 /**
@@ -19,6 +21,7 @@ public class TestPlayerFish implements TestIEatable {
 	//TODO Change some of the Mockito mocks and testing calls with verify(never), to simple getters.
 	//TODO - Comment made by Taeir - 2015/09/18
 	private PlayerFish pf;
+	private Settings settings = Settings.getInstance();
 	
 	/**
 	 * Creates a new PlayerFish before each test
@@ -382,10 +385,10 @@ public class TestPlayerFish implements TestIEatable {
 	 */
 	@Test
 	public void testAddLife2() {
-		pf.livesProperty().set(PlayerFish.MAX_LIVES);
+		pf.livesProperty().set((int) settings.get("MAX_LIVES"));
 		pf.addLife();
 		
-		assertEquals(PlayerFish.MAX_LIVES, pf.getLives());
+		assertEquals((int) settings.get("MAX_LIVES"), pf.getLives());
 	}
 	
 	/**

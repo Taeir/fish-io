@@ -15,6 +15,8 @@ import com.github.fishio.logging.LogLevel;
 
 /**
  * Data class with all the settings.
+ * 
+ * When the game stops working after an addition to the settings, simply remove the settings.cfg file
  */
 public final class Settings {
 	private static final Settings INSTANCE = new Settings();
@@ -45,27 +47,31 @@ public final class Settings {
 	private void createSettingsFile() throws IOException {
 		settingsFile.getAbsoluteFile().getParentFile().mkdirs();
 		settingsFile.createNewFile();
-		BufferedWriter bw = new BufferedWriter(new FileWriter(settingsFile));
 		
-		bw.write("screen_width: 854");
-		bw.newLine();
-		bw.write("screen_height: 480");
-		bw.newLine();
-		bw.write("loglevel: 0");
-		bw.newLine();
-		bw.write("PIXEL_PERFECT_COLLISIONS: 1");
-		bw.newLine();
-		bw.write("FISH_EAT_THRESHOLD: 1.2");
-		bw.newLine();
-		bw.write("DIRECTION_CHANGE_CHANCE: 0.1");
-		bw.newLine();
-		bw.write("MIN_EFISH_SPEED: 1");
-		bw.newLine();
-		bw.write("MAX_EFISH_SPEED: 4");
-		bw.newLine();
-		bw.write("FISH_SPRITES: 28");
+		// doubles
+		settings.put("FISH_EAT_THRESHOLD", new SimpleDoubleProperty(1.2));
+		settings.put("DIRECTION_CHANGE_CHANCE", new SimpleDoubleProperty(0.1));
+		settings.put("MIN_EFISH_SPEED", new SimpleDoubleProperty(1));
+		settings.put("MAX_EFISH_SPEED", new SimpleDoubleProperty(4));
+		settings.put("MAX_PLAYER_SPEED", new SimpleDoubleProperty(4.0));
+		settings.put("GROWTH_SPEED", new SimpleDoubleProperty(500));
+		settings.put("FISH_EAT_THRESHOLD", new SimpleDoubleProperty(1.2));
+		settings.put("GAME_TPS", new SimpleDoubleProperty(60));
+
+		// booleans
+		settings.put("DEBUG_DRAW", new SimpleDoubleProperty(0));
+		settings.put("PIXEL_PERFECT_COLLISIONS", new SimpleDoubleProperty(1));
 		
-		bw.close();			
+		// integers
+		settings.put("SCREEN_WIDTH", new SimpleDoubleProperty(1280));
+		settings.put("SCREEN_HEIGHT", new SimpleDoubleProperty(720));
+		settings.put("LOG_LEVEL", new SimpleDoubleProperty(2));
+		settings.put("START_LIVES", new SimpleDoubleProperty(3));
+		settings.put("MAX_LIVES", new SimpleDoubleProperty(5));
+		settings.put("FISH_SPRITES", new SimpleDoubleProperty(28));
+		settings.put("POWERUP_SPAWN_INTERVAL", new SimpleDoubleProperty(30));
+		
+		save();		
 	}
 
 	/**

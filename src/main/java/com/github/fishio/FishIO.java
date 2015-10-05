@@ -45,8 +45,8 @@ public class FishIO extends Application {
 		this.primaryStage = primaryStage;
 		
 		primaryStage.setTitle("Fish.io");
-		primaryStage.setWidth(settings.get("screen_width"));
-		primaryStage.setHeight(settings.get("screen_height"));
+		primaryStage.setWidth(settings.get("SCREEN_WIDTH"));
+		primaryStage.setHeight(settings.get("SCREEN_HEIGHT"));
 		
 		log.log(LogLevel.DEBUG, "Primary stage set.");
 		//Load and show the splash screen.
@@ -55,9 +55,9 @@ public class FishIO extends Application {
 		
 		//track changes in screen size
 		primaryStage.heightProperty().addListener((o, old, height) -> 
-			settings.set("screen_height", height.doubleValue()));
+			settings.set("SCREEN_HEIGHT", height.doubleValue()));
 		primaryStage.widthProperty().addListener((o, old, width) -> 
-		settings.set("screen_width", width.doubleValue()));
+		settings.set("SCREEN_WIDTH", width.doubleValue()));
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class FishIO extends Application {
 		//Set settings
 		settings = Settings.getInstance();
 		//Set Log level
-		log.setLogLevel(LogLevel.fromInt((int) (settings.get("loglevel"))));
+		log.setLogLevel(LogLevel.fromInt((int) (settings.get("LOG_LEVEL"))));
 		
 		//Log that logger has been setup
 		log.log(LogLevel.INFO, "Logger has initialized. Ready to Start Logging!");

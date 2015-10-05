@@ -2,6 +2,8 @@ package com.github.fishio;
 
 import java.util.HashSet;
 
+import com.github.fishio.settings.Settings;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -11,7 +13,6 @@ import javafx.scene.transform.Rotate;
  * Represents a drawable object.
  */
 public interface IDrawable {
-	boolean DEBUG = false;
 
 	/**
 	 * Called when this object dies.
@@ -62,7 +63,7 @@ public interface IDrawable {
 		gc.restore();
 
 		// debug rendering
-		if (DEBUG) {
+		if (Settings.getInstance().get("DEBUG_DRAW") > 0) {
 			gc.setFill(Color.RED);			
 			gc.fillText("angle: " + String.valueOf(angle),			//angle display 
 					cx, cy - (0.5 * ca.getHeight() + 10));

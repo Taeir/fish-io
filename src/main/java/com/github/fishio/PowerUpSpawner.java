@@ -11,6 +11,7 @@ import com.github.fishio.power_ups.PowerUp;
 import com.github.fishio.power_ups.PuExtraLife;
 import com.github.fishio.power_ups.PuFreeze;
 import com.github.fishio.power_ups.PuSuperSpeed;
+import com.github.fishio.settings.Settings;
 
 /**
  * A PowerUpSpawner repeatedly spawns random PowerUps
@@ -27,6 +28,7 @@ public class PowerUpSpawner implements TickListener {
 	public static final int HEIGHT = 25;
 	
 	private Log log;
+	private Settings settings = Settings.getInstance();
 	
 	/**
 	 * The amount of different PowerUps that are supported.
@@ -34,13 +36,7 @@ public class PowerUpSpawner implements TickListener {
 	 */
 	private static final int POWERUP_COUNT = 3; 
 	
-	private Random rand = new Random();
-	
-	/**
-	 * The amount of seconds between each time
-	 * a PowerUp is spawned.
-	 */
-	private static final int INTERVAL = 30;
+	private Random rand = new Random();	
 
 	private final int intervalTicks;
 	private int tickCounter;
@@ -56,7 +52,7 @@ public class PowerUpSpawner implements TickListener {
 	public PowerUpSpawner(PlayingField pf) {
 		this.pf = pf;
 		
-		this.intervalTicks = INTERVAL * pf.getFPS();
+		this.intervalTicks = (int) (settings.get("POWERUP_SPAWN_INTERVAL") * pf.getFPS());
 		this.tickCounter = 0;
 		
 		this.minX = 0;
@@ -141,7 +137,7 @@ public class PowerUpSpawner implements TickListener {
 	 * 		The time in seconds before a new PowerUp spawns.
 	 */
 	public int getInterval() {
-		return INTERVAL;
+		return (int) settings.get("POWERUP_SPAWN_INTERVAL");
 	}
 	
 }

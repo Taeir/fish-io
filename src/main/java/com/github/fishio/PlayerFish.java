@@ -2,6 +2,7 @@ package com.github.fishio;
 
 import com.github.fishio.achievements.State;
 import com.github.fishio.achievements.Subject;
+import com.github.fishio.settings.Settings;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.canvas.GraphicsContext;
@@ -19,6 +20,7 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 	private double vx;
 	private double vy;
 
+	private Settings settings = Settings.getInstance();
 	/**
 	 * These factors have values for whether each of the arrow keys is pressed.
 	 */
@@ -40,18 +42,13 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 	 * The speed at which the speed of the fish increases /
 	 * decreases depending on what keys are pressed by the user.
 	 */
-	private double acceleration = 0.1;
-
-	private double maxSpeed = 4;
-
-	private static final double GROWTH_SPEED = 500;
-	private static final double FISH_EAT_THRESHOLD = 1.2;
-	private static final int START_LIVES = 3;
-	public static final int MAX_LIVES = 5;
 	
-	private SimpleIntegerProperty lives = new SimpleIntegerProperty(START_LIVES);
+	
+	private SimpleIntegerProperty lives = new SimpleIntegerProperty((int) settings.get("START_LIVES"));
 	
 	private long invincible;
+	private double maxSpeed = settings.get("MAX_PLAYER_SPEED");
+	private double acceleration = 0.1;
 
 	/**
 	 * Creates the Player fish which the user will be able to control.
@@ -271,7 +268,7 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 	 * @return The rate at which the PlayerFish grows.
 	 */
 	public double getGrowthSpeed() {
-		return GROWTH_SPEED;
+		return settings.get("GROWTH_SPEED");
 	}
 
 	@Override
@@ -335,7 +332,7 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 			if (eatable.canBeEatenBy(this)) {
 				eatable.eat();
 				this.addPoints((int) (eatable.getSize() / 200));
-				double dSize = GROWTH_SPEED * eatable.getSize() / getSize();
+				double dSize = settings.get("GROWTH_SPEED") * eatable.getSize() / getSize();
 				getBoundingArea().increaseSize(dSize);	
 				State old = getState();
 				notifyObservers(old, getState(), "EnemyKill");
@@ -396,7 +393,7 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 	 * Adds a life.
 	 */
 	public void addLife() {
-		lives.set(Math.min(lives.get() + 1, MAX_LIVES));
+		lives.set(Math.min(lives.get() + 1, (int) settings.get("MAX_LIVES")));
 	}
 	
 	/**
@@ -466,7 +463,7 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 		if (isInvincible()) {
 			return false;
 		}		
-		if (other.getSize() > getSize() * FISH_EAT_THRESHOLD) {
+		if (other.getSize() > getSize() * settings.get("FISH_EAT_THRESHOLD")) {
 			return true;
 		}
 		return false;
