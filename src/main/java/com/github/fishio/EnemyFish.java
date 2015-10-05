@@ -2,6 +2,7 @@ package com.github.fishio;
 
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
+import com.github.fishio.settings.Settings;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -12,10 +13,7 @@ import javafx.scene.image.Image;
  */
 public class EnemyFish extends Entity implements IMovable, IEatable {
 
-
-	private static final double FISH_EAT_THRESHOLD = 1.2;
-	private static final double DIRECTION_CHANGE_CHANCE = 0.1;
-
+	private Settings settings = Settings.getInstance();
 	private Log logger = Log.getLogger();
 	
 	private double vx;
@@ -95,7 +93,7 @@ public class EnemyFish extends Entity implements IMovable, IEatable {
 			return;
 		}
 		
-		if (Math.random() < DIRECTION_CHANGE_CHANCE) {
+		if (Math.random() < settings.get("DIRECTION_CHANGE_CHANCE")) {
 			//Only change one direction
 			if (Math.random() <= 0.5) {
 				vy = vy + vy * (Math.random() - 0.5);
@@ -112,9 +110,9 @@ public class EnemyFish extends Entity implements IMovable, IEatable {
 	 */
 	public void limitVx() {
 		if (vx > 0) {
-			vx = Math.max(EnemyFishFactory.MIN_EFISH_SPEED, Math.min(vx, EnemyFishFactory.MAX_EFISH_SPEED));
+			vx = Math.max(settings.get("MIN_EFISH_SPEED"), Math.min(vx, settings.get("MAX_EFISH_SPEED")));
 		} else {
-			vx = Math.min(-EnemyFishFactory.MIN_EFISH_SPEED, Math.max(vx, -EnemyFishFactory.MAX_EFISH_SPEED));
+			vx = Math.min(-settings.get("MIN_EFISH_SPEED"), Math.max(vx, -settings.get("MAX_EFISH_SPEED")));
 		}
 	}
 	
@@ -124,9 +122,9 @@ public class EnemyFish extends Entity implements IMovable, IEatable {
 	 */
 	public void limitVy() {
 		if (vy > 0) {
-			vy = Math.max(EnemyFishFactory.MIN_EFISH_SPEED, Math.min(vy, EnemyFishFactory.MAX_EFISH_SPEED));
+			vy = Math.max(settings.get("MIN_EFISH_SPEED"), Math.min(vy, settings.get("MAX_EFISH_SPEED")));
 		} else {
-			vy = Math.min(-EnemyFishFactory.MIN_EFISH_SPEED, Math.max(vy, -EnemyFishFactory.MAX_EFISH_SPEED));
+			vy = Math.min(-settings.get("MIN_EFISH_SPEED"), Math.max(vy, -settings.get("MAX_EFISH_SPEED")));
 		}
 	}
 	
@@ -159,7 +157,7 @@ public class EnemyFish extends Entity implements IMovable, IEatable {
 
 	@Override
 	public boolean canBeEatenBy(IEatable other) {
-		if (other.getSize() > getSize() * FISH_EAT_THRESHOLD) {
+		if (other.getSize() > getSize() * settings.get("FISH_EAT_THRESHOLD")) {
 			return true;
 		}
 		return false;

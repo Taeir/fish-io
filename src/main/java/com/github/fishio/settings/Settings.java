@@ -52,6 +52,18 @@ public final class Settings {
 		bw.write("screen_height: 480");
 		bw.newLine();
 		bw.write("loglevel: 0");
+		bw.newLine();
+		bw.write("PIXEL_PERFECT_COLLISIONS: 1");
+		bw.newLine();
+		bw.write("FISH_EAT_THRESHOLD: 1.2");
+		bw.newLine();
+		bw.write("DIRECTION_CHANGE_CHANCE: 0.1");
+		bw.newLine();
+		bw.write("MIN_EFISH_SPEED: 1");
+		bw.newLine();
+		bw.write("MAX_EFISH_SPEED: 4");
+		bw.newLine();
+		bw.write("FISH_SPRITES: 28");
 		
 		bw.close();			
 	}

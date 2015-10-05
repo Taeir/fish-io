@@ -9,11 +9,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.github.fishio.settings.Settings;
+
 /**
  * This class tests the EnemyFish class.
  */
 public class TestEnemyFish implements TestIEatable {
 	
+	private Settings settings = Settings.getInstance();
 	private BoundingBox bb1;
 	private EnemyFish enemy1;
 	
@@ -83,10 +86,10 @@ public class TestEnemyFish implements TestIEatable {
 	 */
 	@Test
 	public void testlimitVx1() {
-		Vec2d vec1 = new Vec2d(EnemyFishFactory.MAX_EFISH_SPEED + 1, 2);
+		Vec2d vec1 = new Vec2d(settings.get("MAX_EFISH_SPEED") + 1, 2);
 		enemy1.setSpeedVector(vec1);
 		enemy1.limitVx();
-		assertEquals(EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
+		assertEquals(settings.get("MAX_EFISH_SPEED"), enemy1.getSpeedVector().x, 0.0);
 	}
 	
 	/**
@@ -95,10 +98,10 @@ public class TestEnemyFish implements TestIEatable {
 	 */
 	@Test
 	public void testlimitVx2() {
-		Vec2d vec1 = new Vec2d(-EnemyFishFactory.MAX_EFISH_SPEED - 1, 2);
+		Vec2d vec1 = new Vec2d(-settings.get("MAX_EFISH_SPEED") - 1, 2);
 		enemy1.setSpeedVector(vec1);
 		enemy1.limitVx();
-		assertEquals(-EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
+		assertEquals(-settings.get("MAX_EFISH_SPEED"), enemy1.getSpeedVector().x, 0.0);
 	}
 	
 	/**
@@ -107,10 +110,10 @@ public class TestEnemyFish implements TestIEatable {
 	 */
 	@Test
 	public void testlimitVy1() {
-		Vec2d vec1 = new Vec2d(2, EnemyFishFactory.MAX_EFISH_SPEED + 1);
+		Vec2d vec1 = new Vec2d(2, settings.get("MAX_EFISH_SPEED") + 1);
 		enemy1.setSpeedVector(vec1);
 		enemy1.limitVy();
-		assertEquals(EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
+		assertEquals(settings.get("MAX_EFISH_SPEED"), enemy1.getSpeedVector().y, 0.0);
 	}
 	
 	/**
@@ -119,10 +122,10 @@ public class TestEnemyFish implements TestIEatable {
 	 */
 	@Test
 	public void testlimitVy2() {
-		Vec2d vec1 = new Vec2d(2, -EnemyFishFactory.MAX_EFISH_SPEED - 1);
+		Vec2d vec1 = new Vec2d(2, -settings.get("MAX_EFISH_SPEED") - 1);
 		enemy1.setSpeedVector(vec1);
 		enemy1.limitVy();
-		assertEquals(-EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
+		assertEquals(-settings.get("MAX_EFISH_SPEED"), enemy1.getSpeedVector().y, 0.0);
 	}
 	
 	/**
@@ -131,11 +134,11 @@ public class TestEnemyFish implements TestIEatable {
 	 */
 	@Test
 	public void testlimitSpeed1() {
-		Vec2d vec1 = new Vec2d(EnemyFishFactory.MAX_EFISH_SPEED + 1, EnemyFishFactory.MAX_EFISH_SPEED + 1);
+		Vec2d vec1 = new Vec2d(settings.get("MAX_EFISH_SPEED") + 1, settings.get("MAX_EFISH_SPEED") + 1);
 		enemy1.setSpeedVector(vec1);
 		enemy1.limitSpeed();
-		assertEquals(EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
-		assertEquals(EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
+		assertEquals(settings.get("MAX_EFISH_SPEED"), enemy1.getSpeedVector().y, 0.0);
+		assertEquals(settings.get("MAX_EFISH_SPEED"), enemy1.getSpeedVector().x, 0.0);
 	}
 	
 	/**
@@ -144,11 +147,11 @@ public class TestEnemyFish implements TestIEatable {
 	 */
 	@Test
 	public void testlimitSpeed2() {
-		Vec2d vec1 = new Vec2d(-EnemyFishFactory.MAX_EFISH_SPEED - 1, -EnemyFishFactory.MAX_EFISH_SPEED - 1);
+		Vec2d vec1 = new Vec2d(-settings.get("MAX_EFISH_SPEED") - 1, -settings.get("MAX_EFISH_SPEED") - 1);
 		enemy1.setSpeedVector(vec1);
 		enemy1.limitSpeed();
-		assertEquals(-EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().x, 0.0);
-		assertEquals(-EnemyFishFactory.MAX_EFISH_SPEED, enemy1.getSpeedVector().y, 0.0);
+		assertEquals(-settings.get("MAX_EFISH_SPEED"), enemy1.getSpeedVector().x, 0.0);
+		assertEquals(-settings.get("MAX_EFISH_SPEED"), enemy1.getSpeedVector().y, 0.0);
 	}
 	
 	/**
