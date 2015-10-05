@@ -9,6 +9,7 @@ import com.github.fishio.logging.TxtFileHandler;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.logging.TimeStampFormat;
+import com.github.fishio.settings.Settings;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -21,18 +22,17 @@ public class FishIO extends Application {
 	private static FishIO instance;
 	
 	private Log log = Log.getLogger();
+	private Settings settings;
 	private ConsoleHandler consoleHandler = new ConsoleHandler(new TimeStampFormat());
 	private TxtFileHandler textFileHandler =
 			new TxtFileHandler(new TimeStampFormat(), new File("logs" +  File.separator + "log.txt"));
-	private LogLevel logLevel = LogLevel.WARNING;
-
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		instance = this;
 		
-		//Initialize Logger
-		initiateLogger();
+		//Initialize Logger and settings
+		initiateLoggerAndSettings();
 		
 		log.log(LogLevel.INFO, "Starting up Fish.io.");
 		//Preload the screens
@@ -45,13 +45,19 @@ public class FishIO extends Application {
 		this.primaryStage = primaryStage;
 		
 		primaryStage.setTitle("Fish.io");
-		primaryStage.setWidth(1280.0);
-		primaryStage.setHeight(720.0);
+		primaryStage.setWidth(settings.get("screen_width"));
+		primaryStage.setHeight(settings.get("screen_height"));
 		
 		log.log(LogLevel.DEBUG, "Primary stage set.");
 		//Load and show the splash screen.
 		Preloader.loadAndShowScreen("splashScreen", 0);
 		primaryStage.show();
+		
+		//track changes in screen size
+		primaryStage.heightProperty().addListener((o, old, height) -> 
+			settings.set("screen_height", height.doubleValue()));
+		primaryStage.widthProperty().addListener((o, old, width) -> 
+		settings.set("screen_width", width.doubleValue()));
 	}
 
 	/**
@@ -68,6 +74,7 @@ public class FishIO extends Application {
 	 */
 	public void closeApplication() {
 		log.log(LogLevel.INFO, "Game shutting Down.");
+		settings.save();
 		try {
 			textFileHandler.close();
 		} catch (IOException e) {
@@ -97,7 +104,7 @@ public class FishIO extends Application {
 	/**
 	 * Set up new logger.
 	 */
-	protected final void initiateLogger() {
+	protected final void initiateLoggerAndSettings() {
 		//Remove any Handlers if, for GUI tests.
 		log.removeAllHandlers();
 		
@@ -105,8 +112,10 @@ public class FishIO extends Application {
 		log.addHandler(consoleHandler);
 		log.addHandler(textFileHandler);
 		
+		//Set settings
+		settings = Settings.getInstance();
 		//Set Log level
-		log.setLogLevel(logLevel);
+		log.setLogLevel(LogLevel.fromInt((int) (settings.get("loglevel"))));
 		
 		//Log that logger has been setup
 		log.log(LogLevel.INFO, "Logger has initialized. Ready to Start Logging!");
