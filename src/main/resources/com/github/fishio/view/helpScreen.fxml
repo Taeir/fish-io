@@ -33,7 +33,7 @@
                         <Image url="@../../../../sprites/fish/playerFish.png" />
                      </image>
                   </ImageView>
-                  <Label text="← This is your fish" />
+                  <Label text="← This is your fish." />
                </children>
             </HBox>
         <Label prefWidth="700.0" text="Power ups are items that, when eaten by your fish, will give it some special powers." wrapText="true" />
