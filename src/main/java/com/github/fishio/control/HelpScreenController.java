@@ -1,17 +1,12 @@
 package com.github.fishio.control;
 
 import java.util.HashMap;
-import java.util.HashSet;
-
 import com.github.fishio.Preloader;
 import com.github.fishio.Vec2d;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
 import javafx.fxml.FXML;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -19,9 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.Pane;
 
 /**
  * Help screen controller.
@@ -32,15 +25,6 @@ public class HelpScreenController implements ScreenController {
 	private HashMap<KeyCode, Vec2d> keymap = getKeyMap();
 	
 	@FXML
-	private Label swimUp, swimDown, swimLeft, swimRight;
-	
-	@FXML
-	private Label helpText;
-	
-	@FXML
-	private Label helpTextPowerups;
-	
-	@FXML
 	private Label helpTextExtra;
 	
 	@FXML
@@ -49,12 +33,8 @@ public class HelpScreenController implements ScreenController {
 	@FXML
 	private Canvas keyboard;
 	
-	private Scene scene;
-	
 	@Override
-	public void init(Scene scene) { 
-		this.scene = scene;
-	}
+	public void init(Scene scene) { }
 
 	/**
 	 * Shows the connection between a key and its function.
