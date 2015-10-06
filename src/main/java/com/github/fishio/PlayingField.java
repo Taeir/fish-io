@@ -28,7 +28,7 @@ public abstract class PlayingField {
 
 	private ConcurrentLinkedDeque<IDrawable> drawables = new ConcurrentLinkedDeque<>();
 	private ConcurrentLinkedDeque<IDrawable> deadDrawables = new ConcurrentLinkedDeque<>();
-	private ConcurrentLinkedQueue<IMovable> movables = new ConcurrentLinkedQueue<>();
+	private ConcurrentLinkedQueue<IBehaviour> movables = new ConcurrentLinkedQueue<>();
 	private ConcurrentLinkedQueue<Entity> entities = new ConcurrentLinkedQueue<>();
 	private ConcurrentLinkedQueue<ICollidable> collidables = new ConcurrentLinkedQueue<>();
 	private Log log = Log.getLogger();
@@ -180,7 +180,7 @@ public abstract class PlayingField {
 	 * Moves Movable items.
 	 */
 	public void moveMovables() {
-		for (IMovable m : movables) {
+		for (IBehaviour m : movables) {
 			m.preMove();
 			
 			ICollisionArea box = m.getBoundingArea();
@@ -207,7 +207,7 @@ public abstract class PlayingField {
 	 * @return
 	 * 		true if the given Movable with the given box hits a wall.
 	 */
-	private boolean hitsWall(IMovable m, ICollisionArea box) {
+	private boolean hitsWall(IBehaviour m, ICollisionArea box) {
 		// prevent playerfish from leaving the screen
 		if (m instanceof PlayerFish) {	
 			if (box.getMaxX() >= WINDOW_X
@@ -404,8 +404,8 @@ public abstract class PlayingField {
 			drawables.addFirst((IDrawable) o);
 		}
 
-		if (o instanceof IMovable) {
-			movables.add((IMovable) o);
+		if (o instanceof IBehaviour) {
+			movables.add((IBehaviour) o);
 		}
 
 		if (o instanceof Entity) {
@@ -428,7 +428,7 @@ public abstract class PlayingField {
 			drawables.remove(o);
 		}
 
-		if (o instanceof IMovable) {
+		if (o instanceof IBehaviour) {
 			movables.remove(o);
 		}
 

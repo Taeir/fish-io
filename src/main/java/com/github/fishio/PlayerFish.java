@@ -14,7 +14,7 @@ import javafx.stage.Stage;
  * Represents a fish that the user can control using
  * the keyboard.
  */
-public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
+public class PlayerFish extends Entity implements IEatable, IBehaviour, Subject {
 
 	private double vx;
 	private double vy;

@@ -1,9 +1,9 @@
 package com.github.fishio;
 
 /**
- * Represents an object that can move.
+ * The behaviour of an entity decides how it moves.
  */
-public interface IMovable extends IPositional {
+public interface IBehaviour extends IPositional {
 
 	/**
 	 * Gets the speedVector of the object.

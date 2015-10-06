@@ -7,7 +7,7 @@ import com.github.fishio.Entity;
 import com.github.fishio.ICollidable;
 import com.github.fishio.ICollisionArea;
 import com.github.fishio.IEatable;
-import com.github.fishio.IMovable;
+import com.github.fishio.IBehaviour;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
 import com.github.fishio.Vec2d;
@@ -18,7 +18,7 @@ import com.github.fishio.logging.LogLevel;
  * A PowerUp is an entity that, when colliding with a player fish,
  * executes a certain (positive) effect. 
  */
-public abstract class PowerUp extends Entity implements IMovable, IEatable {
+public abstract class PowerUp extends Entity implements IBehaviour, IEatable {
 
 	private PlayingField pfield;
 	

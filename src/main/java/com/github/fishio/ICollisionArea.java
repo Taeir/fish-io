@@ -143,7 +143,7 @@ public interface ICollisionArea {
 	 * @return
 	 * 		the rotation of the boundingArea.
 	 */
-	default double setRotation(IMovable m) {
+	default double setRotation(IBehaviour m) {
 		Vec2d sv = m.getSpeedVector();
 		if (sv.x == 0) {
 			if (sv.y > 0) {

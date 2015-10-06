@@ -10,7 +10,7 @@ import javafx.scene.image.Image;
  * EnemyFish class. This class contains all methods concerning non-player or
  * enemy fish on the screen.
  */
-public class EnemyFish extends Entity implements IMovable, IEatable {
+public class EnemyFish extends Entity implements IBehaviour, IEatable {
 
 
 	private static final double FISH_EAT_THRESHOLD = 1.2;
