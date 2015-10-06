@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
+import com.github.fishio.SinglePlayerPlayingField;
 
 /**
  * Tests the PuExtraLife class.
@@ -23,7 +24,7 @@ public class TestPuExtraLife extends TestPowerUp {
 	 */
 	@Before
 	public void setUp() {
-		this.pf = Mockito.mock(PlayingField.class);
+		this.pf = Mockito.mock(SinglePlayerPlayingField.class);
 		this.pu = Mockito.spy(new PuExtraLife(null, pf, Mockito.mock(Image.class)));
 	}
 	

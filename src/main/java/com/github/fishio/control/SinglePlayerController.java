@@ -10,6 +10,7 @@ import com.github.fishio.Util;
 import com.github.fishio.Vec2d;
 import com.github.fishio.achievements.EnemyKillObserver;
 import com.github.fishio.achievements.PlayerDeathObserver;
+import com.github.fishio.game.GameThread;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
@@ -55,10 +56,10 @@ public class SinglePlayerController implements ScreenController {
 			//If we lost a life (this includes death (0 lives))
 			if (newValue.intValue() < oldValue.intValue()) {
 				//Stop the game
-				pf.stopGameThread();
+				pf.getGameThread().stop();
 				
 				//Show the death screen, and when done, stop rendering as well.
-				showDeathScreen(true, event -> pf.stopRendering());
+				showDeathScreen(true, event -> pf.getRenderer().stopRendering());
 			}
 		});
 		
@@ -131,7 +132,8 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void onPause(ActionEvent event) {
-		if (pf.isRunning()) {
+		GameThread gameThread = pf.getGameThread();
+		if (gameThread.isRunning()) {
 			try {
 				pf.stopGameAndWait();
 			} catch (InterruptedException ex) { }
@@ -257,10 +259,10 @@ public class SinglePlayerController implements ScreenController {
 		player.setBoundingArea(area);
 		
 		//Start the render thread (it takes some time to appear).
-		pf.startRendering();
+		pf.getRenderer().startRendering();
 		
 		//Hide the deathscreen. When the animation is done, start the game thread.
-		showDeathScreen(false, event -> pf.startGameThread());
+		showDeathScreen(false, event -> pf.getGameThread().start());
 	}
 
 	/**
@@ -279,7 +281,7 @@ public class SinglePlayerController implements ScreenController {
 		pf.clear();
 		
 		//Start the render thread (it takes some time to appear).
-		pf.startRendering();
+		pf.getRenderer().startRendering();
 
 		//Hide the deathscreen. When the animation is done, start the game thread.
 		showDeathScreen(false, event -> {
@@ -291,11 +293,12 @@ public class SinglePlayerController implements ScreenController {
 	 * Updates the pause button to the correct state.
 	 */
 	public void updatePauseButton() {
+		GameThread gameThread = pf.getGameThread();
 		if (!pf.isPlayerAlive()) {
 			//All player fish are dead
 			getBtnPause().setText(PAUSE_TEXT);
 			getBtnPause().setDisable(true);
-		} else if (pf.isRunning()) {
+		} else if (gameThread.isRunning()) {
 			//There is a player fish alive and the game is running
 			getBtnPause().setText(PAUSE_TEXT);
 			getBtnPause().setDisable(false);

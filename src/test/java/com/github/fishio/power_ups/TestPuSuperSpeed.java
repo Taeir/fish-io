@@ -1,13 +1,20 @@
 package com.github.fishio.power_ups;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.stage.Stage;
 
 import org.junit.Before;
 import org.mockito.Mockito;
 
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
+import com.github.fishio.SinglePlayerPlayingField;
+import com.github.fishio.behaviours.KeyListenerBehaviour;
+import com.github.fishio.game.GameThread;
 
 /**
  * Tests the PuSuperSpeed class.
@@ -25,11 +32,18 @@ public class TestPuSuperSpeed extends TestDurationPowerUp {
 	 */
 	@Before
 	public void setUp() {
-		this.pf = Mockito.mock(PlayingField.class);
+		this.pf = Mockito.mock(SinglePlayerPlayingField.class);
+		GameThread gt = Mockito.spy(new GameThread(pf));
+		when(pf.getGameThread()).thenReturn(gt);
 		this.pu = Mockito.spy(new PuSuperSpeed(null, pf, Mockito.mock(Image.class)));
 		
 		//To prevent NullPointerExceptions, mocking the target of the PowerUp.
-		this.pu.setTarget(Mockito.mock(PlayerFish.class));
+		PlayerFish fish = Mockito.mock(PlayerFish.class);
+		this.pu.setTarget(fish);
+		
+		KeyListenerBehaviour klb = Mockito.spy(new KeyListenerBehaviour(
+				Mockito.mock(Stage.class), KeyCode.A, KeyCode.A, KeyCode.A, KeyCode.A, 5.0, 7.0));
+		when(fish.getBehaviour()).thenReturn(klb);
 	}
 	
 	@Override
@@ -45,15 +59,17 @@ public class TestPuSuperSpeed extends TestDurationPowerUp {
 	@Override
 	public void testStartEffect() {
 		PlayerFish pf = pu.getTarget();
-		double oldAcceleration = pf.getAcceleration();
-		double oldMaxSpeed = pf.getMaxSpeed();
+		KeyListenerBehaviour klb = (KeyListenerBehaviour) pf.getBehaviour();
+		
+		double oldAcceleration = klb.getAcceleration();
+		double oldMaxSpeed = klb.getMaxSpeed();
 		
 		pu.startEffect();
 		
 		assertEquals(oldAcceleration *  PuSuperSpeed.ACCELERATION_FACTOR, 
-				pf.getAcceleration(), DELTA);
+				klb.getAcceleration(), DELTA);
 		assertEquals(oldMaxSpeed * PuSuperSpeed.MAX_SPEED_FACTOR, 
-				pf.getMaxSpeed(), DELTA);
+				klb.getMaxSpeed(), DELTA);
 	}
 
 	@Override
@@ -65,16 +81,18 @@ public class TestPuSuperSpeed extends TestDurationPowerUp {
 	@Override
 	public void testEndEffect() {
 		PlayerFish pf = pu.getTarget();
-		double oldAcceleration = pf.getAcceleration();
-		double oldMaxSpeed = pf.getMaxSpeed();
+		KeyListenerBehaviour klb = (KeyListenerBehaviour) pf.getBehaviour();
+		
+		double oldAcceleration = klb.getAcceleration();
+		double oldMaxSpeed = klb.getMaxSpeed();
 		
 		//Starting the Speed and Acceleration change, then ending it immediately.
 		pu.startEffect();
 		pu.endEffect();
 		
 		//Making sure that acceleration and MaxSpeed haven't changed.
-		assertEquals(oldAcceleration, pf.getAcceleration(), DELTA);
-		assertEquals(oldMaxSpeed, pf.getMaxSpeed(), DELTA);
+		assertEquals(oldAcceleration, klb.getAcceleration(), DELTA);
+		assertEquals(oldMaxSpeed, klb.getMaxSpeed(), DELTA);
 	}
 
 	@Override
