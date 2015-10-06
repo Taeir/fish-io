@@ -18,31 +18,6 @@ public interface IBehaviour extends IPositional {
 	Vec2d getSpeedVector();
 	
 	/**
-	 * Sets the speedVector of this object.
-	 * Example: speedVector (0, 2) means the object is moving
-	 * up with speed 2.
-	 * 
-	 * @param vector
-	 * 		The speed vector of the object.
-	 */
-	void setSpeedVector(Vec2d vector);
-	
-	/**
-	 * Sets the direction this object is moving in.
-	 * 
-	 * @param direction
-	 * 		The direction the object is moving at.
-	 * 		This method does not affect the speed.
-	 */
-	default void setDirection(Vec2d direction) {
-		Vec2d norm = direction.normalize();
-		double speed = getSpeedVector().length();
-		norm.x = norm.x * speed;
-		norm.y = norm.y * speed;
-		setSpeedVector(norm);
-	}
-	
-	/**
 	 * Gives back the speed of the object, defined by the length of the
 	 * SpeedVector.
 	 * 
@@ -50,22 +25,6 @@ public interface IBehaviour extends IPositional {
 	 */
 	default double getSpeed() {
 		return getSpeedVector().length();
-	}
-	
-	/**
-	 * Sets the speed this object is moving at.
-	 * 
-	 * @deprecated If the speed is 0, this method does not work properly.
-	 * 
-	 * @param speed
-	 * 		the new speed.
-	 */
-	@Deprecated
-	default void setSpeed(double speed) {
-		Vec2d norm = getSpeedVector().normalize();
-		norm.x = norm.x * speed;
-		norm.y = norm.y * speed;
-		setSpeedVector(norm);
 	}
 	
 	/**
