@@ -25,16 +25,7 @@ public class VerticalBehaviour implements IBehaviour {
 	public Vec2d getSpeedVector() {
 		return new Vec2d(0, -speed);
 	}
-
-	@Override
-	public boolean canMoveThroughWall() {
-		return true;
-	}
-
 	@Override
 	public void preMove() { }
-
-	@Override
-	public void hitWall() { }
 	
 }

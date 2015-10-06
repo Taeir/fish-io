@@ -16,14 +16,12 @@ import javafx.scene.paint.Color;
 /**
  * Represents an entity in the game.
  */
-public abstract class Entity implements ICollidable, IPositional, IBehaviour, IDrawable, Subject {
+public abstract class Entity implements ICollidable, IPositional, IDrawable, Subject {
 	private List<Observer> observers = new ArrayList<Observer>();
 	
 	private boolean dead;
 	private ICollisionArea ba;
 	protected Log logger = Log.getLogger();
-	
-	private IBehaviour behaviour;
 	
 	/**
 	 * This constructor creates an entity in the game.
@@ -69,9 +67,17 @@ public abstract class Entity implements ICollidable, IPositional, IBehaviour, ID
 	 * @return
 	 * 		The behaviour of this entity.
 	 */
-	public IBehaviour getBehaviour() {
-		return this;
-	}
+	public abstract IBehaviour getBehaviour();
+	
+	/**
+	 * Changes the behaviour of this entity.
+	 * 
+	 * @param behaviour
+	 * 		The behaviour this entity should adopt
+	 */
+	public abstract void setBehaviour(IBehaviour behaviour);
+
+	
 	
 	@Override
 	public ICollisionArea getBoundingArea() {
@@ -110,5 +116,18 @@ public abstract class Entity implements ICollidable, IPositional, IBehaviour, ID
 		State state = new State();
 		state.add("dead", isDead());
 		return state;
+	}
+	
+	/**
+	 * @return
+	 * 		True iff this entity is able to move through walls.
+	 */
+	public abstract boolean canMoveThroughWall();
+
+	/**
+	 * What happens when the entity hits a wall, by default it kills the entity.
+	 */
+	public void hitWall() {
+		kill();
 	}
 }

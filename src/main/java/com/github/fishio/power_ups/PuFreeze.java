@@ -6,6 +6,8 @@ import com.github.fishio.EnemyFish;
 import com.github.fishio.Entity;
 import com.github.fishio.ICollisionArea;
 import com.github.fishio.PlayingField;
+import com.github.fishio.behaviours.FrozenBehaviour;
+import com.github.fishio.behaviours.IBehaviour;
 
 /**
  * A PowerUp with the effect that it freezes all
@@ -19,6 +21,8 @@ public class PuFreeze extends DurationPowerUp {
 	 * The duration of the effect in seconds.
 	 */
 	private static final int DURATION = 10;
+	
+	private IBehaviour oldBehaviour;
 	
 	/**
 	 * Creates a new PowerUp of the Freeze type.
@@ -46,7 +50,8 @@ public class PuFreeze extends DurationPowerUp {
 	public void startEffect() {
 		for (Entity e : getPField().getEntities()) {
 			if (e instanceof EnemyFish) {
-				((EnemyFish) e).setFrozen(true);
+				oldBehaviour = e.getBehaviour();
+				((EnemyFish) e).setBehaviour(new FrozenBehaviour());
 			}
 		}
 	}
@@ -61,7 +66,7 @@ public class PuFreeze extends DurationPowerUp {
 	public void endEffect() {
 		for (Entity e : getPField().getEntities()) {
 			if (e instanceof EnemyFish) {
-				((EnemyFish) e).setFrozen(false);
+				((EnemyFish) e).setBehaviour(oldBehaviour);
 			}
 		}
 	}

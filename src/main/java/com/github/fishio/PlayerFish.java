@@ -479,4 +479,14 @@ public class PlayerFish extends Entity implements IEatable, IPositional, IBehavi
 		return getBoundingArea().getSize();
 	}
 
+	@Override
+	public IBehaviour getBehaviour() {
+		return this;
+	}
+
+	@Override
+	public void setBehaviour(IBehaviour behaviour) {
+		//TODO
+	}
+
 }

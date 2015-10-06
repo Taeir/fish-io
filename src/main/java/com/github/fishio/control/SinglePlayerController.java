@@ -256,9 +256,6 @@ public class SinglePlayerController implements ScreenController {
 		ICollisionArea area = pf.getStartCollisionArea();
 		player.setBoundingArea(area);
 		
-		//Reset the speed of the fish.
-		player.setSpeedVector(new Vec2d(0, 0));
-		
 		//Start the render thread (it takes some time to appear).
 		pf.startRendering();
 		

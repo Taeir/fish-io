@@ -186,12 +186,12 @@ public abstract class PlayingField {
 			
 			ICollisionArea box = e.getBoundingArea();
 			if (hitsWall(e, box)) {
-				b.hitWall();
+				e.hitWall();
 			}
 
 			box.move(b.getSpeedVector());
 
-			if (!b.canMoveThroughWall()) {
+			if (!e.canMoveThroughWall()) {
 				moveWithinScreen(box);
 			}
 		}

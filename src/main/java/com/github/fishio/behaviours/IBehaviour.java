@@ -27,24 +27,6 @@ public interface IBehaviour {
 	}
 	
 	/**
-	 * Allows the object to move through the walls.
-	 * 
-	 * @return true iff the object doesn't get blocked when trying to move
-	 *         through walls.
-	 */
-	boolean canMoveThroughWall();
-	
-	/**
-	 * Called when collided with a wall.<br>
-	 * <br>
-	 * Can be used to turn around for example.
-	 * 
-	 * This method will be called AFTER preMove(), but
-	 * BEFORE the object actually moves.
-	 */
-	void hitWall();
-	
-	/**
 	 * Called just before the object moves.
 	 * 
 	 * Can be used to adjust the speedVector for AI for example.
