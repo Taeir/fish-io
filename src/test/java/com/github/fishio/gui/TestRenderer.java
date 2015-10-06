@@ -26,18 +26,11 @@ import com.github.fishio.SinglePlayerPlayingField;
 /**
  * Tests the {@link Renderer} class.
  */
-public class TestRenderer extends GuiTest {
+public class TestRenderer {
 
 	private static SinglePlayerPlayingField sppf;
 	private static Canvas canvas;
 	private Renderer renderer;
-
-	/**
-	 * Show the singlePlayer screen for this test.
-	 */
-	public TestRenderer() {
-		super("singlePlayer");
-	}
 	
 	/**
 	 * Creates a new PlayingField, Canvas and Renderer before every test,
@@ -47,16 +40,13 @@ public class TestRenderer extends GuiTest {
 	 */
 	@Before
 	public void setUp() throws InterruptedException {
-		//Stop the game
-		getSinglePlayerController().getPlayingField().stopGameAndWait();
-		
 		//Create a new SinglePlayerPlayingField mock.
 		sppf = Mockito.mock(SinglePlayerPlayingField.class);
 		when(sppf.getDrawables()).thenReturn(new ConcurrentLinkedDeque<>());
 		when(sppf.getDeadDrawables()).thenReturn(new ConcurrentLinkedDeque<>());
 		
 		//Create a new Canvas and spy on it.
-		canvas = spy(getSinglePlayerController().getPlayingField().getRenderer().getCanvas());
+		canvas = spy(new Canvas());
 		
 		//Create the renderer
 		renderer = new Renderer(sppf, canvas, 60);
