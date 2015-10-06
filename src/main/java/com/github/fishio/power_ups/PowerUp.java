@@ -85,11 +85,6 @@ public abstract class PowerUp extends Entity implements IBehaviour, IEatable {
 	}
 
 	@Override
-	public void setSpeedVector(Vec2d vector) {
-		this.speedVector = vector;
-	}
-
-	@Override
 	public boolean canMoveThroughWall() {
 		return true;
 	}

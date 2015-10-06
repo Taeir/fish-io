@@ -70,12 +70,6 @@ public class EnemyFish extends Entity implements IBehaviour, IEatable {
 		return new Vec2d(vx, vy);
 	}
 
-	@Override
-	public void setSpeedVector(Vec2d vector) {
-		vx = vector.x;
-		vy = vector.y;
-	}
-
 	/**
 	 * Enemy fish should die if they hit the wall from the inside.
 	 */
@@ -174,6 +168,21 @@ public class EnemyFish extends Entity implements IBehaviour, IEatable {
 	@Override
 	public double getSize() {
 		return getBoundingArea().getSize();
+	}
+	
+	/**
+	 * Sets the speedVector of the EnemyFish.
+	 * Warning! This method should not be used to change the
+	 * behaviour of the fish, because the speed keeps changing 
+	 * randomly and can't be controlled. Testing is the sole
+	 * purpose of this method.
+	 * 
+	 * @param speedVector
+	 * 		The speedVector for this entity
+	 */
+	public void setSpeedVector(Vec2d speedVector) {
+		this.vx = speedVector.x;
+		this.vy = speedVector.y;
 	}
 
 }

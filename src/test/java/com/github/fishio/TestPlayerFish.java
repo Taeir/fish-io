@@ -225,16 +225,6 @@ public class TestPlayerFish extends TestIEatable {
 	}
 	
 	/**
-	 * Tests {@link PlayerFish#setSpeedVector(Vec2d)}.
-	 */
-	@Test
-	public void testSetSpeedVector() {
-		pf.setSpeedVector(new Vec2d(3.0, 5.0));
-		
-		assertEquals(new Vec2d(3.0, 5.0), pf.getSpeedVector());
-	}
-	
-	/**
 	 * Tests {@link PlayerFish#preMove()}.
 	 */
 	@Test

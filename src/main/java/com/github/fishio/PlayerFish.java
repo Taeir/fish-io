@@ -281,12 +281,6 @@ public class PlayerFish extends Entity implements IEatable, IBehaviour, Subject 
 	}
 
 	@Override
-	public void setSpeedVector(Vec2d vector) {
-		vx = vector.x;
-		vy = vector.y;
-	}
-
-	@Override
 	public void preMove() {
 		adjustXSpeed();
 		adjustYSpeed();
