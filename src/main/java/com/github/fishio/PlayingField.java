@@ -462,13 +462,4 @@ public abstract class PlayingField {
 		return false;
 	}
 	
-	/**
-	 * Sets the gameThread for this PlayingField.
-	 * 
-	 * @param gameThread
-	 * 		The game thread to set.
-	 */
-	public void setGameThread(GameThread gameThread) {
-		this.gameThread = gameThread;
-	}
 }
