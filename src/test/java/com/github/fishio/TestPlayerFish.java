@@ -34,6 +34,7 @@ public class TestPlayerFish extends TestIEatable {
 	 * Tests {@link PlayerFish#getSize()}.
 	 */
 	@Test
+	@Override
 	public void testGetSize() {
 		assertEquals(5.0, pf.getSize(), 1E-8);
 	}
@@ -42,6 +43,7 @@ public class TestPlayerFish extends TestIEatable {
 	 * Tests {@link PlayerFish#eat()}.
 	 */
 	@Test
+	@Override
 	public void testEat() {
 		pf.eat();
 		Mockito.verify(pf).kill();
