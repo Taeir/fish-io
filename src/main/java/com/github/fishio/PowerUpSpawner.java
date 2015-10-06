@@ -64,7 +64,7 @@ public class PowerUpSpawner implements TickListener {
 		
 		this.log = Log.getLogger();
 		
-		pf.registerGameListener(this);
+		pf.getGameThread().registerListener(this);
 	}
 
 	@Override

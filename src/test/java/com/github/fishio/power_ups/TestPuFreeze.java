@@ -17,6 +17,8 @@ import com.github.fishio.EnemyFish;
 import com.github.fishio.Entity;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
+import com.github.fishio.SinglePlayerPlayingField;
+import com.github.fishio.game.GameThread;
 
 /**
  * Test class for the PuFreeze class.
@@ -32,7 +34,9 @@ public class TestPuFreeze extends TestDurationPowerUp {
 	 */
 	@Before
 	public void setUp() {
-		this.pf = Mockito.mock(PlayingField.class);
+		this.pf = Mockito.mock(SinglePlayerPlayingField.class);
+		GameThread gt = Mockito.spy(new GameThread(pf));
+		when(pf.getGameThread()).thenReturn(gt);
 		this.pu = Mockito.spy(new PuFreeze(null, pf, Mockito.mock(Image.class)));
 		
 		//To prevent nullPointerException, mock the target of the PowerUp.

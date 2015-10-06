@@ -11,7 +11,6 @@ import javafx.scene.image.Image;
 
 import com.github.fishio.game.GameThread;
 import com.github.fishio.gui.Renderer;
-import com.github.fishio.listeners.TickListener;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
@@ -262,83 +261,11 @@ public abstract class PlayingField {
 	}
 	
 	/**
-	 * Starts rendering (updating the screen).
-	 * The game itself will be unaffected by this call.
-	 */
-	public void startRendering() {
-		renderer.startRendering();
-	}
-	
-	/**
-	 * Stops rendering (updating the screen).
-	 * The game itself will be unaffected by this call.
-	 */
-	public void stopRendering() {
-		renderer.stopRendering();
-	}
-	
-	/**
-	 * @return
-	 * 		if the render thread is running or not.
-	 */
-	public boolean isRendering() {
-		return renderer.isRendering();
-	}
-	
-	/**
 	 * @return
 	 * 		the GameThread for this PlayingField.
 	 */
 	public GameThread getGameThread() {
 		return gameThread;
-	}
-	
-	/**
-	 * Starts the game thread.<br>
-	 * <br>
-	 * If the game thread is not running, it is started.<br>
-	 * If the game thread is stopping, this method waits for it to stop and
-	 * starts it again after that.<br>
-	 * Otherwise, this method will have no effect.
-	 */
-	public void startGameThread() {
-		gameThread.start();
-	}
-	
-	/**
-	 * Sets the stop status of the game thread to true.<br>
-	 * <br>
-	 * If the game thread was running at the time of this call, it will
-	 * stop sometime in the future. Otherwise, this method has no effect.
-	 * 
-	 * @see #stopGameThreadAndWait()
-	 */
-	public void stopGameThread() {
-		gameThread.stop();
-	}
-	
-	/**
-	 * Sets the stop status of the game thread to true, and waits for the
-	 * game thread to stop.<br>
-	 * <br>
-	 * If the game thread was not running at the time of this call, this 
-	 * method has no effect.
-	 * 
-	 * @throws InterruptedException
-	 * 		if we are interrupted while waiting for the game thread to stop.
-	 * 
-	 * @see #stopGameThread()
-	 */
-	public void stopGameThreadAndWait() throws InterruptedException {
-		gameThread.stopAndWait();
-	}
-	
-	/**
-	 * @return
-	 * 		if the game thread is running or not (stopped / paused)
-	 */
-	public boolean isRunning() {
-		return gameThread.isRunning();
 	}
 
 	/**
@@ -349,10 +276,10 @@ public abstract class PlayingField {
 	 */
 	public void startGame() {
 		//Start the rendering first
-		startRendering();
+		renderer.startRendering();
 		
 		//Start the game thread after that.
-		startGameThread();
+		gameThread.start();
 	}
 	
 	/**
@@ -364,7 +291,7 @@ public abstract class PlayingField {
 	 * @see #startGame()
 	 */
 	public void startGameAndWait() throws InterruptedException {
-		startRendering();
+		renderer.startRendering();
 		
 		gameThread.startAndWait();
 	}
@@ -373,8 +300,8 @@ public abstract class PlayingField {
 	 * Stops (pauses) the game and the rendering.
 	 */
 	public void stopGame() {
-		stopGameThread();
-		stopRendering();
+		gameThread.stop();
+		renderer.stopRendering();
 	}
 	
 	/**
@@ -494,46 +421,6 @@ public abstract class PlayingField {
 			add(player);
 		}
 	}
-
-	/**
-	 * Registers the given TickListener for the game thread.
-	 * 
-	 * @param tl
-	 * 		the TickListener to register.
-	 */
-	public void registerGameListener(TickListener tl) {
-		gameThread.registerListener(tl);
-	}
-
-	/**
-	 * Unregisters the given TickListener from the game thread.
-	 * 
-	 * @param tl
-	 * 		the TickListener to unregister.
-	 */
-	public void unregisterGameListener(TickListener tl) {
-		gameThread.unregisterListener(tl);
-	}
-
-	/**
-	 * Registers the given TickListener for the render thread.
-	 * 
-	 * @param tl
-	 * 		the TickListener to register.
-	 */
-	public void registerRenderListener(TickListener tl) {
-		renderer.registerListener(tl);
-	}
-
-	/**
-	 * Unregisters the given TickListener from the render thread.
-	 * 
-	 * @param tl
-	 * 		the TickListener to unregister.
-	 */
-	public void unregisterRenderListener(TickListener tl) {
-		renderer.unregisterListener(tl);
-	}
 	
 	/**
 	 * @return
@@ -574,4 +461,5 @@ public abstract class PlayingField {
 		
 		return false;
 	}
+	
 }

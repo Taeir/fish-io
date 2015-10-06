@@ -6,7 +6,7 @@ import org.mockito.Mockito;
 import static org.mockito.Mockito.never;
 
 import com.github.fishio.PlayerFish;
-import com.github.fishio.PlayingField;
+import com.github.fishio.game.GameThread;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
@@ -152,8 +152,8 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 		assertFalse(pu.isActive());
 		
 		//Making sure the PowerUp is no longer ticking in the PlayingField.
-		PlayingField pf = getPlayingField();
-		Mockito.verify(pf).unregisterGameListener(pu);
+		GameThread gameThread = getPlayingField().getGameThread();
+		Mockito.verify(gameThread).unregisterListener(pu);
 	}
 	
 	/**
@@ -175,8 +175,8 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 		assertTrue(pu.isActive());
 		
 		//Making sure the PowerUp is still longer ticking in the PlayingField.
-		PlayingField pf = getPlayingField();
-		Mockito.verify(pf, never()).unregisterGameListener(pu);
+		GameThread gameThread = getPlayingField().getGameThread();
+		Mockito.verify(gameThread, never()).unregisterListener(pu);
 	}
 	
 	/**
