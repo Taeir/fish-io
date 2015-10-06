@@ -231,7 +231,7 @@ public class CollisionMask implements ICollisionArea {
 				return true;
 			}
 			if (other instanceof CollisionMask) { // do pixel perfect
-				if (settings.get("PIXEL_PERFECT_COLLISIONS") < 1) {
+				if (settings.getBoolean("PIXEL_PERFECT_COLLISIONS")) {
 					return true;
 				}
 				CollisionMask o = (CollisionMask) other;

@@ -93,7 +93,7 @@ public class EnemyFish extends Entity implements IMovable, IEatable {
 			return;
 		}
 		
-		if (Math.random() < settings.get("DIRECTION_CHANGE_CHANCE")) {
+		if (Math.random() < settings.getDouble("DIRECTION_CHANGE_CHANCE")) {
 			//Only change one direction
 			if (Math.random() <= 0.5) {
 				vy = vy + vy * (Math.random() - 0.5);
@@ -110,9 +110,9 @@ public class EnemyFish extends Entity implements IMovable, IEatable {
 	 */
 	public void limitVx() {
 		if (vx > 0) {
-			vx = Math.max(settings.get("MIN_EFISH_SPEED"), Math.min(vx, settings.get("MAX_EFISH_SPEED")));
+			vx = Math.max(settings.getDouble("MIN_EFISH_SPEED"), Math.min(vx, settings.getDouble("MAX_EFISH_SPEED")));
 		} else {
-			vx = Math.min(-settings.get("MIN_EFISH_SPEED"), Math.max(vx, -settings.get("MAX_EFISH_SPEED")));
+			vx = Math.min(-settings.getDouble("MIN_EFISH_SPEED"), Math.max(vx, -settings.getDouble("MAX_EFISH_SPEED")));
 		}
 	}
 	
@@ -122,9 +122,9 @@ public class EnemyFish extends Entity implements IMovable, IEatable {
 	 */
 	public void limitVy() {
 		if (vy > 0) {
-			vy = Math.max(settings.get("MIN_EFISH_SPEED"), Math.min(vy, settings.get("MAX_EFISH_SPEED")));
+			vy = Math.max(settings.getDouble("MIN_EFISH_SPEED"), Math.min(vy, settings.getDouble("MAX_EFISH_SPEED")));
 		} else {
-			vy = Math.min(-settings.get("MIN_EFISH_SPEED"), Math.max(vy, -settings.get("MAX_EFISH_SPEED")));
+			vy = Math.min(-settings.getDouble("MIN_EFISH_SPEED"), Math.max(vy, -settings.getDouble("MAX_EFISH_SPEED")));
 		}
 	}
 	
@@ -157,7 +157,7 @@ public class EnemyFish extends Entity implements IMovable, IEatable {
 
 	@Override
 	public boolean canBeEatenBy(IEatable other) {
-		if (other.getSize() > getSize() * settings.get("FISH_EAT_THRESHOLD")) {
+		if (other.getSize() > getSize() * settings.getDouble("FISH_EAT_THRESHOLD")) {
 			return true;
 		}
 		return false;

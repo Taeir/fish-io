@@ -63,7 +63,7 @@ public interface IDrawable {
 		gc.restore();
 
 		// debug rendering
-		if (Settings.getInstance().get("DEBUG_DRAW") > 0) {
+		if (Settings.getInstance().getBoolean("DEBUG_DRAW")) {
 			gc.setFill(Color.RED);			
 			gc.fillText("angle: " + String.valueOf(angle),			//angle display 
 					cx, cy - (0.5 * ca.getHeight() + 10));

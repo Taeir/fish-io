@@ -9,7 +9,6 @@ import com.github.fishio.listeners.Listenable;
 import com.github.fishio.listeners.TickListener;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
-import com.github.fishio.settings.Settings;
 
 /**
  * A stateful runnable that represents the game thread.
@@ -18,6 +17,7 @@ public class GameThread implements Runnable, Listenable {
 	private ConcurrentLinkedQueue<TickListener> listeners = new ConcurrentLinkedQueue<TickListener>();
 	
 	private final PlayingField playingField;
+	private static final double GAME_TPS = 60;
 	
 	private volatile Thread thread;
 	private volatile boolean stop;
@@ -221,7 +221,7 @@ public class GameThread implements Runnable, Listenable {
 		
 		try {
 			long start, end;
-			double waitTime = 1000.0 / Settings.getInstance().get("GAME_TPS");
+			double waitTime = 1000.0 / GAME_TPS;
 			
 			while (!stop) {
 				start = System.currentTimeMillis();

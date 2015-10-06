@@ -52,7 +52,7 @@ public class PowerUpSpawner implements TickListener {
 	public PowerUpSpawner(PlayingField pf) {
 		this.pf = pf;
 		
-		this.intervalTicks = (int) (settings.get("POWERUP_SPAWN_INTERVAL") * pf.getFPS());
+		this.intervalTicks = settings.getInteger("POWERUP_SPAWN_INTERVAL") * pf.getFPS();
 		this.tickCounter = 0;
 		
 		this.minX = 0;
@@ -137,7 +137,7 @@ public class PowerUpSpawner implements TickListener {
 	 * 		The time in seconds before a new PowerUp spawns.
 	 */
 	public int getInterval() {
-		return (int) settings.get("POWERUP_SPAWN_INTERVAL");
+		return settings.getInteger("POWERUP_SPAWN_INTERVAL");
 	}
 	
 }

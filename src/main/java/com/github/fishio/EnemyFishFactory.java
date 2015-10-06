@@ -50,22 +50,24 @@ public final class EnemyFishFactory {
 		//pick a side
 		switch (rand.nextInt(4)) {
 		case 0: 	// left
-			position = new Vec2d(-width, Math.random() * settings.get("SCREEN_HEIGHT"));
+			position = new Vec2d(-width, Math.random() * settings.getDouble("SCREEN_HEIGHT"));
 			vx = Math.abs(randomSpeed());
 			vy = randomSpeed();
 			break;
 		case 1: 	// top
-			position = new Vec2d(Math.random() * settings.get("SCREEN_WIDTH"), -height);
+			position = new Vec2d(Math.random() * settings.getDouble("SCREEN_WIDTH"), -height);
 			vx = randomSpeed();
 			vy = -Math.abs(randomSpeed());
 			break;
 		case 2: 	// right
-			position = new Vec2d(settings.get("SCREEN_WIDTH") + width, Math.random() * settings.get("SCREEN_HEIGHT"));
+			position = new Vec2d(settings.getDouble("SCREEN_WIDTH") + width,
+					Math.random() * settings.getDouble("SCREEN_HEIGHT"));
 			vx = -Math.abs(randomSpeed());
 			vy = randomSpeed();
 			break;
 		default: 	// bottom
-			position = new Vec2d(Math.random() * settings.get("SCREEN_WIDTH"), settings.get("SCREEN_HEIGHT") + height);
+			position = new Vec2d(Math.random() * settings.getDouble("SCREEN_WIDTH"), 
+					settings.getDouble("SCREEN_HEIGHT") + height);
 			vx = randomSpeed();
 			vy = Math.abs(randomSpeed());
 			break;
@@ -83,7 +85,7 @@ public final class EnemyFishFactory {
 	 * 		a random fish sprite.
 	 */
 	private static String getRandomSprite() {
-		final int i = rand.nextInt((int) settings.get("FISH_SPRITES"));
+		final int i = rand.nextInt(28);
 		return "sprites/fish/fish" + i + ".png";
 	}
 
@@ -95,7 +97,7 @@ public final class EnemyFishFactory {
 	 * 			-MAX_FISH_SPEED
 	 */
 	public static double randomSpeed() {
-		double speed = (Math.random() * 2 - 1) * settings.get("MAX_EFISH_SPEED");
+		double speed = (Math.random() * 2 - 1) * settings.getDouble("MAX_EFISH_SPEED");
 
 		// Check if speed is not too slow
 		if (speed < 0) {

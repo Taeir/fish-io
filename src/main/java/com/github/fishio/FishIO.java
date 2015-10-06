@@ -22,7 +22,7 @@ public class FishIO extends Application {
 	private static FishIO instance;
 	
 	private Log log = Log.getLogger();
-	private Settings settings;
+	private Settings settings = Settings.getInstance();
 	private ConsoleHandler consoleHandler = new ConsoleHandler(new TimeStampFormat());
 	private TxtFileHandler textFileHandler =
 			new TxtFileHandler(new TimeStampFormat(), new File("logs" +  File.separator + "log.txt"));
@@ -31,8 +31,8 @@ public class FishIO extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		instance = this;
 		
-		//Initialize Logger and settings
-		initiateLoggerAndSettings();
+		//Initialize Logger
+		initiateLogger();
 		
 		log.log(LogLevel.INFO, "Starting up Fish.io.");
 		//Preload the screens
@@ -45,8 +45,8 @@ public class FishIO extends Application {
 		this.primaryStage = primaryStage;
 		
 		primaryStage.setTitle("Fish.io");
-		primaryStage.setWidth(settings.get("SCREEN_WIDTH"));
-		primaryStage.setHeight(settings.get("SCREEN_HEIGHT"));
+		primaryStage.setWidth(settings.getDouble("SCREEN_WIDTH"));
+		primaryStage.setHeight(settings.getDouble("SCREEN_HEIGHT"));
 		
 		log.log(LogLevel.DEBUG, "Primary stage set.");
 		//Load and show the splash screen.
@@ -55,9 +55,9 @@ public class FishIO extends Application {
 		
 		//track changes in screen size
 		primaryStage.heightProperty().addListener((o, old, height) -> 
-			settings.set("SCREEN_HEIGHT", height.doubleValue()));
+			settings.setDouble("SCREEN_HEIGHT", height.doubleValue()));
 		primaryStage.widthProperty().addListener((o, old, width) -> 
-		settings.set("SCREEN_WIDTH", width.doubleValue()));
+		settings.setDouble("SCREEN_WIDTH", width.doubleValue()));
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class FishIO extends Application {
 	/**
 	 * Set up new logger.
 	 */
-	protected final void initiateLoggerAndSettings() {
+	protected final void initiateLogger() {
 		//Remove any Handlers if, for GUI tests.
 		log.removeAllHandlers();
 		
@@ -112,10 +112,8 @@ public class FishIO extends Application {
 		log.addHandler(consoleHandler);
 		log.addHandler(textFileHandler);
 		
-		//Set settings
-		settings = Settings.getInstance();
 		//Set Log level
-		log.setLogLevel(LogLevel.fromInt((int) (settings.get("LOG_LEVEL"))));
+		log.setLogLevel(LogLevel.fromInt(settings.getInteger("LOG_LEVEL")));
 		
 		//Log that logger has been setup
 		log.log(LogLevel.INFO, "Logger has initialized. Ready to Start Logging!");

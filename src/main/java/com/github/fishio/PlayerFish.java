@@ -29,11 +29,6 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 	private boolean leftPressed;
 	private boolean rightPressed;
 
-	private static final KeyCode KEY_UP = KeyCode.UP;
-	private static final KeyCode KEY_DOWN = KeyCode.DOWN;
-	private static final KeyCode KEY_LEFT = KeyCode.LEFT;
-	private static final KeyCode KEY_RIGHT = KeyCode.RIGHT;
-
 	private Image sprite;
 
 	private SimpleIntegerProperty score = new SimpleIntegerProperty(0);
@@ -44,10 +39,10 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 	 */
 	
 	
-	private SimpleIntegerProperty lives = new SimpleIntegerProperty((int) settings.get("START_LIVES"));
+	private SimpleIntegerProperty lives = new SimpleIntegerProperty(settings.getInteger("START_LIVES"));
 	
 	private long invincible;
-	private double maxSpeed = settings.get("MAX_PLAYER_SPEED");
+	private double maxSpeed = settings.getDouble("MAX_PLAYER_SPEED");
 	private double acceleration = 0.1;
 
 	/**
@@ -67,26 +62,26 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 
 		stage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
 			KeyCode pressedKey = event.getCode();
-			if (pressedKey == KEY_UP) {
+			if (pressedKey == settings.getKeyCode("SWIM_UP")) {
 				upPressed = true;
-			} else if (pressedKey == KEY_DOWN) {
+			} else if (pressedKey == settings.getKeyCode("SWIM_DOWN")) {
 				downPressed = true;
-			} else if (pressedKey == KEY_LEFT) {
+			} else if (pressedKey == settings.getKeyCode("SWIM_LEFT")) {
 				leftPressed = true;
-			} else if (pressedKey == KEY_RIGHT) {
+			} else if (pressedKey == settings.getKeyCode("SWIM_RIGHT")) {
 				rightPressed = true;
 			}
 		});
 
 		stage.addEventHandler(KeyEvent.KEY_RELEASED, event -> {
 			KeyCode releasedKey = event.getCode();
-			if (releasedKey == KEY_UP) {
+			if (releasedKey == settings.getKeyCode("SWIM_UP")) {
 				upPressed = false;
-			} else if (releasedKey == KEY_DOWN) {
+			} else if (releasedKey == settings.getKeyCode("SWIM_DOWN")) {
 				downPressed = false;
-			} else if (releasedKey == KEY_LEFT) {
+			} else if (releasedKey == settings.getKeyCode("SWIM_LEFT")) {
 				leftPressed = false;
-			} else if (releasedKey == KEY_RIGHT) {
+			} else if (releasedKey == settings.getKeyCode("SWIM_RIGHT")) {
 				rightPressed = false;
 			}
 		});
@@ -268,7 +263,7 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 	 * @return The rate at which the PlayerFish grows.
 	 */
 	public double getGrowthSpeed() {
-		return settings.get("GROWTH_SPEED");
+		return settings.getInteger("GROWTH_SPEED");
 	}
 
 	@Override
@@ -332,7 +327,7 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 			if (eatable.canBeEatenBy(this)) {
 				eatable.eat();
 				this.addPoints((int) (eatable.getSize() / 200));
-				double dSize = settings.get("GROWTH_SPEED") * eatable.getSize() / getSize();
+				double dSize = settings.getInteger("GROWTH_SPEED") * eatable.getSize() / getSize();
 				getBoundingArea().increaseSize(dSize);	
 				State old = getState();
 				notifyObservers(old, getState(), "EnemyKill");
@@ -393,7 +388,7 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 	 * Adds a life.
 	 */
 	public void addLife() {
-		lives.set(Math.min(lives.get() + 1, (int) settings.get("MAX_LIVES")));
+		lives.set(Math.min(lives.get() + 1, (int) settings.getInteger("MAX_LIVES")));
 	}
 	
 	/**
@@ -463,7 +458,7 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 		if (isInvincible()) {
 			return false;
 		}		
-		if (other.getSize() > getSize() * settings.get("FISH_EAT_THRESHOLD")) {
+		if (other.getSize() > getSize() * settings.getDouble("FISH_EAT_THRESHOLD")) {
 			return true;
 		}
 		return false;
