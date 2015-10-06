@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 
+import com.github.fishio.behaviours.IBehaviour;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.gui.Renderer;
 import com.github.fishio.listeners.TickListener;

@@ -1,5 +1,6 @@
 package com.github.fishio;
 
+import com.github.fishio.behaviours.IBehaviour;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 

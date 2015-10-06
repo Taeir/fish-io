@@ -2,6 +2,7 @@ package com.github.fishio;
 
 import com.github.fishio.achievements.State;
 import com.github.fishio.achievements.Subject;
+import com.github.fishio.behaviours.IBehaviour;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.canvas.GraphicsContext;

@@ -4,6 +4,8 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 
+import com.github.fishio.behaviours.IBehaviour;
+
 /**
  * Interface used to represent collision areas of entities.
  */

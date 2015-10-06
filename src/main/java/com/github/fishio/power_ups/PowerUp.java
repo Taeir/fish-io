@@ -7,10 +7,10 @@ import com.github.fishio.Entity;
 import com.github.fishio.ICollidable;
 import com.github.fishio.ICollisionArea;
 import com.github.fishio.IEatable;
-import com.github.fishio.IBehaviour;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
 import com.github.fishio.Vec2d;
+import com.github.fishio.behaviours.IBehaviour;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
