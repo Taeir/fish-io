@@ -37,7 +37,7 @@ public abstract class DurationPowerUp extends PowerUp implements TickListener {
 		this.timeTicks = timeSeconds * pfield.getFPS();
 		this.tickCounter = 0;
 		
-		pfield.registerGameListener(this);
+		pfield.getGameThread().registerListener(this);
 	}
 	
 	@Override
@@ -110,7 +110,7 @@ public abstract class DurationPowerUp extends PowerUp implements TickListener {
 		tickCounter++;
 		
 		if (tickCounter >= timeTicks) {
-			getPField().unregisterGameListener(this);
+			getPField().getGameThread().unregisterListener(this);
 			endEffect();
 			active = false;
 			return;
