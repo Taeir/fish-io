@@ -1,12 +1,11 @@
 package com.github.fishio.behaviours;
 
-import com.github.fishio.IPositional;
 import com.github.fishio.Vec2d;
 
 /**
  * The behaviour of an entity decides how it moves.
  */
-public interface IBehaviour extends IPositional {
+public interface IBehaviour {
 
 	/**
 	 * Gets the speedVector of the object.

@@ -6,6 +6,7 @@ import java.util.List;
 import com.github.fishio.achievements.Observer;
 import com.github.fishio.achievements.State;
 import com.github.fishio.achievements.Subject;
+import com.github.fishio.behaviours.IBehaviour;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
@@ -15,12 +16,14 @@ import javafx.scene.paint.Color;
 /**
  * Represents an entity in the game.
  */
-public abstract class Entity implements ICollidable, IPositional, IDrawable, Subject {
+public abstract class Entity implements ICollidable, IPositional, IBehaviour, IDrawable, Subject {
 	private List<Observer> observers = new ArrayList<Observer>();
 	
 	private boolean dead;
 	private ICollisionArea ba;
 	protected Log logger = Log.getLogger();
+	
+	private IBehaviour behaviour;
 	
 	/**
 	 * This constructor creates an entity in the game.
@@ -60,6 +63,14 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 		
 		//Notify observers that we have died.
 		notifyObservers(oldState, getState(), "dead");
+	}
+	
+	/**
+	 * @return
+	 * 		The behaviour of this entity.
+	 */
+	public IBehaviour getBehaviour() {
+		return this;
 	}
 	
 	@Override

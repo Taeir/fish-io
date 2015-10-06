@@ -29,7 +29,6 @@ public abstract class PlayingField {
 
 	private ConcurrentLinkedDeque<IDrawable> drawables = new ConcurrentLinkedDeque<>();
 	private ConcurrentLinkedDeque<IDrawable> deadDrawables = new ConcurrentLinkedDeque<>();
-	private ConcurrentLinkedQueue<IBehaviour> movables = new ConcurrentLinkedQueue<>();
 	private ConcurrentLinkedQueue<Entity> entities = new ConcurrentLinkedQueue<>();
 	private ConcurrentLinkedQueue<ICollidable> collidables = new ConcurrentLinkedQueue<>();
 	private Log log = Log.getLogger();
@@ -181,17 +180,18 @@ public abstract class PlayingField {
 	 * Moves Movable items.
 	 */
 	public void moveMovables() {
-		for (IBehaviour m : movables) {
-			m.preMove();
+		for (Entity e : entities) {
+			IBehaviour b = e.getBehaviour();
+			b.preMove();
 			
-			ICollisionArea box = m.getBoundingArea();
-			if (hitsWall(m, box)) {
-				m.hitWall();
+			ICollisionArea box = e.getBoundingArea();
+			if (hitsWall(e, box)) {
+				b.hitWall();
 			}
 
-			box.move(m.getSpeedVector());
+			box.move(b.getSpeedVector());
 
-			if (!m.canMoveThroughWall()) {
+			if (!b.canMoveThroughWall()) {
 				moveWithinScreen(box);
 			}
 		}
@@ -208,9 +208,9 @@ public abstract class PlayingField {
 	 * @return
 	 * 		true if the given Movable with the given box hits a wall.
 	 */
-	private boolean hitsWall(IBehaviour m, ICollisionArea box) {
+	private boolean hitsWall(Entity e, ICollisionArea box) {
 		// prevent playerfish from leaving the screen
-		if (m instanceof PlayerFish) {	
+		if (e instanceof PlayerFish) {	
 			if (box.getMaxX() >= WINDOW_X
 					|| box.getMinX() <= 0
 					|| box.getMaxY() >= WINDOW_Y
@@ -405,10 +405,6 @@ public abstract class PlayingField {
 			drawables.addFirst((IDrawable) o);
 		}
 
-		if (o instanceof IBehaviour) {
-			movables.add((IBehaviour) o);
-		}
-
 		if (o instanceof Entity) {
 			entities.add((Entity) o);
 		}
@@ -427,10 +423,6 @@ public abstract class PlayingField {
 	public void remove(Object o) {
 		if (o instanceof IDrawable) {
 			drawables.remove(o);
-		}
-
-		if (o instanceof IBehaviour) {
-			movables.remove(o);
 		}
 
 		if (o instanceof Entity) {
@@ -457,7 +449,6 @@ public abstract class PlayingField {
 
 		entities.clear();
 		drawables.clear();
-		movables.clear();
 		collidables.clear();
 		
 		enemyCount = 0;
@@ -485,7 +476,6 @@ public abstract class PlayingField {
 		
 		entities.clear();
 		drawables.clear();
-		movables.clear();
 		collidables.clear();
 		
 		enemyCount = 0;
