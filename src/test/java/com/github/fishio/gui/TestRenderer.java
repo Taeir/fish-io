@@ -28,8 +28,8 @@ import com.github.fishio.SinglePlayerPlayingField;
  */
 public class TestRenderer {
 
-	private static SinglePlayerPlayingField sppf;
-	private static Canvas canvas;
+	private SinglePlayerPlayingField sppf;
+	private Canvas canvas;
 	private Renderer renderer;
 	
 	/**
