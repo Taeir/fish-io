@@ -129,12 +129,12 @@ public class TestRenderer {
 	 */
 	@Test
 	public void testSetBackground() {
-		Image image = new Image("AlphaDataTest.png");
+		Image image = Mockito.mock(Image.class);
 		renderer.setBackground(image);
 		
 		assertSame(image, renderer.getBackground());
 	}
-
+	
 	/**
 	 * Test for {@link Renderer#startRendering()}.
 	 * When startRendering is called, rendering should start within 5
