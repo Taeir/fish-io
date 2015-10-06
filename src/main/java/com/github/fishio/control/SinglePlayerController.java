@@ -8,6 +8,8 @@ import com.github.fishio.Preloader;
 import com.github.fishio.SinglePlayerPlayingField;
 import com.github.fishio.Util;
 import com.github.fishio.Vec2d;
+import com.github.fishio.achievements.EnemyKillObserver;
+import com.github.fishio.achievements.PlayerDeathObserver;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
@@ -101,6 +103,8 @@ public class SinglePlayerController implements ScreenController {
 		//The change listener has to be force called once. The player has already been created,
 		//but we still want to add the listeners.
 		playerChangeListener.changed(pf.playerProperty(), pf.getPlayer(), pf.getPlayer());
+		new PlayerDeathObserver(pf);
+		new EnemyKillObserver(pf);
 	}
 	
 	@Override

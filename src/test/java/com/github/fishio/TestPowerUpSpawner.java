@@ -15,6 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.github.fishio.gui.GuiTest;
 import com.github.fishio.power_ups.PowerUp;
 import com.github.fishio.power_ups.PuExtraLife;
 import com.github.fishio.power_ups.PuFreeze;
@@ -23,7 +24,7 @@ import com.github.fishio.power_ups.PuSuperSpeed;
 /**
  * Tests the PowerUpSpawer class.
  */
-public class TestPowerUpSpawner {
+public class TestPowerUpSpawner extends GuiTest {
 
 	private PowerUpSpawner pus;
 	
@@ -87,19 +88,6 @@ public class TestPowerUpSpawner {
 		
 		PowerUp pu = pus.getRandomPowerUp();
 		assertTrue(pu instanceof PuExtraLife);
-	}
-	
-	/**
-	 * Tests the default case in the switch statement of the
-	 * getRandomPowerUp method.
-	 */
-	@Test
-	public void testGetRandomPowerUpDefault() {
-		int defaultIndex = pus.getPowerUpCount();
-		when(rand.nextInt(pus.getPowerUpCount())).thenReturn(defaultIndex);
-		
-		PowerUp pu = pus.getRandomPowerUp();
-		assertNull(pu);
 	}
 	
 	/**
