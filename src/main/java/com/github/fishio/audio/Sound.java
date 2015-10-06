@@ -97,8 +97,7 @@ public class Sound {
 	 * @throws UnsupportedAudioFileException
 	 * 		If the audio format is unsupported.
 	 */
-	protected void readMp3Stream(InputStream inputStream)
-			throws IOException, UnsupportedAudioFileException {
+	protected void readMp3Stream(InputStream inputStream) throws IOException, UnsupportedAudioFileException {
 		try (AudioInputStream ais = AudioSystem.getAudioInputStream(inputStream)) {
 			//We want the file in the following format, so we can play it.
 			this.format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 
