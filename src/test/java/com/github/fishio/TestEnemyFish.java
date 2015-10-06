@@ -177,6 +177,7 @@ public class TestEnemyFish extends TestIEatable {
 	 * Tests {@link EnemyFish#eat()}.
 	 */
 	@Test
+	@Override
 	public void testEat() {
 		enemy1.eat();
 		assertTrue(enemy1.isDead());
