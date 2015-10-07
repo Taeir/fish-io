@@ -3,7 +3,6 @@ package com.github.fishio;
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.doReturn;
@@ -15,6 +14,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.github.fishio.game.GameThread;
+import com.github.fishio.gui.GuiTest;
 import com.github.fishio.power_ups.PowerUp;
 import com.github.fishio.power_ups.PuExtraLife;
 import com.github.fishio.power_ups.PuFreeze;
@@ -23,7 +24,7 @@ import com.github.fishio.power_ups.PuSuperSpeed;
 /**
  * Tests the PowerUpSpawer class.
  */
-public class TestPowerUpSpawner {
+public class TestPowerUpSpawner extends GuiTest {
 
 	private PowerUpSpawner pus;
 	
@@ -37,7 +38,10 @@ public class TestPowerUpSpawner {
 	 */
 	@Before
 	public void setUp() {
-		this.pf = Mockito.mock(PlayingField.class);
+		this.pf = Mockito.mock(SinglePlayerPlayingField.class);
+		
+		GameThread gt = Mockito.spy(new GameThread(pf));
+		when(pf.getGameThread()).thenReturn(gt); //Preventing nullPointerExceptions from the gameThread
 		when(pf.getFPS()).thenReturn(60); //Making sure our PowerUpSpawner doesn't think the FPS is 0.
 		when(pf.getWidth()).thenReturn(100); //Same as above
 		
@@ -87,19 +91,6 @@ public class TestPowerUpSpawner {
 		
 		PowerUp pu = pus.getRandomPowerUp();
 		assertTrue(pu instanceof PuExtraLife);
-	}
-	
-	/**
-	 * Tests the default case in the switch statement of the
-	 * getRandomPowerUp method.
-	 */
-	@Test
-	public void testGetRandomPowerUpDefault() {
-		int defaultIndex = pus.getPowerUpCount();
-		when(rand.nextInt(pus.getPowerUpCount())).thenReturn(defaultIndex);
-		
-		PowerUp pu = pus.getRandomPowerUp();
-		assertNull(pu);
 	}
 	
 	/**

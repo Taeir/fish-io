@@ -2,6 +2,8 @@ package com.github.fishio;
 
 import java.util.Random;
 
+import javafx.scene.image.Image;
+
 import com.github.fishio.listeners.TickListener;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
@@ -62,7 +64,7 @@ public class PowerUpSpawner implements TickListener {
 		
 		this.log = Log.getLogger();
 		
-		pf.registerGameListener(this);
+		pf.getGameThread().registerListener(this);
 	}
 
 	@Override
@@ -74,7 +76,7 @@ public class PowerUpSpawner implements TickListener {
 		
 		if (tickCounter % intervalTicks == 0) {
 			PowerUp pu = getRandomPowerUp();
-			pf.add(getRandomPowerUp());
+			pf.add(pu);
 			log.log(LogLevel.DEBUG, "Added a PowerUp of type \"" + pu.getName() + "\"");
 		}
 	}
@@ -89,16 +91,24 @@ public class PowerUpSpawner implements TickListener {
 		//top of the screen and with a random x location.
 		int x = rand.nextInt(maxX - minX + 1) + minX;
 		int y = -HEIGHT; //(top of the screen: y=0, to spawn outside it, we need Ytop - height)
-		BoundingBox bb = new BoundingBox(new Vec2d(x, y), WIDTH, HEIGHT);
+		
+		int powerUpNumber = rand.nextInt(POWERUP_COUNT);
+		
+		String spritePath = "sprites/powerup/pu" + powerUpNumber + ".png";
+		Image sprite = Preloader.getImageOrLoad(spritePath);
+		
+		CollisionMask cm = new CollisionMask(new Vec2d(x, y), WIDTH, HEIGHT, 
+				Preloader.getAlphaDataOrLoad(spritePath),
+				Preloader.getSpriteAlphaRatioOrLoad(spritePath));
 		
 		//Choosing a random PowerUp.
-		switch (rand.nextInt(POWERUP_COUNT)) {
+		switch (powerUpNumber) {
 		case 0:
-			return new PuFreeze(bb, pf);
+			return new PuFreeze(cm, pf, sprite);
 		case 1:
-			return new PuSuperSpeed(bb, pf);
+			return new PuSuperSpeed(cm, pf, sprite);
 		case 2:
-			return new PuExtraLife(bb, pf);
+			return new PuExtraLife(cm, pf, sprite);
 		default:
 			return null;
 		}

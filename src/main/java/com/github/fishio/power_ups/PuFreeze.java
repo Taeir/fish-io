@@ -1,5 +1,7 @@
 package com.github.fishio.power_ups;
 
+import javafx.scene.image.Image;
+
 import com.github.fishio.EnemyFish;
 import com.github.fishio.Entity;
 import com.github.fishio.ICollisionArea;
@@ -25,9 +27,11 @@ public class PuFreeze extends DurationPowerUp {
 	 * 		The CollisonArea of the PowerUp.
 	 * @param pfield
 	 * 		The PlayingField in which this PowerUp is located.
+	 * @param sprite
+	 * 		The sprite of this PowerUp
 	 */
-	public PuFreeze(ICollisionArea ba, PlayingField pfield) {
-		super(ba, pfield);
+	public PuFreeze(ICollisionArea ba, PlayingField pfield, Image sprite) {
+		super(ba, pfield, sprite);
 	}
 
 	@Override

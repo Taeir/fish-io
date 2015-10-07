@@ -9,16 +9,6 @@ public interface TickListener {
 	 */
 	void preTick();
 	
-//	/**
-//	 * Called after rendering, but before collisions checking and cleanup.
-//	 */
-//	void preCollisions();
-//	
-//	/**
-//	 * Called after rendering and collisions checking, but before cleaning up dead entities.
-//	 */
-//	void preCleanup();
-	
 	/**
 	 * Called at the end of a tick, after rendering, collisions checking, and cleaning up dead entities.
 	 */

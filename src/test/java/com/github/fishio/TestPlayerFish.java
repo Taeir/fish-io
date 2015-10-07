@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 /**
  * Tests the PlayerFish class.
  */
-public class TestPlayerFish implements TestIEatable {
+public class TestPlayerFish extends TestIEatable {
 	//TODO Change some of the Mockito mocks and testing calls with verify(never), to simple getters.
 	//TODO - Comment made by Taeir - 2015/09/18
 	private PlayerFish pf;
@@ -34,6 +34,7 @@ public class TestPlayerFish implements TestIEatable {
 	 * Tests {@link PlayerFish#getSize()}.
 	 */
 	@Test
+	@Override
 	public void testGetSize() {
 		assertEquals(5.0, pf.getSize(), 1E-8);
 	}
@@ -42,6 +43,7 @@ public class TestPlayerFish implements TestIEatable {
 	 * Tests {@link PlayerFish#eat()}.
 	 */
 	@Test
+	@Override
 	public void testEat() {
 		pf.eat();
 		Mockito.verify(pf).kill();

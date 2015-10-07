@@ -1,5 +1,8 @@
 package com.github.fishio.power_ups;
 
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+
 import com.github.fishio.Entity;
 import com.github.fishio.ICollidable;
 import com.github.fishio.ICollisionArea;
@@ -26,6 +29,8 @@ public abstract class PowerUp extends Entity implements IMovable, IEatable {
 	
 	private final Log log = Log.getLogger();
 	
+	private Image sprite;
+	
 	/**
 	 * Creates a new PowerUp.
 	 * 
@@ -33,11 +38,14 @@ public abstract class PowerUp extends Entity implements IMovable, IEatable {
 	 * 		The CollisionArea of the Power-Up
 	 * @param pfield
 	 * 		The PlayingField this PowerUp is located in
+	 * @param image
+	 * 		The sprite of this PowerUp
 	 */
-	public PowerUp(ICollisionArea ba, PlayingField pfield) {
+	public PowerUp(ICollisionArea ba, PlayingField pfield, Image image) {
 		super(ba);
 		
 		this.pfield = pfield;
+		this.sprite = image;
 		
 		this.speedVector = new Vec2d(DEFAULT_VX, DEFAULT_VY);
 	}
@@ -111,6 +119,11 @@ public abstract class PowerUp extends Entity implements IMovable, IEatable {
 	@Override
 	public double getSize() {
 		return 0; // A PowerUp shouldn't have a "size"
+	}
+	
+	@Override
+	public void render(GraphicsContext gc) {
+		drawRotatedImage(gc, sprite, getBoundingArea(), false);
 	}
 	
 }

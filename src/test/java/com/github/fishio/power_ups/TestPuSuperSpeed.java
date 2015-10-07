@@ -1,12 +1,17 @@
 package com.github.fishio.power_ups;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+
+import javafx.scene.image.Image;
 
 import org.junit.Before;
 import org.mockito.Mockito;
 
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
+import com.github.fishio.SinglePlayerPlayingField;
+import com.github.fishio.game.GameThread;
 
 /**
  * Tests the PuSuperSpeed class.
@@ -24,8 +29,10 @@ public class TestPuSuperSpeed extends TestDurationPowerUp {
 	 */
 	@Before
 	public void setUp() {
-		this.pf = Mockito.mock(PlayingField.class);
-		this.pu = Mockito.spy(new PuSuperSpeed(null, pf));
+		this.pf = Mockito.mock(SinglePlayerPlayingField.class);
+		GameThread gt = Mockito.spy(new GameThread(pf));
+		when(pf.getGameThread()).thenReturn(gt);
+		this.pu = Mockito.spy(new PuSuperSpeed(null, pf, Mockito.mock(Image.class)));
 		
 		//To prevent NullPointerExceptions, mocking the target of the PowerUp.
 		this.pu.setTarget(Mockito.mock(PlayerFish.class));

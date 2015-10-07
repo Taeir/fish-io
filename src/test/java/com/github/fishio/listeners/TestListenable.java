@@ -2,13 +2,14 @@ package com.github.fishio.listeners;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import com.github.fishio.FakeException;
 
 /**
  * Interface test for the {@link Listenable} interface.<br>
@@ -102,7 +103,8 @@ public abstract class TestListenable {
 		
 		//Create a TickListener that throws an exception when preTick is called.
 		TickListener tl = mock(TickListener.class);
-		Mockito.doThrow(new RuntimeException("Ignore this error")).when(tl).preTick();
+		Mockito.doThrow(new FakeException("Ignore this error")).when(tl).preTick();
+		
 		l.registerListener(tl);
 		
 		//Call pretick, no exception should occur.
@@ -146,7 +148,7 @@ public abstract class TestListenable {
 		
 		//Create a TickListener that throws an exception when postTick is called.
 		TickListener tl = mock(TickListener.class);
-		Mockito.doThrow(new RuntimeException("Ignore this error")).when(tl).postTick();
+		Mockito.doThrow(new FakeException("Ignore this error")).when(tl).postTick();
 		l.registerListener(tl);
 		
 		//Call postTick
