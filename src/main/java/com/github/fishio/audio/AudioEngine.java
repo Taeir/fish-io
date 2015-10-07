@@ -1,9 +1,6 @@
 package com.github.fishio.audio;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -13,9 +10,9 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
@@ -25,19 +22,14 @@ import com.github.fishio.logging.LogLevel;
  */
 public final class AudioEngine {
 	/**
-	 * The path to the directory that contains the music.
-	 */
-	private static final String DIR_MUSIC = "/sound/music/steel_drum_island/";
-	
-	/**
 	 * The maximum amount of threads that can play sounds concurrently.
 	 */
 	private static final int MAX_THREAD_COUNT = 11;
 
 	private static AudioEngine instance = new AudioEngine();
 	
-	private ConcurrentHashMap<String, Sound> effects = new ConcurrentHashMap<>();
-	private ArrayList<Sound> music = new ArrayList<>();
+	private ConcurrentHashMap<String, Sound> effects;
+	private List<Sound> music;
 	
 	private ExecutorService executor = Executors.newFixedThreadPool(MAX_THREAD_COUNT);
 	
@@ -53,8 +45,8 @@ public final class AudioEngine {
 	private SimpleDoubleProperty effectsVolumeProperty = new SimpleDoubleProperty(1.0);
 	
 	private AudioEngine() {
-		loadEffects();
-		loadMusic();
+		music = AudioLoader.loadMusicAsynchronous();
+		effects = AudioLoader.loadSoundEffectsAsynchronous();
 	}
 	
 	/**
@@ -63,81 +55,6 @@ public final class AudioEngine {
 	 */
 	public static AudioEngine getInstance() {
 		return instance;
-	}
-	
-	/**
-	 * Load all the sound effects.
-	 */
-	private void loadEffects() {
-		//TODO load effects
-	}
-	
-	/**
-	 * Start loading (caching) all the (background) music.<br>
-	 * <br>
-	 * This is done on a separate thread.
-	 */
-	private void loadMusic() {
-		new Thread(() -> {
-			int i = 0;
-			while (true) {
-				//00.mp3, 01.mp3, and so on.
-				String path = DIR_MUSIC + String.format("%02d", i) + ".mp3";
-				
-				//If there is no song with this number, stop the loop.
-				if (AudioEngine.class.getResource(path) == null) {
-					break;
-				}
-				
-				Sound sound = loadSound(path, false);
-				
-				if (sound != null) {
-					Log.getLogger().log(LogLevel.DEBUG, "[Audio Engine] Loaded music " + path);
-					music.add(sound);
-					loadedMusicProperty.set(loadedMusicProperty.get() + 1);
-				} else {
-					Log.getLogger().log(LogLevel.DEBUG, "[Audio Engine] Unable to load music " + path);
-					music.add(null);
-				}
-				
-				i++;
-			}
-			
-			Log.getLogger().log(LogLevel.INFO, "[Audio Engine] Loaded " + i + " music files");
-		}).start();
-	}
-	
-	/**
-	 * Loads a sound from a file.
-	 * 
-	 * @param path
-	 * 		the internal path of the sound to load.
-	 * @param effect
-	 * 		true for sound effects, false for (background) music.
-	 * 
-	 * @return
-	 * 		a new FishSound representing the sound for the given path
-	 * 		(base + name), or <code>null</code> if an exception occurred
-	 * 		while trying to load the sound.
-	 */
-	public static Sound loadSound(String path, boolean effect) {
-		try (InputStream is = AudioEngine.class.getResourceAsStream(path)) {
-			//Use a buffered input stream if mark is not supported.
-			if (!is.markSupported()) {
-				return new Sound(new BufferedInputStream(is), path.endsWith(".mp3"), effect);
-			} else {
-				return new Sound(is, path.endsWith(".mp3"), effect);
-			}
-		} catch (IOException ex) {
-			Log.getLogger().log(LogLevel.ERROR, "[Audio Engine] Unable to load music file " + path + "!");
-			ex.printStackTrace();
-		} catch (UnsupportedAudioFileException ex) {
-			Log.getLogger().log(LogLevel.ERROR,
-					"[Audio Engine] Unable to load music file " + path + ": audio format not supported!");
-			ex.printStackTrace();
-		}
-		
-		return null;
 	}
 	
 	/**
@@ -233,6 +150,29 @@ public final class AudioEngine {
 			musicVolumeProperty.removeListener(cl);
 			masterVolumeProperty.removeListener(cl);
 		}
+	}
+	
+	/**
+	 * Start the background music as soon as a music track is loaded.
+	 */
+	public void startBackgroundMusicWhenLoaded() {
+		ChangeListener<Number> cl = new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> o, Number oVal, Number nVal) {
+				//We are only interested in the very first song loaded.
+				if (oVal.intValue() != 0) {
+					return;
+				}
+				
+				//Remove this listener, we are no longer needed
+				o.removeListener(this);
+				
+				//Start playing background music
+				startBackgroundMusic();
+			}
+		};
+		
+		getLoadedMusicProperty().addListener(cl);
 	}
 	
 	/**
