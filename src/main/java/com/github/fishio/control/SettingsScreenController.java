@@ -91,18 +91,18 @@ public class SettingsScreenController implements ScreenController {
 			label.setTooltip(new Tooltip(settings.getDescription(key)));
 			Button button = new Button();
 			if (settings.getBoolean(key)) {
-				button.setText("disable");				
+				button.setText("Disable");				
 			} else {
-				button.setText("enable");
+				button.setText("Enable");
 			}
 			button.setOnAction(e -> {
 				e.consume();
 				if (settings.getBoolean(key)) {
 					settings.setBoolean(key, false);
-					button.setText("enable");				
+					button.setText("Enable");				
 				} else {
 					settings.setBoolean(key, true);
-					button.setText("disable");
+					button.setText("Disable");
 				}
 			});
 			gridPane.add(label, 0, row);
