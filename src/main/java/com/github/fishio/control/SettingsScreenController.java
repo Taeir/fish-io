@@ -125,6 +125,7 @@ public class SettingsScreenController implements ScreenController {
 			label.setTooltip(new Tooltip(settings.getDescription(key)));
 			TextField textField = new TextField();
 			textField.setText(String.valueOf(settings.getInteger(key)));
+			textField.setMaxWidth(200);
 			textField.setOnAction(e -> {
 				e.consume();
 				double value = Double.valueOf(textField.getText());
@@ -150,6 +151,7 @@ public class SettingsScreenController implements ScreenController {
 			label.setTooltip(new Tooltip(settings.getDescription(key)));
 			TextField textField = new TextField();
 			textField.setText(String.valueOf(settings.getDouble(key)));
+			textField.setMaxWidth(200);
 			textField.setOnAction(e -> {
 				e.consume();
 				double value = Double.valueOf(textField.getText());

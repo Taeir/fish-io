@@ -75,6 +75,7 @@ public class HelpScreenController implements ScreenController {
 	@Override
 	public void onSwitchTo() {
 		GraphicsContext gc = keyboard.getGraphicsContext2D();
+		gc.clearRect(0, 0, 1000, 500);
 		ColorAdjust ca = new ColorAdjust();
 		ca.setBrightness(0.5);
 		gc.save();
