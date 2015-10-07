@@ -1,6 +1,5 @@
 package com.github.fishio.audio;
 
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -8,9 +7,9 @@ import java.util.concurrent.TimeUnit;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 
 import javax.sound.sampled.LineUnavailableException;
 
@@ -29,7 +28,7 @@ public final class AudioEngine {
 	private static AudioEngine instance = new AudioEngine();
 	
 	private ConcurrentHashMap<String, Sound> effects;
-	private List<Sound> music;
+	private ObservableList<Sound> music;
 	
 	private ExecutorService executor = Executors.newFixedThreadPool(MAX_THREAD_COUNT);
 	
@@ -37,7 +36,6 @@ public final class AudioEngine {
 	
 	private ClipRunnable background;
 	private int backgroundNr = -1;
-	private SimpleIntegerProperty loadedMusicProperty = new SimpleIntegerProperty();
 	private SimpleBooleanProperty musicRunningProperty = new SimpleBooleanProperty();
 	
 	private SimpleDoubleProperty masterVolumeProperty = new SimpleDoubleProperty(1.0);
@@ -79,16 +77,6 @@ public final class AudioEngine {
 	 */
 	public double getEffectsVolume() {
 		return getMasterVolume() * effectsVolumeProperty.doubleValue();
-	}
-	
-	/**
-	 * @return
-	 * 		the property holding the amount of loaded music.<br>
-	 * 		Attach a listener to this property to get notified when music
-	 * 		is loaded/unloaded.
-	 */
-	public SimpleIntegerProperty getLoadedMusicProperty() {
-		return loadedMusicProperty;
 	}
 	
 	/**
@@ -153,26 +141,38 @@ public final class AudioEngine {
 	}
 	
 	/**
+	 * @return
+	 * 		the observable list containing all the music sounds that have
+	 * 		been cached.<br>
+	 * 		Attach a changelistener to this list to get notified when
+	 * 		music is loaded/unloaded.
+	 */
+	public ObservableList<Sound> getMusic() {
+		return music;
+	}
+	
+	/**
 	 * Start the background music as soon as a music track is loaded.
 	 */
 	public void startBackgroundMusicWhenLoaded() {
-		ChangeListener<Number> cl = new ChangeListener<Number>() {
+		ListChangeListener<Sound> cl = new ListChangeListener<Sound>() {
 			@Override
-			public void changed(ObservableValue<? extends Number> o, Number oVal, Number nVal) {
-				//We are only interested in the very first song loaded.
-				if (oVal.intValue() != 0) {
-					return;
+			public void onChanged(Change<? extends Sound> c) {
+				while (c.next()) {
+					if (!c.wasAdded()) {
+						continue;
+					}
+					
+					//Remove this listener, we are no longer needed
+					c.getList().removeListener(this);
+					
+					//Start playing background music
+					startBackgroundMusic();
 				}
-				
-				//Remove this listener, we are no longer needed
-				o.removeListener(this);
-				
-				//Start playing background music
-				startBackgroundMusic();
 			}
 		};
 		
-		getLoadedMusicProperty().addListener(cl);
+		getMusic().addListener(cl);
 	}
 	
 	/**

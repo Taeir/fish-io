@@ -31,11 +31,6 @@ import com.github.fishio.logging.LogLevel;
  * Class to load audio files (asynchronously).
  */
 public final class AudioLoader {
-	/**
-	 * The path to the directory that contains the music.
-	 */
-	public static final String DIR_MUSIC = "/sound/music/steel_drum_island/";
-	
 	private AudioLoader() { }
 	
 	/**
@@ -51,37 +46,23 @@ public final class AudioLoader {
 		ObservableList<Sound> tbr = FXCollections.<Sound>observableArrayList();
 		
 		new Thread(() -> {
-			AudioEngine ae = AudioEngine.getInstance();
-			
 			int i = 0;
-			int j = 0;
-			while (true) {
-				//00.mp3, 01.mp3, and so on.
-				String path = DIR_MUSIC + String.format("%02d", i) + ".mp3";
-				
-				//If there is no song with this number, stop the loop.
-				if (AudioEngine.class.getResource(path) == null) {
-					break;
-				}
-				
+			
+			List<Path> paths = getAudioFiles(false);
+			for (Path path : paths) {
 				Sound sound = loadSound(path, false);
 				
 				if (sound != null) {
 					Log.getLogger().log(LogLevel.DEBUG, "[Audio Loader] Loaded music " + path);
 					tbr.add(sound);
 					
-					ae.getLoadedMusicProperty().set(ae.getLoadedMusicProperty().get() + 1);
-					
-					j++;
+					i++;
 				} else {
 					Log.getLogger().log(LogLevel.DEBUG, "[Audio Loader] Unable to load music " + path);
-					tbr.add(null);
 				}
-				
-				i++;
 			}
 			
-			Log.getLogger().log(LogLevel.INFO, "[Audio Loader] Loaded " + j + " music files");
+			Log.getLogger().log(LogLevel.INFO, "[Audio Loader] Loaded " + i + " music files");
 		}).start();
 		
 		return tbr;
