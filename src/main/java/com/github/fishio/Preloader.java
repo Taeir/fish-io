@@ -49,6 +49,10 @@ public final class Preloader {
 	 */
 	private static final Scene EMPTY_SCENE = new Scene(new HBox());
 	
+
+	private static final String INTERRUPTED_MESSAGE 
+		= "Interrupted while waiting for screen to get loaded!";
+	
 	/**
 	 * Preload all the screens.
 	 */
@@ -267,6 +271,7 @@ public final class Preloader {
 	 * 		the scene that has been loaded.
 	 */
 	public static Scene loadScreen(String filename) {
+		
 		Scene oldScene;
 		
 		sync:
@@ -297,8 +302,8 @@ public final class Preloader {
 						oldScene = SCREENS.get(filename);
 					}
 				} catch (InterruptedException ex) {
-					log.log(LogLevel.ERROR, "Interrupted while waiting for screen to get loaded!");
-					throw new LoaderException("Interrupted while waiting for screen to get loaded!", ex);
+					log.log(LogLevel.ERROR, INTERRUPTED_MESSAGE);
+					throw new LoaderException(INTERRUPTED_MESSAGE, ex);
 				}
 			} while (oldScene == EMPTY_SCENE);
 			
@@ -377,8 +382,8 @@ public final class Preloader {
 						scene = SCREENS.get(filename);
 					}
 				} catch (InterruptedException ex) {
-					log.log(LogLevel.ERROR, "Interrupted while waiting for screen to get loaded!");
-					throw new LoaderException("Interrupted while waiting for screen to get loaded!", ex);
+					log.log(LogLevel.ERROR, INTERRUPTED_MESSAGE);
+					throw new LoaderException(INTERRUPTED_MESSAGE, ex);
 				}
 			}
 		}

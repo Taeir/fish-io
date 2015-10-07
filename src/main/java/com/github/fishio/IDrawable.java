@@ -65,9 +65,9 @@ public interface IDrawable {
 		// debug rendering
 		if (Settings.getInstance().getBoolean("DEBUG_DRAW")) {
 			gc.setFill(Color.RED);			
-			gc.fillText("angle: " + String.valueOf(angle),			//angle display 
+			gc.fillText("angle: " + angle,			//angle display 
 					cx, cy - (0.5 * ca.getHeight() + 10));
-			gc.fillText("size: " + String.valueOf(ca.getSize()),	//size display
+			gc.fillText("size: " + ca.getSize(),	//size display
 					cx, cy - (0.5 * ca.getHeight() + 25));
 
 			if (ca instanceof CollisionMask) {

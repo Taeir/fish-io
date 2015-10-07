@@ -60,7 +60,7 @@ public class PowerUpSpawner implements TickListener {
 		
 		this.log = Log.getLogger();
 		
-		pf.registerGameListener(this);
+		pf.getGameThread().registerListener(this);
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class PowerUpSpawner implements TickListener {
 		
 		if (tickCounter % intervalTicks == 0) {
 			PowerUp pu = getRandomPowerUp();
-			pf.add(getRandomPowerUp());
+			pf.add(pu);
 			log.log(LogLevel.DEBUG, "Added a PowerUp of type \"" + pu.getName() + "\"");
 		}
 	}

@@ -3,7 +3,6 @@ package com.github.fishio;
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.doReturn;
@@ -15,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.github.fishio.game.GameThread;
 import com.github.fishio.gui.GuiTest;
 import com.github.fishio.power_ups.PowerUp;
 import com.github.fishio.power_ups.PuExtraLife;
@@ -38,7 +38,10 @@ public class TestPowerUpSpawner extends GuiTest {
 	 */
 	@Before
 	public void setUp() {
-		this.pf = Mockito.mock(PlayingField.class);
+		this.pf = Mockito.mock(SinglePlayerPlayingField.class);
+		
+		GameThread gt = Mockito.spy(new GameThread(pf));
+		when(pf.getGameThread()).thenReturn(gt); //Preventing nullPointerExceptions from the gameThread
 		when(pf.getFPS()).thenReturn(60); //Making sure our PowerUpSpawner doesn't think the FPS is 0.
 		when(pf.getWidth()).thenReturn(100); //Same as above
 		

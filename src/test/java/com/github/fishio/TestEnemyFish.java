@@ -14,7 +14,7 @@ import com.github.fishio.settings.Settings;
 /**
  * This class tests the EnemyFish class.
  */
-public class TestEnemyFish implements TestIEatable {
+public class TestEnemyFish extends TestIEatable {
 	
 	private Settings settings = Settings.getInstance();
 	private BoundingBox bb1;
@@ -180,6 +180,7 @@ public class TestEnemyFish implements TestIEatable {
 	 * Tests {@link EnemyFish#eat()}.
 	 */
 	@Test
+	@Override
 	public void testEat() {
 		enemy1.eat();
 		assertTrue(enemy1.isDead());
