@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.fishio.control.AchievementScreenController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.fishio.control.AchievementScreenController2">
   <children>
       <GridPane prefHeight="564.0" prefWidth="971.0">
          <columnConstraints>
@@ -58,14 +58,18 @@
                                 <items>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="77.0" prefWidth="210.0">
                                        <children>
-                                          <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="10.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../../../Sprites/chieveLarge/Achieve1.png" />
-                                             </image>
-                                             <viewport>
-                                                <Rectangle2D minX="50.0" />
-                                             </viewport>
-                                          </ImageView>
+                                          <Label fx:id="bigachieve1" layoutX="10.0">
+                                             <graphic>
+                                                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../../../Sprites/chieveLarge/Achieve1.png" />
+                                                   </image>
+                                                   <viewport>
+                                                      <Rectangle2D minX="50.0" />
+                                                   </viewport>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
                                        </children>
                                        <padding>
                                           <Insets left="50.0" />
@@ -89,7 +93,7 @@
                                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                         </rowConstraints>
                                                          <children>
-                                                            <Label>
+                                                            <Label fx:id="smallachieve11">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -107,7 +111,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="1">
+                                                            <Label fx:id="smallachieve12" GridPane.columnIndex="1">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -119,7 +123,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label>
+                                                            <Label fx:id="icon11">
                                                                <opaqueInsets>
                                                                   <Insets left="50.0" />
                                                                </opaqueInsets>
@@ -134,7 +138,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="1">
+                                                            <Label fx:id="icon12" GridPane.columnIndex="1">
                                                                <graphic>
                                                                   <ImageView fitHeight="120.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -146,7 +150,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="2">
+                                                            <Label fx:id="smallachieve13" GridPane.columnIndex="2">
                                                                <GridPane.margin>
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
@@ -164,7 +168,7 @@
                                                                   </ImageView>
                                                                </graphic>
                                                             </Label>
-                                                            <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="90.0" GridPane.columnIndex="2">
+                                                            <Label fx:id="icon13" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="90.0" GridPane.columnIndex="2">
                                                                <graphic>
                                                                   <ImageView fitHeight="119.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -182,7 +186,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="3">
+                                                            <Label fx:id="smallachieve14" GridPane.columnIndex="3">
                                                                <GridPane.margin>
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
@@ -194,7 +198,7 @@
                                                                   </ImageView>
                                                                </graphic>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="3">
+                                                            <Label fx:id="icon14" GridPane.columnIndex="3">
                                                                <GridPane.margin>
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
@@ -206,7 +210,7 @@
                                                                   </ImageView>
                                                                </graphic>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="4">
+                                                            <Label fx:id="smallachieve15" GridPane.columnIndex="4">
                                                                <GridPane.margin>
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
@@ -218,7 +222,7 @@
                                                                   </ImageView>
                                                                </graphic>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="4">
+                                                            <Label fx:id="icon15" GridPane.columnIndex="4">
                                                                <GridPane.margin>
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
@@ -247,14 +251,18 @@
                                  <items>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="77.0" prefWidth="210.0">
                                        <children>
-                                          <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="10.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../../../Sprites/chieveLarge/Achieve2.png" />
-                                             </image>
-                                             <viewport>
-                                                <Rectangle2D minX="50.0" />
-                                             </viewport>
-                                          </ImageView>
+                                          <Label fx:id="bigachieve2" layoutX="10.0">
+                                             <graphic>
+                                                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../../../Sprites/chieveLarge/Achieve2.png" />
+                                                   </image>
+                                                   <viewport>
+                                                      <Rectangle2D minX="50.0" />
+                                                   </viewport>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
                                        </children>
                                        <padding>
                                           <Insets left="50.0" />
@@ -268,7 +276,7 @@
                                                    <children>
                                                       <GridPane layoutX="11.0" layoutY="15.0" prefHeight="113.0" prefWidth="1020.0">
                                                          <children>
-                                                            <Label>
+                                                            <Label fx:id="smallachieve21">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <cursor>
@@ -286,7 +294,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="1">
+                                                            <Label fx:id="smallachieve22" GridPane.columnIndex="1">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -298,7 +306,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label>
+                                                            <Label fx:id="icon21">
                                                                <graphic>
                                                                   <ImageView fitHeight="150.0" fitWidth="102.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -313,7 +321,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="1">
+                                                            <Label fx:id="icon22" GridPane.columnIndex="1">
                                                                <graphic>
                                                                   <ImageView fitHeight="120.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -325,7 +333,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="2">
+                                                            <Label fx:id="smallachieve23" GridPane.columnIndex="2">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <cursor>
@@ -343,7 +351,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="90.0" GridPane.columnIndex="2">
+                                                            <Label fx:id="icon23" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="90.0" GridPane.columnIndex="2">
                                                                <graphic>
                                                                   <ImageView fitHeight="119.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true">
                                                                      <cursor>
@@ -361,7 +369,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="3">
+                                                            <Label fx:id="smallachieve24" GridPane.columnIndex="3">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -373,7 +381,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="3">
+                                                            <Label fx:id="icon24" GridPane.columnIndex="3">
                                                                <graphic>
                                                                   <ImageView fitHeight="110.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -385,7 +393,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="4">
+                                                            <Label fx:id="smallachieve25" GridPane.columnIndex="4">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -397,7 +405,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="4">
+                                                            <Label fx:id="icon25" GridPane.columnIndex="4">
                                                                <graphic>
                                                                   <ImageView fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -436,14 +444,18 @@
                                  <items>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="77.0" prefWidth="210.0">
                                        <children>
-                                          <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="10.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../../../Sprites/chieveLarge/Achieve3.png" />
-                                             </image>
-                                             <viewport>
-                                                <Rectangle2D minX="50.0" />
-                                             </viewport>
-                                          </ImageView>
+                                          <Label fx:id="bigachieve3" layoutX="10.0">
+                                             <graphic>
+                                                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../../../Sprites/chieveLarge/Achieve3.png" />
+                                                   </image>
+                                                   <viewport>
+                                                      <Rectangle2D minX="50.0" />
+                                                   </viewport>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
                                        </children>
                                        <padding>
                                           <Insets left="50.0" />
@@ -457,7 +469,7 @@
                                                    <children>
                                                       <GridPane layoutX="11.0" layoutY="15.0" prefHeight="113.0" prefWidth="1020.0">
                                                          <children>
-                                                            <Label>
+                                                            <Label fx:id="smallachieve31">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <cursor>
@@ -475,7 +487,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="1">
+                                                            <Label fx:id="smallachieve32" GridPane.columnIndex="1">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -487,7 +499,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label>
+                                                            <Label fx:id="icon31">
                                                                <graphic>
                                                                   <ImageView fitHeight="150.0" fitWidth="102.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -502,7 +514,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="1">
+                                                            <Label fx:id="icon32" GridPane.columnIndex="1">
                                                                <graphic>
                                                                   <ImageView fitHeight="120.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -514,7 +526,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="2">
+                                                            <Label fx:id="smallachieve33" GridPane.columnIndex="2">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <cursor>
@@ -532,7 +544,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="90.0" GridPane.columnIndex="2">
+                                                            <Label fx:id="icon33" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="90.0" GridPane.columnIndex="2">
                                                                <graphic>
                                                                   <ImageView fitHeight="119.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true">
                                                                      <cursor>
@@ -550,7 +562,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="3">
+                                                            <Label fx:id="smallachieve34" GridPane.columnIndex="3">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -562,7 +574,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="3">
+                                                            <Label fx:id="icon34" GridPane.columnIndex="3">
                                                                <graphic>
                                                                   <ImageView fitHeight="110.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -574,7 +586,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="4">
+                                                            <Label fx:id="smallachieve35" GridPane.columnIndex="4">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -586,7 +598,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="4">
+                                                            <Label fx:id="icon35" GridPane.columnIndex="4">
                                                                <graphic>
                                                                   <ImageView fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -625,14 +637,18 @@
                                  <items>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="77.0" prefWidth="210.0">
                                        <children>
-                                          <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="10.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../../../Sprites/chieveLarge/Achieve4.png" />
-                                             </image>
-                                             <viewport>
-                                                <Rectangle2D minX="50.0" />
-                                             </viewport>
-                                          </ImageView>
+                                          <Label fx:id="bigachieve4" layoutX="10.0">
+                                             <graphic>
+                                                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../../../Sprites/chieveLarge/Achieve4.png" />
+                                                   </image>
+                                                   <viewport>
+                                                      <Rectangle2D minX="50.0" />
+                                                   </viewport>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
                                        </children>
                                        <padding>
                                           <Insets left="50.0" />
@@ -646,7 +662,7 @@
                                                    <children>
                                                       <GridPane layoutX="11.0" layoutY="15.0" prefHeight="113.0" prefWidth="1020.0">
                                                          <children>
-                                                            <Label>
+                                                            <Label fx:id="smallachieve41">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <cursor>
@@ -664,7 +680,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="1">
+                                                            <Label fx:id="smallachieve42" GridPane.columnIndex="1">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -676,7 +692,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label>
+                                                            <Label fx:id="icon41">
                                                                <graphic>
                                                                   <ImageView fitHeight="150.0" fitWidth="102.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -691,7 +707,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="1">
+                                                            <Label fx:id="icon42" GridPane.columnIndex="1">
                                                                <graphic>
                                                                   <ImageView fitHeight="120.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -703,7 +719,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="2">
+                                                            <Label fx:id="smallachieve43" GridPane.columnIndex="2">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <cursor>
@@ -721,7 +737,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="90.0" GridPane.columnIndex="2">
+                                                            <Label fx:id="icon43" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="90.0" GridPane.columnIndex="2">
                                                                <graphic>
                                                                   <ImageView fitHeight="119.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true">
                                                                      <cursor>
@@ -739,7 +755,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="3">
+                                                            <Label fx:id="smallachieve44" GridPane.columnIndex="3">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -751,7 +767,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="3">
+                                                            <Label fx:id="icon44" GridPane.columnIndex="3">
                                                                <graphic>
                                                                   <ImageView fitHeight="110.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -763,7 +779,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="4">
+                                                            <Label fx:id="smallachieve45" GridPane.columnIndex="4">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -775,7 +791,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="4">
+                                                            <Label fx:id="icon45" GridPane.columnIndex="4">
                                                                <graphic>
                                                                   <ImageView fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -822,6 +838,7 @@
                                                 <Rectangle2D minX="50.0" />
                                              </viewport>
                                           </ImageView>
+                                          <Label fx:id="bigachieve7" layoutX="10.0" />
                                        </children>
                                        <padding>
                                           <Insets left="50.0" />
@@ -835,14 +852,14 @@
                                                    <children>
                                                       <GridPane layoutX="11.0" layoutY="15.0" prefHeight="113.0" prefWidth="1020.0">
                                                          <children>
-                                                            <Label>
+                                                            <Label fx:id="smallachieve71">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <cursor>
                                                                         <Cursor fx:constant="DEFAULT" />
                                                                      </cursor>
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall3.png" />
+                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall7.png" />
                                                                      </image>
                                                                      <viewport>
                                                                         <Rectangle2D />
@@ -853,11 +870,11 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="1">
+                                                            <Label fx:id="smallachieve72" GridPane.columnIndex="1">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall3.png" />
+                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall7.png" />
                                                                      </image>
                                                                   </ImageView>
                                                                </graphic>
@@ -865,7 +882,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label>
+                                                            <Label fx:id="icon71">
                                                                <graphic>
                                                                   <ImageView fitHeight="150.0" fitWidth="102.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -880,7 +897,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="1">
+                                                            <Label fx:id="icon72" GridPane.columnIndex="1">
                                                                <graphic>
                                                                   <ImageView fitHeight="120.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -892,14 +909,14 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="2">
+                                                            <Label fx:id="smallachieve73" GridPane.columnIndex="2">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <cursor>
                                                                         <Cursor fx:constant="DEFAULT" />
                                                                      </cursor>
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall3.png" />
+                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall7.png" />
                                                                      </image>
                                                                      <viewport>
                                                                         <Rectangle2D />
@@ -910,7 +927,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="90.0" GridPane.columnIndex="2">
+                                                            <Label fx:id="icon73" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="90.0" GridPane.columnIndex="2">
                                                                <graphic>
                                                                   <ImageView fitHeight="119.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true">
                                                                      <cursor>
@@ -928,11 +945,11 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="3">
+                                                            <Label fx:id="smallachieve74" GridPane.columnIndex="3">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall3.png" />
+                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall7.png" />
                                                                      </image>
                                                                   </ImageView>
                                                                </graphic>
@@ -940,7 +957,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="3">
+                                                            <Label fx:id="icon74" GridPane.columnIndex="3">
                                                                <graphic>
                                                                   <ImageView fitHeight="110.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -954,9 +971,21 @@
                                                             </Label>
                                                             <Label GridPane.columnIndex="4">
                                                                <graphic>
+                                                                  <ImageView fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                                                     <image>
+                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall7.png" />
+                                                                     </image>
+                                                                  </ImageView>
+                                                               </graphic>
+                                                               <GridPane.margin>
+                                                                  <Insets left="25.0" />
+                                                               </GridPane.margin>
+                                                            </Label>
+                                                            <Label fx:id="smallachieve75" GridPane.columnIndex="4">
+                                                               <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall3.png" />
+                                                                        <Image url="@../../../../Sprites/ChieveIconLvls/AchieveIconsLvl5.png" />
                                                                      </image>
                                                                   </ImageView>
                                                                </graphic>
@@ -999,6 +1028,7 @@
                                                 <Rectangle2D minX="50.0" />
                                              </viewport>
                                           </ImageView>
+                                          <Label fx:id="bigachieve6" layoutX="10.0" />
                                        </children>
                                        <padding>
                                           <Insets left="50.0" />
@@ -1012,14 +1042,14 @@
                                                    <children>
                                                       <GridPane layoutX="11.0" layoutY="15.0" prefHeight="113.0" prefWidth="1020.0">
                                                          <children>
-                                                            <Label>
+                                                            <Label fx:id="smallachieve61">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <cursor>
                                                                         <Cursor fx:constant="DEFAULT" />
                                                                      </cursor>
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall3.png" />
+                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall6.png" />
                                                                      </image>
                                                                      <viewport>
                                                                         <Rectangle2D />
@@ -1030,11 +1060,11 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="1">
+                                                            <Label fx:id="smallachieve62" GridPane.columnIndex="1">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall3.png" />
+                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall6.png" />
                                                                      </image>
                                                                   </ImageView>
                                                                </graphic>
@@ -1042,7 +1072,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label>
+                                                            <Label fx:id="score61">
                                                                <graphic>
                                                                   <ImageView fitHeight="150.0" fitWidth="102.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -1057,7 +1087,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="1">
+                                                            <Label fx:id="score62" GridPane.columnIndex="1">
                                                                <graphic>
                                                                   <ImageView fitHeight="120.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -1069,14 +1099,14 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="2">
+                                                            <Label fx:id="smallachieve63" GridPane.columnIndex="2">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <cursor>
                                                                         <Cursor fx:constant="DEFAULT" />
                                                                      </cursor>
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall3.png" />
+                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall6.png" />
                                                                      </image>
                                                                      <viewport>
                                                                         <Rectangle2D />
@@ -1087,7 +1117,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="90.0" GridPane.columnIndex="2">
+                                                            <Label fx:id="score63" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="90.0" GridPane.columnIndex="2">
                                                                <graphic>
                                                                   <ImageView fitHeight="119.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true">
                                                                      <cursor>
@@ -1105,11 +1135,11 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="3">
+                                                            <Label fx:id="smallachieve64" GridPane.columnIndex="3">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall3.png" />
+                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall6.png" />
                                                                      </image>
                                                                   </ImageView>
                                                                </graphic>
@@ -1117,7 +1147,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="3">
+                                                            <Label fx:id="icon64" GridPane.columnIndex="3">
                                                                <graphic>
                                                                   <ImageView fitHeight="110.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -1129,11 +1159,11 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="4">
+                                                            <Label fx:id="smallachieve65" GridPane.columnIndex="4">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall3.png" />
+                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall6.png" />
                                                                      </image>
                                                                   </ImageView>
                                                                </graphic>
@@ -1141,7 +1171,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="4">
+                                                            <Label fx:id="icon65" GridPane.columnIndex="4">
                                                                <graphic>
                                                                   <ImageView fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -1180,14 +1210,18 @@
                                  <items>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="77.0" prefWidth="210.0">
                                        <children>
-                                          <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="10.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../../../Sprites/chieveLarge/Achieve5.png" />
-                                             </image>
-                                             <viewport>
-                                                <Rectangle2D minX="50.0" />
-                                             </viewport>
-                                          </ImageView>
+                                          <Label layoutX="10.0">
+                                             <graphic>
+                                                <ImageView fx:id="bigachieve5" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../../../Sprites/chieveLarge/Achieve5.png" />
+                                                   </image>
+                                                   <viewport>
+                                                      <Rectangle2D minX="50.0" />
+                                                   </viewport>
+                                                </ImageView>
+                                             </graphic>
+                                          </Label>
                                        </children>
                                        <padding>
                                           <Insets left="50.0" />
@@ -1201,14 +1235,14 @@
                                                    <children>
                                                       <GridPane layoutX="11.0" layoutY="15.0" prefHeight="113.0" prefWidth="1020.0">
                                                          <children>
-                                                            <Label>
+                                                            <Label fx:id="smallachieve51">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <cursor>
                                                                         <Cursor fx:constant="DEFAULT" />
                                                                      </cursor>
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall3.png" />
+                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall5.png" />
                                                                      </image>
                                                                      <viewport>
                                                                         <Rectangle2D />
@@ -1219,11 +1253,11 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="1">
+                                                            <Label fx:id="smallachieve52" GridPane.columnIndex="1">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall3.png" />
+                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall5.png" />
                                                                      </image>
                                                                   </ImageView>
                                                                </graphic>
@@ -1231,7 +1265,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label>
+                                                            <Label fx:id="icon51">
                                                                <graphic>
                                                                   <ImageView fitHeight="150.0" fitWidth="102.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -1246,7 +1280,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="1">
+                                                            <Label fx:id="icon52" GridPane.columnIndex="1">
                                                                <graphic>
                                                                   <ImageView fitHeight="120.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -1258,14 +1292,14 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="2">
+                                                            <Label fx:id="smallachieve53" GridPane.columnIndex="2">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <cursor>
                                                                         <Cursor fx:constant="DEFAULT" />
                                                                      </cursor>
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall3.png" />
+                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall5.png" />
                                                                      </image>
                                                                      <viewport>
                                                                         <Rectangle2D />
@@ -1276,7 +1310,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="90.0" GridPane.columnIndex="2">
+                                                            <Label fx:id="icon53" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="90.0" GridPane.columnIndex="2">
                                                                <graphic>
                                                                   <ImageView fitHeight="119.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true">
                                                                      <cursor>
@@ -1294,11 +1328,11 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="3">
+                                                            <Label fx:id="smallachieve54" GridPane.columnIndex="3">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall3.png" />
+                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall5.png" />
                                                                      </image>
                                                                   </ImageView>
                                                                </graphic>
@@ -1306,7 +1340,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="3">
+                                                            <Label fx:id="icon54" GridPane.columnIndex="3">
                                                                <graphic>
                                                                   <ImageView fitHeight="110.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
@@ -1318,11 +1352,11 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="4">
+                                                            <Label fx:id="smallachieve55" GridPane.columnIndex="4">
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall3.png" />
+                                                                        <Image url="@../../../../Sprites/chieveIcon/Achievesmall5.png" />
                                                                      </image>
                                                                   </ImageView>
                                                                </graphic>
@@ -1330,7 +1364,7 @@
                                                                   <Insets left="25.0" />
                                                                </GridPane.margin>
                                                             </Label>
-                                                            <Label GridPane.columnIndex="4">
+                                                            <Label fx:id="icon55" GridPane.columnIndex="4">
                                                                <graphic>
                                                                   <ImageView fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
