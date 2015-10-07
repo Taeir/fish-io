@@ -6,6 +6,7 @@ import java.util.List;
 import com.github.fishio.achievements.Observer;
 import com.github.fishio.achievements.State;
 import com.github.fishio.achievements.Subject;
+import com.github.fishio.behaviours.IBehaviour;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
@@ -62,6 +63,22 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 		notifyObservers(oldState, getState(), "dead");
 	}
 	
+	/**
+	 * @return
+	 * 		The behaviour of this entity.
+	 */
+	public abstract IBehaviour getBehaviour();
+	
+	/**
+	 * Changes the behaviour of this entity.
+	 * 
+	 * @param behaviour
+	 * 		The behaviour this entity should adopt
+	 */
+	public abstract void setBehaviour(IBehaviour behaviour);
+
+	
+	
 	@Override
 	public ICollisionArea getBoundingArea() {
 		return ba;
@@ -99,5 +116,18 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 		State state = new State();
 		state.add("dead", isDead());
 		return state;
+	}
+	
+	/**
+	 * @return
+	 * 		True iff this entity is able to move through walls.
+	 */
+	public abstract boolean canMoveThroughWall();
+
+	/**
+	 * What happens when the entity hits a wall, by default it kills the entity.
+	 */
+	public void hitWall() {
+		kill();
 	}
 }

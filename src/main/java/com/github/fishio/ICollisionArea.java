@@ -4,6 +4,8 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 
+import com.github.fishio.behaviours.IBehaviour;
+
 /**
  * Interface used to represent collision areas of entities.
  */
@@ -143,7 +145,7 @@ public interface ICollisionArea {
 	 * @return
 	 * 		the rotation of the boundingArea.
 	 */
-	default double setRotation(IMovable m) {
+	default double setRotation(IBehaviour m) {
 		Vec2d sv = m.getSpeedVector();
 		if (sv.x == 0) {
 			if (sv.y > 0) {
