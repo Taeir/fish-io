@@ -15,19 +15,19 @@ import javax.sound.sampled.LineEvent.Type;
 public class FishClip implements LineListener, AutoCloseable {
 	private Clip clip;
 	private volatile boolean done;
-	private boolean effect;
+	private boolean soundEffect;
 	
 	/**
 	 * @param clip
 	 * 		the clip this FishClip should represent.
-	 * @param effect
+	 * @param soundEffect
 	 * 		if this clip is a sound effect (true) or music (false).
 	 */
-	public FishClip(Clip clip, boolean effect) {
+	public FishClip(Clip clip, boolean soundEffect) {
 		this.clip = clip;
-		this.effect = effect;
+		this.soundEffect = soundEffect;
 		clip.addLineListener(this);
-		AudioEngine.getInstance().registerVolumeListener(effect, () -> updateVolume());
+		AudioEngine.getInstance().registerVolumeListener(soundEffect, () -> updateVolume());
 		
 		//Set the initial volume
 		updateVolume();
@@ -46,8 +46,8 @@ public class FishClip implements LineListener, AutoCloseable {
 	 * 		<code>true</code> if this clip is a sound effect.<br>
 	 * 		<code>false</code> if it is (background) music.
 	 */
-	public boolean isEffect() {
-		return effect;
+	public boolean isSoundEffect() {
+		return soundEffect;
 	}
 	
 	/**
@@ -65,7 +65,7 @@ public class FishClip implements LineListener, AutoCloseable {
 		FloatControl fc = (FloatControl) this.clip.getControl(FloatControl.Type.MASTER_GAIN);
 		
 		double percent;
-		if (this.effect) {
+		if (this.soundEffect) {
 			percent = AudioEngine.getInstance().getEffectsVolume();
 		} else {
 			percent = AudioEngine.getInstance().getMusicVolume();

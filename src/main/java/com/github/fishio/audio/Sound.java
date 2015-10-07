@@ -25,7 +25,7 @@ public class Sound {
 	private static final int READ_BUFFER_SIZE = 16384;
 	
 	private AudioFormat format;
-	private boolean effect;
+	private boolean soundEffect;
 	private byte[] contents;
 	
 	/**
@@ -35,7 +35,7 @@ public class Sound {
 	 * 		the stream to read the sound from.
 	 * @param mp3
 	 * 		if the stream is in mp3 format, this parameter should be true.
-	 * @param effect
+	 * @param soundEffect
 	 * 		<code>true</code> if this is a sound effect,
 	 * 		<code>false</code> if this is (background) music.
 	 * 
@@ -44,9 +44,9 @@ public class Sound {
 	 * @throws UnsupportedAudioFileException
 	 * 		If the audio format is unsupported.
 	 */
-	public Sound(InputStream inputStream, boolean mp3, boolean effect)
+	public Sound(InputStream inputStream, boolean mp3, boolean soundEffect)
 			throws IOException, UnsupportedAudioFileException {
-		this.effect = effect;
+		this.soundEffect = soundEffect;
 		if (mp3) {
 			readMp3Stream(inputStream);
 		} else {
@@ -100,13 +100,13 @@ public class Sound {
 	protected void readMp3Stream(InputStream inputStream) throws IOException, UnsupportedAudioFileException {
 		try (AudioInputStream ais = AudioSystem.getAudioInputStream(inputStream)) {
 			//We want the file in the following format, so we can play it.
-			this.format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, 
+			this.format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED,
 					ais.getFormat().getSampleRate(),
-                    16,
-                    ais.getFormat().getChannels(),
-                    ais.getFormat().getChannels() * 2,
-                    ais.getFormat().getSampleRate(),
-                    false);
+					16,
+					ais.getFormat().getChannels(),
+					ais.getFormat().getChannels() * 2,
+					ais.getFormat().getSampleRate(),
+					false);
 			
 			try (AudioInputStream ais2 = AudioSystem.getAudioInputStream(this.format, ais)) {
 				//Read the bytes from the audio file.
@@ -144,15 +144,6 @@ public class Sound {
 		Clip clip = AudioSystem.getClip();
 		clip.open(format, contents, 0, contents.length);
 		
-		return new FishClip(clip, effect);
-	}
-	
-	/**
-	 * @return
-	 * 		<code>true</code> if this FishSound represents a Sound Effect.<br>
-	 * 		<code>false</code> if it represents (background) music.
-	 */
-	public boolean isEffect() {
-		return effect;
+		return new FishClip(clip, soundEffect);
 	}
 }
