@@ -48,7 +48,7 @@ public interface SettingLoader {
 	HashMap<String, SimpleDoubleProperty> getSliderSettings();
 	
 	/**
-	 * Load the descriptions from the descriptions.txt file.
+	 * Load the descriptions from the settingDescriptions.txt file.
 	 * @return
 	 * 		A HashMap containing all the descriptions.
 	 */

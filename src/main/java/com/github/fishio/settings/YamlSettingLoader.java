@@ -185,7 +185,7 @@ public class YamlSettingLoader implements SettingLoader {
 	@Override
 	@SuppressWarnings("unchecked")
 	public HashMap<String, String> getDescriptions() {
-		try (FileReader fr = new FileReader("descriptions.txt")) {
+		try (FileReader fr = new FileReader("settingDescriptions.txt")) {
 			return (HashMap<String, String>) (new YamlReader(fr)).read();
 			
 		} catch (IOException e) {
