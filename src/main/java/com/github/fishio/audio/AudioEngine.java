@@ -12,8 +12,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
-import javax.sound.sampled.LineUnavailableException;
-
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
@@ -343,7 +341,7 @@ public final class AudioEngine {
 		try {
 			ClipRunnable cr = new ClipRunnable(sound.getClip());
 			executor.submit(cr);
-		} catch (LineUnavailableException ex) {
+		} catch (Exception ex) {
 			Log.getLogger().log(LogLevel.WARNING,
 					"[Audio Engine] Error while trying to get clip for sound effect " + effectName);
 			ex.printStackTrace();
