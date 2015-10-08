@@ -87,7 +87,7 @@ public final class AudioLoader {
 			
 			List<Path> paths = getAudioFiles(true);
 			for (Path path : paths) {
-				Sound sound = loadSound(path, false);
+				Sound sound = loadSound(path, true);
 				String name = getSoundEffectName(path.toString());
 				
 				if (sound != null) {

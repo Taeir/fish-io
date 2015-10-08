@@ -31,7 +31,7 @@
                      </HBox.margin>
                   </Label>
                   <Button fx:id="btnPause" alignment="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#onPause" text="Pause" />
-                  <Button fx:id="btnMute" disable="true" focusTraversable="false" mnemonicParsing="false" text="Mute" />
+                  <Button fx:id="btnMute" alignment="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#onMute" text="Mute music" />
                   <Button fx:id="btnMenu" alignment="CENTER" focusTraversable="false" mnemonicParsing="false" onAction="#backToMenu" text="Menu" />
                </children>
                <padding>
