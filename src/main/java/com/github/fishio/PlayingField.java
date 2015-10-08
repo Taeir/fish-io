@@ -136,10 +136,12 @@ public abstract class PlayingField {
 			remove(e);
 			
 			//Decrease enemy count.
-			enemyCount--;
+			if (e instanceof EnemyFish) {
+				enemyCount--;
+			}
 			
 			//Log action.
-			log.log(LogLevel.DEBUG, "Removed enemy fish. Enemycount: " + enemyCount + ".");
+			log.log(LogLevel.DEBUG, "Removed entity. Enemycount: " + enemyCount + ".");
 		}
 	}
 

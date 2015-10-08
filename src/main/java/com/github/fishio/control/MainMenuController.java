@@ -2,6 +2,7 @@ package com.github.fishio.control;
 
 import com.github.fishio.FishIO;
 import com.github.fishio.Preloader;
+import com.github.fishio.audio.AudioEngine;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
@@ -55,6 +56,8 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void startSinglePlayer() {
+		AudioEngine.getInstance().playEffect("button");
+		
 		log.log(LogLevel.INFO, "Player Pressed the SinglePlayer Button.");
 		Preloader.switchTo("singlePlayer", 400);
 	}
@@ -65,6 +68,8 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void startMultiplayer() {
+		AudioEngine.getInstance().playEffect("button");
+		
 		//TODO (not now)
 	}
 
@@ -74,6 +79,8 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void loadLevel() {
+		AudioEngine.getInstance().playEffect("button");
+		
 		//TODO (not now)
 	}
 
@@ -83,6 +90,8 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void showHighScores() {
+		AudioEngine.getInstance().playEffect("button");
+		
 		//TODO (not now)
 	}
 
@@ -92,6 +101,8 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void showAchievements() {
+		AudioEngine.getInstance().playEffect("button");
+		
 		log.log(LogLevel.INFO, "Player Pressed the achievementScreen Button.");
 		Preloader.switchTo("achievementScreen", 400);
 	}
@@ -102,6 +113,8 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void showStatistics() {
+		AudioEngine.getInstance().playEffect("button");
+		
 		//TODO (not now)
 	}
 
@@ -113,6 +126,9 @@ public class MainMenuController implements ScreenController {
 	public void showSettings() {
 		log.log(LogLevel.INFO, "Player Pressed the Settings Button.");
 		Preloader.switchTo("settingsScreen", 400);
+		AudioEngine.getInstance().playEffect("button");
+		
+		//TODO (not now)
 	}
 
 	/**
@@ -121,6 +137,8 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void showHelp() {
+		AudioEngine.getInstance().playEffect("button");
+		
 		log.log(LogLevel.INFO, "Player Pressed the Help Button.");
 		Preloader.switchTo("helpScreen", 400);
 	}
@@ -131,6 +149,8 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void exitGame() {
+		AudioEngine.getInstance().playEffect("button");
+		
 		log.log(LogLevel.INFO, "Player Pressed the Exit Button.");
 		FishIO.getInstance().closeApplication();
 	}

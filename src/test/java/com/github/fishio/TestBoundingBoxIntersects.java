@@ -35,8 +35,7 @@ public class TestBoundingBoxIntersects {
 	 * 		Whether the BoundingBox should collide with the other
 	 * 		BoundingBox.
 	 */
-	public TestBoundingBoxIntersects(double xmin, double ymin, 
-			double xmax, double ymax, boolean expected) {
+	public TestBoundingBoxIntersects(double xmin, double ymin, double xmax, double ymax, boolean expected) {
 		this.bb2 = new BoundingBox(xmin, ymin, xmax, ymax);
 		this.expected = expected;
 	}
@@ -59,12 +58,12 @@ public class TestBoundingBoxIntersects {
 		return Arrays.asList(new Object[][] {
 				{0.0, 0.0, 5.0, 5.0, true},
 				{4.0, 4.0, 5.0, 5.0, true},
-				{5.0, 10.0, 5.0, 5.0, false},
+				{5.0, 10.0, 5.0, 5.0, true},
 				{0.0, 5.0, 5.0, 9.9, true},
-				{5.0, 5.0, 0.0, 5.0, false},
+				{5.0, 5.0, 0.0, 5.0, true},
 				{20.0, 20.0, 25.0, 25.0, false},
 				{-5.0, -5.0, 5.0, 10.0, true},
-				{-5.0, -5.0, 0.0, 0.0, false}
+				{-5.0, -5.0, -1.0, -1.0, false}
 		});
 	}
 	
