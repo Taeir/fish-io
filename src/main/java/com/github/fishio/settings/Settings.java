@@ -161,7 +161,7 @@ public final class Settings {
 	 * @param setting
 	 * 		The setting to get the value of.
 	 * @return
-	 * 		The value of the setting or NaN if the setting is not found.
+	 * 		The value of the setting or false if the setting is not found.
 	 */
 	public boolean getBoolean(String setting) {
 		return getBooleanProperty(setting).getValue().booleanValue();
