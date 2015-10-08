@@ -149,15 +149,9 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 		if (isDead()) {
 			return;
 		}
+		
 		getBoundingArea().setRotation(behaviour); //update rotation;
-
-		if (behaviour.getSpeedVector().x > 0) {
-			drawRotatedImage(gc, sprite, getBoundingArea(), false);
-		} else if (behaviour.getSpeedVector().x < 0) {
-			drawRotatedImage(gc, sprite, getBoundingArea(), true);
-		} else {
-			drawRotatedImage(gc, sprite, getBoundingArea(), behaviour.getSpeedVector().y < 0);
-		}
+		drawRotatedImage(gc, sprite, getBoundingArea());
 	}
 	
 

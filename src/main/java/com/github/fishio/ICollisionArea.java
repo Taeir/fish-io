@@ -39,6 +39,14 @@ public interface ICollisionArea {
 	}
 	
 	/**
+	 * @return
+	 * 		if the collision area should be flipped upside down.
+	 */
+	default boolean isReversed() {
+		return getRotation() > 90 && getRotation() < 270;
+	}
+	
+	/**
 	 * Performs a few checks to find out whether the Bounding Box has any
 	 * overlap with an IBoundingAres object.
 	 * 
@@ -147,20 +155,29 @@ public interface ICollisionArea {
 		Vec2d sv = m.getSpeedVector();
 		if (sv.x == 0) {
 			if (sv.y > 0) {
-				return setRotation(270);
-			} else if (sv.y < 0) {
+				//Set rotation to 90 (UP)
 				return setRotation(90);
+			} else if (sv.y < 0) {
+				//Set rotation to 270 (DOWN)
+				return setRotation(270);
 			} else {
-				return setRotation(0);
+				//not moving, so not updating rotation.
+				return getRotation();
 			}
 		} else if (sv.y == 0) {
 			if (sv.x >= 0) {
+				//Set rotation to 0 (RIGHT)
 				return setRotation(0);
 			} else {
+				//Set rotation to 180 (LEFT)
 				return setRotation(180);
 			}
 		} else {
-			return setRotation(Math.toDegrees(Math.atan(sv.y / sv.x)));
+			if (sv.x < 0) {
+				return setRotation(Math.toDegrees(Math.atan(sv.y / sv.x)) + 180);
+			} else {
+				return setRotation(Math.toDegrees(Math.atan(sv.y / sv.x)) + 360);
+			}
 		}
 	}
 	
