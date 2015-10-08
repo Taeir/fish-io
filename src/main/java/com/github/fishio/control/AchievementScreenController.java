@@ -174,22 +174,26 @@ public class AchievementScreenController implements ScreenController {
 	 */
 	public void setPlayerDeath() {
 		Achieve.checkPlayerDeath(playerDeath);
-		System.out.println("method reached");
+		
 		if (playerDeath.getLevel() == 1) {
-			System.out.println("level1 reached");
 			smallachieve11.setOpacity(1);
+			log.log(LogLevel.INFO, "Glutton achievement level 1 gained!");
 		}
 		if (playerDeath.getLevel() == 2) {
 			smallachieve12.setOpacity(1);
+			log.log(LogLevel.INFO, "Glutton achievement level 2 gained!");
 		}
 		if (playerDeath.getLevel() == 3) {
 			smallachieve13.setOpacity(1);
+			log.log(LogLevel.INFO, "Glutton achievement level 3 gained!");
 		}
 		if (playerDeath.getLevel() == 4) {
 			smallachieve14.setOpacity(1);
+			log.log(LogLevel.INFO, "Glutton achievement level 4 gained!");
 		}
 		if (playerDeath.getLevel() == 5) {
 			smallachieve15.setOpacity(1);
+			log.log(LogLevel.INFO, "Glutton achievement level 5 gained!");
 		}
 	}
 	
@@ -200,18 +204,23 @@ public class AchievementScreenController implements ScreenController {
 			Achieve.checkEnemyKill(enemyKill);
 			if (enemyKill.getLevel() == 1) {
 				smallachieve21.setOpacity(1);
+			log.log(LogLevel.INFO, "Survival of the fittest achievement level 1 gained!");
 			}
 			if (enemyKill.getLevel() == 2) {
 				smallachieve22.setOpacity(1);
+			log.log(LogLevel.INFO, "Survival of the fittest achievement level 2 gained!");
 			}
 			if (enemyKill.getLevel() == 3) {
 				smallachieve23.setOpacity(1);
+			log.log(LogLevel.INFO, "Survival of the fittest achievement level 3 gained!");
 			}
 			if (enemyKill.getLevel() == 4) {
 				smallachieve24.setOpacity(1);
+			log.log(LogLevel.INFO, "Survival of the fittest achievement level 4 gained!");
 			}
 			if (enemyKill.getLevel() == 5) {
 				smallachieve25.setOpacity(1);
+			log.log(LogLevel.INFO, "Survival of the fittest achievement level 5 gained!");
 			}
 		}
 	
