@@ -23,9 +23,12 @@ public class BoundingBox implements ICollisionArea {
 	 * 		the largest y coordinate
 	 */
 	public BoundingBox(double xmin, double ymin, double xmax, double ymax) {
-		this.width = xmax - xmin;
-		this.height = ymax - ymin;
-		this.center = new Vec2d(xmin + 0.5 * width, ymin + 0.5 * height);
+		this.width = Math.abs(xmax - xmin);
+		this.height = Math.abs(ymax - ymin);
+		
+		double xxMin = Math.min(xmin, xmax);
+		double yyMin = Math.min(ymin, ymax);
+		this.center = new Vec2d(xxMin + 0.5 * width, yyMin + 0.5 * height);
 		this.rotation = 0;
 	}
 

@@ -53,11 +53,7 @@ public class EnemyFish extends Entity implements IEatable {
 			return;
 		}
 		getBoundingArea().setRotation(behaviour);	//update rotation
-		if (behaviour.getSpeedVector().x > 0) {
-			drawRotatedImage(gc, sprite, getBoundingArea(), false);
-		} else {
-			drawRotatedImage(gc, sprite, getBoundingArea(), true);
-		}
+		drawRotatedImage(gc, sprite, getBoundingArea());
 	}
 
 	/**

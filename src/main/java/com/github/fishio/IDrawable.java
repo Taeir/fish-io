@@ -38,21 +38,19 @@ public interface IDrawable {
 	 * 		The image to draw.
 	 * @param ca
 	 * 		The CollisionArea of the sprite
-	 * @param reverse
-	 * 		when true reverse left/right orientation of the sprite.
 	 * 
 	 */
-	default void drawRotatedImage(GraphicsContext gc, Image image, ICollisionArea ca, boolean reverse) {
+	default void drawRotatedImage(GraphicsContext gc, Image image, ICollisionArea ca) {
 		double angle = ca.getRotation();
 		double cx = ca.getCenterX();
 		double cy = ca.getCenterY();
-		double width;
-		if (reverse) {
-			width = -ca.getWidth();
-		} else {
-			width = ca.getWidth();
-		}
+		double width = ca.getWidth();
 		double height = ca.getHeight();
+		if (ca.isReversed()) {
+			height = -ca.getHeight();
+		} else {
+			height = ca.getHeight();
+		}
 
 		gc.save();
 		Rotate r = new Rotate(360 - angle, cx, cy);
@@ -79,15 +77,12 @@ public interface IDrawable {
 
 			gc.setFill(Color.CYAN);
 			gc.fillOval(cx, cy, 2, 2);	//draw sprite center
-			
-			angle = Math.toRadians(angle);
 
 			// draw CollisionArea box corners
 			Vec2d tl = ca.getTopLeft();
 			Vec2d tr = ca.getTopRight();
 			Vec2d bl = ca.getBottomLeft();
 			Vec2d br = ca.getBottomRight();
-
 
 			gc.setFill(Color.RED);	
 			gc.fillOval(tl.x, tl.y, 2, 2);
