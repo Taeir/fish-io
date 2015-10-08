@@ -111,7 +111,8 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void showSettings() {
-		//TODO (not now)
+		log.log(LogLevel.INFO, "Player Pressed the Settings Button.");
+		Preloader.switchTo("settingsScreen", 400);
 	}
 
 	/**

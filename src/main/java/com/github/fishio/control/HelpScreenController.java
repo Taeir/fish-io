@@ -1,10 +1,12 @@
 package com.github.fishio.control;
 
 import java.util.HashMap;
+
 import com.github.fishio.Preloader;
 import com.github.fishio.Vec2d;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
+import com.github.fishio.settings.Settings;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -21,6 +23,7 @@ import javafx.scene.input.KeyCode;
 public class HelpScreenController implements ScreenController {
 
 	private Log log = Log.getLogger();
+	private Settings settings = Settings.getInstance();
 	private static final HashMap<KeyCode, Vec2d> KEYMAP = getKeyMap();
 	
 	@FXML
@@ -41,10 +44,11 @@ public class HelpScreenController implements ScreenController {
 	 */
 	private void displayKeyBinding(KeyCode key, int y) {
 		Vec2d pos = KEYMAP.get(key);
+		GraphicsContext gc = keyboard.getGraphicsContext2D();
 		if (pos == null) {
+			gc.fillText(key.getName(), 950, y + 10);
 			return;
 		}
-		GraphicsContext gc = keyboard.getGraphicsContext2D();
 		gc.strokeLine(pos.x / 2 + 18, pos.y / 2 + 18, 850, y + 8);
 		Image img = Preloader.getImageOrLoad("keyboard.png");
 		gc.drawImage(img, pos.x, pos.y, 72, 72, pos.x / 2, pos.y / 2, 36, 36);
@@ -60,6 +64,10 @@ public class HelpScreenController implements ScreenController {
 		map.put(KeyCode.DOWN, new Vec2d(1418, 415));
 		map.put(KeyCode.LEFT, new Vec2d(1334, 415));
 		map.put(KeyCode.RIGHT, new Vec2d(1501, 415));
+		map.put(KeyCode.W, new Vec2d(228, 202));
+		map.put(KeyCode.S, new Vec2d(249, 275));
+		map.put(KeyCode.A, new Vec2d(169, 275));
+		map.put(KeyCode.D, new Vec2d(334, 275));
 		//TODO map more keys when allowing key changes
 		return map;
 	}
@@ -67,6 +75,7 @@ public class HelpScreenController implements ScreenController {
 	@Override
 	public void onSwitchTo() {
 		GraphicsContext gc = keyboard.getGraphicsContext2D();
+		gc.clearRect(0, 0, 1000, 500);
 		ColorAdjust ca = new ColorAdjust();
 		ca.setBrightness(0.5);
 		gc.save();
@@ -75,11 +84,10 @@ public class HelpScreenController implements ScreenController {
 		gc.restore();
 		
 		gc.setLineWidth(1.0);
-		//TODO: KeyCode.KEY must be replaced by Settings.KEY when implemented.
-		displayKeyBinding(KeyCode.UP, 42);
-		displayKeyBinding(KeyCode.DOWN, 58);
-		displayKeyBinding(KeyCode.LEFT, 26);
-		displayKeyBinding(KeyCode.RIGHT, 74);
+		displayKeyBinding(settings.getKeyCode("SWIM_UP"), 42);
+		displayKeyBinding(settings.getKeyCode("SWIM_DOWN"), 58);
+		displayKeyBinding(settings.getKeyCode("SWIM_LEFT"), 26);
+		displayKeyBinding(settings.getKeyCode("SWIM_RIGHT"), 74);
 	}
 	
 	/**

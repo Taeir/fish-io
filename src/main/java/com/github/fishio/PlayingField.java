@@ -13,14 +13,12 @@ import com.github.fishio.game.GameThread;
 import com.github.fishio.gui.Renderer;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
+import com.github.fishio.settings.Settings;
 
 /**
  * Represents the PlayingField.
  */
 public abstract class PlayingField {
-	public static final int WINDOW_X = 1280;
-	public static final int WINDOW_Y = 670;
-	public static final double GAME_TPS = 60;
 
 	private GameThread gameThread;
 	private Renderer renderer;
@@ -31,6 +29,7 @@ public abstract class PlayingField {
 	private ConcurrentLinkedQueue<Entity> entities = new ConcurrentLinkedQueue<>();
 	private ConcurrentLinkedQueue<ICollidable> collidables = new ConcurrentLinkedQueue<>();
 	private Log log = Log.getLogger();
+	private Settings settings = Settings.getInstance();
 
 	private int enemyCount;
 	private static final int MAX_ENEMY_COUNT = 10;
@@ -89,8 +88,8 @@ public abstract class PlayingField {
 	 * 
 	 * @return the width of the field.
 	 */
-	public int getWidth() {
-		return WINDOW_X;
+	public double getWidth() {
+		return settings.getDouble("SCREEN_WIDTH");
 	}
 
 	/**
@@ -98,8 +97,8 @@ public abstract class PlayingField {
 	 * 
 	 * @return the height of the field.
 	 */
-	public int getHeigth() {
-		return WINDOW_Y;
+	public double getHeigth() {
+		return settings.getDouble("SCREEN_HEIGHT") - 50;
 	}
 
 	/**
@@ -209,16 +208,16 @@ public abstract class PlayingField {
 	private boolean hitsWall(IMovable m, ICollisionArea box) {
 		// prevent playerfish from leaving the screen
 		if (m instanceof PlayerFish) {	
-			if (box.getMaxX() >= WINDOW_X
+			if (box.getMaxX() >= getWidth()
 					|| box.getMinX() <= 0
-					|| box.getMaxY() >= WINDOW_Y
+					|| box.getMaxY() >= getHeigth()
 					|| box.getMinY() <= 0) {
 				return true;
 			}
 		} else {
-			if (box.getMaxX() >= WINDOW_X + 2.0 * box.getWidth()
+			if (box.getMaxX() >= getWidth() + 2.0 * box.getWidth()
 					|| box.getMinX() <= -(2.0 * box.getWidth()) - 1
-					|| box.getMaxY() >= WINDOW_Y + 2.0 * box.getHeight() + 1
+					|| box.getMaxY() >= getHeigth() + 2.0 * box.getHeight() + 1
 					|| box.getMinY() <= -(2.0 * box.getHeight()) - 1) {
 				return true;
 			}
@@ -235,16 +234,16 @@ public abstract class PlayingField {
 	 * 		the ICollisionArea to move.
 	 */
 	private void moveWithinScreen(ICollisionArea box) {
-		if (box.getMaxX() > WINDOW_X) {
-			box.move(new Vec2d(-(box.getMaxX() - WINDOW_X), 0));
+		if (box.getMaxX() > getWidth()) {
+			box.move(new Vec2d(-(box.getMaxX() - getWidth()), 0));
 		}
 		
 		if (box.getMinX() < 0) {
 			box.move(new Vec2d(-box.getMinX(), 0));
 		}
 		
-		if (box.getMaxY() > WINDOW_Y) {
-			box.move(new Vec2d(0, box.getMaxY() - WINDOW_Y));
+		if (box.getMaxY() > getHeigth()) {
+			box.move(new Vec2d(0, box.getMaxY() - getHeigth()));
 		}
 		
 		if (box.getMinY() < 0) {

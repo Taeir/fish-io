@@ -2,6 +2,8 @@ package com.github.fishio;
 
 import java.util.HashSet;
 
+import com.github.fishio.settings.Settings;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 
@@ -9,8 +11,6 @@ import javafx.scene.image.PixelReader;
  * Class for checking collisions of sprites.
  */
 public class CollisionMask implements ICollisionArea {
-	
-	private static final boolean PIXEL_PERFECT_COLLISIONS = true;
 
 	private Vec2d center;
 
@@ -229,7 +229,7 @@ public class CollisionMask implements ICollisionArea {
 				return true;
 			}
 			if (other instanceof CollisionMask) { // do pixel perfect
-				if (!PIXEL_PERFECT_COLLISIONS) {
+				if (!Settings.getInstance().getBoolean("PIXEL_PERFECT_COLLISIONS")) {
 					return true;
 				}
 				CollisionMask o = (CollisionMask) other;
