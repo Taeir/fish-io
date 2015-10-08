@@ -168,4 +168,60 @@ public class KeyListenerBehaviour implements IMoveBehaviour {
 	public void setMaxSpeed(double maxSpeed) {
 		this.maxSpeed = maxSpeed;
 	}
+
+	/**
+	 * Sets whether this behaviour believes if the upKey is pressed.
+	 * This should be used for testing purposes only.
+	 * 
+	 * @param upPressed
+	 * 		Whether this behaviour believes that the upKey is pressed.
+	 */
+	public void setUpPressed(boolean upPressed) {
+		this.upPressed = upPressed;
+	}
+
+	/**
+	 * Sets whether this behaviour believes if the downKey is pressed.
+	 * This should be used for testing purposes only.
+	 * 
+	 * @param downPressed
+	 * 		Whether this behaviour believes that the downKey is pressed.
+	 */
+	public void setDownPressed(boolean downPressed) {
+		this.downPressed = downPressed;
+	}
+
+	/**
+	 * Sets whether this behaviour believes if the leftKey is pressed.
+	 * This should be used for testing purposes only.
+	 * 
+	 * @param leftPressed
+	 * 		Whether this behaviour believes that the leftKey is pressed.
+	 */
+	public void setLeftPressed(boolean leftPressed) {
+		this.leftPressed = leftPressed;
+	}
+
+	/**
+	 * Sets whether this behaviour believes if the rightKey is pressed.
+	 * This should be used for testing purposes only.
+	 * 
+	 * @param rightPressed
+	 * 		Whether this behaviour believes that the rightKey is pressed.
+	 */
+	public void setRightPressed(boolean rightPressed) {
+		this.rightPressed = rightPressed;
+	}
+	
+	/**
+	 * Sets the speedVector of this behaviour. Should be
+	 * used for testing purposes only.
+	 * 
+	 * @param speedVector
+	 * 		The speedVector of this behaviour.
+	 */
+	public void setSpeedVector(Vec2d speedVector) {
+		this.vx = speedVector.x;
+		this.vy = speedVector.y;
+	}
 }
