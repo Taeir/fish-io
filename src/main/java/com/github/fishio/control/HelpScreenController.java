@@ -1,8 +1,10 @@
 package com.github.fishio.control;
 
 import java.util.HashMap;
+
 import com.github.fishio.Preloader;
 import com.github.fishio.Vec2d;
+import com.github.fishio.audio.AudioEngine;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
@@ -87,6 +89,7 @@ public class HelpScreenController implements ScreenController {
 	 */
 	@FXML
 	public void backToMenu() {
+		AudioEngine.getInstance().playEffect("button");
 		log.log(LogLevel.INFO, "Player Pressed the back to menu Button.");
 		Preloader.switchTo("mainMenu", 400);
 	}

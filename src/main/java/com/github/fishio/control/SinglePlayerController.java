@@ -142,6 +142,8 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void onPause(ActionEvent event) {
+		AudioEngine.getInstance().playEffect("button");
+		
 		GameThread gameThread = pf.getGameThread();
 		if (gameThread.isRunning()) {
 			try {
@@ -260,6 +262,8 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void backToMenu() {
+		AudioEngine.getInstance().playEffect("button");
+		
 		pf.stopGame();
 		pf.clear();
 		
@@ -272,6 +276,12 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void revive() {
+		AudioEngine.getInstance().playEffect("button");
+		
+		//Reset the pause button
+		getBtnPause().setText(PAUSE_TEXT);
+		getBtnPause().setDisable(false);
+		
 		//Remove all enemies.
 		pf.clearEnemies();
 		
@@ -293,6 +303,8 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void restartGame() {
+		AudioEngine.getInstance().playEffect("button");
+		
 		//Reset the pause button
 		getBtnPause().setText(PAUSE_TEXT);
 		getBtnPause().setDisable(false);
