@@ -5,6 +5,8 @@ import javafx.scene.image.Image;
 import com.github.fishio.ICollisionArea;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
+import com.github.fishio.behaviours.IBehaviour;
+import com.github.fishio.behaviours.KeyListenerBehaviour;
 
 /**
  * PuSuperSpeed is a PowerUp where the effect is
@@ -49,8 +51,14 @@ public class PuSuperSpeed extends DurationPowerUp {
 	public void startEffect() {
 		PlayerFish pf = super.getTarget();
 		
-		pf.setAcceleration(pf.getAcceleration() * ACCELERATION_FACTOR);
-		pf.setMaxSpeed(pf.getMaxSpeed() * MAX_SPEED_FACTOR);
+		IBehaviour behaviour = pf.getBehaviour();
+		if (!(behaviour instanceof KeyListenerBehaviour)) {
+			return;
+		}
+		KeyListenerBehaviour keyBehaviour = (KeyListenerBehaviour) behaviour;
+		
+		keyBehaviour.setAcceleration(keyBehaviour.getAcceleration() * ACCELERATION_FACTOR);
+		keyBehaviour.setMaxSpeed(keyBehaviour.getMaxSpeed() * MAX_SPEED_FACTOR);
 	}
 
 	@Override
@@ -67,8 +75,14 @@ public class PuSuperSpeed extends DurationPowerUp {
 	public void endEffect() {
 		PlayerFish pf = super.getTarget();
 		
-		pf.setAcceleration(pf.getAcceleration() / ACCELERATION_FACTOR);
-		pf.setMaxSpeed(pf.getMaxSpeed() / MAX_SPEED_FACTOR);
+		IBehaviour behaviour = pf.getBehaviour();
+		if (!(behaviour instanceof KeyListenerBehaviour)) {
+			return;
+		}
+		KeyListenerBehaviour keyBehaviour = (KeyListenerBehaviour) behaviour;
+		
+		keyBehaviour.setAcceleration(keyBehaviour.getAcceleration() / ACCELERATION_FACTOR);
+		keyBehaviour.setMaxSpeed(keyBehaviour.getMaxSpeed() / MAX_SPEED_FACTOR);
 	}
 
 	@Override
