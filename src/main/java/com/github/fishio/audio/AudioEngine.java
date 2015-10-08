@@ -15,6 +15,7 @@ import javax.sound.sampled.LineUnavailableException;
 
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
+import com.github.fishio.settings.Settings;
 
 /**
  * Singleton class for managing playing audio.
@@ -38,9 +39,7 @@ public final class AudioEngine {
 	private int backgroundNr = -1;
 	private SimpleBooleanProperty musicRunningProperty = new SimpleBooleanProperty();
 	
-	private SimpleDoubleProperty masterVolumeProperty = new SimpleDoubleProperty(1.0);
-	private SimpleDoubleProperty musicVolumeProperty = new SimpleDoubleProperty(0.8);
-	private SimpleDoubleProperty effectsVolumeProperty = new SimpleDoubleProperty(1.0);
+	private Settings settings = Settings.getInstance();
 	
 	private AudioEngine() {
 		music = AudioLoader.loadMusicAsynchronous();
@@ -60,7 +59,7 @@ public final class AudioEngine {
 	 * 		the master volume.
 	 */
 	public double getMasterVolume() {
-		return masterVolumeProperty.doubleValue();
+		return getMasterVolumeProperty().doubleValue();
 	}
 	
 	/**
@@ -68,7 +67,7 @@ public final class AudioEngine {
 	 * 		the music volume (already multiplied with the master volume).
 	 */
 	public double getMusicVolume() {
-		return getMasterVolume() * musicVolumeProperty.doubleValue();
+		return getMasterVolume() * getMusicVolumeProperty().doubleValue();
 	}
 	
 	/**
@@ -76,28 +75,28 @@ public final class AudioEngine {
 	 * 		the effects volume (already multiplied with the master volume).
 	 */
 	public double getEffectsVolume() {
-		return getMasterVolume() * effectsVolumeProperty.doubleValue();
+		return getMasterVolume() * getEffectsVolumeProperty().doubleValue();
 	}
 	
 	/**
 	 * @return the masterVolume Property
 	 */
 	public SimpleDoubleProperty getMasterVolumeProperty() {
-		return masterVolumeProperty;
+		return settings.getSliderProperty("MASTER_VOLUME");
 	}
 	
 	/**
 	 * @return the musicVolume Property
 	 */
 	public SimpleDoubleProperty getMusicVolumeProperty() {
-		return musicVolumeProperty;
+		return settings.getSliderProperty("MUSIC_VOLUME");
 	}
 	
 	/**
 	 * @return the effectsVolume Property
 	 */
 	public SimpleDoubleProperty getEffectsVolumeProperty() {
-		return effectsVolumeProperty;
+		return settings.getSliderProperty("EFECTS_VOLUME");
 	}
 	
 	/**
@@ -115,13 +114,13 @@ public final class AudioEngine {
 		listeners.put(listener, cl);
 		
 		if (effect) {
-			effectsVolumeProperty.addListener((obs, oldV, newV) -> listener.changed());
+			getEffectsVolumeProperty().addListener((obs, oldV, newV) -> listener.changed());
 		} else {
-			musicVolumeProperty.addListener((obs, oldV, newV) -> listener.changed());
+			getMusicVolumeProperty().addListener((obs, oldV, newV) -> listener.changed());
 		}
 		
 		//Also add the listener to the master
-		masterVolumeProperty.addListener((obs, oldV, newV) -> listener.changed());
+		getMasterVolumeProperty().addListener((obs, oldV, newV) -> listener.changed());
 	}
 	
 	/**
@@ -134,9 +133,9 @@ public final class AudioEngine {
 		ChangeListener<Number> cl = listeners.remove(listener);
 		
 		if (cl != null) {
-			effectsVolumeProperty.removeListener(cl);
-			musicVolumeProperty.removeListener(cl);
-			masterVolumeProperty.removeListener(cl);
+			getEffectsVolumeProperty().removeListener(cl);
+			getMusicVolumeProperty().removeListener(cl);
+			getMasterVolumeProperty().removeListener(cl);
 		}
 	}
 	
