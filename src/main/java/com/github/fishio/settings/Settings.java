@@ -430,4 +430,12 @@ public final class Settings {
 		}
 		return res;
 	}
+
+	/**
+	 * @return
+	 * 		all the slider settings stored.
+	 */
+	public Set<String> getSliderSettings() {
+		return sliderSettings.keySet();
+	}
 }
