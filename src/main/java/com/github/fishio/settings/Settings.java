@@ -22,7 +22,7 @@ import com.github.fishio.logging.LogLevel;
 /**
  * Data class with all the settings.
  * 
- * When the game stops working after an addition to the settings, simply remove the settings.cfg file
+ * When the game stops working after an addition to the settings, simply remove the settings.yml file
  */
 public final class Settings {
 	private static final Settings INSTANCE = new Settings();
@@ -32,6 +32,7 @@ public final class Settings {
 	private HashMap<String, SimpleDoubleProperty> doubleSettings = new HashMap<String, SimpleDoubleProperty>();
 	private HashMap<String, SimpleIntegerProperty> integerSettings = new HashMap<String, SimpleIntegerProperty>();
 	private HashMap<String, SimpleBooleanProperty> booleanSettings = new HashMap<String, SimpleBooleanProperty>();
+	private HashMap<String, SimpleDoubleProperty> sliderSettings = new HashMap<String, SimpleDoubleProperty>();
 	private HashMap<String, KeyCode> keySettings = new HashMap<String, KeyCode>();
 	
 	private HashMap<String, String> descriptions = new HashMap<String, String>();
@@ -47,7 +48,7 @@ public final class Settings {
 				loadSettings();
 			}
 		} catch (IOException e) {
-			log.log(LogLevel.ERROR, "Error creating setting file settings.cfg!");
+			log.log(LogLevel.ERROR, "Error creating setting file settings.yml!");
 		}
 	}
 	
@@ -102,6 +103,11 @@ public final class Settings {
 		keySettings.put("SWIM_LEFT", KeyCode.LEFT);
 		keySettings.put("SWIM_RIGHT", KeyCode.RIGHT);
 		
+		//slider values
+		sliderSettings.put("MASTER_VOLUME", new SimpleDoubleProperty(1.0));
+		sliderSettings.put("MUSIC_VOLUME", new SimpleDoubleProperty(0.8));
+		sliderSettings.put("EFFECTS_VOLUME", new SimpleDoubleProperty(1.0));
+		
 		save();		
 	}
 	
@@ -111,6 +117,23 @@ public final class Settings {
 	 */
 	public static Settings getInstance() {
 		return INSTANCE;
+	}
+	
+
+	/**
+	 * Get the SimpleDoubleProperty of the specified setting.
+	 * @param setting
+	 * 		setting to get the value for.
+	 * @return
+	 * 		a SimpleDoubleProperty with the value of the setting or NaN if the setting is not found.
+	 */
+	public SimpleDoubleProperty getSliderProperty(String setting) {
+		SimpleDoubleProperty s = sliderSettings.get(setting);
+		if (s == null) {
+			log.log(LogLevel.ERROR, "Setting '" + setting + "' not found!");
+			return new SimpleDoubleProperty(Double.NaN);
+		}		
+		return s;
 	}
 	
 	/**
@@ -188,10 +211,21 @@ public final class Settings {
 	 * @param setting
 	 * 		The setting to get the value of.
 	 * @return
-	 * 		The value of the setting or NaN if the setting is not found.
+	 * 		The value of the setting or Integer.MIN_VALUE if the setting is not found.
 	 */
 	public int getInteger(String setting) {
 		return getIntegerProperty(setting).getValue().intValue();
+	}
+	
+	/**
+	 * Get the value of the specified setting.
+	 * @param setting
+	 * 		The setting to get the value of.
+	 * @return
+	 * 		The value of the setting or NaN if the setting is not found.
+	 */
+	public double getSlider(String setting) {
+		return getSliderProperty(setting).getValue().doubleValue();
 	}
 	
 	/**
@@ -214,6 +248,18 @@ public final class Settings {
 	 */
 	public void setDouble(String setting, double newValue) {
 		getDoubleProperty(setting).setValue(newValue);
+		log.log(LogLevel.DEBUG, setting + " changed to " + newValue);
+	}
+	
+	/**
+	 * Set the value of a setting.
+	 * @param setting
+	 * 		the setting to set the new value for.
+	 * @param newValue
+	 * 		The new value for the setting.
+	 */
+	public void setSlider(String setting, double newValue) {
+		getSliderProperty(setting).setValue(newValue);
 		log.log(LogLevel.DEBUG, setting + " changed to " + newValue);
 	}
 	
@@ -280,8 +326,14 @@ public final class Settings {
 		    	KeyCode value = KeyCode.getKeyCode(object.get(key));
 		    	keySettings.put(key, value);
 		    }
+		    
+		    object = (Map<String, String>) reader.read();
+		    for (String key : object.keySet()) {
+		    	double value = Double.valueOf(object.get(key));
+		    	sliderSettings.put(key, new SimpleDoubleProperty(value));
+		    }
 		} catch (IOException e) {
-			log.log(LogLevel.ERROR, "Error reading settings.cfg!");
+			log.log(LogLevel.ERROR, "Error reading settings.yml!");
 			e.printStackTrace();
 		}
 	}
@@ -316,6 +368,14 @@ public final class Settings {
 			
 			for (String key : keySettings.keySet()) {
 				bw.write(key + ": " + keySettings.get(key).getName());
+				bw.newLine();
+			}
+			
+			bw.write("---");
+			bw.newLine();
+			
+			for (String key : sliderSettings.keySet()) {
+				bw.write(key + ": " + sliderSettings.get(key).getValue());
 				bw.newLine();
 			}
 			
@@ -369,5 +429,13 @@ public final class Settings {
 			return "No description available";
 		}
 		return res;
+	}
+
+	/**
+	 * @return
+	 * 		all the slider settings stored.
+	 */
+	public Set<String> getSliderSettings() {
+		return sliderSettings.keySet();
 	}
 }

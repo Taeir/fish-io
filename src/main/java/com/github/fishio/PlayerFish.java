@@ -3,47 +3,32 @@ package com.github.fishio;
 import com.github.fishio.achievements.State;
 import com.github.fishio.achievements.Subject;
 import com.github.fishio.settings.Settings;
+import com.github.fishio.behaviours.IBehaviour;
+import com.github.fishio.behaviours.KeyListenerBehaviour;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
  * Represents a fish that the user can control using
  * the keyboard.
  */
-public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
-
-	private double vx;
-	private double vy;
-
+public class PlayerFish extends Entity implements IEatable, IPositional, Subject {
+	
+	private static final double FISH_ACCELERATION = 0.1;
+	
 	private Settings settings = Settings.getInstance();
-	/**
-	 * These factors have values for whether each of the arrow keys is pressed.
-	 */
-	private boolean upPressed;
-	private boolean downPressed;
-	private boolean leftPressed;
-	private boolean rightPressed;
-
 	private Image sprite;
 
-	private SimpleIntegerProperty score = new SimpleIntegerProperty(0);
-
-	/**
-	 * The speed at which the speed of the fish increases /
-	 * decreases depending on what keys are pressed by the user.
-	 */
-	
-	
+	private SimpleIntegerProperty score = new SimpleIntegerProperty(0);	
 	private SimpleIntegerProperty lives = new SimpleIntegerProperty(settings.getInteger("START_LIVES"));
 	
 	private long invincible;
-	private double maxSpeed = settings.getDouble("MAX_PLAYER_SPEED");
-	private double acceleration = 0.1;
+	
+	private IBehaviour behaviour;
 
 	/**
 	 * Creates the Player fish which the user will be able to control.
@@ -59,202 +44,14 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 		super(ca);		
 
 		this.sprite = sprite;
-
-		stage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-			KeyCode pressedKey = event.getCode();
-			if (pressedKey == settings.getKeyCode("SWIM_UP")) {
-				upPressed = true;
-			} else if (pressedKey == settings.getKeyCode("SWIM_DOWN")) {
-				downPressed = true;
-			} else if (pressedKey == settings.getKeyCode("SWIM_LEFT")) {
-				leftPressed = true;
-			} else if (pressedKey == settings.getKeyCode("SWIM_RIGHT")) {
-				rightPressed = true;
-			}
-		});
-
-		stage.addEventHandler(KeyEvent.KEY_RELEASED, event -> {
-			KeyCode releasedKey = event.getCode();
-			if (releasedKey == settings.getKeyCode("SWIM_UP")) {
-				upPressed = false;
-			} else if (releasedKey == settings.getKeyCode("SWIM_DOWN")) {
-				downPressed = false;
-			} else if (releasedKey == settings.getKeyCode("SWIM_LEFT")) {
-				leftPressed = false;
-			} else if (releasedKey == settings.getKeyCode("SWIM_RIGHT")) {
-				rightPressed = false;
-			}
-		});
-	}
-
-	/**
-	 * Increases or decreases the speed of the fish in the
-	 * horizontal direction, depending on which keys are currently
-	 * pressed by the user.
-	 */
-	public void adjustXSpeed() {
-		if (leftPressed && -vx < maxSpeed) {
-			vx -= acceleration;
-		}
-		if (rightPressed && vx < maxSpeed) {
-			vx += acceleration;
-		}
-
-		if (vx < 0 && (!leftPressed || rightPressed)) {
-			vx += acceleration;
-		} else if (vx > 0 && (!rightPressed || leftPressed)) {
-			vx -= acceleration;
-		}
-
-		if (vx < 0.1 && vx > -0.1) {
-			vx = 0;	// stop if speed is too slow
-		}
-	}
-
-	/**
-	 * Increases or decreases the speed of the fish in the
-	 * vertical direction, depending on which keys are currently
-	 * pressed by the user.
-	 */
-	public void adjustYSpeed() {
-		if (downPressed && -vy < maxSpeed) {
-			vy -= acceleration;
-		}
-
-		if (upPressed && vy < maxSpeed) {
-			vy += acceleration;
-		}
-
-		if (vy < 0 && (!downPressed || upPressed)) {
-			vy += acceleration;
-		} else if (vy > 0 && (!upPressed || downPressed)) {
-			vy -= acceleration;
-		}
-
-		if (vy < 0.1 && vy > -0.1) {
-			vy = 0;	// stop if speed is too slow
-		}
-	}
-
-	/**
-	 * Gives the horizontal speed of the Player Fish.
-	 * 
-	 * @return the horizontal speed of the PlayerFish. A negative speed means
-	 *         the fish is going left.
-	 */
-	public double getSpeedX() {
-		return vx;
-	}
-
-	/**
-	 * Gives the vertical speed of the Player Fish.
-	 * 
-	 * @return the vertical speed of the PlayerFish. A negative speed means the
-	 *         fish is going down.
-	 */
-	public double getSpeedY() {
-		return vy;
-	}
-
-	/**
-	 * Gives the acceleration the Player Fish has.
-	 * 
-	 * @return the acceleration of the fish.
-	 */
-	public double getAcceleration() {
-		return acceleration;
-	}
-	
-	/**
-	 * Sets the acceleration of this PlayerFish.
-	 * 
-	 * @param acceleration
-	 * 		The new acceleration of this PlayerFish
-	 */
-	public void setAcceleration(double acceleration) {
-		this.acceleration = acceleration;
-	}
-	
-	/**
-	 * @return
-	 * 		the maximum speed of this PlayerFish
-	 */
-	public double getMaxSpeed() {
-		return maxSpeed;
-	}
-	
-	/**
-	 * Sets the maximum speed of this PlayerFish.
-	 * 
-	 * @param maxSpeed
-	 * 		The new maximum speed of this PlayerFish.
-	 */
-	public void setMaxSpeed(double maxSpeed) {
-		this.maxSpeed = maxSpeed;
-	}
-
-	/**
-	 * Sets the speed of the Player Fish in the horizontal direction.
-	 * 
-	 * @param speedX
-	 *            the speed to set
-	 */
-	public void setSpeedX(double speedX) {
-		this.vx = speedX;
-	}
-
-	/**
-	 * Sets the speed of the PlayerFish in the vertical direction.
-	 * 
-	 * @param speedY
-	 * 		the speed to set
-	 */
-	public void setSpeedY(double speedY) {
-		this.vy = speedY;
-	}
-
-	/**
-	 * Sets whether the class believes if the 
-	 * up key is pressed or not. 
-	 * 
-	 * @param upPressed
-	 * 		Whether the up key is pressed or not.
-	 */
-	public void setUpPressed(boolean upPressed) {
-		this.upPressed = upPressed;
-	}
-
-	/**
-	 * Sets whether the class believes if the 
-	 * down key is pressed or not. 
-	 * 
-	 * @param downPressed
-	 * 		Whether the down key is pressed or not.
-	 */
-	public void setDownPressed(boolean downPressed) {
-		this.downPressed = downPressed;
-	}
-
-	/**
-	 * Sets whether the class believes if the 
-	 * left key is pressed or not. 
-	 * 
-	 * @param leftPressed
-	 * 		Whether the left key is pressed or not.
-	 */
-	public void setLeftPressed(boolean leftPressed) {
-		this.leftPressed = leftPressed;
-	}
-
-	/**
-	 * Sets whether the class believes if the 
-	 * right key is pressed or not. 
-	 * 
-	 * @param rightPressed
-	 * 		Whether the right key is pressed or not.
-	 */
-	public void setRightPressed(boolean rightPressed) {
-		this.rightPressed = rightPressed;
+		double maxSpeed = settings.getDouble("MAX_PLAYER_SPEED");
+		double acceleration = FISH_ACCELERATION;
+		KeyCode keyUp = settings.getKeyCode("SWIM_UP");
+		KeyCode keyDown = settings.getKeyCode("SWIM_DOWN");
+		KeyCode keyLeft = settings.getKeyCode("SWIM_LEFT");
+		KeyCode keyRight = settings.getKeyCode("SWIM_RIGHT");
+		this.behaviour = new KeyListenerBehaviour(stage, keyUp, keyDown, keyLeft, keyRight,
+				acceleration, maxSpeed);
 	}
 
 	/**
@@ -264,23 +61,6 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 	 */
 	public int getGrowthSpeed() {
 		return settings.getInteger("GROWTH_SPEED");
-	}
-
-	@Override
-	public Vec2d getSpeedVector() {
-		return new Vec2d(getSpeedX(), getSpeedY());
-	}
-
-	@Override
-	public void setSpeedVector(Vec2d vector) {
-		vx = vector.x;
-		vy = vector.y;
-	}
-
-	@Override
-	public void preMove() {
-		adjustXSpeed();
-		adjustYSpeed();
 	}
 
 	@Override
@@ -365,14 +145,14 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 		if (isDead()) {
 			return;
 		}
-		getBoundingArea().setRotation(this); //update rotation;
+		getBoundingArea().setRotation(behaviour); //update rotation;
 
-		if (vx > 0) {
+		if (behaviour.getSpeedVector().x > 0) {
 			drawRotatedImage(gc, sprite, getBoundingArea(), false);
-		} else if (vx < 0) {
+		} else if (behaviour.getSpeedVector().x < 0) {
 			drawRotatedImage(gc, sprite, getBoundingArea(), true);
 		} else {
-			drawRotatedImage(gc, sprite, getBoundingArea(), vy < 0);
+			drawRotatedImage(gc, sprite, getBoundingArea(), behaviour.getSpeedVector().y < 0);
 		}
 	}
 	
@@ -474,6 +254,16 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 	@Override
 	public double getSize() {
 		return getBoundingArea().getSize();
+	}
+
+	@Override
+	public IBehaviour getBehaviour() {
+		return behaviour;
+	}
+
+	@Override
+	public void setBehaviour(IBehaviour behaviour) {
+		this.behaviour = behaviour;
 	}
 
 }

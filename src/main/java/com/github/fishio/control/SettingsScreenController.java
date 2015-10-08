@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
@@ -30,7 +31,7 @@ public class SettingsScreenController implements ScreenController {
 	private GridPane gridPane;
 	
 	@Override
-	public void init(Scene scene) { }
+	public void init(Scene scene) {	}
 
 	@Override
 	public void onSwitchTo() {
@@ -38,9 +39,41 @@ public class SettingsScreenController implements ScreenController {
 		int row = showDoubleSettings(0);
 		row = showIntegerSettings(row);
 		row = showBooleanSettings(row);
+		row = showSliderSettings(row);
 		showKeySettings(row);
 	}
 	
+	/** 
+	 * show all the slider settings.
+	 * @param row
+	 * 		current row in the table
+	 * @return
+	 * 		current row in the table
+	 */
+	private int showSliderSettings(int row) {
+		for (String key : settings.getSliderSettings()) {
+			Label label = new Label(key);
+			Slider slider = new Slider();
+			double value = settings.getSlider(key);
+			Label valueLabel = new Label(Math.round(value * 100) + "%");
+			slider.setValue(100 * value);
+			slider.setMaxWidth(200);
+			slider.setMin(0);
+			slider.setMax(100);
+			slider.valueProperty().addListener(e -> {
+				settings.setSlider(key, slider.getValue() / 100);
+				valueLabel.setText(Math.round(slider.getValue()) + "%");
+			});
+			HBox box = new HBox();
+			box.setSpacing(10);
+			box.getChildren().addAll(slider, valueLabel);
+			gridPane.add(label, 0, row);
+			gridPane.add(box, 1, row);
+			row++;
+		}
+		return row;
+	}
+
 	/** 
 	 * show all the key settings for the key bindings.
 	 * @param row
