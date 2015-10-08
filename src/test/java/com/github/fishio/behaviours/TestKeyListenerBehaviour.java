@@ -65,11 +65,17 @@ public class TestKeyListenerBehaviour {
 		assertEquals(0.2, behaviour.getAcceleration(), 0.0D);
 	}
 	
+	/**
+	 * Tests the getMaxSpeed method.
+	 */
 	@Test
 	public void testGetMaxSpeed() {
 		assertEquals(4.0, behaviour.getMaxSpeed(), 0.0D);
 	}
 	
+	/**
+	 * Tests the setMaxSpeed method.
+	 */
 	@Test
 	public void testSetMaxSpeed() {
 		behaviour.setMaxSpeed(3.0);
