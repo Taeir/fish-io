@@ -45,7 +45,7 @@ public final class AudioEngine {
 	
 	private SimpleDoubleProperty masterVolumeProperty = new SimpleDoubleProperty(1.0);
 	private SimpleDoubleProperty musicVolumeProperty = new SimpleDoubleProperty(0.8);
-	private SimpleDoubleProperty effectsVolumeProperty = new SimpleDoubleProperty(1.0);
+	private SimpleDoubleProperty effectsVolumeProperty = new SimpleDoubleProperty(0.8);
 	
 	private SimpleIntegerProperty muteStateProperty = new SimpleIntegerProperty(NO_MUTE);
 	
