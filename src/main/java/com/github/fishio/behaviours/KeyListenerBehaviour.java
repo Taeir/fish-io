@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 /**
  * A behaviour that listens for the user pressing keys.
  */
-public class KeyListenerBehaviour implements IBehaviour {
+public class KeyListenerBehaviour implements IMoveBehaviour {
 
 	private double vx;
 	private double vy;

@@ -7,7 +7,7 @@ import com.github.fishio.Entity;
 import com.github.fishio.ICollisionArea;
 import com.github.fishio.PlayingField;
 import com.github.fishio.behaviours.FrozenBehaviour;
-import com.github.fishio.behaviours.IBehaviour;
+import com.github.fishio.behaviours.IMoveBehaviour;
 
 /**
  * A PowerUp with the effect that it freezes all
@@ -22,7 +22,7 @@ public class PuFreeze extends DurationPowerUp {
 	 */
 	private static final int DURATION = 10;
 	
-	private IBehaviour oldBehaviour;
+	private IMoveBehaviour oldBehaviour;
 	
 	/**
 	 * Creates a new PowerUp of the Freeze type.

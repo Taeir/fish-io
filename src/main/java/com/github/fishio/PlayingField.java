@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 
-import com.github.fishio.behaviours.IBehaviour;
+import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.gui.Renderer;
 import com.github.fishio.logging.Log;
@@ -180,7 +180,7 @@ public abstract class PlayingField {
 	 */
 	public void moveMovables() {
 		for (Entity e : entities) {
-			IBehaviour b = e.getBehaviour();
+			IMoveBehaviour b = e.getBehaviour();
 			b.preMove();
 			
 			ICollisionArea box = e.getBoundingArea();

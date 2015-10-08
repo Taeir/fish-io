@@ -7,7 +7,7 @@ import com.github.fishio.Vec2d;
  * A behaviour for entities that can swim in a certain direction,
  * but sometimes slow down in a certain axis, or speed up.
  */
-public class RandomBehaviour implements IBehaviour {
+public class RandomBehaviour implements IMoveBehaviour {
 
 	private double vx;
 	private double vy;

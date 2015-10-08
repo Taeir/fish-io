@@ -5,7 +5,7 @@ import com.github.fishio.Vec2d;
 /**
  * A behaviour for entities that aren't moving.
  */
-public class FrozenBehaviour implements IBehaviour {
+public class FrozenBehaviour implements IMoveBehaviour {
 
 	@Override
 	public Vec2d getSpeedVector() {
