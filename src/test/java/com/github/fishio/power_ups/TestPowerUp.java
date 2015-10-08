@@ -10,7 +10,6 @@ import org.mockito.Mockito;
 
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
-import com.github.fishio.Vec2d;
 
 /**
  * Test class for the PowerUp class.
@@ -57,27 +56,6 @@ public abstract class TestPowerUp {
 		pu.onCollide(pf);
 		
 		Mockito.verify(pu).executeEffect(pf);
-	}
-	
-	/**
-	 * Tests the getSpeedVector method.
-	 */
-	@Test
-	public void testGetSpeedVector() {
-		assertEquals(new Vec2d(PowerUp.DEFAULT_VX, PowerUp.DEFAULT_VY),
-				getPowerUp().getSpeedVector());
-	}
-	
-	/**
-	 * Tests the setSpeedVector method.
-	 */
-	@Test
-	public void testSetSpeedVector() {
-		PowerUp pu = getPowerUp();
-		
-		pu.setSpeedVector(new Vec2d(42, -69));
-		
-		assertEquals(new Vec2d(42, -69), pu.getSpeedVector());
 	}
 	
 	/**
