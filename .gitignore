@@ -13,4 +13,4 @@ Thumbs.db
 # Ignore our logs
 logs/*.txt
 # Ignore the settings
-settings.yaml
+settings.yml

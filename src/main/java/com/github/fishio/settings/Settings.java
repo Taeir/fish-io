@@ -37,7 +37,7 @@ public final class Settings {
 	private HashMap<String, String> descriptions = new HashMap<String, String>();
 	
 	private Settings() {
-		settingsFile = new File("settings.yaml");
+		settingsFile = new File("settings.yml");
 		loadDescriptions();
 		// If file doesn't exists, then create it
 		try {
