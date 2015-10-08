@@ -1,8 +1,6 @@
 package com.github.fishio;
 
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
+import javafx.scene.shape.Rectangle;
 
 import com.github.fishio.behaviours.IBehaviour;
 
@@ -19,25 +17,25 @@ public interface ICollisionArea {
 	 * 		True if they collide, false otherwise.
 	 */
 	default boolean boxIntersects(ICollisionArea other) {
-		Shape rect1 = new Rectangle((int) (getCenterX() - 0.5 * getWidth()), 
-				(int) (getCenterY() - 0.5 * getHeight()), 
-				(int) getWidth(), (int) getHeight());
-		Rectangle rect2 = new Rectangle((int) (other.getCenterX() - 0.5 * other.getWidth()), 
-				(int) (other.getCenterY() - 0.5 * other.getHeight()), 
-				(int) other.getWidth(), (int) other.getHeight());
-
-		AffineTransform t1 = new AffineTransform();
-		AffineTransform t2 = new AffineTransform();
+		Rectangle myBox = getBox();
+		Rectangle otherBox = other.getBox();
 		
-		t1.rotate(Math.toRadians(this.getRotation()), 
-				this.getCenterX(), this.getCenterY()); //rotate self
-		t2.rotate(Math.toRadians(other.getRotation()), 
-				other.getCenterX(), other.getCenterY()); //rotate around other
+		return myBox.intersects(otherBox.getBoundsInLocal());
+	}
+	
+	/**
+	 * @return
+	 * 		a rectangular box around this ICollisionArea.
+	 */
+	default Rectangle getBox() {
+		Rectangle tbr = new Rectangle(
+				getCenterX() - 0.5 * getWidth(),
+				getCenterY() - 0.5 * getHeight(),
+				getWidth(),
+				getHeight());
 		
-		rect1 = t1.createTransformedShape(rect1);
-		rect1 = t2.createTransformedShape(rect1);
-
-		return rect1.intersects(rect2);
+		tbr.setRotate(getRotation());
+		return tbr;
 	}
 	
 	/**
