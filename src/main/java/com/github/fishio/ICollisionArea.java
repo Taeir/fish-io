@@ -20,7 +20,7 @@ public interface ICollisionArea {
 		Rectangle myBox = getBox();
 		Rectangle otherBox = other.getBox();
 		
-		return myBox.intersects(otherBox.getBoundsInLocal());
+		return myBox.intersects(otherBox.getBoundsInParent());
 	}
 	
 	/**
@@ -209,7 +209,7 @@ public interface ICollisionArea {
 	 * 		the largest x coordinate of this ICollisionArea.
 	 */
 	default double getMaxX() {
-		return Math.max(getTopRight().x, getBottomRight().x);
+		return getBox().getBoundsInParent().getMaxX();
 	}
 	
 	/**
@@ -217,7 +217,7 @@ public interface ICollisionArea {
 	 * 		the smallest x coordinate of this ICollisionArea.
 	 */
 	default double getMinX() {
-		return Math.min(getTopLeft().x, getBottomLeft().x);
+		return getBox().getBoundsInParent().getMinX();
 	}
 	
 	/**
@@ -225,7 +225,7 @@ public interface ICollisionArea {
 	 * 		the largest y coordinate of this ICollisionArea.
 	 */
 	default double getMaxY() {
-		return Math.max(getBottomLeft().y, getBottomRight().y);
+		return getBox().getBoundsInParent().getMaxY();
 	}
 	
 	/**
@@ -233,6 +233,6 @@ public interface ICollisionArea {
 	 * 		the smallest y coordinate of this ICollisionArea.
 	 */
 	default double getMinY() {
-		return Math.min(getTopLeft().y, getTopRight().y);
+		return getBox().getBoundsInParent().getMinY();
 	}
 }

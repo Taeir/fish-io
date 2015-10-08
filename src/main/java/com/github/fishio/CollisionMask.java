@@ -180,10 +180,11 @@ public class CollisionMask implements ICollisionArea {
 	 *         the center
 	 */
 	private Vec2d getTLBRCornerOffsets() {
+		
 		double tempX = 0.5 * width;
 		double tempY = 0.5 * height;
 
-		double a = Math.toRadians(rotation);
+		double a = Math.toRadians(rotation % 180);
 		double rx = tempX * Math.cos(a) + tempY * Math.sin(a);
 		double ry = tempX * Math.sin(a) - tempY * Math.cos(a);
 		return new Vec2d(rx, ry);
@@ -209,7 +210,7 @@ public class CollisionMask implements ICollisionArea {
 		double tempX = 0.5 * width;
 		double tempY = 0.5 * height;
 
-		double a = Math.toRadians(rotation);
+		double a = Math.toRadians(rotation % 180);
 		double rx = tempX * Math.cos(a) - tempY * Math.sin(a);
 		double ry = tempX * Math.sin(a) + tempY * Math.cos(a);
 		return new Vec2d(rx, ry);
