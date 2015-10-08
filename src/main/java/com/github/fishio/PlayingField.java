@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 
+import com.github.fishio.behaviours.IBehaviour;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.gui.Renderer;
 import com.github.fishio.logging.Log;
@@ -25,7 +26,6 @@ public abstract class PlayingField {
 
 	private ConcurrentLinkedDeque<IDrawable> drawables = new ConcurrentLinkedDeque<>();
 	private ConcurrentLinkedDeque<IDrawable> deadDrawables = new ConcurrentLinkedDeque<>();
-	private ConcurrentLinkedQueue<IMovable> movables = new ConcurrentLinkedQueue<>();
 	private ConcurrentLinkedQueue<Entity> entities = new ConcurrentLinkedQueue<>();
 	private ConcurrentLinkedQueue<ICollidable> collidables = new ConcurrentLinkedQueue<>();
 	private Log log = Log.getLogger();
@@ -178,17 +178,18 @@ public abstract class PlayingField {
 	 * Moves Movable items.
 	 */
 	public void moveMovables() {
-		for (IMovable m : movables) {
-			m.preMove();
+		for (Entity e : entities) {
+			IBehaviour b = e.getBehaviour();
+			b.preMove();
 			
-			ICollisionArea box = m.getBoundingArea();
-			if (hitsWall(m, box)) {
-				m.hitWall();
+			ICollisionArea box = e.getBoundingArea();
+			if (hitsWall(e, box)) {
+				e.hitWall();
 			}
 
-			box.move(m.getSpeedVector());
+			box.move(b.getSpeedVector());
 
-			if (!m.canMoveThroughWall()) {
+			if (!e.canMoveThroughWall()) {
 				moveWithinScreen(box);
 			}
 		}
@@ -205,9 +206,9 @@ public abstract class PlayingField {
 	 * @return
 	 * 		true if the given Movable with the given box hits a wall.
 	 */
-	private boolean hitsWall(IMovable m, ICollisionArea box) {
+	private boolean hitsWall(Entity e, ICollisionArea box) {
 		// prevent playerfish from leaving the screen
-		if (m instanceof PlayerFish) {	
+		if (e instanceof PlayerFish) {	
 			if (box.getMaxX() >= getWidth()
 					|| box.getMinX() <= 0
 					|| box.getMaxY() >= getHeigth()
@@ -330,10 +331,6 @@ public abstract class PlayingField {
 			drawables.addFirst((IDrawable) o);
 		}
 
-		if (o instanceof IMovable) {
-			movables.add((IMovable) o);
-		}
-
 		if (o instanceof Entity) {
 			entities.add((Entity) o);
 		}
@@ -352,10 +349,6 @@ public abstract class PlayingField {
 	public void remove(Object o) {
 		if (o instanceof IDrawable) {
 			drawables.remove(o);
-		}
-
-		if (o instanceof IMovable) {
-			movables.remove(o);
 		}
 
 		if (o instanceof Entity) {
@@ -382,7 +375,6 @@ public abstract class PlayingField {
 
 		entities.clear();
 		drawables.clear();
-		movables.clear();
 		collidables.clear();
 		
 		enemyCount = 0;
@@ -410,7 +402,6 @@ public abstract class PlayingField {
 		
 		entities.clear();
 		drawables.clear();
-		movables.clear();
 		collidables.clear();
 		
 		enemyCount = 0;

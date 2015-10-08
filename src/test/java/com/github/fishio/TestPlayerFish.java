@@ -52,48 +52,6 @@ public class TestPlayerFish extends TestIEatable {
 		Mockito.verify(pf).kill();
 	}
 	
-	//TODO test moving with keys
-	
-	/**
-	 * Test if the fish swims up when up is pressed.
-	 */
-	@Test
-	public void testSwimUp() {
-		pf.setUpPressed(true);
-		pf.adjustYSpeed();
-		assertTrue(pf.getSpeedVector().y > 0);
-	}
-	
-	/**
-	 * Test if the fish swims down when down is pressed.
-	 */
-	@Test
-	public void testSwimDown() {
-		pf.setDownPressed(true);
-		pf.adjustYSpeed();
-		assertTrue(pf.getSpeedVector().y < 0);
-	}
-	
-	/**
-	 * Test if the fish swims right when right is pressed.
-	 */
-	@Test
-	public void testSwimRight() {
-		pf.setRightPressed(true);
-		pf.adjustXSpeed();
-		assertTrue(pf.getSpeedVector().x > 0);
-	}
-	
-	/**
-	 * Test if the fish swims left when left is pressed.
-	 */
-	@Test
-	public void testSwimLeft() {
-		pf.setLeftPressed(true);
-		pf.adjustXSpeed();
-		assertTrue(pf.getSpeedVector().x < 0);
-	}
-	
 	/**
 	 * Tests {@link PlayerFish#setDead()}.
 	 */
@@ -191,61 +149,6 @@ public class TestPlayerFish extends TestIEatable {
 		when(other.getSize()).thenReturn(4.0);
 		pf.setInvincible(-1);
 		assertFalse(pf.canBeEatenBy(other));
-	}
-	
-	/**
-	 * Tests {@link PlayerFish#getSpeedVector()}.
-	 */
-	@Test
-	public void testGetSpeedVector() {
-		pf.setSpeedX(3.0);
-		pf.setSpeedY(5.0);
-		
-		assertEquals(new Vec2d(3.0, 5.0), pf.getSpeedVector());
-	}
-	
-	/**
-	 * Tests the getter and setter for acceleration.
-	 */
-	@Test
-	public void testGetSetAcceleration() {
-		assertEquals(0.1, pf.getAcceleration(), 0.0D);
-		
-		pf.setAcceleration(0.2);
-		
-		assertEquals(0.2, pf.getAcceleration(), 0.0D);
-	}
-	
-	/**
-	 * Tests the getter and setter for maxSpeed.
-	 */
-	@Test
-	public void testGetSetMaxSpeed() {
-		assertEquals(4, pf.getMaxSpeed(), 0.0D);
-		
-		pf.setMaxSpeed(5);
-		assertEquals(5, pf.getMaxSpeed(), 0.0D);
-	}
-	
-	/**
-	 * Tests {@link PlayerFish#setSpeedVector(Vec2d)}.
-	 */
-	@Test
-	public void testSetSpeedVector() {
-		pf.setSpeedVector(new Vec2d(3.0, 5.0));
-		
-		assertEquals(new Vec2d(3.0, 5.0), pf.getSpeedVector());
-	}
-	
-	/**
-	 * Tests {@link PlayerFish#preMove()}.
-	 */
-	@Test
-	public void testPreMove() {
-		pf.preMove();
-		
-		Mockito.verify(pf).adjustXSpeed();
-		Mockito.verify(pf).adjustYSpeed();
 	}
 	
 	/**

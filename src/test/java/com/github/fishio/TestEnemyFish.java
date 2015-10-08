@@ -9,14 +9,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.github.fishio.settings.Settings;
-
 /**
  * This class tests the EnemyFish class.
  */
 public class TestEnemyFish extends TestIEatable {
 	
-	private Settings settings = Settings.getInstance();
 	private BoundingBox bb1;
 	private EnemyFish enemy1;
 	
@@ -28,29 +25,6 @@ public class TestEnemyFish extends TestIEatable {
 	public void createfishbefore() {
 		bb1 = new BoundingBox(1.0, 2.0, 3.0, 4.0);
 		enemy1 = Mockito.spy(new EnemyFish(bb1, null, 3.0, 5.0));
-	}
-	
-	/**
-	 * Test for {@link EnemyFish#getSpeedVector()}.
-	 *
-	 * 
-	 */
-	@Test
-	public void testgetSpeedVector() {
-		Vec2d vec1 = new Vec2d(3.0, 5.0);
-		Vec2d vec2 = enemy1.getSpeedVector();
-		assertEquals(vec1, vec2);
-	}
-	
-	/**
-	 * Test for {@link EnemyFish#setSpeedVector(Vec2d)}.
-	 */
-	@Test
-	public void testsetSpeedVector() {
-		Vec2d vec1 = new Vec2d(5.0, 7.0);
-		enemy1.setSpeedVector(vec1);
-		Vec2d vec2 = enemy1.getSpeedVector();
-		assertEquals(vec1, vec2);
 	}
 	
 	/**
@@ -80,102 +54,6 @@ public class TestEnemyFish extends TestIEatable {
 		assertFalse(enemy1.isDead());
 	}
 	
-	/**
-	 * Test for {@link EnemyFish#limitVx()} with vx > 0 and vx >
-	 * MAX_EFISH_SPEED.
-	 */
-	@Test
-	public void testlimitVx1() {
-		Vec2d vec1 = new Vec2d(settings.getDouble("MAX_EFISH_SPEED") + 1, 2);
-		enemy1.setSpeedVector(vec1);
-		enemy1.limitVx();
-		assertEquals(settings.getDouble("MAX_EFISH_SPEED"), enemy1.getSpeedVector().x, 0.0);
-	}
-	
-	/**
-	 * Test for {@link EnemyFish#limitVx()} with vx &lt; 0 and vx &lt; minus
-	 * MAX_EFISH_SPEED.
-	 */
-	@Test
-	public void testlimitVx2() {
-		Vec2d vec1 = new Vec2d(-settings.getDouble("MAX_EFISH_SPEED") - 1, 2);
-		enemy1.setSpeedVector(vec1);
-		enemy1.limitVx();
-		assertEquals(-settings.getDouble("MAX_EFISH_SPEED"), enemy1.getSpeedVector().x, 0.0);
-	}
-	
-	/**
-	 * Test for {@link EnemyFish#limitVy()} with vy > 0 and vy >
-	 * MIN_EFISH_SPEED.
-	 */
-	@Test
-	public void testlimitVy1() {
-		Vec2d vec1 = new Vec2d(2, settings.getDouble("MAX_EFISH_SPEED") + 1);
-		enemy1.setSpeedVector(vec1);
-		enemy1.limitVy();
-		assertEquals(settings.getDouble("MAX_EFISH_SPEED"), enemy1.getSpeedVector().y, 0.0);
-	}
-	
-	/**
-	 * Test for {@link EnemyFish#limitVy()} with vy &lt; 0 and vy &lt;
-	 * MIN_EFISH_SPEED.
-	 */
-	@Test
-	public void testlimitVy2() {
-		Vec2d vec1 = new Vec2d(2, -settings.getDouble("MAX_EFISH_SPEED") - 1);
-		enemy1.setSpeedVector(vec1);
-		enemy1.limitVy();
-		assertEquals(-settings.getDouble("MAX_EFISH_SPEED"), enemy1.getSpeedVector().y, 0.0);
-	}
-	
-	/**
-	 * Test for {@link EnemyFish#limitSpeed()} with vx and vy > 0 and
-	 * MAX_EFISH_SPEED.
-	 */
-	@Test
-	public void testlimitSpeed1() {
-		Vec2d vec1 = new Vec2d(settings.getDouble("MAX_EFISH_SPEED") + 1, settings.getDouble("MAX_EFISH_SPEED") + 1);
-		enemy1.setSpeedVector(vec1);
-		enemy1.limitSpeed();
-		assertEquals(settings.getDouble("MAX_EFISH_SPEED"), enemy1.getSpeedVector().y, 0.0);
-		assertEquals(settings.getDouble("MAX_EFISH_SPEED"), enemy1.getSpeedVector().x, 0.0);
-	}
-	
-	/**
-	 * Test for {@link EnemyFish#limitSpeed()} with vx and vy &lt; 0 and minus
-	 * MAX_EFISH_SPEED.
-	 */
-	@Test
-	public void testlimitSpeed2() {
-		Vec2d vec1 = new Vec2d(-settings.getDouble("MAX_EFISH_SPEED") - 1, -settings.getDouble("MAX_EFISH_SPEED") - 1);
-		enemy1.setSpeedVector(vec1);
-		enemy1.limitSpeed();
-		assertEquals(-settings.getDouble("MAX_EFISH_SPEED"), enemy1.getSpeedVector().x, 0.0);
-		assertEquals(-settings.getDouble("MAX_EFISH_SPEED"), enemy1.getSpeedVector().y, 0.0);
-	}
-	
-	/**
-	 * Tests whether an EnemyFish moves or not when it has been frozen.
-	 */
-	@Test
-	public void testFrozen() {
-		enemy1.setFrozen(true);
-		enemy1.setSpeedVector(new Vec2d(1, 1));
-		assertEquals(new Vec2d(0, 0), enemy1.getSpeedVector());
-	}
-	
-	/**
-	 * Tests whether an EnemyFish moves or not when it has been frozen
-	 * and then unfrozen again.
-	 */
-	@Test
-	public void testUnFreeze() {
-		enemy1.setFrozen(true);
-		enemy1.setSpeedVector(new Vec2d(1, 1));
-		
-		enemy1.setFrozen(false);
-		assertEquals(new Vec2d(1, 1), enemy1.getSpeedVector());
-	}
 	/**
 	 * Tests {@link EnemyFish#eat()}.
 	 */

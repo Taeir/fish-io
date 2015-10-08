@@ -17,6 +17,8 @@ import com.github.fishio.EnemyFish;
 import com.github.fishio.Entity;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
+import com.github.fishio.behaviours.FrozenBehaviour;
+import com.github.fishio.behaviours.RandomBehaviour;
 import com.github.fishio.SinglePlayerPlayingField;
 import com.github.fishio.game.GameThread;
 
@@ -72,8 +74,8 @@ public class TestPuFreeze extends TestDurationPowerUp {
 		EnemyFish ef2 = (EnemyFish) entities.get(3);
 		
 		//Making sure the EnemyFishes got frozen.
-		verify(ef1).setFrozen(true);
-		verify(ef2).setFrozen(true);
+		verify(ef1).setBehaviour(Mockito.any(FrozenBehaviour.class));
+		verify(ef2).setBehaviour(Mockito.any(FrozenBehaviour.class));
 	}
 
 	@Override
@@ -101,8 +103,8 @@ public class TestPuFreeze extends TestDurationPowerUp {
 		EnemyFish ef2 = (EnemyFish) entities.get(3);
 		
 		//Making sure the EnemyFishes got unfrozen (even though they weren't frozen in the first place).
-		verify(ef1).setFrozen(false);
-		verify(ef2).setFrozen(false);
+		verify(ef1).setBehaviour(Mockito.any(RandomBehaviour.class));
+		verify(ef2).setBehaviour(Mockito.any(RandomBehaviour.class));
 	}
 
 	@Override
