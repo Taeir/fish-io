@@ -43,6 +43,13 @@ public class SettingsScreenController implements ScreenController {
 		showKeySettings(row);
 	}
 	
+	/** 
+	 * show all the slider settings.
+	 * @param row
+	 * 		current row in the table
+	 * @return
+	 * 		current row in the table
+	 */
 	private int showSliderSettings(int row) {
 		for (String key : settings.getSliderSettings()) {
 			Label label = new Label(key);
