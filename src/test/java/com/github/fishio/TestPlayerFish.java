@@ -387,10 +387,10 @@ public class TestPlayerFish extends TestIEatable {
 	 */
 	@Test
 	public void testAddLife2() {
-		pf.livesProperty().set((int) settings.getInteger("MAX_LIVES"));
+		pf.livesProperty().set(settings.getInteger("MAX_LIVES"));
 		pf.addLife();
 		
-		assertEquals((int) settings.getInteger("MAX_LIVES"), pf.getLives());
+		assertEquals(settings.getInteger("MAX_LIVES"), pf.getLives());
 	}
 	
 	/**

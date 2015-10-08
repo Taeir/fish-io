@@ -88,8 +88,8 @@ public abstract class PlayingField {
 	 * 
 	 * @return the width of the field.
 	 */
-	public int getWidth() {
-		return (int) settings.getDouble("SCREEN_WIDTH");
+	public double getWidth() {
+		return settings.getDouble("SCREEN_WIDTH");
 	}
 
 	/**
@@ -97,8 +97,8 @@ public abstract class PlayingField {
 	 * 
 	 * @return the height of the field.
 	 */
-	public int getHeigth() {
-		return (int) settings.getDouble("SCREEN_HEIGHT") - 50;
+	public double getHeigth() {
+		return settings.getDouble("SCREEN_HEIGHT") - 50;
 	}
 
 	/**

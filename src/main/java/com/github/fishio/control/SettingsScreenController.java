@@ -64,7 +64,7 @@ public class SettingsScreenController implements ScreenController {
 					button.setText("Change");
 					value.setText(keyCode.getName());
 					settings.setKey(key, keyCode);
-					button.setOnKeyPressed(empty -> { });
+					button.setOnKeyPressed(null);
 				});
 			});
 			HBox box = new HBox();

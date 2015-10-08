@@ -262,7 +262,7 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 	 * 
 	 * @return The rate at which the PlayerFish grows.
 	 */
-	public double getGrowthSpeed() {
+	public int getGrowthSpeed() {
 		return settings.getInteger("GROWTH_SPEED");
 	}
 
@@ -327,7 +327,7 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 			if (eatable.canBeEatenBy(this)) {
 				eatable.eat();
 				this.addPoints((int) (eatable.getSize() / 200));
-				double dSize = settings.getInteger("GROWTH_SPEED") * eatable.getSize() / getSize();
+				double dSize = getGrowthSpeed() * eatable.getSize() / getSize();
 				getBoundingArea().increaseSize(dSize);	
 				State old = getState();
 				notifyObservers(old, getState(), "EnemyKill");
@@ -388,7 +388,7 @@ public class PlayerFish extends Entity implements IEatable, IMovable, Subject {
 	 * Adds a life.
 	 */
 	public void addLife() {
-		lives.set(Math.min(lives.get() + 1, (int) settings.getInteger("MAX_LIVES")));
+		lives.set(Math.min(lives.get() + 1, settings.getInteger("MAX_LIVES")));
 	}
 	
 	/**

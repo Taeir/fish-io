@@ -110,21 +110,37 @@ public class EnemyFish extends Entity implements IMovable, IEatable {
 	 */
 	public void limitVx() {
 		if (vx > 0) {
-			vx = Math.max(settings.getDouble("MIN_EFISH_SPEED"), Math.min(vx, settings.getDouble("MAX_EFISH_SPEED")));
+			vx = Math.max(getMinSpeed(), Math.min(vx, getMaxSpeed()));
 		} else {
-			vx = Math.min(-settings.getDouble("MIN_EFISH_SPEED"), Math.max(vx, -settings.getDouble("MAX_EFISH_SPEED")));
+			vx = Math.min(-getMinSpeed(), Math.max(vx, -getMaxSpeed()));
 		}
 	}
 	
+	/**
+	 * @return
+	 * 		the maximum fish speed.
+	 */
+	private double getMaxSpeed() {
+		return settings.getDouble("MAX_EFISH_SPEED");
+	}
+
+	/**
+	 * @return
+	 * 		The minimum fish speed.
+	 */
+	private double getMinSpeed() {
+		return settings.getDouble("MIN_EFISH_SPEED");
+	}
+
 	/**
 	 * Limits the vertical (y-directional) speed of the fish to a minimum and
 	 * maximum value. These values are retrieved from the LevelBuilder class.
 	 */
 	public void limitVy() {
 		if (vy > 0) {
-			vy = Math.max(settings.getDouble("MIN_EFISH_SPEED"), Math.min(vy, settings.getDouble("MAX_EFISH_SPEED")));
+			vy = Math.max(getMinSpeed(), Math.min(vy, getMaxSpeed()));
 		} else {
-			vy = Math.min(-settings.getDouble("MIN_EFISH_SPEED"), Math.max(vy, -settings.getDouble("MAX_EFISH_SPEED")));
+			vy = Math.min(-getMinSpeed(), Math.max(vy, -getMaxSpeed()));
 		}
 	}
 	
