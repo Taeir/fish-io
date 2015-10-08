@@ -25,18 +25,19 @@ public class YamlSettingLoader implements SettingLoader {
 	private HashMap<String, SimpleBooleanProperty> booleanSettings;
 	private HashMap<String, KeyCode> keyCodeSettings;
 	private HashMap<String, SimpleDoubleProperty> sliderSettings;
+	
+	private File settingsFile = new File("settings.yml");
 
 	/**
 	 * Constructor for the loader.
 	 * Loads all the settings and stores them.
 	 */
 	public YamlSettingLoader() {
-		File file = new File("settings.yml");
 		// If file doesn't exists, then create it
-		if (!file.exists()) {
-			createSettingsFile(file);				
+		if (!settingsFile.exists()) {
+			createSettingsFile(settingsFile);				
 		} else {
-			try (FileReader fr = new FileReader(file)) {
+			try (FileReader fr = new FileReader(settingsFile)) {
 				doubleSettings = new HashMap<String, SimpleDoubleProperty>();
 				integerSettings = new HashMap<String, SimpleIntegerProperty>();
 				booleanSettings = new HashMap<String, SimpleBooleanProperty>();
@@ -193,5 +194,10 @@ public class YamlSettingLoader implements SettingLoader {
 			return new HashMap<String, String>();
 		}
 		
+	}
+
+	@Override
+	public void setFileName(String name) {
+		settingsFile = new File(name + ".yml");
 	}
 }

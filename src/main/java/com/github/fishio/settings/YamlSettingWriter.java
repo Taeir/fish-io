@@ -26,6 +26,7 @@ public class YamlSettingWriter implements SettingWriter {
 	private HashMap<String, SimpleBooleanProperty> booleanSettings;
 	private HashMap<String, KeyCode> keyCodeSettings;
 	private HashMap<String, SimpleDoubleProperty> sliderSettings;
+	private File settingsFile = new File("settings.yml");
 	
 	/**
 	 * Constructor for the YamlSettingWriter.
@@ -65,16 +66,15 @@ public class YamlSettingWriter implements SettingWriter {
 	
 	@Override
 	public void flush() {
-		File file = new File("settings.yml");
-		if (!file.exists()) {
-			file.getAbsoluteFile().getParentFile().mkdirs();
+		if (!settingsFile.exists()) {
+			settingsFile.getAbsoluteFile().getParentFile().mkdirs();
 			try {
-				file.createNewFile();
+				settingsFile.createNewFile();
 			} catch (IOException e) {
 				Log.getLogger().log(LogLevel.ERROR, "Error creating settings file!");
 			}			
 		} else {
-			try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+			try (BufferedWriter bw = new BufferedWriter(new FileWriter(settingsFile))) {
 				//TODO get yaml writing working
 				for (String key : doubleSettings.keySet()) {
 					bw.write(key + ": " + doubleSettings.get(key).getValue());
@@ -115,5 +115,10 @@ public class YamlSettingWriter implements SettingWriter {
 				Log.getLogger().log(LogLevel.ERROR, "Error saving settings file!");
 			}
 		}
+	}
+
+	@Override
+	public void setFileName(String name) {
+		settingsFile = new File(name + ".yml");
 	}
 }
