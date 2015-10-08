@@ -18,7 +18,7 @@ import javafx.scene.input.KeyCode;
  * Class implementing the settingLoader interface.
  * This class reads the settings from settings.yml.
  */
-public class YamlSettingLoader implements SettingLoader {
+public class YamlSettingLoader implements ISettingLoader {
 	
 	private HashMap<String, SimpleDoubleProperty> doubleSettings;
 	private HashMap<String, SimpleIntegerProperty> integerSettings;

@@ -29,7 +29,7 @@ public final class Settings {
 	private HashMap<String, String> descriptions = new HashMap<String, String>();
 	
 	private Settings() {		
-		SettingLoader parser = new YamlSettingLoader();
+		ISettingLoader parser = new YamlSettingLoader();
 		doubleSettings = parser.getDoubleSettings();
 		integerSettings = parser.getIntegerSettings();
 		booleanSettings = parser.getBooleanSettings();
@@ -231,7 +231,7 @@ public final class Settings {
 	 * Saves the current settings to a file.
 	 */
 	public void save() {
-		SettingWriter writer = new YamlSettingWriter();
+		ISettingWriter writer = new YamlSettingWriter();
 		writer.writeDoubleSettings(doubleSettings);
 		writer.writeIntegerSettings(integerSettings);
 		writer.writeBooleanSettings(booleanSettings);

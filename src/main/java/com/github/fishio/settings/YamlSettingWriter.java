@@ -19,7 +19,7 @@ import javafx.scene.input.KeyCode;
  * Writes settings to the file settings.yml
  * This implementation of the interface needs a flush() call to work.
  */
-public class YamlSettingWriter implements SettingWriter {
+public class YamlSettingWriter implements ISettingWriter {
 	
 	private HashMap<String, SimpleDoubleProperty> doubleSettings;
 	private HashMap<String, SimpleIntegerProperty> integerSettings;

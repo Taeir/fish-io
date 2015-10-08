@@ -10,7 +10,7 @@ import javafx.scene.input.KeyCode;
 /**
  * Interface for loading settings.
  */
-public interface SettingLoader {
+public interface ISettingLoader {
 
 	/**
 	 * Load the double Settings.

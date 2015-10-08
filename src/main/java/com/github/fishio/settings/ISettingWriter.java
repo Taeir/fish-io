@@ -10,7 +10,7 @@ import javafx.scene.input.KeyCode;
 /**
  * Interface for storing Setting values.
  */
-interface SettingWriter {
+interface ISettingWriter {
 	
 	/**
 	 * Write all the double settings in the input to a file.
