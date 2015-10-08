@@ -59,6 +59,12 @@ public class FishIO extends Application {
 			settings.setDouble("SCREEN_HEIGHT", height.doubleValue()));
 		primaryStage.widthProperty().addListener((o, old, width) -> 
 		settings.setDouble("SCREEN_WIDTH", width.doubleValue()));
+		settings.getDoubleProperty("SCREEN_HEIGHT").addListener((o, old, height) -> {
+			primaryStage.setHeight(height.doubleValue());
+		});
+		settings.getDoubleProperty("SCREEN_WIDTH").addListener((o, old, width) -> {
+			primaryStage.setWidth(width.doubleValue());
+		});
 
 		//Start background music
 		AudioEngine.getInstance().startBackgroundMusicWhenLoaded();
