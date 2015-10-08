@@ -22,7 +22,7 @@ import com.github.fishio.logging.LogLevel;
 /**
  * Data class with all the settings.
  * 
- * When the game stops working after an addition to the settings, simply remove the settings.cfg file
+ * When the game stops working after an addition to the settings, simply remove the settings.yml file
  */
 public final class Settings {
 	private static final Settings INSTANCE = new Settings();
@@ -47,7 +47,7 @@ public final class Settings {
 				loadSettings();
 			}
 		} catch (IOException e) {
-			log.log(LogLevel.ERROR, "Error creating setting file settings.cfg!");
+			log.log(LogLevel.ERROR, "Error creating setting file settings.yml!");
 		}
 	}
 	
@@ -281,7 +281,7 @@ public final class Settings {
 		    	keySettings.put(key, value);
 		    }
 		} catch (IOException e) {
-			log.log(LogLevel.ERROR, "Error reading settings.cfg!");
+			log.log(LogLevel.ERROR, "Error reading settings.yml!");
 			e.printStackTrace();
 		}
 	}
