@@ -1,7 +1,7 @@
 package com.github.fishio.control;
 
 import com.github.fishio.Preloader;
-import com.github.fishio.achievements.Achievement;
+import com.github.fishio.achievements.AchievementManager;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -12,32 +12,28 @@ import javafx.scene.control.Label;
  * Achievement screen controller.
  */
 public class AchievementScreenController implements ScreenController {
-	
-	private Achievement playerDeath = new Achievement("playerDeath");
-	private Achievement enemyKill = new Achievement("enemyKill");
-	
 	@FXML
 	private Button btnBackToMenu;
 	@FXML
-	private static Label smallachieve11;
+	private Label smallachieve11;
 	@FXML
-	private static Label smallachieve12;
+	private Label smallachieve12;
 	@FXML
-	private static Label smallachieve13;
+	private Label smallachieve13;
 	@FXML
-	private static Label smallachieve14;
+	private Label smallachieve14;
 	@FXML
-	private static Label smallachieve15;
+	private Label smallachieve15;
 	@FXML
-	private static Label smallachieve21;
+	private Label smallachieve21;
 	@FXML
-	private static Label smallachieve22;
+	private Label smallachieve22;
 	@FXML
-	private static Label smallachieve23;
+	private Label smallachieve23;
 	@FXML
-	private static Label smallachieve24;
+	private Label smallachieve24;
 	@FXML
-	private static Label smallachieve25;
+	private Label smallachieve25;
 	@FXML
 	private Label icon11;
 	@FXML
@@ -59,49 +55,114 @@ public class AchievementScreenController implements ScreenController {
 	@FXML
 	private Label icon25;
 	
-	public static void onEnemyKill(int level) {
-		System.out.println("OnEnemyKill reached");
-		if (level == 1) {
-			smallachieve21.setOpacity(1);
-			System.out.println("OnEnemyKill lvl1 reached");
-		}
-		if (level == 2) {
-			smallachieve22.setOpacity(1);
-		}
-		if (level == 3) {
-			smallachieve23.setOpacity(1);
-		}
-		if (level == 4) {
-			smallachieve24.setOpacity(1);
-		}
-		if (level == 5) {
-			smallachieve25.setOpacity(1);
-		}
+	@Override
+	public void init(Scene scene) {
+		bindOpacities();
+		
+		setDefaultOpacities();
+		
+		addDeathListener();
+		
+		addKillListener();
+	}
+
+	/**
+	 * Set the default opacities.
+	 */
+	private void setDefaultOpacities() {
+		smallachieve11.setOpacity(0.1);
+		smallachieve12.setOpacity(0.1);
+		smallachieve13.setOpacity(0.1);
+		smallachieve14.setOpacity(0.1);
+		smallachieve15.setOpacity(0.1);
+		smallachieve21.setOpacity(0.1);
+		smallachieve22.setOpacity(0.1);
+		smallachieve23.setOpacity(0.1);
+		smallachieve24.setOpacity(0.1);
+		smallachieve25.setOpacity(0.1);
+	}
+
+	/**
+	 * Adds a listener to the death achievement.
+	 */
+	private void addDeathListener() {
+		AchievementManager.PLAYER_DEATH.getLevelProperty().addListener((o, oVal, nVal) -> {
+			//Fall through is intended.
+			switch (nVal.intValue()) {
+				case 5:
+					smallachieve15.setOpacity(1);
+				case 4:
+					smallachieve14.setOpacity(1);
+				case 3:
+					smallachieve13.setOpacity(1);
+				case 2:
+					smallachieve12.setOpacity(1);
+				case 1:
+					smallachieve11.setOpacity(1);
+					break;
+				case 0:
+					smallachieve11.setOpacity(0.1);
+					smallachieve12.setOpacity(0.1);
+					smallachieve13.setOpacity(0.1);
+					smallachieve14.setOpacity(0.1);
+					smallachieve15.setOpacity(0.1);
+					break;
+				default:
+					break;
+			}
+		});
+	}
+
+	/**
+	 * Adds a listener to the Enemy Kill achievement.
+	 */
+	private void addKillListener() {
+		AchievementManager.ENEMY_KILL.getLevelProperty().addListener((o, oVal, nVal) -> {
+			//Fall through is intended.
+			switch (nVal.intValue()) {
+				case 5:
+					smallachieve25.setOpacity(1);
+				case 4:
+					smallachieve24.setOpacity(1);
+				case 3:
+					smallachieve23.setOpacity(1);
+				case 2:
+					smallachieve22.setOpacity(1);
+				case 1:
+					smallachieve21.setOpacity(1);
+					break;
+				case 0:
+					smallachieve21.setOpacity(0.1);
+					smallachieve22.setOpacity(0.1);
+					smallachieve23.setOpacity(0.1);
+					smallachieve24.setOpacity(0.1);
+					smallachieve25.setOpacity(0.1);
+					break;
+				default:
+					break;
+			}
+		});
+	}
+
+	/**
+	 * Links the opacities from the icons to the labels.
+	 */
+	private void bindOpacities() {
+		icon11.opacityProperty().bind(smallachieve11.opacityProperty());
+		icon12.opacityProperty().bind(smallachieve12.opacityProperty());
+		icon13.opacityProperty().bind(smallachieve13.opacityProperty());
+		icon14.opacityProperty().bind(smallachieve14.opacityProperty());
+		icon15.opacityProperty().bind(smallachieve15.opacityProperty());
+		
+		icon21.opacityProperty().bind(smallachieve21.opacityProperty());
+		icon22.opacityProperty().bind(smallachieve22.opacityProperty());
+		icon23.opacityProperty().bind(smallachieve23.opacityProperty());
+		icon24.opacityProperty().bind(smallachieve24.opacityProperty());
+		icon25.opacityProperty().bind(smallachieve25.opacityProperty());
 	}
 	
-	/**
-	 * Controls the viewer for the first achievement: player deaths.
-	 * 
-	 * @param level
-	 *            the level of the achievement.
-	 */
-	public static void onPlayerDeath(int level) {
-		if (level == 1) {
-			smallachieve11.setOpacity(1);
-		}
-		if (level == 2) {
-			smallachieve12.setOpacity(1);
-		}
-		if (level == 3) {
-			smallachieve13.setOpacity(1);
-		}
-		if (level == 4) {
-			smallachieve14.setOpacity(1);
-		}
-		if (level == 5) {
-			smallachieve15.setOpacity(1);
-		}
-	}
+	@Override
+	public void onSwitchTo() { }
 	
 	/**
 	 * Go back to main menu. This button loads the main menu.
@@ -117,35 +178,4 @@ public class AchievementScreenController implements ScreenController {
 	public Button getBtnBackToMenu() {
 		return btnBackToMenu;
 	}
-	
-	@Override
-	public void init(Scene scene) {
-		icon11.opacityProperty().bind(smallachieve11.opacityProperty());
-		icon12.opacityProperty().bind(smallachieve12.opacityProperty());
-		icon13.opacityProperty().bind(smallachieve13.opacityProperty());
-		icon14.opacityProperty().bind(smallachieve14.opacityProperty());
-		icon15.opacityProperty().bind(smallachieve15.opacityProperty());
-		icon21.opacityProperty().bind(smallachieve21.opacityProperty());
-		icon22.opacityProperty().bind(smallachieve22.opacityProperty());
-		icon23.opacityProperty().bind(smallachieve23.opacityProperty());
-		icon24.opacityProperty().bind(smallachieve24.opacityProperty());
-		icon25.opacityProperty().bind(smallachieve25.opacityProperty());
-		smallachieve11.setOpacity(0.1);
-		smallachieve12.setOpacity(0.1);
-		smallachieve13.setOpacity(0.1);
-		smallachieve14.setOpacity(0.1);
-		smallachieve15.setOpacity(0.1);
-		smallachieve21.setOpacity(0.1);
-		smallachieve22.setOpacity(0.1);
-		smallachieve23.setOpacity(0.1);
-		smallachieve24.setOpacity(0.1);
-		smallachieve25.setOpacity(0.1);
-	}
-	
-	@Override
-	public void onSwitchTo() {
-		onEnemyKill(0);
-		onPlayerDeath(0);
-	}
-	
 }

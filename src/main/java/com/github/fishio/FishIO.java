@@ -3,7 +3,6 @@ package com.github.fishio;
 import java.io.File;
 import java.io.IOException;
 
-import com.github.fishio.achievements.AchievedController;
 import com.github.fishio.audio.AudioEngine;
 import com.github.fishio.logging.ConsoleHandler;
 import com.github.fishio.logging.Log;
@@ -56,7 +55,6 @@ public class FishIO extends Application {
 		
 		//Start background music
 		AudioEngine.getInstance().startBackgroundMusicWhenLoaded();
-		AchievedController.updateAchievements();
 	}
 	
 	@Override
