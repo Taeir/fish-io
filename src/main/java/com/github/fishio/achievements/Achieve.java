@@ -68,7 +68,7 @@ public class Achieve {
 			enemyKill.setLevel(2);
 			Log.getLogger().log(LogLevel.INFO, "Achievement gained for killing an enemy fish 10 times");
 		}
-		else if (EnemyKillObserver.getCounter() >= 1) {
+ else if (EnemyKillObserver.getCounter() >= 3) {
 			enemyKill.setLevel(1);
 			Log.getLogger().log(LogLevel.INFO, "Achievement gained for killing an enemy fish 3 times");
 			System.out.println("Achieve reached");
