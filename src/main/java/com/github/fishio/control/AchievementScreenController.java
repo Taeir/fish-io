@@ -100,13 +100,6 @@ public class AchievementScreenController implements ScreenController {
 				case 1:
 					smallachieve11.setOpacity(1);
 					break;
-				case 0:
-					smallachieve11.setOpacity(0.1);
-					smallachieve12.setOpacity(0.1);
-					smallachieve13.setOpacity(0.1);
-					smallachieve14.setOpacity(0.1);
-					smallachieve15.setOpacity(0.1);
-					break;
 				default:
 					break;
 			}
@@ -130,13 +123,6 @@ public class AchievementScreenController implements ScreenController {
 					smallachieve22.setOpacity(1);
 				case 1:
 					smallachieve21.setOpacity(1);
-					break;
-				case 0:
-					smallachieve21.setOpacity(0.1);
-					smallachieve22.setOpacity(0.1);
-					smallachieve23.setOpacity(0.1);
-					smallachieve24.setOpacity(0.1);
-					smallachieve25.setOpacity(0.1);
 					break;
 				default:
 					break;
