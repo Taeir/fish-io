@@ -1,15 +1,14 @@
 package com.github.fishio;
 
-
 import java.io.File;
 import java.io.IOException;
 
 import com.github.fishio.audio.AudioEngine;
 import com.github.fishio.logging.ConsoleHandler;
-import com.github.fishio.logging.TxtFileHandler;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.logging.TimeStampFormat;
+import com.github.fishio.logging.TxtFileHandler;
 import com.github.fishio.settings.Settings;
 
 import javafx.application.Application;

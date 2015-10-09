@@ -3,7 +3,7 @@ package com.github.fishio;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.fishio.achievements.Observer;
+import com.github.fishio.achievements.AchievementObserver;
 import com.github.fishio.achievements.State;
 import com.github.fishio.achievements.Subject;
 import com.github.fishio.behaviours.IMoveBehaviour;
@@ -17,7 +17,7 @@ import javafx.scene.paint.Color;
  * Represents an entity in the game.
  */
 public abstract class Entity implements ICollidable, IPositional, IDrawable, Subject {
-	private List<Observer> observers = new ArrayList<Observer>();
+	private List<AchievementObserver> observers = new ArrayList<AchievementObserver>();
 	
 	private boolean dead;
 	private ICollisionArea ba;
@@ -107,7 +107,7 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	}
 	
 	@Override
-	public List<Observer> getObservers() {
+	public List<AchievementObserver> getObservers() {
 		return observers;
 	}
 	

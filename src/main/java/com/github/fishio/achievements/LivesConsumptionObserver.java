@@ -1,14 +1,17 @@
 package com.github.fishio.achievements;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * This class is an Observer. It attaches to the SinglePlayerPlayingField and
  * gets an update when a player uses a live.
  *
  */
-class LivesConsumptionObserver implements Observer {
-	
+public class LivesConsumptionObserver implements AchievementObserver {
+	//TODO TODO TODO
+	private List<Achievement> achievements = new ArrayList<>();
 	private Subject playerFish;
 	private int livesconsumptioncounter = 0;
 	
@@ -30,6 +33,7 @@ class LivesConsumptionObserver implements Observer {
 		}
 		
 		livesconsumptioncounter++;
+		notifyAchievements();
 	}
 	
 	/**
@@ -40,6 +44,11 @@ class LivesConsumptionObserver implements Observer {
 	 */
 	public int getPlayerDeathCounter() {
 		return livesconsumptioncounter;
+	}
+
+	@Override
+	public List<Achievement> getAchievements() {
+		return achievements;
 	}
 
 }

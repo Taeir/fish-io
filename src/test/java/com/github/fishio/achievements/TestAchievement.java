@@ -1,36 +1,38 @@
 package com.github.fishio.achievements;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotEquals;
 
-import org.junit.Before;
 import org.junit.Test;
 
 /**
  * This test class tests the Achievement class.
  *
  */
-public class TestAchievement {
-	
-	private Achievement achievetest1;
+public abstract class TestAchievement {
 	
 	/**
-	 * Sets up an Achievement object before the tests.
+	 * @return
+	 * 		a new achievement named test and level 0.
 	 */
-	@Before
-	public void setUp() {
-		achievetest1 = new Achievement("Testachievement", 3);
+	public Achievement newAchievement() {
+		return newAchievement("test", 0);
 	}
 	
 	/**
-	 * Tests the {@link Achievement#Achievement(String, int)} constructor for
-	 * two seperately defined Achievements.
+	 * @param name
+	 * 		the name the achievement should have.
+	 * @param level
+	 * 		the level the achievement should have.
+	 * 
+	 * @return
+	 * 		a new achievement with the given name and level.
 	 */
-	@Test
-	public void testAchievementconstructor1_twoAchievements() {
-		Achievement achievetest2 = new Achievement("Testachievement", 3);
-		assertEquals(achievetest1, achievetest2);
+	public Achievement newAchievement(String name, int level) {
+		return new Achievement(name, level) {
+			@Override
+			public void updateAchievement(AchievementObserver observer) { }
+		};
 	}
 	
 	/**
@@ -38,8 +40,9 @@ public class TestAchievement {
 	 * its name field.
 	 */
 	@Test
-	public void testAchievementconstructor1_name() {
-		assertEquals(achievetest1.getName(), "Testachievement");
+	public void testAchievementconstructor_name() {
+		Achievement a = newAchievement("hello", 0);
+		assertEquals("hello", a.getName());
 	}
 	
 	/**
@@ -47,84 +50,37 @@ public class TestAchievement {
 	 * its level field.
 	 */
 	@Test
-	public void testAchievementconstructor1_level() {
-		assertEquals(3, achievetest1.getLevel(), 0.0);
+	public void testAchievementconstructor_level() {
+		Achievement a = newAchievement("hello", 3);
+		assertEquals(3, a.getLevel());
 	}
 	
-	/**
-	 * Tests the {@link Achievement#Achievement(String)} constructor for its
-	 * name field.
-	 */
-	@Test
-	public void testAchievementconstructor2_name() {
-		assertEquals(achievetest1.getName(), "Testachievement");
-	}
-	
-	/**
-	 * Tests the {@link Achievement#Achievement(String)} constructor for its
-	 * level field.
-	 */
-	@Test
-	public void testAchievementconstructor2_level() {
-		Achievement achievetest2 = new Achievement("Testachievment");
-		assertEquals(0, achievetest2.getLevel(), 0.0);
-	}
-	
-
 	/**
 	 * Tests the {@link Achievement#getName()} method.
 	 */
 	@Test
 	public void testgetName1() {
-		assertEquals("Testachievement", achievetest1.getName());
-		
-		Achievement achievetest2 = new Achievement("Testachievement");
-		assertEquals("Testachievement", achievetest2.getName());
-	}
-	
-	/**
-	 * Tests the {@link Achievement#getName()} method.
-	 */
-	@Test
-	public void testgetName2() {
-		Achievement achievetest2 = new Achievement("Testachievement");
-		assertEquals("Testachievement", achievetest2.getName());
+		Achievement a = newAchievement("hello", 0);
+		assertEquals("hello", a.getName());
 	}
 	
 	/**
 	 * Tests the {@link Achievement#getLevel()} method.
 	 */
 	@Test
-	public void testgetLevel1() {
-		assertEquals(3, achievetest1.getLevel(), 0.0);
+	public void testGetLevel() {
+		Achievement a = newAchievement();
+		assertEquals(0, a.getLevel());
 	}
-	
-	/**
-	 * Tests the {@link Achievement#getLevel()} method.
-	 */
-	@Test
-	public void testgetLevel2() {
-		Achievement achievetest2 = new Achievement("Testachievement");
-		assertEquals(0, achievetest2.getLevel(), 0.0);
-	}
-	
+
 	/**
 	 * Tests the {@link Achievement#setLevel(int)} method.
 	 */
 	@Test
-	public void testsetLevel1() {
-		achievetest1.setLevel(5);
-		assertEquals(5, achievetest1.getLevel(), 0.0);
-	}
-	
-	/**
-	 * Tests the {@link Achievement#setLevel(int)} method.
-	 */
-	@Test
-	public void testsetLevel2() {
-		Achievement achievetest2 = new Achievement("Testachievement");
-		achievetest2.setLevel(5);
-		assertEquals(5, achievetest2.getLevel(), 0.0);
+	public void testSetLevel() {
+		Achievement a = newAchievement();
+		a.setLevel(5);
+		assertEquals(5, a.getLevel());
 	}
 	
 	/**
@@ -132,7 +88,8 @@ public class TestAchievement {
 	 */
 	@Test
 	public void testEqualsItself() {
-		assertEquals(achievetest1, achievetest1);
+		Achievement a = newAchievement();
+		assertEquals(a, a);
 	}
 	
 	/**
@@ -140,7 +97,7 @@ public class TestAchievement {
 	 */
 	@Test
 	public void testEqualsNull() {
-		assertFalse(achievetest1.equals(null));
+		assertNotEquals(null, newAchievement());
 	}
 	
 	/**
@@ -148,7 +105,7 @@ public class TestAchievement {
 	 */
 	@Test
 	public void testEqualsOtherClass() {
-		assertFalse(achievetest1.equals(new Double(1.0)));
+		assertNotEquals(new Double(1.0), newAchievement());
 	}
 	
 	/**
@@ -156,14 +113,6 @@ public class TestAchievement {
 	 */
 	@Test
 	public void testEqualsDifferentAchievement() {
-		assertFalse(achievetest1.equals(new Achievement("Testother", 0)));
-	}
-	
-	/**
-	 * Test equals with different achievement in second object.
-	 */
-	@Test
-	public void testEqualsSameAchievement() {
-		assertTrue(achievetest1.equals(new Achievement("Testachievement", 3)));
+		assertNotEquals(newAchievement(), newAchievement());
 	}
 }

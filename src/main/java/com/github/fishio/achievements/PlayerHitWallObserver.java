@@ -1,14 +1,16 @@
 package com.github.fishio.achievements;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * This class is an Observer. It attaches to the SinglePlayerPlayingField and
  * gets an update when a player hits the boundary of the playing field.
  *
  */
-class HitWallObserver implements Observer {
-	
+public class PlayerHitWallObserver implements AchievementObserver {
+	private List<Achievement> achievements = new ArrayList<>();
 	private Subject playerFish;
 	private int playerhitwallcounter = 0;
 	
@@ -18,7 +20,7 @@ class HitWallObserver implements Observer {
 	 * @param subject
 	 *            The subject this observer has to be notified by.
 	 */
-	public HitWallObserver(Subject subject) {
+	public PlayerHitWallObserver(Subject subject) {
 		this.playerFish = subject;
 		this.playerFish.attach(this);
 	}
@@ -30,6 +32,7 @@ class HitWallObserver implements Observer {
 		}
 		
 		playerhitwallcounter++;
+		notifyAchievements();
 	}
 	
 	/**
@@ -40,6 +43,11 @@ class HitWallObserver implements Observer {
 	 */
 	public int getPlayerDeathCounter() {
 		return playerhitwallcounter;
+	}
+
+	@Override
+	public List<Achievement> getAchievements() {
+		return achievements;
 	}
 
 }
