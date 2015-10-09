@@ -56,7 +56,7 @@ public final class AchievementManager {
 			} else if (nr >= 10) {
 				setLevel(2);
 				Log.getLogger().log(LogLevel.INFO, "Achievement gained for killing an enemy fish 10 times");
-			} else if (nr >= 1) {
+			} else if (nr >= 3) {
 				setLevel(1);
 				Log.getLogger().log(LogLevel.INFO, "Achievement gained for killing an enemy fish 3 times");
 			}
