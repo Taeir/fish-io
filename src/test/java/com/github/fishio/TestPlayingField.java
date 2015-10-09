@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.github.fishio.behaviours.VerticalBehaviour;
 import com.github.fishio.game.GameState;
 import com.github.fishio.gui.GuiTest;
 
@@ -225,4 +226,114 @@ public class TestPlayingField extends GuiTest {
 		assertEquals(2, field.getDrawables().size());
 	}
 	
+	/**
+	 * Tests the isPlayerAlive method using one living PlayerFish.
+	 */
+	@Test
+	public void testIsPlayerAlive1() {
+		assertTrue(field.isPlayerAlive());
+	}
+	
+	/**
+	 * Tests the isPlayerAlive method using one dead PlayerFish.
+	 */
+	@Test
+	public void testIsPlayerAlive2() {
+		//Replacing the current PlayerFish with our own mocked PlayerFish.
+		field.getPlayers().clear();
+		PlayerFish pf = Mockito.mock(PlayerFish.class);
+		field.getPlayers().add(pf);
+		Mockito.when(pf.isDead()).thenReturn(true);
+		
+		assertFalse(field.isPlayerAlive());
+	}
+	
+	/**
+	 * Tests the checkPlayerCollisions method.
+	 */
+	@Test
+	public void testCheckPlayerCollisions1() {
+		Entity[] entities = new Entity[3];
+		for (int i = 0; i < 3; i++) {
+			entities[i] = Mockito.mock(Entity.class);
+			field.add(entities[i]);
+		}
+		
+		//Replacing the current PlayerFish with our own mocked PlayerFish.
+		field.getPlayers().clear();
+		PlayerFish pf = Mockito.mock(PlayerFish.class);
+		field.getPlayers().add(pf);
+		
+		Mockito.when(pf.doesCollides(entities[0])).thenReturn(true);
+		Mockito.when(pf.doesCollides(entities[1])).thenReturn(true);
+		Mockito.when(pf.doesCollides(entities[2])).thenReturn(false);
+		
+		field.checkPlayerCollisions();
+		
+		Mockito.verify(entities[0]).onCollide(pf);
+		Mockito.verify(entities[1]).onCollide(pf);
+		Mockito.verify(entities[2], Mockito.never()).onCollide(pf);
+		Mockito.verify(pf).onCollide(entities[0]);
+		Mockito.verify(pf).onCollide(entities[1]);
+		Mockito.verify(pf, Mockito.never()).onCollide(entities[2]);
+		Mockito.verify(entities[0], Mockito.never()).onCollide(entities[1]);
+	}
+	
+	/**
+	 * Tests the cleanUpDead method.
+	 */
+	@Test
+	public void testCleanUpDead() {
+		Entity e1 = Mockito.mock(Entity.class);
+		Entity e2 = Mockito.mock(Entity.class);	
+		
+		field.add(e1);
+		field.add(e2);
+		
+		Mockito.when(e1.isDead()).thenReturn(true);
+		
+		field.cleanupDead();
+		
+		assertEquals(2, field.getEntities().size());
+		assertTrue(field.getEntities().contains(e2));
+		assertFalse(field.getEntities().contains(e1));
+	}
+	
+	/**
+	 * Tests the addEntities method.
+	 */
+	@Test
+	public void testAddEntities() {
+		field.addEntities();
+		
+		assertEquals(PlayingField.MAX_ENEMY_COUNT + 1, field.getEntities().size());
+		
+		for (int i = 5; i < 11; i++) {
+			field.getEntities().get(i).kill();
+		}
+		field.cleanupDead();
+		
+		field.addEntities();
+		
+		assertEquals(PlayingField.MAX_ENEMY_COUNT + 1, field.getEntities().size());
+	}
+	
+	/**
+	 * Tests the moveMovables method.
+	 */
+	@Test
+	public void testMoveMovables() {
+		BoundingBox ca = Mockito.mock(BoundingBox.class);
+		Entity e = new EnemyFish(ca, null, 0, 0);
+		VerticalBehaviour b = Mockito.spy(new VerticalBehaviour(3));
+		e.setBehaviour(b);
+		
+		field.add(e);
+		
+		field.moveMovables();
+		
+		Mockito.verify(b).preMove();
+		Mockito.verify(ca).move(new Vec2d(0, -3));
+		
+	}
 }

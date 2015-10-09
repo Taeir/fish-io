@@ -7,7 +7,6 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.image.Image;
 
 import com.github.fishio.behaviours.IBehaviour;
 import com.github.fishio.game.GameThread;
@@ -33,17 +32,7 @@ public abstract class PlayingField {
 	private Log log = Log.getLogger();
 
 	private int enemyCount;
-	private static final int MAX_ENEMY_COUNT = 10;
-
-	/**
-	 * Creates the playing field with a set framerate.
-	 * 
-	 * @param fps
-	 *            the (target) framerate.
-	 */
-	public PlayingField(int fps) {
-		this(fps, null);
-	}
+	public static final int MAX_ENEMY_COUNT = 10;
 
 	/**
 	 * Creates the playing field with a set framerate and canvas.
