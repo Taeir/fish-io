@@ -5,14 +5,14 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.fishio.EnemyFishFactory;
 import com.github.fishio.Vec2d;
+import com.github.fishio.settings.Settings;
 
 /**
  * Tests the RandomBehaviour class.
  */
 public class TestRandomBehaviour {
-
+	private final double maxSpeed = Settings.getInstance().getDouble("MAX_EFISH_SPEED");
 	private RandomBehaviour behaviour;
 	
 	/**
@@ -39,11 +39,11 @@ public class TestRandomBehaviour {
 	 */
 	@Test
 	public void testLimitVx1() {
-		behaviour = new RandomBehaviour(EnemyFishFactory.MAX_EFISH_SPEED + 1, 2, 0.1);
+		behaviour = new RandomBehaviour(maxSpeed + 1, 2, 0.1);
 		
 		behaviour.limitVx();
 		
-		assertEquals(EnemyFishFactory.MAX_EFISH_SPEED, behaviour.getSpeedVector().x, 0.0);
+		assertEquals(maxSpeed, behaviour.getSpeedVector().x, 0.0);
 	}
 	
 	/**
@@ -52,11 +52,11 @@ public class TestRandomBehaviour {
 	 */
 	@Test
 	public void testLimitVx2() {
-		behaviour = new RandomBehaviour(-EnemyFishFactory.MAX_EFISH_SPEED - 1, 2, 0.1);
+		behaviour = new RandomBehaviour(-maxSpeed - 1, 2, 0.1);
 		
 		behaviour.limitVx();
 		
-		assertEquals(-EnemyFishFactory.MAX_EFISH_SPEED, behaviour.getSpeedVector().x, 0.0);
+		assertEquals(-maxSpeed, behaviour.getSpeedVector().x, 0.0);
 	}
 	
 	/**
@@ -65,11 +65,11 @@ public class TestRandomBehaviour {
 	 */
 	@Test
 	public void testLimitVy1() {
-		behaviour = new RandomBehaviour(2, EnemyFishFactory.MAX_EFISH_SPEED + 1, 0.1);
+		behaviour = new RandomBehaviour(2, maxSpeed + 1, 0.1);
 		
 		behaviour.limitVy();
 		
-		assertEquals(EnemyFishFactory.MAX_EFISH_SPEED, behaviour.getSpeedVector().y, 0.0);
+		assertEquals(maxSpeed, behaviour.getSpeedVector().y, 0.0);
 	}
 	
 	/**
@@ -78,11 +78,11 @@ public class TestRandomBehaviour {
 	 */
 	@Test
 	public void testLimitVy2() {
-		behaviour = new RandomBehaviour(2, -EnemyFishFactory.MAX_EFISH_SPEED - 1, 0.1);
+		behaviour = new RandomBehaviour(2, -maxSpeed - 1, 0.1);
 		
 		behaviour.limitVy();
 		
-		assertEquals(-EnemyFishFactory.MAX_EFISH_SPEED, behaviour.getSpeedVector().y, 0.0);
+		assertEquals(-maxSpeed, behaviour.getSpeedVector().y, 0.0);
 	}
 	
 	/**
@@ -91,13 +91,12 @@ public class TestRandomBehaviour {
 	 */
 	@Test
 	public void testlimitSpeed1() {
-		behaviour = new RandomBehaviour(EnemyFishFactory.MAX_EFISH_SPEED + 1,
-				EnemyFishFactory.MAX_EFISH_SPEED + 1, 0.1);
+		behaviour = new RandomBehaviour(maxSpeed + 1, maxSpeed + 1, 0.1);
 		
 		behaviour.limitSpeed();
 		
-		assertEquals(EnemyFishFactory.MAX_EFISH_SPEED, behaviour.getSpeedVector().y, 0.0);
-		assertEquals(EnemyFishFactory.MAX_EFISH_SPEED, behaviour.getSpeedVector().x, 0.0);
+		assertEquals(maxSpeed, behaviour.getSpeedVector().y, 0.0);
+		assertEquals(maxSpeed, behaviour.getSpeedVector().x, 0.0);
 	}
 	
 	/**
@@ -106,13 +105,12 @@ public class TestRandomBehaviour {
 	 */
 	@Test
 	public void testlimitSpeed2() {
-		behaviour = new RandomBehaviour(-EnemyFishFactory.MAX_EFISH_SPEED - 1,
-				-EnemyFishFactory.MAX_EFISH_SPEED - 1, 0.1);
+		behaviour = new RandomBehaviour(-maxSpeed - 1, -maxSpeed - 1, 0.1);
 		
 		behaviour.limitSpeed();
 		
-		assertEquals(-EnemyFishFactory.MAX_EFISH_SPEED, behaviour.getSpeedVector().x, 0.0);
-		assertEquals(-EnemyFishFactory.MAX_EFISH_SPEED, behaviour.getSpeedVector().y, 0.0);
+		assertEquals(-maxSpeed, behaviour.getSpeedVector().x, 0.0);
+		assertEquals(-maxSpeed, behaviour.getSpeedVector().y, 0.0);
 	}
 	
 }

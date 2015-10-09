@@ -5,6 +5,7 @@ import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.behaviours.RandomBehaviour;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
+import com.github.fishio.settings.Settings;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -15,9 +16,7 @@ import javafx.scene.image.Image;
  */
 public class EnemyFish extends Entity implements IEatable {
 
-	private static final double FISH_EAT_THRESHOLD = 1.2;
-	private static final double DIRECTION_CHANGE_CHANCE = 0.1;
-
+	private Settings settings = Settings.getInstance();
 	private Log logger = Log.getLogger();
 
 	private Image sprite;
@@ -40,7 +39,7 @@ public class EnemyFish extends Entity implements IEatable {
 		super(ca);
 		this.sprite = sprite;
 		
-		this.behaviour = new RandomBehaviour(startvx, startvy, DIRECTION_CHANGE_CHANCE);
+		this.behaviour = new RandomBehaviour(startvx, startvy, settings.getDouble("DIRECTION_CHANGE_CHANCE"));
 		
 		logger.log(LogLevel.TRACE, "Created Enemfish: Properties{[position = " + ca.getCenterX() 
 				+ ", " + ca.getCenterY() + "],[height = " + ca.getHeight() + "],[width = "
@@ -66,12 +65,12 @@ public class EnemyFish extends Entity implements IEatable {
 		kill();
 	}
 
-	@Override
+@Override
 	public void onCollide(ICollidable other) { }
 
 	@Override
 	public boolean canBeEatenBy(IEatable other) {
-		if (other.getSize() > getSize() * FISH_EAT_THRESHOLD) {
+		if (other.getSize() > getSize() * settings.getDouble("FISH_EAT_THRESHOLD")) {
 			return true;
 		}
 		return false;

@@ -3,7 +3,11 @@ package com.github.fishio.gui;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
+
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 
 import com.github.fishio.FishIO;
 import com.github.fishio.Preloader;
@@ -12,6 +16,7 @@ import com.github.fishio.control.HelpScreenController;
 import com.github.fishio.control.MainMenuController;
 import com.github.fishio.control.SinglePlayerController;
 import com.github.fishio.control.SplashScreenController;
+import com.github.fishio.settings.Settings;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -97,6 +102,22 @@ public class GuiTest extends AppTest {
 			//We rethrow the exception of the screen switch.
 			throw switcher.getException();
 		}
+	}
+	
+	/**
+	 * Deletes the settings file before running the GuiTest.
+	 */
+	@BeforeClass
+	public static void setUpGuiTestClass() {
+		new File("settings.yml").delete();
+	}
+	
+	/**
+	 * Deletes the settings file after running the GuiTest.
+	 */
+	@AfterClass
+	public static void breakDownGuiTestClass() {
+		new File("settings.yml").delete();
 	}
 
 	/**

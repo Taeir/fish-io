@@ -63,6 +63,7 @@ public final class Preloader {
 			loadScreen("singlePlayer");
 			loadScreen("helpScreen");
 			loadScreen("achievementScreen");
+			loadScreen("settingsScreen");
 			
 			//We don't load the splash screen, because it is shown immediately.
 		});

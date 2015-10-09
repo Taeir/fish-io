@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.github.fishio.settings.Settings;
 import com.github.fishio.behaviours.FrozenBehaviour;
 import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.behaviours.RandomBehaviour;
@@ -17,7 +18,7 @@ import com.github.fishio.behaviours.RandomBehaviour;
  * This class tests the EnemyFish class.
  */
 public class TestEnemyFish extends TestIEatable {
-	
+	private final double maxSpeed = Settings.getInstance().getDouble("MAX_EFISH_SPEED");
 	private BoundingBox bb1;
 	private EnemyFish enemy1;
 	

@@ -124,6 +124,8 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void showSettings() {
+		log.log(LogLevel.INFO, "Player Pressed the Settings Button.");
+		Preloader.switchTo("settingsScreen", 400);
 		AudioEngine.getInstance().playEffect("button");
 		
 		//TODO (not now)

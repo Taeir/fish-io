@@ -2,6 +2,7 @@ package com.github.fishio;
 
 import com.github.fishio.achievements.State;
 import com.github.fishio.achievements.Subject;
+import com.github.fishio.settings.Settings;
 import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.behaviours.KeyListenerBehaviour;
 
@@ -16,24 +17,14 @@ import javafx.stage.Stage;
  * the keyboard.
  */
 public class PlayerFish extends Entity implements IEatable, IPositional, Subject {
-
-	private static final KeyCode KEY_UP = KeyCode.UP;
-	private static final KeyCode KEY_DOWN = KeyCode.DOWN;
-	private static final KeyCode KEY_LEFT = KeyCode.LEFT;
-	private static final KeyCode KEY_RIGHT = KeyCode.RIGHT;
-
+	
+	private static final double FISH_ACCELERATION = 0.1;
+	
+	private Settings settings = Settings.getInstance();
 	private Image sprite;
 
-	private SimpleIntegerProperty score = new SimpleIntegerProperty(0);
-
-	private static final double GROWTH_SPEED = 500;
-	private static final double FISH_EAT_THRESHOLD = 1.2;
-	private static final double DEFAULT_ACCELERATION = 0.1;
-	private static final double DEFAULT_MAX_SPEED = 4;
-	private static final int START_LIVES = 3;
-	public static final int MAX_LIVES = 5;
-	
-	private SimpleIntegerProperty lives = new SimpleIntegerProperty(START_LIVES);
+	private SimpleIntegerProperty score = new SimpleIntegerProperty(0);	
+	private SimpleIntegerProperty lives = new SimpleIntegerProperty(settings.getInteger("START_LIVES"));
 	
 	private long invincible;
 	
@@ -53,9 +44,14 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 		super(ca);		
 
 		this.sprite = sprite;
-		
-		this.behaviour = new KeyListenerBehaviour(stage, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT,
-				DEFAULT_ACCELERATION, DEFAULT_MAX_SPEED);
+		double maxSpeed = settings.getDouble("MAX_PLAYER_SPEED");
+		double acceleration = FISH_ACCELERATION;
+		KeyCode keyUp = settings.getKeyCode("SWIM_UP");
+		KeyCode keyDown = settings.getKeyCode("SWIM_DOWN");
+		KeyCode keyLeft = settings.getKeyCode("SWIM_LEFT");
+		KeyCode keyRight = settings.getKeyCode("SWIM_RIGHT");
+		this.behaviour = new KeyListenerBehaviour(stage, keyUp, keyDown, keyLeft, keyRight,
+				acceleration, maxSpeed);
 	}
 
 	/**
@@ -63,8 +59,8 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 	 * 
 	 * @return The rate at which the PlayerFish grows.
 	 */
-	public double getGrowthSpeed() {
-		return GROWTH_SPEED;
+	public int getGrowthSpeed() {
+		return settings.getInteger("GROWTH_SPEED");
 	}
 
 	@Override
@@ -111,7 +107,7 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 			if (eatable.canBeEatenBy(this)) {
 				eatable.eat();
 				this.addPoints((int) (eatable.getSize() / 200));
-				double dSize = GROWTH_SPEED * eatable.getSize() / getSize();
+				double dSize = getGrowthSpeed() * eatable.getSize() / getSize();
 				getBoundingArea().increaseSize(dSize);	
 				State old = getState();
 				notifyObservers(old, getState(), "EnemyKill");
@@ -166,7 +162,7 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 	 * Adds a life.
 	 */
 	public void addLife() {
-		lives.set(Math.min(lives.get() + 1, MAX_LIVES));
+		lives.set(Math.min(lives.get() + 1, settings.getInteger("MAX_LIVES")));
 	}
 	
 	/**
@@ -236,7 +232,7 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 		if (isInvincible()) {
 			return false;
 		}		
-		if (other.getSize() > getSize() * FISH_EAT_THRESHOLD) {
+		if (other.getSize() > getSize() * settings.getDouble("FISH_EAT_THRESHOLD")) {
 			return true;
 		}
 		return false;
