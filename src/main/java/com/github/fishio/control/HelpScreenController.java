@@ -23,7 +23,7 @@ import javafx.scene.input.KeyCode;
  */
 public class HelpScreenController implements ScreenController {
 
-	private Log log = Log.getLogger();
+	private Log logger = Log.getLogger();
 	private Settings settings = Settings.getInstance();
 	private static final HashMap<KeyCode, Vec2d> KEYMAP = getKeyMap();
 	
@@ -97,7 +97,7 @@ public class HelpScreenController implements ScreenController {
 	@FXML
 	public void backToMenu() {
 		AudioEngine.getInstance().playEffect("button");
-		log.log(LogLevel.INFO, "Player Pressed the back to menu Button.");
+		logger.log(LogLevel.INFO, "Player Pressed the back to menu Button.");
 		Preloader.switchTo("mainMenu", 400);
 	}
 

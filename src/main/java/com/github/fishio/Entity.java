@@ -19,18 +19,18 @@ import javafx.scene.paint.Color;
 public abstract class Entity implements ICollidable, IPositional, IDrawable, Subject {
 	private List<AchievementObserver> observers = new ArrayList<AchievementObserver>();
 	
-	private boolean dead;
-	private ICollisionArea ba;
+	private boolean isDead;
+	private ICollisionArea boundingArea;
 	protected Log logger = Log.getLogger();
 	
 	/**
 	 * This constructor creates an entity in the game.
 	 * 
-	 * @param ba
+	 * @param boundingArea
 	 *            the bounding area of this Entity
 	 */
-	public Entity(ICollisionArea ba) {
-		this.ba = ba;
+	public Entity(ICollisionArea boundingArea) {
+		this.boundingArea = boundingArea;
 	}
 	
 	@Override
@@ -42,7 +42,7 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	 * @return if the Entity is dead or not.
 	 */
 	public boolean isDead() {
-		return dead;
+		return isDead;
 	}
 	
 	/**
@@ -50,13 +50,13 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	 */
 	public void kill() {
 		//We cannot die twice.
-		if (dead) {
+		if (isDead) {
 			return;
 		}
 		
 		State oldState = getState();
 		
-		dead = true;
+		isDead = true;
 		logger.log(LogLevel.TRACE, this.getClass().getSimpleName() + " got killed");
 		
 		//Notify observers that we have died.
@@ -81,12 +81,12 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	
 	@Override
 	public ICollisionArea getBoundingArea() {
-		return ba;
+		return boundingArea;
 	}
 	
 	@Override
 	public void setBoundingArea(ICollisionArea area) {
-		this.ba = area;
+		this.boundingArea = area;
 	}
 	
 	@Override

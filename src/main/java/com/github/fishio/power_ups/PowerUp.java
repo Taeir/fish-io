@@ -20,9 +20,9 @@ import com.github.fishio.logging.LogLevel;
  */
 public abstract class PowerUp extends Entity implements IEatable {
 
-	private PlayingField pfield;
+	private PlayingField playingField;
 	
-	private final Log log = Log.getLogger();
+	private final Log logger = Log.getLogger();
 	
 	private Image sprite;
 	
@@ -43,7 +43,7 @@ public abstract class PowerUp extends Entity implements IEatable {
 	public PowerUp(ICollisionArea ba, PlayingField pfield, Image image) {
 		super(ba);
 		
-		this.pfield = pfield;
+		this.playingField = pfield;
 		this.sprite = image;
 		
 		this.behaviour = new VerticalBehaviour(DEFAULT_SPEED);
@@ -54,7 +54,7 @@ public abstract class PowerUp extends Entity implements IEatable {
 	 * 		The PlayingField this PowerUp is located in.
 	 */
 	public PlayingField getPField() {
-		return pfield;
+		return playingField;
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public abstract class PowerUp extends Entity implements IEatable {
 	@Override
 	public void onCollide(ICollidable other) { 
 		executeEffect((PlayerFish) other);
-		log.log(LogLevel.DEBUG, "Effect of \"" + getName() + "\" started");
+		logger.log(LogLevel.DEBUG, "Effect of \"" + getName() + "\" started");
 	}
 
 	@Override

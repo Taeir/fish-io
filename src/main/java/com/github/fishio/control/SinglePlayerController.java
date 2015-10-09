@@ -37,9 +37,9 @@ public class SinglePlayerController implements ScreenController {
 	private static final String PAUSE_TEXT = "Pause";
 	private static final String UNPAUSE_TEXT = "Unpause";
 
-	private Log log = Log.getLogger();
+	private Log logger = Log.getLogger();
 	
-	private SinglePlayerPlayingField pf;
+	private SinglePlayerPlayingField playingField;
 	
 	/**
 	 * ChangeListener that can be attached to the
@@ -59,10 +59,10 @@ public class SinglePlayerController implements ScreenController {
 			//If we lost a life (this includes death (0 lives))
 			if (newValue.intValue() < oldValue.intValue()) {
 				//Stop the game
-				pf.getGameThread().stop();
+				playingField.getGameThread().stop();
 				
 				//Show the death screen, and when done, stop rendering as well.
-				showDeathScreen(true, event -> pf.getRenderer().stopRendering());
+				showDeathScreen(true, event -> playingField.getRenderer().stopRendering());
 			}
 		});
 		
@@ -103,19 +103,19 @@ public class SinglePlayerController implements ScreenController {
 	@Override
 	public void init(Scene scene) {
 		//setup the playing field
-		pf = new SinglePlayerPlayingField(60, gameCanvas);
-		pf.getRenderer().setBackground(Preloader.getImageOrLoad("background.png"));
+		playingField = new SinglePlayerPlayingField(60, gameCanvas);
+		playingField.getRenderer().setBackground(Preloader.getImageOrLoad("background.png"));
 		
 		//If the player fish changes, this listener will be called.
-		pf.playerProperty().addListener(playerChangeListener);
+		playingField.playerProperty().addListener(playerChangeListener);
 		
 		//The change listener has to be force called once. The player has already been created,
 		//but we still want to add the listeners.
-		playerChangeListener.changed(pf.playerProperty(), pf.getPlayer(), pf.getPlayer());
+		playerChangeListener.changed(playingField.playerProperty(), playingField.getPlayer(), playingField.getPlayer());
 		
 		//Create observers for the achievements
-		new PlayerDeathObserver(pf);
-		new EnemyKillObserver(pf);
+		new PlayerDeathObserver(playingField);
+		new EnemyKillObserver(playingField);
 		
 		AudioEngine.getInstance().getMuteStateProperty().addListener((o, oVal, nVal) -> {
 			if (nVal.intValue() == AudioEngine.NO_MUTE) {
@@ -162,8 +162,8 @@ public class SinglePlayerController implements ScreenController {
 		deathScreen.setVisible(false);
 		
 		//Start the game.
-		pf.startGame();
-		log.log(LogLevel.INFO, "Started Game.");
+		playingField.startGame();
+		logger.log(LogLevel.INFO, "Started Game.");
 	}
 
 	/**
@@ -176,18 +176,18 @@ public class SinglePlayerController implements ScreenController {
 	public void onPause(ActionEvent event) {
 		AudioEngine.getInstance().playEffect("button");
 		
-		GameThread gameThread = pf.getGameThread();
+		GameThread gameThread = playingField.getGameThread();
 		if (gameThread.isRunning()) {
 			try {
-				pf.stopGameAndWait();
+				playingField.stopGameAndWait();
 			} catch (InterruptedException ex) { }
 			getBtnPause().setText(UNPAUSE_TEXT);
 			
-			log.log(LogLevel.INFO, "Player paused the game.");
+			logger.log(LogLevel.INFO, "Player paused the game.");
 		} else {
-			log.log(LogLevel.INFO, "Player resumed the game.");
+			logger.log(LogLevel.INFO, "Player resumed the game.");
 			
-			pf.startGame();
+			playingField.startGame();
 			getBtnPause().setText(PAUSE_TEXT);
 		}
 	}
@@ -303,13 +303,13 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	private void updateReviveButton() {
 		//If there are no players in the game, we disable the revive button.
-		if (pf.getPlayers().isEmpty()) {
+		if (playingField.getPlayers().isEmpty()) {
 			btnDSRevive.setDisable(true);
 			return;
 		}
 		
 		//If player has lives left, we enable the revive button.
-		PlayerFish player = pf.getPlayers().get(0);
+		PlayerFish player = playingField.getPlayers().get(0);
 		if (player.getLives() > 0) {
 			btnDSRevive.setDisable(false);
 		} else {
@@ -324,10 +324,10 @@ public class SinglePlayerController implements ScreenController {
 	public void backToMenu() {
 		AudioEngine.getInstance().playEffect("button");
 		
-		pf.stopGame();
-		pf.clear();
+		playingField.stopGame();
+		playingField.clear();
 		
-		log.log(LogLevel.INFO, "Player pressed backToMenu button");
+		logger.log(LogLevel.INFO, "Player pressed backToMenu button");
 		Preloader.switchTo("mainMenu", 400);
 	}
 	
@@ -343,19 +343,19 @@ public class SinglePlayerController implements ScreenController {
 		getBtnPause().setDisable(false);
 		
 		//Remove all enemies.
-		pf.clearEnemies();
+		playingField.clearEnemies();
 		
-		PlayerFish player = pf.getPlayers().get(0);
+		PlayerFish player = playingField.getPlayers().get(0);
 		
 		//Reset the bounding box of the player fish.
-		ICollisionArea area = pf.getStartCollisionArea();
+		ICollisionArea area = playingField.getStartCollisionArea();
 		player.setBoundingArea(area);
 		
 		//Start the render thread (it takes some time to appear).
-		pf.getRenderer().startRendering();
+		playingField.getRenderer().startRendering();
 		
 		//Hide the deathscreen. When the animation is done, start the game thread.
-		showDeathScreen(false, event -> pf.getGameThread().start());
+		showDeathScreen(false, event -> playingField.getGameThread().start());
 	}
 
 	/**
@@ -371,16 +371,16 @@ public class SinglePlayerController implements ScreenController {
 		
 		//Stop the game, clear all items, and start it again.
 		try {
-			pf.stopGameAndWait();
+			playingField.stopGameAndWait();
 		} catch (InterruptedException ex) { }
-		pf.clear();
+		playingField.clear();
 		
 		//Start the render thread (it takes some time to appear).
-		pf.getRenderer().startRendering();
+		playingField.getRenderer().startRendering();
 
 		//Hide the deathscreen. When the animation is done, start the game thread.
 		showDeathScreen(false, event -> {
-			pf.startGame();
+			playingField.startGame();
 		});
 	}
 	
@@ -388,8 +388,8 @@ public class SinglePlayerController implements ScreenController {
 	 * Updates the pause button to the correct state.
 	 */
 	public void updatePauseButton() {
-		GameThread gameThread = pf.getGameThread();
-		if (!pf.isPlayerAlive()) {
+		GameThread gameThread = playingField.getGameThread();
+		if (!playingField.isPlayerAlive()) {
 			//All player fish are dead
 			getBtnPause().setText(PAUSE_TEXT);
 			getBtnPause().setDisable(true);
@@ -504,6 +504,6 @@ public class SinglePlayerController implements ScreenController {
 	 * 		the playingfield
 	 */
 	public PlayingField getPlayingField() {
-		return pf;
+		return playingField;
 	}
 }

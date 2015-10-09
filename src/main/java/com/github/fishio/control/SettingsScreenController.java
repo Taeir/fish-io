@@ -21,7 +21,7 @@ import javafx.scene.layout.HBox;
  */
 public class SettingsScreenController implements ScreenController {
 
-	private Log log = Log.getLogger();
+	private Log logger = Log.getLogger();
 	private Settings settings = Settings.getInstance();
 	
 	@FXML
@@ -203,7 +203,7 @@ public class SettingsScreenController implements ScreenController {
 	@FXML
 	public void backToMenu() {
 		settings.save();
-		log.log(LogLevel.INFO, "Player Pressed the back to menu Button.");
+		logger.log(LogLevel.INFO, "Player Pressed the back to menu Button.");
 		Preloader.switchTo("mainMenu", 400);
 	}
 
