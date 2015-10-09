@@ -1,7 +1,6 @@
 package com.github.fishio.control;
 
 import com.github.fishio.Preloader;
-import com.github.fishio.achievements.Achievement;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -13,31 +12,28 @@ import javafx.scene.control.Label;
  */
 public class AchievementScreenController implements ScreenController {
 	
-	private Achievement playerDeath = new Achievement("playerDeath");
-	private Achievement enemyKill = new Achievement("enemyKill");
-	
 	@FXML
 	private Button btnBackToMenu;
 	@FXML
-	private static Label smallachieve11;
+	private Label smallachieve11;
 	@FXML
-	private static Label smallachieve12;
+	private Label smallachieve12;
 	@FXML
-	private static Label smallachieve13;
+	private Label smallachieve13;
 	@FXML
-	private static Label smallachieve14;
+	private Label smallachieve14;
 	@FXML
-	private static Label smallachieve15;
+	private Label smallachieve15;
 	@FXML
-	private static Label smallachieve21;
+	private Label smallachieve21;
 	@FXML
-	private static Label smallachieve22;
+	private Label smallachieve22;
 	@FXML
-	private static Label smallachieve23;
+	private Label smallachieve23;
 	@FXML
-	private static Label smallachieve24;
+	private Label smallachieve24;
 	@FXML
-	private static Label smallachieve25;
+	private Label smallachieve25;
 	@FXML
 	private Label icon11;
 	@FXML
@@ -59,22 +55,26 @@ public class AchievementScreenController implements ScreenController {
 	@FXML
 	private Label icon25;
 	
-	public static void onEnemyKill(int level) {
-		System.out.println("OnEnemyKill reached");
-		if (level == 1) {
+	/**
+	 * Changes the screen based on the level of EnemyKill achievements gained.
+	 * 
+	 * @param level
+	 *            The highest level of the EnemyKill achievement.
+	 */
+	public void onEnemyKill(int level) {
+		if (level >= 1) {
 			smallachieve21.setOpacity(1);
-			System.out.println("OnEnemyKill lvl1 reached");
 		}
-		if (level == 2) {
+		if (level >= 2) {
 			smallachieve22.setOpacity(1);
 		}
-		if (level == 3) {
+		if (level >= 3) {
 			smallachieve23.setOpacity(1);
 		}
-		if (level == 4) {
+		if (level >= 4) {
 			smallachieve24.setOpacity(1);
 		}
-		if (level == 5) {
+		if (level >= 5) {
 			smallachieve25.setOpacity(1);
 		}
 	}
@@ -85,20 +85,20 @@ public class AchievementScreenController implements ScreenController {
 	 * @param level
 	 *            the level of the achievement.
 	 */
-	public static void onPlayerDeath(int level) {
-		if (level == 1) {
+	public void onPlayerDeath(int level) {
+		if (level >= 1) {
 			smallachieve11.setOpacity(1);
 		}
-		if (level == 2) {
+		if (level >= 2) {
 			smallachieve12.setOpacity(1);
 		}
-		if (level == 3) {
+		if (level >= 3) {
 			smallachieve13.setOpacity(1);
 		}
-		if (level == 4) {
+		if (level >= 4) {
 			smallachieve14.setOpacity(1);
 		}
-		if (level == 5) {
+		if (level >= 5) {
 			smallachieve15.setOpacity(1);
 		}
 	}
@@ -144,8 +144,6 @@ public class AchievementScreenController implements ScreenController {
 	
 	@Override
 	public void onSwitchTo() {
-		onEnemyKill(0);
-		onPlayerDeath(0);
 	}
 	
 }

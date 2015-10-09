@@ -7,7 +7,6 @@ import com.github.fishio.PlayingField;
 import com.github.fishio.Preloader;
 import com.github.fishio.SinglePlayerPlayingField;
 import com.github.fishio.Util;
-import com.github.fishio.achievements.Achievement;
 import com.github.fishio.achievements.EnemyKillObserver;
 import com.github.fishio.achievements.PlayerDeathObserver;
 import com.github.fishio.audio.AudioEngine;
@@ -40,7 +39,6 @@ public class SinglePlayerController implements ScreenController {
 	private Log log = Log.getLogger();
 	
 	private SinglePlayerPlayingField pf;
-	private Achievement enemyKill = new Achievement("enemyKill");
 	
 	/**
 	 * ChangeListener that can be attached to the
@@ -77,7 +75,7 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	private VBox deathScreen;
 	@FXML
-	private static VBox achievePopup;
+	private VBox achievePopup;
 	@FXML
 	private Label scoreField;
 	@FXML
@@ -100,8 +98,8 @@ public class SinglePlayerController implements ScreenController {
 	private Button btnDSMenu;
 	
 	@FXML
-	private static ImageView imagepop;
-	private static SequentialTransition transition;
+	private ImageView imagepop;
+	private SequentialTransition transition;
 	
 	@Override
 	public void init(Scene scene) {
@@ -196,7 +194,7 @@ public class SinglePlayerController implements ScreenController {
 	 * Shows a fade-in and fade-out of a pop-up image when an achievement is
 	 * obtained.
 	 */
-	public static void showAchievePopup() {
+	public void showAchievePopup() {
 		System.out.println("showAchieve reached");
 		int in = 2000;
 		int out = 1000;

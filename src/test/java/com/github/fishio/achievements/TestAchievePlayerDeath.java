@@ -13,6 +13,7 @@ import org.junit.Test;
 public class TestAchievePlayerDeath {
 	
 	private Achievement playerDeath = new Achievement("playerDeath");
+	private Achieve achieve = new Achieve();
 	
 	/**
 	 * This method tests the achievement level obtained when the amount of
@@ -21,7 +22,7 @@ public class TestAchievePlayerDeath {
 	@Test
 	public void testcheckPlayerDeath5() {
 		PlayerDeathObserver.setCounter(150);
-		Achieve.checkPlayerDeath(playerDeath);
+		achieve.checkPlayerDeath(playerDeath);
 		assertEquals(5, playerDeath.getLevel(), 0.0);
 	}
 	
@@ -32,7 +33,7 @@ public class TestAchievePlayerDeath {
 	@Test
 	public void testcheckPlayerDeath4() {
 		PlayerDeathObserver.setCounter(75);
-		Achieve.checkPlayerDeath(playerDeath);
+		achieve.checkPlayerDeath(playerDeath);
 		assertEquals(4, playerDeath.getLevel(), 0.0);
 	}
 	
@@ -43,7 +44,7 @@ public class TestAchievePlayerDeath {
 	@Test
 	public void testcheckPlayerDeath3() {
 		PlayerDeathObserver.setCounter(25);
-		Achieve.checkPlayerDeath(playerDeath);
+		achieve.checkPlayerDeath(playerDeath);
 		assertEquals(3, playerDeath.getLevel(), 0.0);
 	}
 	
@@ -54,7 +55,7 @@ public class TestAchievePlayerDeath {
 	@Test
 	public void testcheckPlayerDeath2() {
 		PlayerDeathObserver.setCounter(7);
-		Achieve.checkPlayerDeath(playerDeath);
+		achieve.checkPlayerDeath(playerDeath);
 		assertEquals(2, playerDeath.getLevel(), 0.0);
 	}
 	
@@ -65,7 +66,7 @@ public class TestAchievePlayerDeath {
 	@Test
 	public void testcheckPlayerDeath1() {
 		PlayerDeathObserver.setCounter(3);
-		Achieve.checkPlayerDeath(playerDeath);
+		achieve.checkPlayerDeath(playerDeath);
 		assertEquals(1, playerDeath.getLevel(), 0.0);
 	}
 	
@@ -76,7 +77,7 @@ public class TestAchievePlayerDeath {
 	@Test
 	public void testcheckPlayerDeath0() {
 		PlayerDeathObserver.setCounter(0);
-		Achieve.checkPlayerDeath(playerDeath);
+		achieve.checkPlayerDeath(playerDeath);
 		assertEquals(0, playerDeath.getLevel(), 0.0);
 	}
 }

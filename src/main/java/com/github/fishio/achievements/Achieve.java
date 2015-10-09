@@ -8,9 +8,9 @@ import com.github.fishio.logging.LogLevel;
  * in order for the achievement to be obtained.
  *
  */
-public final class Achieve {
+public class Achieve {
 	
-	private Achieve() {
+	Achieve() {
 	}
 	
 	/**
@@ -20,7 +20,7 @@ public final class Achieve {
 	 * @param playerDeath
 	 *            The Achievement associated with the playerDeath observer.
 	 */
-	public static void checkPlayerDeath(Achievement playerDeath) {
+	public void checkPlayerDeath(Achievement playerDeath) {
 		if (PlayerDeathObserver.getCounter() >= 100) {
 			playerDeath.setLevel(5);
 			Log.getLogger().log(LogLevel.INFO, "Achievement gained for dying 100 times");
@@ -51,7 +51,7 @@ public final class Achieve {
 	 * @param enemyKill
 	 *            The Achievement associated with the enemyKill observer.
 	 */
-	public static void checkEnemyKill(Achievement enemyKill) {
+	public void checkEnemyKill(Achievement enemyKill) {
 		if (EnemyKillObserver.getCounter() >= 500) {
 			enemyKill.setLevel(5);
 			Log.getLogger().log(LogLevel.INFO, "Achievement gained for killing an enemy fish 500 times");

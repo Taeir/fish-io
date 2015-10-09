@@ -12,6 +12,7 @@ import org.junit.Test;
 public class TestAchieveEnemyKill {
 	
 	private Achievement enemyKill = new Achievement("enemyKill");
+	private Achieve achieve = new Achieve();
 	
 	/**
 	 * This method tests the achievement level obtained when the amount of
@@ -20,7 +21,7 @@ public class TestAchieveEnemyKill {
 	@Test
 	public void testcheckEnemyKill5() {
 		EnemyKillObserver.setCounter(650);
-		Achieve.checkEnemyKill(enemyKill);
+		achieve.checkEnemyKill(enemyKill);
 		assertEquals(5, enemyKill.getLevel(), 0.0);
 	}
 	
@@ -31,7 +32,7 @@ public class TestAchieveEnemyKill {
 	@Test
 	public void testcheckEnemyKill4() {
 		EnemyKillObserver.setCounter(150);
-		Achieve.checkEnemyKill(enemyKill);
+		achieve.checkEnemyKill(enemyKill);
 		assertEquals(4, enemyKill.getLevel(), 0.0);
 	}
 	
@@ -42,7 +43,7 @@ public class TestAchieveEnemyKill {
 	@Test
 	public void testcheckEnemyKill3() {
 		EnemyKillObserver.setCounter(65);
-		Achieve.checkEnemyKill(enemyKill);
+		achieve.checkEnemyKill(enemyKill);
 		assertEquals(3, enemyKill.getLevel(), 0.0);
 	}
 	
@@ -53,7 +54,7 @@ public class TestAchieveEnemyKill {
 	@Test
 	public void testcheckEnemyKill2() {
 		EnemyKillObserver.setCounter(25);
-		Achieve.checkEnemyKill(enemyKill);
+		achieve.checkEnemyKill(enemyKill);
 		assertEquals(2, enemyKill.getLevel(), 0.0);
 	}
 	
@@ -64,7 +65,7 @@ public class TestAchieveEnemyKill {
 	@Test
 	public void testcheckEnemyKill1() {
 		EnemyKillObserver.setCounter(7);
-		Achieve.checkEnemyKill(enemyKill);
+		achieve.checkEnemyKill(enemyKill);
 		assertEquals(1, enemyKill.getLevel(), 0.0);
 	}
 	
@@ -75,7 +76,7 @@ public class TestAchieveEnemyKill {
 	@Test
 	public void testcheckEnemyKill0() {
 		EnemyKillObserver.setCounter(2);
-		Achieve.checkEnemyKill(enemyKill);
+		achieve.checkEnemyKill(enemyKill);
 		assertEquals(0, enemyKill.getLevel(), 0.0);
 	}
 }
