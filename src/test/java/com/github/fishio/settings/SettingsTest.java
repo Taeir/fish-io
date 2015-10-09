@@ -11,8 +11,8 @@ import java.util.Set;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.input.KeyCode;
 
-import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -41,8 +41,9 @@ public class SettingsTest {
 	/**
 	 * Reload settings.
 	 */
-	@After
-	public void after() {
+	@Before
+	public void before() {
+		new File("settings.yml").delete();
 		instance.load();
 	}
 	
