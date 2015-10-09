@@ -132,6 +132,7 @@ public class SinglePlayerController implements ScreenController {
 				btnMute.setText("Unmute all sounds");
 			}
 		});
+		setEnemyKill();
 	}
 	
 	@Override
@@ -148,7 +149,6 @@ public class SinglePlayerController implements ScreenController {
 		// Start the game.
 		pf.startGame();
 		log.log(LogLevel.INFO, "Started Game.");
-		setEnemyKill();
 	}
 	
 	/**
@@ -420,6 +420,13 @@ public class SinglePlayerController implements ScreenController {
 			getBtnPause().setText(UNPAUSE_TEXT);
 			getBtnPause().setDisable(false);
 		}
+	}
+	
+	public void updateAchievements() {
+		Util.onJavaFX(() ->
+		{
+			setEnemyKill();
+		});
 	}
 	
 	/**
