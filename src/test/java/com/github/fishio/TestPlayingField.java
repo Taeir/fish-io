@@ -6,6 +6,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -32,6 +33,18 @@ public class TestPlayingField extends GuiTest {
 	public void setUp() {
 		this.canvas = Mockito.mock(Canvas.class);
 		field = new SinglePlayerPlayingField(60, canvas);
+	}
+	
+	/**
+	 * Stops the game after we're done testing.
+	 */
+	@After
+	public void demolish() {
+		try {
+			field.stopGameAndWait();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
