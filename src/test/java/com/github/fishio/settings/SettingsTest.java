@@ -6,10 +6,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.Set;
 
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.input.KeyCode;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -27,7 +29,7 @@ public class SettingsTest {
 	 * Copy the settings file and load the default settings.
 	 */
 	@BeforeClass
-	public static void before() {
+	public static void beforeClass() {
 		File file = new File("settings.yml");
 		if (file.exists()) {
 			file.renameTo(new File(".settings.yml.tmp"));
@@ -37,10 +39,18 @@ public class SettingsTest {
 	}
 	
 	/**
+	 * Reload settings.
+	 */
+	@After
+	public void after() {
+		instance.load();
+	}
+	
+	/**
 	 * restore the old setting file.
 	 */
 	@AfterClass
-	public static void after() {
+	public static void afterClass() {
 		File file = new File("settings.yml");
 		File temp = new File(".settings.yml.tmp");
 		file.delete();
@@ -151,5 +161,151 @@ public class SettingsTest {
 		KeyCode value = instance.getKeyCode("SWIM_UP");
 		assertEquals(KeyCode.UP, value);
 	}
-
+	
+	/**
+	 * Test for {link {@link Settings#getDescription(String)} with non existing setting.
+	 */
+	@Test
+	public void testGetDescritionNull() {
+		String desc = instance.getDescription("NON_EXISTENT");
+		assertEquals("No description available.", desc);
+	}
+	
+	/**
+	 * Test for {link {@link Settings#getDescription(String)} with existing setting.
+	 */
+	@Test
+	public void testGetDescriptionValue() {
+		String desc = instance.getDescription("DEBUG_DRAW");
+		assertEquals("Render debug values.", desc);
+	}
+	
+	/**
+	 * Test for {link {@link Settings#getDefaultDoubleSettings()} and {@link Settings#getDoubleSettings()}.
+	 * Checks if the loaded list is equal to the default list.
+	 */
+	@Test
+	public void testDefaultDoubleSettingsKeySet() {
+		Set<String> expected = Settings.getDefaultDoubleSettings().keySet();
+		Set<String> actual = instance.getDoubleSettings();
+		assertEquals(expected, actual);
+	}
+	
+	/**
+	 * Test for {link {@link Settings#getDefaultIntegerSettings()} and {@link Settings#getIntegerSettings()}.
+	 * Checks if the loaded list is equal to the default list.
+	 */
+	@Test
+	public void testDefaultIntegerSettingsKeySet() {
+		Set<String> expected = Settings.getDefaultIntegerSettings().keySet();
+		Set<String> actual = instance.getIntegerSettings();
+		assertEquals(expected, actual);
+	}
+	
+	/**
+	 * Test for {link {@link Settings#getDefaultBooleanSettings()} and {@link Settings#getBooleanSettings()}.
+	 * Checks if the loaded list is equal to the default list.
+	 */
+	@Test
+	public void testDefaultBooleanSettingsKeySet() {
+		Set<String> expected = Settings.getDefaultBooleanSettings().keySet();
+		Set<String> actual = instance.getBooleanSettings();
+		assertEquals(expected, actual);
+	}
+	
+	/**
+	 * Test for {link {@link Settings#getDefaultSliderSettings()} and {@link Settings#getSliderSettings()}.
+	 * Checks if the loaded list is equal to the default list.
+	 */
+	@Test
+	public void testDefaultSliderSettingsKeySet() {
+		Set<String> expected = Settings.getDefaultSliderSettings().keySet();
+		Set<String> actual = instance.getSliderSettings();
+		assertEquals(expected, actual);
+	}
+	
+	/**
+	 * Test for {link {@link Settings#getDefaultKeyCodeSettings()} and {@link Settings#getKeyCodeSettings()}.
+	 * Checks if the loaded list is equal to the default list.
+	 */
+	@Test
+	public void testDefaultKeyCodeSettingsKeySet() {
+		Set<String> expected = Settings.getDefaultKeyCodeSettings().keySet();
+		Set<String> actual = instance.getKeySettings();
+		assertEquals(expected, actual);
+	}	
+	
+	/**
+	 * Test for {link {@link Settings#setDouble(String, double)}.
+	 */
+	@Test
+	public void testSetDouble() {
+		instance.setDouble("FISH_EAT_THRESHOLD", 12345.6);
+		assertEquals(12345.6, instance.getDouble("FISH_EAT_THRESHOLD"), DELTA);
+	}
+	
+	/**
+	 * Test for {link {@link Settings#setInteger(String, int)}.
+	 */
+	@Test
+	public void testSetInteger() {
+		instance.setInteger("MAX_LIVES", 12);
+		assertEquals(12, instance.getInteger("MAX_LIVES"));
+	}
+	
+	/**
+	 * Test for {link {@link Settings#setBoolean(String, boolean)}.
+	 */
+	@Test
+	public void testSetBoolean() {
+		instance.setBoolean("DEBUG_DRAW", true);
+		assertTrue(instance.getBoolean("DEBUG_DRAW"));
+	}
+	
+	/**
+	 * Test for {link {@link Settings#setKey(String, KeyCode)}.
+	 */
+	@Test
+	public void testSetKeyCode() {
+		instance.setKey("SWIM_UP", KeyCode.SPACE);
+		assertEquals(KeyCode.SPACE, instance.getKeyCode("SWIM_UP"));
+	}
+	
+	/**
+	 * Test for {link {@link Settings#setSlider(String, double)}.
+	 */
+	@Test
+	public void testSetSlider() {
+		instance.setSlider("MASTER_VOLUME", 0.001);
+		assertEquals(0.001, instance.getSlider("MASTER_VOLUME"), DELTA);
+	}
+	
+	/**
+	 * Test the {@link Settings#save()} and {@link Settings#load()} methods, to verify they work.
+	 * First save, then alter some values and lastly reload and check values.
+	 */
+	@Test
+	public void testSaveLoad() {
+		double doubl = instance.getDouble("FISH_EAT_THRESHOLD");
+		int in = instance.getInteger("MAX_LIVES");
+		boolean bool = instance.getBoolean("DEBUG_DRAW");
+		double slider = instance.getSlider("MASTER_VOLUME");
+		KeyCode key = instance.getKeyCode("SWIM_UP");
+		
+		instance.save();
+		
+		instance.setDouble("FISH_EAT_THRESHOLD", doubl + 12.3);
+		instance.setInteger("MAX_LIVES", in + 12);
+		instance.setBoolean("DEBUG_DRAW", !bool);
+		instance.setSlider("MASTER_VOLUME", slider - 0.5);
+		instance.setKey("SWIM_UP", KeyCode.SPACE); // as space as a default would break the game.
+		
+		instance.load();
+	
+		assertEquals(doubl, instance.getDouble("FISH_EAT_THRESHOLD"), DELTA);
+		assertEquals(in, instance.getInteger("MAX_LIVES"));
+		assertEquals(bool, instance.getBoolean("DEBUG_DRAW"));
+		assertEquals(slider, instance.getSlider("MASTER_VOLUME"), DELTA);
+		assertEquals(key, instance.getKeyCode("SWIM_UP"));
+	}
 }

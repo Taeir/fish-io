@@ -29,6 +29,13 @@ public final class Settings {
 	private HashMap<String, String> descriptions = new HashMap<String, String>();
 	
 	private Settings() {		
+		load();
+	}
+	
+	/**
+	 * Load all the settings.
+	 */
+	protected void load() {
 		ISettingLoader parser = new YamlSettingLoader();
 		doubleSettings = parser.getDoubleSettings();
 		integerSettings = parser.getIntegerSettings();
@@ -38,7 +45,7 @@ public final class Settings {
 		
 		descriptions = parser.getDescriptions();
 	}
-	
+
 	/**
 	 * @return
 	 * 		the singleton instance of this class.
@@ -282,7 +289,7 @@ public final class Settings {
 	public String getDescription(String key) {
 		String res = descriptions.get(key);
 		if (res == null) {
-			return "No description available";
+			return "No description available.";
 		}
 		return res;
 	}
