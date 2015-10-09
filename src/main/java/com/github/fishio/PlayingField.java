@@ -430,15 +430,6 @@ public abstract class PlayingField {
 	public ConcurrentLinkedDeque<IDrawable> getDeadDrawables() {
 		return deadDrawables;
 	}
-
-	/**
-	 * Set the background image of the level.
-	 * @param image
-	 * 			The background image.
-	 */
-	public void setBackground(Image image) {
-		renderer.setBackground(image);
-	}
 	
 	/**
 	 * @return
