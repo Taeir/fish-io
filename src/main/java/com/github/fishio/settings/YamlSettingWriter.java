@@ -5,14 +5,16 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-
-import com.github.fishio.logging.Log;
-import com.github.fishio.logging.LogLevel;
+import java.util.Map.Entry;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.input.KeyCode;
+
+import com.esotericsoftware.yamlbeans.YamlWriter;
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
 
 /**
  * A class implementing the SettingWriter interface.
@@ -21,47 +23,72 @@ import javafx.scene.input.KeyCode;
  */
 public class YamlSettingWriter implements ISettingWriter {
 	
-	private HashMap<String, SimpleDoubleProperty> doubleSettings;
-	private HashMap<String, SimpleIntegerProperty> integerSettings;
-	private HashMap<String, SimpleBooleanProperty> booleanSettings;
-	private HashMap<String, KeyCode> keyCodeSettings;
-	private HashMap<String, SimpleDoubleProperty> sliderSettings;
+	private HashMap<String, Double> doubleSettings;
+	private HashMap<String, Integer> integerSettings;
+	private HashMap<String, Boolean> booleanSettings;
+	private HashMap<String, String> keyCodeSettings;
+	private HashMap<String, Double> sliderSettings;
 	private File settingsFile = new File("settings.yml");
 	
 	/**
 	 * Constructor for the YamlSettingWriter.
 	 */
 	public YamlSettingWriter() {
-		doubleSettings = new HashMap<String, SimpleDoubleProperty>();
-		integerSettings = new HashMap<String, SimpleIntegerProperty>();
-		booleanSettings = new HashMap<String, SimpleBooleanProperty>();
-		keyCodeSettings = new HashMap<String, KeyCode>();
-		sliderSettings = new HashMap<String, SimpleDoubleProperty>();
+		doubleSettings = new HashMap<String, Double>();
+		integerSettings = new HashMap<String, Integer>();
+		booleanSettings = new HashMap<String, Boolean>();
+		keyCodeSettings = new HashMap<String, String>();
+		sliderSettings = new HashMap<String, Double>();
 	}
 	
 	@Override
 	public void writeDoubleSettings(HashMap<String, SimpleDoubleProperty> map) {
-		doubleSettings = map;
+		HashMap<String, Double> output = new HashMap<>(map.size());
+		for (Entry<String, SimpleDoubleProperty> e : map.entrySet()) {
+			output.put(e.getKey(), e.getValue().doubleValue());
+		}
+		
+		doubleSettings = output;
 	}
 	
 	@Override
 	public void writeIntegerSettings(HashMap<String, SimpleIntegerProperty> map) {
-		integerSettings = map;
+		HashMap<String, Integer> output = new HashMap<>(map.size());
+		for (Entry<String, SimpleIntegerProperty> e : map.entrySet()) {
+			output.put(e.getKey(), e.getValue().intValue());
+		}
+		
+		integerSettings = output;
 	}
 	
 	@Override
 	public void writeBooleanSettings(HashMap<String, SimpleBooleanProperty> map) {
-		booleanSettings = map;
+		HashMap<String, Boolean> output = new HashMap<>(map.size());
+		for (Entry<String, SimpleBooleanProperty> e : map.entrySet()) {
+			output.put(e.getKey(), e.getValue().getValue());
+		}
+		
+		booleanSettings = output;
 	}
 	
 	@Override
 	public void writeKeyCodeSettings(HashMap<String, KeyCode> map) {
-		keyCodeSettings = map;
+		HashMap<String, String> output = new HashMap<>(map.size());
+		for (Entry<String, KeyCode> e : map.entrySet()) {
+			output.put(e.getKey(), e.getValue().getName());
+		}
+		
+		keyCodeSettings = output;
 	}
 	
 	@Override
 	public void writeSliderSettings(HashMap<String, SimpleDoubleProperty> map) {
-		sliderSettings = map;
+		HashMap<String, Double> output = new HashMap<>(map.size());
+		for (Entry<String, SimpleDoubleProperty> e : map.entrySet()) {
+			output.put(e.getKey(), e.getValue().doubleValue());
+		}
+		
+		sliderSettings = output;
 	}
 	
 	@Override
@@ -73,47 +100,19 @@ public class YamlSettingWriter implements ISettingWriter {
 			} catch (IOException e) {
 				Log.getLogger().log(LogLevel.ERROR, "Error creating settings file!");
 			}			
-		} else {
-			try (BufferedWriter bw = new BufferedWriter(new FileWriter(settingsFile))) {
-				//TODO get yaml writing working
-				for (String key : doubleSettings.keySet()) {
-					bw.write(key + ": " + doubleSettings.get(key).getValue());
-					bw.newLine();
-				}
-				bw.write("---");
-				bw.newLine();
-				
-				for (String key : integerSettings.keySet()) {
-					bw.write(key + ": " + integerSettings.get(key).getValue());
-					bw.newLine();
-				}
-				bw.write("---");
-				bw.newLine();
-				
-				for (String key : booleanSettings.keySet()) {
-					bw.write(key + ": " + booleanSettings.get(key).getValue());
-					bw.newLine();
-				}
-				
-				bw.write("---");
-				bw.newLine();
-				
-				for (String key : keyCodeSettings.keySet()) {
-					bw.write(key + ": " + keyCodeSettings.get(key).getName());
-					bw.newLine();
-				}
-				
-				bw.write("---");
-				bw.newLine();
-				
-				for (String key : sliderSettings.keySet()) {
-					bw.write(key + ": " + sliderSettings.get(key).getValue());
-					bw.newLine();
-				}
-				
-			} catch (IOException e) {
-				Log.getLogger().log(LogLevel.ERROR, "Error saving settings file!");
-			}
+		}
+		
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(settingsFile))) {
+			YamlWriter yw = new YamlWriter(bw);
+			
+			yw.write(doubleSettings);
+			yw.write(integerSettings);
+			yw.write(booleanSettings);
+			yw.write(keyCodeSettings);
+			yw.write(sliderSettings);
+			yw.close();
+		} catch (IOException e) {
+			Log.getLogger().log(LogLevel.ERROR, "Error saving settings file!");
 		}
 	}
 

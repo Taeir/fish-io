@@ -23,11 +23,12 @@ public class FishIO extends Application {
 	private static FishIO instance;
 	
 	private Log log = Log.getLogger();
-	private Settings settings = Settings.getInstance();
 	private ConsoleHandler consoleHandler = new ConsoleHandler(new TimeStampFormat());
 	private TxtFileHandler textFileHandler =
 			new TxtFileHandler(new TimeStampFormat(), new File("logs" +  File.separator + "log.txt"));
 
+	private Settings settings = Settings.getInstance();
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		instance = this;
@@ -57,8 +58,9 @@ public class FishIO extends Application {
 		//track changes in screen size
 		primaryStage.heightProperty().addListener((o, old, height) -> 
 			settings.setDouble("SCREEN_HEIGHT", height.doubleValue()));
-		primaryStage.widthProperty().addListener((o, old, width) -> 
-		settings.setDouble("SCREEN_WIDTH", width.doubleValue()));
+		primaryStage.widthProperty().addListener((o, old, width) ->
+			settings.setDouble("SCREEN_WIDTH", width.doubleValue()));
+		
 		settings.getDoubleProperty("SCREEN_HEIGHT").addListener((o, old, height) -> {
 			primaryStage.setHeight(height.doubleValue());
 		});

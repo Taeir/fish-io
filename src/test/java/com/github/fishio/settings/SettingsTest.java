@@ -35,6 +35,7 @@ public class SettingsTest {
 			file.renameTo(new File(".settings.yml.tmp"));
 		}
 		instance = Settings.getInstance();
+		instance.load();
 		instance.save();
 	}
 	
@@ -52,11 +53,11 @@ public class SettingsTest {
 	 */
 	@AfterClass
 	public static void afterClass() {
-		File file = new File("settings.yml");
-		File temp = new File(".settings.yml.tmp");
-		file.delete();
-		temp.renameTo(file);
-		temp.delete();
+//		File file = new File("settings.yml");
+//		File temp = new File(".settings.yml.tmp");
+//		file.delete();
+//		temp.renameTo(file);
+//		temp.delete();
 	}
 	
 	/**
