@@ -164,7 +164,7 @@ public class TestPlayingField extends GuiTest {
 		
 		field.add(e);
 		
-		assertSame(e, field.getEntities().get(1));
+		assertTrue(field.getEntities().contains(e));
 		assertSame(e, field.getDrawables().getFirst());
 		assertEquals(2, field.getDrawables().size());
 	}
