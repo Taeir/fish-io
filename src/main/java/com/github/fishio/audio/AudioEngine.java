@@ -7,11 +7,10 @@ import java.util.concurrent.TimeUnit;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-
-import javax.sound.sampled.LineUnavailableException;
 
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
@@ -25,6 +24,10 @@ public final class AudioEngine {
 	 * The maximum amount of threads that can play sounds concurrently.
 	 */
 	private static final int MAX_THREAD_COUNT = 11;
+	
+	public static final int NO_MUTE = 0;
+	public static final int MUTE_MUSIC = 1;
+	public static final int MUTE_ALL = 2;
 
 	private static AudioEngine instance = new AudioEngine();
 	
@@ -38,10 +41,11 @@ public final class AudioEngine {
 	private ClipRunnable background;
 	private int backgroundNr = -1;
 	private SimpleBooleanProperty musicRunningProperty = new SimpleBooleanProperty();
+	private SimpleIntegerProperty muteStateProperty = new SimpleIntegerProperty(NO_MUTE);
 	
 	private SimpleDoubleProperty masterVolumeProperty;
 	private SimpleDoubleProperty musicVolumeProperty;
-	private SimpleDoubleProperty effectsVolumeProperty;
+	private SimpleDoubleProperty effectsVolumeProperty;	
 	
 	private AudioEngine() {
 		//Get volume properties from settings.
@@ -66,7 +70,7 @@ public final class AudioEngine {
 	 * 		the master volume.
 	 */
 	public double getMasterVolume() {
-		return masterVolumeProperty.doubleValue();
+		return Math.max(0, masterVolumeProperty.doubleValue());
 	}
 	
 	/**
@@ -74,7 +78,7 @@ public final class AudioEngine {
 	 * 		the music volume (already multiplied with the master volume).
 	 */
 	public double getMusicVolume() {
-		return getMasterVolume() * musicVolumeProperty.doubleValue();
+		return Math.max(0, getMasterVolume() * musicVolumeProperty.doubleValue());
 	}
 	
 	/**
@@ -82,7 +86,7 @@ public final class AudioEngine {
 	 * 		the effects volume (already multiplied with the master volume).
 	 */
 	public double getEffectsVolume() {
-		return getMasterVolume() * effectsVolumeProperty.doubleValue();
+		return Math.max(0, getMasterVolume() * effectsVolumeProperty.doubleValue());
 	}
 	
 	/**
@@ -104,6 +108,67 @@ public final class AudioEngine {
 	 */
 	public SimpleDoubleProperty getEffectsVolumeProperty() {
 		return effectsVolumeProperty;
+	}
+	
+	/**
+	 * Can be {@link #NO_MUTE}, {@link #MUTE_MUSIC} or {@link #MUTE_ALL}.
+	 * 
+	 * @return
+	 * 		the current mute state.
+	 */
+	public int getMuteState() {
+		return muteStateProperty.get();
+	}
+	
+	/**
+	 * @return
+	 * 		the mute state property.
+	 */
+	public SimpleIntegerProperty getMuteStateProperty() {
+		return muteStateProperty;
+	}
+	
+	/**
+	 * Toggle between the different mute states:
+	 * {@link #NO_MUTE}, {@link #MUTE_MUSIC} and {@link #MUTE_ALL}.
+	 */
+	public void toggleMuteState() {
+		muteStateProperty.set((muteStateProperty.get() + 1) % 3);
+
+		switch (muteStateProperty.get()) {
+			case NO_MUTE:
+				setMute(masterVolumeProperty, false);
+				setMute(musicVolumeProperty, false);
+				break;
+			case MUTE_MUSIC:
+				setMute(masterVolumeProperty, false);
+				setMute(musicVolumeProperty, true);
+				break;
+			case MUTE_ALL:
+				setMute(masterVolumeProperty, true);
+				setMute(musicVolumeProperty, false);
+				break;
+			default:
+				break;
+		}
+	}
+	
+	/**
+	 * Mute or unmute a volume property.
+	 * 
+	 * @param property
+	 * 		the volume property to change the mute of.
+	 * @param mute
+	 * 		<code>true</code> to mute the property,
+	 * 		<code>false</code> to unmute the property.
+	 */
+	private static void setMute(SimpleDoubleProperty property, boolean mute) {
+		double old = property.get();
+		if (!mute && old < 0) {
+			property.set(-1 * old);
+		} else if (mute && old > 0) {
+			property.set(-1 * old);
+		}
 	}
 	
 	/**
@@ -281,7 +346,7 @@ public final class AudioEngine {
 		try {
 			ClipRunnable cr = new ClipRunnable(sound.getClip());
 			executor.submit(cr);
-		} catch (LineUnavailableException ex) {
+		} catch (Exception ex) {
 			Log.getLogger().log(LogLevel.WARNING,
 					"[Audio Engine] Error while trying to get clip for sound effect " + effectName);
 			ex.printStackTrace();

@@ -11,6 +11,7 @@ import org.junit.Test;
  */
 public abstract class TestICollisionArea {
 	
+	private static final double DELTA = 1E-12;
 	private ICollisionArea ca = getCollisionArea();
 	
 	/**
@@ -162,8 +163,7 @@ public abstract class TestICollisionArea {
 	public void testGetBottomRightRotated() {
 		ca.setRotation(45);
 		double a = Math.toRadians(45);
-		Vec2d br = new Vec2d(5 * Math.cos(a) + 2.5 * Math.sin(a), 
-				-5 * Math.sin(a) + 2.5 * Math.cos(a));
+		Vec2d br = new Vec2d(5 * Math.cos(a) + 2.5 * Math.sin(a), -5 * Math.sin(a) + 2.5 * Math.cos(a));
 		assertEquals(br, ca.getBottomRight());
 	}
 	
@@ -172,9 +172,9 @@ public abstract class TestICollisionArea {
 	 */
 	@Test
 	public void testGetCenterX() {
-		assertEquals(0.0, ca.getCenterX(), 0.1E-12);
+		assertEquals(0.0, ca.getCenterX(), DELTA);
 		ca.move(new Vec2d(1, 1));
-		assertEquals(1.0, ca.getCenterX(), 0.1E-12);
+		assertEquals(1.0, ca.getCenterX(), DELTA);
 	}
 	
 	/**
@@ -182,9 +182,9 @@ public abstract class TestICollisionArea {
 	 */
 	@Test
 	public void testGetCenterY() {
-		assertEquals(0.0, ca.getCenterY(), 0.1E-12);
+		assertEquals(0.0, ca.getCenterY(), DELTA);
 		ca.move(new Vec2d(1, 1));
-		assertEquals(-1.0, ca.getCenterY(), 0.1E-12);
+		assertEquals(-1.0, ca.getCenterY(), DELTA);
 	}
 	
 	/**
@@ -192,7 +192,7 @@ public abstract class TestICollisionArea {
 	 */
 	@Test
 	public void testGetWidth() {
-		assertEquals(10.0, ca.getWidth(), 0.1E-12);
+		assertEquals(10.0, ca.getWidth(), DELTA);
 	}
 	
 	/**
@@ -200,7 +200,7 @@ public abstract class TestICollisionArea {
 	 */
 	@Test
 	public void testGetHeight() {
-		assertEquals(5.0, ca.getHeight(), 0.1E-12);
+		assertEquals(5.0, ca.getHeight(), DELTA);
 	}
 	
 	/**
@@ -208,7 +208,7 @@ public abstract class TestICollisionArea {
 	 */
 	@Test
 	public void testGetSize() {
-		assertEquals(50.0, ca.getSize(), 0.1E-12);
+		assertEquals(50.0, ca.getSize(), DELTA);
 	}
 	
 	/**
@@ -216,9 +216,9 @@ public abstract class TestICollisionArea {
 	 */
 	@Test
 	public void testIncreaseSize() {
-		assertEquals(50.0, ca.getSize(), 0.1E-12);
+		assertEquals(50.0, ca.getSize(), DELTA);
 		ca.increaseSize(100.0);
-		assertEquals(150.0, ca.getSize(), 0.1E-12);
+		assertEquals(150.0, ca.getSize(), DELTA);
 	}
 	
 	/**
@@ -229,7 +229,7 @@ public abstract class TestICollisionArea {
 	public void testRatioIncreaseSize() {
 		double ratio = ca.getWidth() / ca.getHeight();
 		ca.increaseSize(100.0);
-		assertEquals(ratio, ca.getWidth() / ca.getHeight(), 0.1E-12);
+		assertEquals(ratio, ca.getWidth() / ca.getHeight(), DELTA);
 	}
 	
 	/**
@@ -239,8 +239,8 @@ public abstract class TestICollisionArea {
 	public void testMove() {
 		ca.move(new Vec2d(10.2, 5.6));
 
-		assertEquals(10.2, ca.getCenterX(), 0.1E-12);
-		assertEquals(-5.6, ca.getCenterY(), 0.1E-12);
+		assertEquals(10.2, ca.getCenterX(), DELTA);
+		assertEquals(-5.6, ca.getCenterY(), DELTA);
 	}
 	
 	/**
@@ -248,9 +248,9 @@ public abstract class TestICollisionArea {
 	 */
 	@Test
 	public void testSetRotation() {
-		assertEquals(0.0, ca.getRotation(), 0.1E-12);
+		assertEquals(0.0, ca.getRotation(), DELTA);
 		ca.setRotation(4.23);
-		assertEquals(4.23, ca.getRotation(), 0.1E-12);
+		assertEquals(4.23, ca.getRotation(), DELTA);
 	}
 	
 	/**
@@ -259,9 +259,9 @@ public abstract class TestICollisionArea {
 	 */
 	@Test
 	public void testSetRotationMod() {
-		assertEquals(0.0, ca.getRotation(), 0.1E-12);
-		ca.setRotation(184.23);
-		assertEquals(4.23, ca.getRotation(), 0.1E-12);
+		assertEquals(0.0, ca.getRotation(), DELTA);
+		ca.setRotation(384.23);
+		assertEquals(24.23, ca.getRotation(), DELTA);
 	}
 	
 	/**

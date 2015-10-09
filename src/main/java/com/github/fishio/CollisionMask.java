@@ -15,7 +15,6 @@ public class CollisionMask implements ICollisionArea {
 	private Vec2d center;
 
 	private double width;
-
 	private double height;
 
 	private double rotation;
@@ -38,13 +37,12 @@ public class CollisionMask implements ICollisionArea {
 	 * @param alphaRatio
 	 *            The ratio between opaque and transparent pixels in the sprite
 	 */
-	public CollisionMask(Vec2d center, double width, double height,
-			boolean[][] data, double alphaRatio) {
+	public CollisionMask(Vec2d center, double width, double height, boolean[][] data, double alphaRatio) {
 		this.center = center;
 		this.width = width;
 		this.height = height;
 
-		rotation = 0;
+		this.rotation = 0;
 
 		this.data = data;
 		this.alphaRatio = alphaRatio;
@@ -59,14 +57,18 @@ public class CollisionMask implements ICollisionArea {
 	 * @return The generated data set.
 	 */
 	public static boolean[][] buildData(Image img) {
-		boolean[][] res = new boolean[(int) img.getWidth()][(int) img
-				.getHeight()];
+		int width = (int) img.getWidth();
+		int heigth = (int) img.getHeight();
+		
+		boolean[][] res = new boolean[width][heigth];
+		
 		PixelReader pr = img.getPixelReader();
-		for (int y = 0; y < img.getHeight(); y++) {
-			for (int x = 0; x < img.getWidth(); x++) {
+		for (int y = 0; y < heigth; y++) {
+			for (int x = 0; x < width; x++) {
 				res[x][y] = pr.getColor(x, y).getOpacity() > 0.5;
 			}
 		}
+		
 		return res;
 	}
 	
@@ -79,15 +81,16 @@ public class CollisionMask implements ICollisionArea {
 	 * @return The amount of opaque pixels
 	 */
 	public static double getAlphaRatio(boolean[][] data) {
-		double res = 0;
-		for (int i = 0; i < data.length; i++) {
-			for (int j = 0; j < data[i].length; j++) {
-				if (data[i][j]) {
+		int res = 0;
+		for (boolean[] row : data) {
+			for (boolean pixel : row) {
+				if (pixel) {
 					res++;
 				}
 			}
 		}
-		return res / (data.length * data[0].length);
+
+		return (double) res / (data.length * data[0].length);
 	}
 
 	@Override
@@ -124,7 +127,6 @@ public class CollisionMask implements ICollisionArea {
 	 */
 	public HashSet<Vec2d> getMask() {
 		HashSet<Vec2d> mask = new HashSet<Vec2d>();
-		double x, y;
 		int lx, ly; // location of the pixel in the image
 		double cosa, sina;
 		double rx, ry; // relative positions after rotation
@@ -132,12 +134,21 @@ public class CollisionMask implements ICollisionArea {
 
 		cosa = Math.cos(Math.toRadians(360 - rotation));
 		sina = Math.sin(Math.toRadians(360 - rotation));
+		
+		double scalex = data.length / width;
+		double scaley = data[0].length / height;
 
-		for (x = 0; x < width; x++) {
-			for (y = 0; y < height; ++y) {
-				int datax = (int) (x * (data.length / width));
-				int datay = (int) (y * (data[0].length / height));
-				//TODO get this to trigger (this line works): if(reverse) datax = data.length - 1 - datax;
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				//TODO floor?
+				int datax = (int) (x * scalex);
+				int datay = (int) (y * scaley);
+				
+				//Flip y
+				if (isReversed()) {
+					datay = data[0].length - 1 - datay;
+				}
+				
 				if (data[datax][datay]) {
 					lx = (int) (x - width * 0.5);
 					ly = (int) (y - height * 0.5);
@@ -169,10 +180,11 @@ public class CollisionMask implements ICollisionArea {
 	 *         the center
 	 */
 	private Vec2d getTLBRCornerOffsets() {
+		
 		double tempX = 0.5 * width;
 		double tempY = 0.5 * height;
 
-		double a = Math.toRadians(rotation);
+		double a = Math.toRadians(rotation % 180);
 		double rx = tempX * Math.cos(a) + tempY * Math.sin(a);
 		double ry = tempX * Math.sin(a) - tempY * Math.cos(a);
 		return new Vec2d(rx, ry);
@@ -198,7 +210,7 @@ public class CollisionMask implements ICollisionArea {
 		double tempX = 0.5 * width;
 		double tempY = 0.5 * height;
 
-		double a = Math.toRadians(rotation);
+		double a = Math.toRadians(rotation % 180);
 		double rx = tempX * Math.cos(a) - tempY * Math.sin(a);
 		double ry = tempX * Math.sin(a) + tempY * Math.cos(a);
 		return new Vec2d(rx, ry);
@@ -249,7 +261,7 @@ public class CollisionMask implements ICollisionArea {
 
 	@Override
 	public double setRotation(double angle) {
-		rotation = angle % 180;
+		rotation = angle % 360;
 		return rotation;
 	}
 	
