@@ -8,8 +8,12 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.github.fishio.EnemyFish;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
+import com.github.fishio.behaviours.FrozenBehaviour;
+import com.github.fishio.behaviours.IMoveBehaviour;
+import com.github.fishio.behaviours.VerticalBehaviour;
 
 /**
  * Test class for the PowerUp class.
@@ -105,4 +109,47 @@ public abstract class TestPowerUp {
 	 */
 	@Test
 	public abstract void testGetName();
+	
+	/**
+	 * Tests the getBehaviour method.
+	 */
+	@Test
+	public void testGetBehaviour() {
+		IMoveBehaviour behaviour = getPowerUp().getBehaviour();
+		
+		assertTrue(behaviour instanceof VerticalBehaviour);
+		assertEquals(2, behaviour.getSpeed(), 0.0D);
+	}
+	
+	/**
+	 * Tests the setBehaviour method.
+	 */
+	@Test
+	public void testSetBehaviour() {
+		IMoveBehaviour behaviour = new FrozenBehaviour();
+		
+		getPowerUp().setBehaviour(behaviour);
+		
+		assertEquals(behaviour, getPowerUp().getBehaviour());
+	}
+	
+	/**
+	 * Tests the canBeEatenBy method using a playerFish.
+	 */
+	@Test
+	public void testCanBeEatenBy1() {
+		PlayerFish pf = Mockito.mock(PlayerFish.class);
+		
+		assertTrue(getPowerUp().canBeEatenBy(pf));
+	}
+	
+	/**
+	 * Tests the canBeEatenBy method using a non-PlayerFish.
+	 */
+	@Test
+	public void testCanBeEatenBy2() {
+		EnemyFish ef = Mockito.mock(EnemyFish.class);
+		
+		assertFalse(getPowerUp().canBeEatenBy(ef));
+	}
 }

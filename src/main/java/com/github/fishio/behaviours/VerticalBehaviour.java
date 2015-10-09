@@ -6,7 +6,7 @@ import com.github.fishio.Vec2d;
  * A behaviour where the entity moves from the top of the screen to
  * the bottom of the screen in a straight line and constant speed.
  */
-public class VerticalBehaviour implements IBehaviour {
+public class VerticalBehaviour implements IMoveBehaviour {
 
 	private double speed;
 	
