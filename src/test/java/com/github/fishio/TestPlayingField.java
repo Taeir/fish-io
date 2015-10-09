@@ -14,6 +14,7 @@ import com.github.fishio.game.GameState;
 import com.github.fishio.gui.GuiTest;
 
 import javafx.scene.canvas.Canvas;
+import javafx.stage.Stage;
 
 /**
  * Tests the PlayingField class.
@@ -203,13 +204,13 @@ public class TestPlayingField extends GuiTest {
 	public void clearEnemies() {
 		for (int i = 0; i < 10; i++) {
 			field.add(Mockito.mock(Entity.class));
-			field.add(Mockito.mock(PlayerFish.class));
+			field.add(new PlayerFish(null, Mockito.mock(Stage.class), null));
 		}
 		
 		field.clearEnemies();
 		
-		assertEquals(11, field.getEntities().size());
-		assertEquals(11, field.getDrawables().size());
+		assertEquals(1, field.getEntities().size());
+		assertEquals(1, field.getDrawables().size());
 	}
 	
 	/**
@@ -220,7 +221,8 @@ public class TestPlayingField extends GuiTest {
 		IDrawable d = Mockito.mock(Entity.class);
 		field.add(d);
 		
-		assertEquals(d, field.getDrawables());
+		assertEquals(d, field.getDrawables().getFirst());
 		assertEquals(2, field.getDrawables().size());
 	}
+	
 }
