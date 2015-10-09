@@ -1,0 +1,20 @@
+SCREEN_WIDTH: The width of the screen in pixels.
+SCREEN_HEIGHT: The height of the screen in pixels.
+DIRECTION_CHANGE_CHANCE: The chance a fish will change trajectory per tick.
+MIN_EFISH_SPEED: The minimum speed of an enemy fish.
+MAX_EFISH_SPEED: The maximum speed of an enemy fish.
+MAX_PLAYER_SPEED: The maximum speed of the player fish.
+DEBUG_DRAW: Render debug values.
+GROWTH_SPEED: The growth speed of the player fish.
+LOG_LEVEL: The level of messages that will be logged.
+START_LIVES: The amount of lives a player starts with.
+MAX_LIVES: The maximum amount of lives a player can get.
+POWERUP_SPAWN_INTERVAL: The interval between the spawning of powerups in seconds.
+SWIM_UP: The button that must be pressed to swim up.
+SWIM_DOWN: The button that must be pressed to swim down.
+SWIM_RIGHT: The button that must be pressed to swim to the right.
+SWIM_LEFT: The button that must be pressed to swim to the left.
+MASTER_VOLUME: The master volume of the sounds in the game.
+EFFECTS_VOLUME: The volume of the sound effects.
+MUSIC_VOLUME: The volume of the background music.
+

@@ -1,6 +1,7 @@
 package com.github.fishio.power_ups;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
 import javafx.scene.image.Image;
@@ -8,11 +9,13 @@ import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
 import com.github.fishio.SinglePlayerPlayingField;
+import com.github.fishio.behaviours.FrozenBehaviour;
 import com.github.fishio.behaviours.KeyListenerBehaviour;
 import com.github.fishio.game.GameThread;
 
@@ -93,6 +96,27 @@ public class TestPuSuperSpeed extends TestDurationPowerUp {
 		//Making sure that acceleration and MaxSpeed haven't changed.
 		assertEquals(oldAcceleration, klb.getAcceleration(), DELTA);
 		assertEquals(oldMaxSpeed, klb.getMaxSpeed(), DELTA);
+	}
+	
+	/**
+	 * Tests the endEffect method by setting the behaviour of the PlayerFish to a
+	 * non-KeyListenerBehaviour.
+	 */
+	@Test
+	public void testEndEffectOtherBehaviour() {
+		PlayerFish pf = pu.getTarget();
+		pf.setBehaviour(new FrozenBehaviour());
+		
+		//Starting the Speed and Acceleration change, then ending it immediately.
+		pu.startEffect();
+		
+		try {
+			pu.endEffect();
+		} catch (ClassCastException e) {
+			fail(); // The endEffect should not result in a ClassException as a result of the
+			// behaviour being a non-KeyListenerBehaviour
+		}
+		
 	}
 
 	@Override

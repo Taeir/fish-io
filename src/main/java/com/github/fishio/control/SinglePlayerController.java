@@ -7,6 +7,7 @@ import com.github.fishio.PlayingField;
 import com.github.fishio.Preloader;
 import com.github.fishio.SinglePlayerPlayingField;
 import com.github.fishio.Util;
+import com.github.fishio.achievements.AchievementManager;
 import com.github.fishio.achievements.EnemyKillObserver;
 import com.github.fishio.achievements.PlayerDeathObserver;
 import com.github.fishio.audio.AudioEngine;
@@ -15,6 +16,7 @@ import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
 import javafx.animation.FadeTransition;
+import javafx.animation.SequentialTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
@@ -24,6 +26,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -63,6 +66,10 @@ public class SinglePlayerController implements ScreenController {
 			}
 		});
 		
+		//Update fields to initial values.
+		updateScoreDisplay(newPlayer.scoreProperty().get());
+		updateLivesDisplay(newPlayer.getLives());
+		
 		//TODO add listener to deathProperty of fish?
 	};
 	
@@ -71,12 +78,13 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	private VBox deathScreen;
 	@FXML
+	private VBox achievePopup;
+	@FXML
 	private Label scoreField;
 	@FXML
 	private Label livesField;
 	@FXML
 	private Label endScore;
-	
 	
 	@FXML
 	private Button btnPause;
@@ -91,7 +99,7 @@ public class SinglePlayerController implements ScreenController {
 	private Button btnDSRestart;
 	@FXML
 	private Button btnDSMenu;
-
+	
 	@Override
 	public void init(Scene scene) {
 		//setup the playing field
@@ -104,6 +112,8 @@ public class SinglePlayerController implements ScreenController {
 		//The change listener has to be force called once. The player has already been created,
 		//but we still want to add the listeners.
 		playerChangeListener.changed(pf.playerProperty(), pf.getPlayer(), pf.getPlayer());
+		
+		//Create observers for the achievements
 		new PlayerDeathObserver(pf);
 		new EnemyKillObserver(pf);
 		
@@ -115,6 +125,28 @@ public class SinglePlayerController implements ScreenController {
 			} else if (nVal.intValue() == AudioEngine.MUTE_ALL) {
 				btnMute.setText("Unmute all sounds");
 			}
+		});
+		
+		//TODO Invert relation.
+		registerAchievementPopups();
+	}
+
+	/**
+	 * Adds listeners to achievements to show popups.
+	 */
+	private void registerAchievementPopups() {
+		AchievementManager.ENEMY_KILL.getLevelProperty().addListener((o, oVal, nVal) -> {
+			Util.onJavaFX(() -> {
+				ImageView iv = new ImageView("/sprites/chieveLarge/Achieve1.png");
+				showAchievePopup(iv);
+			});
+		});
+		
+		AchievementManager.PLAYER_DEATH.getLevelProperty().addListener((o, oVal, nVal) -> {
+			Util.onJavaFX(() -> {
+				ImageView iv = new ImageView("/sprites/chieveLarge/Achieve2.png");
+				showAchievePopup(iv);
+			});
 		});
 	}
 	
@@ -172,7 +204,35 @@ public class SinglePlayerController implements ScreenController {
 		
 		AudioEngine.getInstance().toggleMuteState();
 	}
-
+	
+	/**
+	 * Shows a fade-in and fade-out of a pop-up image when an achievement is
+	 * obtained.
+	 * 
+	 * @param imageView
+	 * 		the imageView to show.
+	 */
+	public void showAchievePopup(ImageView imageView) {
+		int in = 2000;
+		int out = 1000;
+		int duration = 5000;
+		
+		achievePopup.getChildren().setAll(imageView);
+		
+		achievePopup.setVisible(true);
+		FadeTransition fadeIn = new FadeTransition(Duration.millis(in), achievePopup);
+		fadeIn.setFromValue(0.0);
+		fadeIn.setToValue(1.0);
+		
+		FadeTransition fadeOut = new FadeTransition(Duration.millis(out), achievePopup);
+		fadeOut.setFromValue(1.0);
+		fadeOut.setToValue(0.0);
+		fadeOut.setDelay(Duration.millis(duration));
+		
+		SequentialTransition transition = new SequentialTransition(fadeIn, fadeOut);
+		transition.play();
+	}
+	
 	/**
 	 * Set the visibility of the death screen.
 	 * 

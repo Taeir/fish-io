@@ -11,7 +11,7 @@ public interface Subject {
 	/**
 	 * @return the observers subscribed to this subject.
 	 */
-	List<Observer> getObservers();
+	List<AchievementObserver> getObservers();
 	
 	/**
 	 * Attaches an observer to the subject.
@@ -19,7 +19,7 @@ public interface Subject {
 	 * @param observer
 	 *            the object that wants to track changes to the subject.
 	 */
-	default void attach(Observer observer) {
+	default void attach(AchievementObserver observer) {
 		getObservers().add(observer);
 	}
 	
@@ -29,7 +29,7 @@ public interface Subject {
 	 * @param observer
 	 *            the object that tracked changes to the subject.
 	 */
-	default void detach(Observer observer) {
+	default void detach(AchievementObserver observer) {
 		getObservers().remove(observer);
 	}
 	
@@ -46,7 +46,7 @@ public interface Subject {
 	 */
 	default void notifyObservers(State oldState, State newState, String... changed) {
 		List<String> changedList = Arrays.asList(changed);
-		for (Observer o : getObservers()) {
+		for (AchievementObserver o : getObservers()) {
 			o.update(oldState, newState, changedList);
 		}
 	}

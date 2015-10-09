@@ -57,7 +57,7 @@ public class TestPlayingField extends GuiTest {
 	 */
 	@Test
 	public void testGetWidth() {
-		assertEquals(PlayingField.WINDOW_X, field.getWidth());
+		assertEquals(1280, field.getWidth(), 0.0D);
 	}
 	
 	/**
@@ -65,7 +65,7 @@ public class TestPlayingField extends GuiTest {
 	 */
 	@Test
 	public void testGetHeight() {
-		assertEquals(PlayingField.WINDOW_Y, field.getHeight());
+		assertEquals(670.0, field.getHeight(), 0.0D);
 	}
 	
 	/**

@@ -3,10 +3,10 @@ package com.github.fishio;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.fishio.achievements.Observer;
+import com.github.fishio.achievements.AchievementObserver;
 import com.github.fishio.achievements.State;
 import com.github.fishio.achievements.Subject;
-import com.github.fishio.behaviours.IBehaviour;
+import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
@@ -17,7 +17,7 @@ import javafx.scene.paint.Color;
  * Represents an entity in the game.
  */
 public abstract class Entity implements ICollidable, IPositional, IDrawable, Subject {
-	private List<Observer> observers = new ArrayList<Observer>();
+	private List<AchievementObserver> observers = new ArrayList<AchievementObserver>();
 	
 	private boolean dead;
 	private ICollisionArea ba;
@@ -67,7 +67,7 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	 * @return
 	 * 		The behaviour of this entity.
 	 */
-	public abstract IBehaviour getBehaviour();
+	public abstract IMoveBehaviour getBehaviour();
 	
 	/**
 	 * Changes the behaviour of this entity.
@@ -75,7 +75,7 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	 * @param behaviour
 	 * 		The behaviour this entity should adopt
 	 */
-	public abstract void setBehaviour(IBehaviour behaviour);
+	public abstract void setBehaviour(IMoveBehaviour behaviour);
 
 	
 	
@@ -107,7 +107,7 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	}
 	
 	@Override
-	public List<Observer> getObservers() {
+	public List<AchievementObserver> getObservers() {
 		return observers;
 	}
 	

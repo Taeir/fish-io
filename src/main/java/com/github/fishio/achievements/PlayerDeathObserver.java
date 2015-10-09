@@ -1,6 +1,8 @@
 package com.github.fishio.achievements;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.github.fishio.SinglePlayerPlayingField;
 
@@ -9,10 +11,10 @@ import com.github.fishio.SinglePlayerPlayingField;
  * gets an update when a player dies in single player mode.
  *
  */
-public class PlayerDeathObserver implements Observer {
-	
+public class PlayerDeathObserver implements AchievementObserver {
+	private List<Achievement> achievements = new ArrayList<>();
 	private Subject playerFish;
-	private static int playerdeathcounter = 0;
+	private int playerdeathcounter = 0;
 	
 	/**
 	 * Attaches the observer to the subject.
@@ -25,6 +27,8 @@ public class PlayerDeathObserver implements Observer {
 		this.playerFish.attach(this);
 		
 		registerPlayerListener(subject);
+		
+		attachAchievement(AchievementManager.PLAYER_DEATH);
 	}
 	
 	/**
@@ -48,6 +52,7 @@ public class PlayerDeathObserver implements Observer {
 			return;
 		}
 		playerdeathcounter++;
+		notifyAchievements();
 	}
 	
 	/**
@@ -55,7 +60,7 @@ public class PlayerDeathObserver implements Observer {
 	 * 
 	 * @return the death counter of the player fish.
 	 */
-	public static int getCounter() {
+	public int getCounter() {
 		return playerdeathcounter;
 	}
 	
@@ -66,7 +71,13 @@ public class PlayerDeathObserver implements Observer {
 	 *            Number which sets the deathcounter to a specific value for
 	 *            testing.
 	 */
-	public static void setCounter(int counter) {
+	public void setCounter(int counter) {
 		playerdeathcounter = counter;
+		notifyAchievements();
+	}
+
+	@Override
+	public List<Achievement> getAchievements() {
+		return achievements;
 	}
 }

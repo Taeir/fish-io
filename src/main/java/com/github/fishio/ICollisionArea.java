@@ -2,7 +2,7 @@ package com.github.fishio;
 
 import javafx.scene.shape.Rectangle;
 
-import com.github.fishio.behaviours.IBehaviour;
+import com.github.fishio.behaviours.IMoveBehaviour;
 
 /**
  * Interface used to represent collision areas of entities.
@@ -151,7 +151,7 @@ public interface ICollisionArea {
 	 * @return
 	 * 		the rotation of the boundingArea.
 	 */
-	default double setRotation(IBehaviour m) {
+	default double setRotation(IMoveBehaviour m) {
 		Vec2d sv = m.getSpeedVector();
 		if (sv.x == 0) {
 			if (sv.y > 0) {

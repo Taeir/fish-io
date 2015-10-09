@@ -1,14 +1,16 @@
 package com.github.fishio.achievements;
 
+import javafx.beans.property.SimpleIntegerProperty;
+
 /**
  * This class defines an achievement. The achievement has a state where it's
  * rules are not met and one where the rules have been met.
  *
  */
-public class Achievement {
+public abstract class Achievement {
 	
 	private String achievement;
-	private int level = 0;
+	private SimpleIntegerProperty levelProperty = new SimpleIntegerProperty(0);
 
 	/**
 	 * Constructor for an Achievement.
@@ -21,7 +23,7 @@ public class Achievement {
 	 */
 	public Achievement(String name, int level) {
 		this.achievement = name;
-		this.level = level;
+		this.levelProperty.set(level);
 	}
 	
 	/**
@@ -33,7 +35,7 @@ public class Achievement {
 	 */
 	public Achievement(String name) {
 		this.achievement = name;
-		this.level = 0;
+		this.levelProperty.set(0);
 	}
 	
 	/**
@@ -53,7 +55,7 @@ public class Achievement {
 	 * @return a value in the range from 0 up until 5.
 	 */
 	public int getLevel() {
-		return level;
+		return levelProperty.get();
 	}
 	
 	/**
@@ -64,8 +66,24 @@ public class Achievement {
 	 *            sets the achieved level of the achievement.
 	 */
 	public void setLevel(int levelachieved) {
-		level = levelachieved;
+		levelProperty.set(levelachieved);
 	}
+	
+	/**
+	 * @return
+	 * 		the level property.
+	 */
+	public SimpleIntegerProperty getLevelProperty() {
+		return levelProperty;
+	}
+	
+	/**
+	 * Called when an observer required for this achievement changes.
+	 * 
+	 * @param observer
+	 * 		the observer whose value was changed.
+	 */
+	public abstract void updateAchievement(AchievementObserver observer);
 	
 	@Override
 	public int hashCode() {
@@ -74,8 +92,7 @@ public class Achievement {
 		
 		result = prime * result;
 		return result + achievement.hashCode();
-		}
-
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -92,7 +109,7 @@ public class Achievement {
 		if (!achievement.equals(other.achievement)) {
 			return false;
 		}
-		if (level != other.level) {
+		if (getLevel() != other.getLevel()) {
 			return false;
 		}
 		return true;

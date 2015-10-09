@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 import com.github.fishio.ICollisionArea;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
-import com.github.fishio.behaviours.IBehaviour;
+import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.behaviours.KeyListenerBehaviour;
 
 /**
@@ -51,7 +51,7 @@ public class PuSuperSpeed extends DurationPowerUp {
 	public void startEffect() {
 		PlayerFish pf = super.getTarget();
 		
-		IBehaviour behaviour = pf.getBehaviour();
+		IMoveBehaviour behaviour = pf.getBehaviour();
 		if (!(behaviour instanceof KeyListenerBehaviour)) {
 			return;
 		}
@@ -75,7 +75,7 @@ public class PuSuperSpeed extends DurationPowerUp {
 	public void endEffect() {
 		PlayerFish pf = super.getTarget();
 		
-		IBehaviour behaviour = pf.getBehaviour();
+		IMoveBehaviour behaviour = pf.getBehaviour();
 		if (!(behaviour instanceof KeyListenerBehaviour)) {
 			return;
 		}
