@@ -7,7 +7,6 @@ import com.github.fishio.PlayingField;
 import com.github.fishio.Preloader;
 import com.github.fishio.SinglePlayerPlayingField;
 import com.github.fishio.Util;
-import com.github.fishio.achievements.Achieve;
 import com.github.fishio.achievements.Achievement;
 import com.github.fishio.achievements.EnemyKillObserver;
 import com.github.fishio.achievements.PlayerDeathObserver;
@@ -132,7 +131,7 @@ public class SinglePlayerController implements ScreenController {
 				btnMute.setText("Unmute all sounds");
 			}
 		});
-		setEnemyKill();
+		
 	}
 	
 	@Override
@@ -193,33 +192,9 @@ public class SinglePlayerController implements ScreenController {
 		AudioEngine.getInstance().toggleMuteState();
 	}
 	
-	public void setEnemyKill() {
-		System.out.println("setEnemyKill reached");
-		Achieve.checkEnemyKill(enemyKill);
-		if (enemyKill.getLevel() == 1) {
-			System.out.println("setEnemyKill lvl1 reached");
-			showAchievePopup();
-		}
-		if (enemyKill.getLevel() == 2) {
-			showAchievePopup();
-		}
-		if (enemyKill.getLevel() == 3) {
-			showAchievePopup();
-		}
-		if (enemyKill.getLevel() == 4) {
-			showAchievePopup();
-		}
-		if (enemyKill.getLevel() == 5) {
-			showAchievePopup();
-		}
-	}
-	
 	/**
-	 * Shows a fade-in and fadeout of a popup image when an achievement is
+	 * Shows a fade-in and fade-out of a pop-up image when an achievement is
 	 * obtained.
-	 * 
-	 * @param popupimage
-	 *            The image to show.
 	 */
 	public static void showAchievePopup() {
 		System.out.println("showAchieve reached");
@@ -420,13 +395,6 @@ public class SinglePlayerController implements ScreenController {
 			getBtnPause().setText(UNPAUSE_TEXT);
 			getBtnPause().setDisable(false);
 		}
-	}
-	
-	public void updateAchievements() {
-		Util.onJavaFX(() ->
-		{
-			setEnemyKill();
-		});
 	}
 	
 	/**

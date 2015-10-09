@@ -21,7 +21,6 @@ public final class Achieve {
 	 *            The Achievement associated with the playerDeath observer.
 	 */
 	public static void checkPlayerDeath(Achievement playerDeath) {
-		
 		if (PlayerDeathObserver.getCounter() >= 100) {
 			playerDeath.setLevel(5);
 			Log.getLogger().log(LogLevel.INFO, "Achievement gained for dying 100 times");

@@ -1,10 +1,7 @@
 package com.github.fishio.control;
 
 import com.github.fishio.Preloader;
-import com.github.fishio.achievements.Achieve;
 import com.github.fishio.achievements.Achievement;
-import com.github.fishio.logging.Log;
-import com.github.fishio.logging.LogLevel;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -16,32 +13,31 @@ import javafx.scene.control.Label;
  */
 public class AchievementScreenController implements ScreenController {
 	
-	private Log log = Log.getLogger();
 	private Achievement playerDeath = new Achievement("playerDeath");
 	private Achievement enemyKill = new Achievement("enemyKill");
 	
 	@FXML
 	private Button btnBackToMenu;
 	@FXML
-	private Label smallachieve11;
+	private static Label smallachieve11;
 	@FXML
-	private Label smallachieve12;
+	private static Label smallachieve12;
 	@FXML
-	private Label smallachieve13;
+	private static Label smallachieve13;
 	@FXML
-	private Label smallachieve14;
+	private static Label smallachieve14;
 	@FXML
-	private Label smallachieve15;
+	private static Label smallachieve15;
 	@FXML
-	private Label smallachieve21;
+	private static Label smallachieve21;
 	@FXML
-	private Label smallachieve22;
+	private static Label smallachieve22;
 	@FXML
-	private Label smallachieve23;
+	private static Label smallachieve23;
 	@FXML
-	private Label smallachieve24;
+	private static Label smallachieve24;
 	@FXML
-	private Label smallachieve25;
+	private static Label smallachieve25;
 	@FXML
 	private Label icon11;
 	@FXML
@@ -63,60 +59,45 @@ public class AchievementScreenController implements ScreenController {
 	@FXML
 	private Label icon25;
 	
-	/**
-	 * Controls the viewer for the first achievement: player deaths.
-	 */
-	public void setPlayerDeath() {
-		Achieve.checkPlayerDeath(playerDeath);
-		
-		if (playerDeath.getLevel() >= 1) {
-			smallachieve11.setOpacity(1);
-			log.log(LogLevel.INFO, "Glutton achievement level 1 gained!");
+	public static void onEnemyKill(int level) {
+		if (level == 1) {
+			smallachieve21.setOpacity(1);
 		}
-		if (playerDeath.getLevel() >= 2) {
-			smallachieve12.setOpacity(1);
-			log.log(LogLevel.INFO, "Glutton achievement level 2 gained!");
+		if (level == 2) {
+			smallachieve22.setOpacity(1);
 		}
-		if (playerDeath.getLevel() >= 3) {
-			smallachieve13.setOpacity(1);
-			log.log(LogLevel.INFO, "Glutton achievement level 3 gained!");
+		if (level == 3) {
+			smallachieve23.setOpacity(1);
 		}
-		if (playerDeath.getLevel() >= 4) {
-			smallachieve14.setOpacity(1);
-			log.log(LogLevel.INFO, "Glutton achievement level 4 gained!");
+		if (level == 4) {
+			smallachieve24.setOpacity(1);
 		}
-		if (playerDeath.getLevel() >= 5) {
-			smallachieve15.setOpacity(1);
-			log.log(LogLevel.INFO, "Glutton achievement level 5 gained!");
+		if (level == 5) {
+			smallachieve25.setOpacity(1);
 		}
 	}
 	
 	/**
-	 * Controls the viewer for the second achievement: enemy kills.
+	 * Controls the viewer for the first achievement: player deaths.
+	 * 
+	 * @param level
+	 *            the level of the achievement.
 	 */
-	public void setEnemyKill() {
-		
-		Achieve.checkEnemyKill(enemyKill);
-		if (enemyKill.getLevel() >= 1) {
-			smallachieve21.setOpacity(1);
-			log.log(LogLevel.INFO, "Survival of the fittest achievement level 1 gained!");
+	public static void onPlayerDeath(int level) {
+		if (level == 1) {
+			smallachieve11.setOpacity(1);
 		}
-		if (enemyKill.getLevel() >= 2) {
-			smallachieve22.setOpacity(1);
-			log.log(LogLevel.INFO, "Survival of the fittest achievement level 2 gained!");
+		if (level == 2) {
+			smallachieve12.setOpacity(1);
 		}
-		if (enemyKill.getLevel() >= 3) {
-			smallachieve23.setOpacity(1);
-			log.log(LogLevel.INFO, "Survival of the fittest achievement level 3 gained!");
+		if (level == 3) {
+			smallachieve13.setOpacity(1);
 		}
-		if (enemyKill.getLevel() >= 4) {
-			smallachieve24.setOpacity(1);
-			log.log(LogLevel.INFO, "Survival of the fittest achievement level 4 gained!");
+		if (level == 4) {
+			smallachieve14.setOpacity(1);
 		}
-		if (enemyKill.getLevel() >= 5) {
-			smallachieve25.setOpacity(1);
-			log.log(LogLevel.INFO, "Survival of the fittest achievement level 5 gained!");
-			System.out.println("Achievecontroller reached");
+		if (level == 5) {
+			smallachieve15.setOpacity(1);
 		}
 	}
 	
@@ -125,7 +106,6 @@ public class AchievementScreenController implements ScreenController {
 	 */
 	@FXML
 	public void backToMenu() {
-		log.log(LogLevel.INFO, "Player Pressed the back to menu Button.");
 		Preloader.switchTo("mainMenu", 400);
 	}
 	
@@ -162,9 +142,8 @@ public class AchievementScreenController implements ScreenController {
 	
 	@Override
 	public void onSwitchTo() {
-		setPlayerDeath();
-		setEnemyKill();
-		
+		onEnemyKill(0);
+		onPlayerDeath(0);
 	}
 	
 }
