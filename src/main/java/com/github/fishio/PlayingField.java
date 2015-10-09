@@ -7,7 +7,6 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.image.Image;
 
 import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.game.GameThread;
@@ -32,17 +31,7 @@ public abstract class PlayingField {
 	private Settings settings = Settings.getInstance();
 
 	private int enemyCount;
-	private static final int MAX_ENEMY_COUNT = 10;
-
-	/**
-	 * Creates the playing field with a set framerate.
-	 * 
-	 * @param fps
-	 *            the (target) framerate.
-	 */
-	public PlayingField(int fps) {
-		this(fps, null);
-	}
+	public static final int MAX_ENEMY_COUNT = 10;
 
 	/**
 	 * Creates the playing field with a set framerate and canvas.
@@ -97,7 +86,7 @@ public abstract class PlayingField {
 	 * 
 	 * @return the height of the field.
 	 */
-	public double getHeigth() {
+	public double getHeight() {
 		return settings.getDouble("SCREEN_HEIGHT") - 50;
 	}
 
@@ -213,14 +202,14 @@ public abstract class PlayingField {
 		if (e instanceof PlayerFish) {	
 			if (box.getMaxX() >= getWidth()
 					|| box.getMinX() <= 0
-					|| box.getMaxY() >= getHeigth()
+					|| box.getMaxY() >= getHeight()
 					|| box.getMinY() <= 0) {
 				return true;
 			}
 		} else {
 			if (box.getMaxX() >= getWidth() + 2.0 * box.getWidth()
 					|| box.getMinX() <= -(2.0 * box.getWidth()) - 1
-					|| box.getMaxY() >= getHeigth() + 2.0 * box.getHeight() + 1
+					|| box.getMaxY() >= getHeight() + 2.0 * box.getHeight() + 1
 					|| box.getMinY() <= -(2.0 * box.getHeight()) - 1) {
 				return true;
 			}
@@ -245,8 +234,8 @@ public abstract class PlayingField {
 			box.move(new Vec2d(-box.getMinX(), 0));
 		}
 		
-		if (box.getMaxY() > getHeigth()) {
-			box.move(new Vec2d(0, box.getMaxY() - getHeigth()));
+		if (box.getMaxY() > getHeight()) {
+			box.move(new Vec2d(0, box.getMaxY() - getHeight()));
 		}
 		
 		if (box.getMinY() < 0) {
@@ -428,15 +417,6 @@ public abstract class PlayingField {
 	 */
 	public ConcurrentLinkedDeque<IDrawable> getDeadDrawables() {
 		return deadDrawables;
-	}
-
-	/**
-	 * Set the background image of the level.
-	 * @param image
-	 * 			The background image.
-	 */
-	public void setBackground(Image image) {
-		renderer.setBackground(image);
 	}
 	
 	/**

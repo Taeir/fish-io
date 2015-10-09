@@ -104,7 +104,7 @@ public class SinglePlayerController implements ScreenController {
 	public void init(Scene scene) {
 		//setup the playing field
 		playingField = new SinglePlayerPlayingField(60, gameCanvas);
-		playingField.setBackground(Preloader.getImageOrLoad("background.png"));
+		playingField.getRenderer().setBackground(Preloader.getImageOrLoad("background.png"));
 		
 		//If the player fish changes, this listener will be called.
 		playingField.playerProperty().addListener(playerChangeListener);
