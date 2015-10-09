@@ -98,7 +98,7 @@ public abstract class PlayingField {
 	 * 
 	 * @return the height of the field.
 	 */
-	public int getHeigth() {
+	public int getHeight() {
 		return WINDOW_Y;
 	}
 
