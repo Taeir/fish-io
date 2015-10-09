@@ -17,6 +17,7 @@ public class GameThread implements Runnable, Listenable {
 	private ConcurrentLinkedQueue<TickListener> listeners = new ConcurrentLinkedQueue<TickListener>();
 	
 	private final PlayingField playingField;
+	private static final double GAME_TPS = 60;
 	
 	private volatile Thread thread;
 	private volatile boolean stop;
@@ -220,7 +221,7 @@ public class GameThread implements Runnable, Listenable {
 		
 		try {
 			long start, end;
-			double waitTime = 1000.0 / PlayingField.GAME_TPS;
+			double waitTime = 1000.0 / GAME_TPS;
 			
 			while (!stop) {
 				start = System.currentTimeMillis();

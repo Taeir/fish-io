@@ -2,6 +2,7 @@ package com.github.fishio;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
@@ -9,6 +10,11 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+
+import com.github.fishio.settings.Settings;
+import com.github.fishio.behaviours.FrozenBehaviour;
+import com.github.fishio.behaviours.IMoveBehaviour;
+import com.github.fishio.behaviours.KeyListenerBehaviour;
 
 import javafx.stage.Stage;
 
@@ -19,6 +25,7 @@ public class TestPlayerFish extends TestIEatable {
 	//TODO Change some of the Mockito mocks and testing calls with verify(never), to simple getters.
 	//TODO - Comment made by Taeir - 2015/09/18
 	private PlayerFish pf;
+	private Settings settings = Settings.getInstance();
 	
 	/**
 	 * Creates a new PlayerFish before each test
@@ -287,10 +294,10 @@ public class TestPlayerFish extends TestIEatable {
 	 */
 	@Test
 	public void testAddLife2() {
-		pf.livesProperty().set(PlayerFish.MAX_LIVES);
+		pf.livesProperty().set(settings.getInteger("MAX_LIVES"));
 		pf.addLife();
 		
-		assertEquals(PlayerFish.MAX_LIVES, pf.getLives());
+		assertEquals(settings.getInteger("MAX_LIVES"), pf.getLives());
 	}
 	
 	/**
@@ -324,6 +331,28 @@ public class TestPlayerFish extends TestIEatable {
 		assertEquals(0, pf.getLives());
 	}
 
+	/**
+	 * Tests the getBehaviour method.
+	 */
+	@Test
+	public void testGetBehaviour() {
+		IMoveBehaviour behaviour = pf.getBehaviour();
+		
+		assertTrue(behaviour instanceof KeyListenerBehaviour);
+	}
+	
+	/**
+	 * Tests the setBehaviour method.
+	 */
+	@Test
+	public void testSetBehaviour() {
+		IMoveBehaviour behaviour = new FrozenBehaviour();
+		
+		pf.setBehaviour(behaviour);
+		
+		assertSame(behaviour, pf.getBehaviour());
+	}
+	
 	@Override
 	public IEatable getTestObject() {
 		return pf;

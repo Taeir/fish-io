@@ -6,7 +6,7 @@ import java.util.List;
 import com.github.fishio.achievements.AchievementObserver;
 import com.github.fishio.achievements.State;
 import com.github.fishio.achievements.Subject;
-import com.github.fishio.behaviours.IBehaviour;
+import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
@@ -67,7 +67,7 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	 * @return
 	 * 		The behaviour of this entity.
 	 */
-	public abstract IBehaviour getBehaviour();
+	public abstract IMoveBehaviour getBehaviour();
 	
 	/**
 	 * Changes the behaviour of this entity.
@@ -75,7 +75,7 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	 * @param behaviour
 	 * 		The behaviour this entity should adopt
 	 */
-	public abstract void setBehaviour(IBehaviour behaviour);
+	public abstract void setBehaviour(IMoveBehaviour behaviour);
 
 	
 	

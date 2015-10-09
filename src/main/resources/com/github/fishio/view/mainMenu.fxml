@@ -26,7 +26,7 @@
                   <Button fx:id="btnShowHighscores" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showHighScores" prefWidth="120.0" text="Highscores" />
                   <Button fx:id="btnShowAchievements" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showAchievements" prefWidth="120.0" text="Achievements" />
                   <Button fx:id="btnShowStatistics" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showStatistics" prefWidth="120.0" text="Statistics" />
-                  <Button fx:id="btnShowSettings" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showSettings" prefWidth="120.0" text="Settings" />
+                  <Button fx:id="btnShowSettings" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showSettings" prefWidth="120.0" text="Settings" />
                   <Button fx:id="btnShowHelp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showHelp" prefWidth="120.0" text="Help" />
                </children>
                <VBox.margin>

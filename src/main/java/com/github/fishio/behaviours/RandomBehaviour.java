@@ -1,14 +1,16 @@
 package com.github.fishio.behaviours;
 
-import com.github.fishio.EnemyFishFactory;
 import com.github.fishio.Vec2d;
+import com.github.fishio.settings.Settings;
 
 /**
  * A behaviour for entities that can swim in a certain direction,
  * but sometimes slow down in a certain axis, or speed up.
  */
-public class RandomBehaviour implements IBehaviour {
+public class RandomBehaviour implements IMoveBehaviour {
 
+	private static final double MIN_EFISH_SPEED = Settings.getInstance().getDouble("MIN_EFISH_SPEED");
+	private static final double MAX_EFISH_SPEED = Settings.getInstance().getDouble("MAX_EFISH_SPEED");
 	private double vx;
 	private double vy;
 	
@@ -67,9 +69,9 @@ public class RandomBehaviour implements IBehaviour {
 	 */
 	public void limitVx() {
 		if (vx > 0) {
-			vx = Math.max(EnemyFishFactory.MIN_EFISH_SPEED, Math.min(vx, EnemyFishFactory.MAX_EFISH_SPEED));
+			vx = Math.max(MIN_EFISH_SPEED, Math.min(vx, MAX_EFISH_SPEED));
 		} else {
-			vx = Math.min(-EnemyFishFactory.MIN_EFISH_SPEED, Math.max(vx, -EnemyFishFactory.MAX_EFISH_SPEED));
+			vx = Math.min(-MIN_EFISH_SPEED, Math.max(vx, -MAX_EFISH_SPEED));
 		}
 	}
 	
@@ -79,9 +81,9 @@ public class RandomBehaviour implements IBehaviour {
 	 */
 	public void limitVy() {
 		if (vy > 0) {
-			vy = Math.max(EnemyFishFactory.MIN_EFISH_SPEED, Math.min(vy, EnemyFishFactory.MAX_EFISH_SPEED));
+			vy = Math.max(MIN_EFISH_SPEED, Math.min(vy, MAX_EFISH_SPEED));
 		} else {
-			vy = Math.min(-EnemyFishFactory.MIN_EFISH_SPEED, Math.max(vy, -EnemyFishFactory.MAX_EFISH_SPEED));
+			vy = Math.min(-MIN_EFISH_SPEED, Math.max(vy, -MAX_EFISH_SPEED));
 		}
 	}
 }

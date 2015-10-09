@@ -2,6 +2,8 @@ package com.github.fishio;
 
 import java.util.Random;
 
+import com.github.fishio.settings.Settings;
+
 import javafx.scene.image.Image;
 
 
@@ -11,20 +13,7 @@ import javafx.scene.image.Image;
 public final class EnemyFishFactory {
 
 	private static Random rand = new Random();
-	// Fish statistics
-
-	// movement
-	/**
-	 * The minimal and maximal speed the enemy fish can move are specified here.
-	 */
-	public static final double MAX_EFISH_SPEED = 4;
-	public static final double MIN_EFISH_SPEED = 1;
-
-	/**
-	 * The amount of fish sprites that we have.
-	 */
-	public static final int FISH_SPRITES = 28;
-
+	private static Settings settings = Settings.getInstance();
 	/**
 	 * Private constructor to prevent initiation.
 	 */
@@ -61,22 +50,24 @@ public final class EnemyFishFactory {
 		//pick a side
 		switch (rand.nextInt(4)) {
 		case 0: 	// left
-			position = new Vec2d(-width, Math.random() * PlayingField.WINDOW_Y);
+			position = new Vec2d(-width, Math.random() * settings.getDouble("SCREEN_HEIGHT"));
 			vx = Math.abs(randomSpeed());
 			vy = randomSpeed();
 			break;
 		case 1: 	// top
-			position = new Vec2d(Math.random() * PlayingField.WINDOW_X, -height);
+			position = new Vec2d(Math.random() * settings.getDouble("SCREEN_WIDTH"), -height);
 			vx = randomSpeed();
 			vy = -Math.abs(randomSpeed());
 			break;
 		case 2: 	// right
-			position = new Vec2d(PlayingField.WINDOW_X + width, Math.random() * PlayingField.WINDOW_Y);
+			position = new Vec2d(settings.getDouble("SCREEN_WIDTH") + width,
+					Math.random() * settings.getDouble("SCREEN_HEIGHT"));
 			vx = -Math.abs(randomSpeed());
 			vy = randomSpeed();
 			break;
 		default: 	// bottom
-			position = new Vec2d(Math.random() * PlayingField.WINDOW_X, PlayingField.WINDOW_Y + height);
+			position = new Vec2d(Math.random() * settings.getDouble("SCREEN_WIDTH"), 
+					settings.getDouble("SCREEN_HEIGHT") + height);
 			vx = randomSpeed();
 			vy = Math.abs(randomSpeed());
 			break;
@@ -94,7 +85,7 @@ public final class EnemyFishFactory {
 	 * 		a random fish sprite.
 	 */
 	private static String getRandomSprite() {
-		final int i = rand.nextInt(FISH_SPRITES);
+		final int i = rand.nextInt(28);
 		return "sprites/fish/fish" + i + ".png";
 	}
 
@@ -106,7 +97,7 @@ public final class EnemyFishFactory {
 	 * 			-MAX_FISH_SPEED
 	 */
 	public static double randomSpeed() {
-		double speed = (Math.random() * 2 - 1) * MAX_EFISH_SPEED;
+		double speed = (Math.random() * 2 - 1) * settings.getDouble("MAX_EFISH_SPEED");
 
 		// Check if speed is not too slow
 		if (speed < 0) {

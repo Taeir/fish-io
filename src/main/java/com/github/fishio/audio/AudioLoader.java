@@ -127,40 +127,7 @@ public final class AudioLoader {
 		
 		return m.group("path") + m.group("name");
 	}
-	
-	/**
-	 * Loads a sound from a file.
-	 * 
-	 * @param path
-	 * 		the internal path of the sound to load.
-	 * @param soundEffect
-	 * 		true for sound effects, false for (background) music.
-	 * 
-	 * @return
-	 * 		a new FishSound representing the sound for the given path
-	 * 		(base + name), or <code>null</code> if an exception occurred
-	 * 		while trying to load the sound.
-	 */
-	public static Sound loadSound(String path, boolean soundEffect) {
-		try (InputStream is = AudioEngine.class.getResourceAsStream(path)) {
-			//Use a buffered input stream if mark is not supported.
-			if (!is.markSupported()) {
-				return new Sound(new BufferedInputStream(is), isMp3(path), soundEffect);
-			} else {
-				return new Sound(is, isMp3(path), soundEffect);
-			}
-		} catch (IOException ex) {
-			Log.getLogger().log(LogLevel.ERROR, "[Audio Engine] Unable to load music file " + path + "!");
-			ex.printStackTrace();
-		} catch (UnsupportedAudioFileException ex) {
-			Log.getLogger().log(LogLevel.ERROR,
-					"[Audio Engine] Unable to load music file " + path + ": audio format not supported!");
-			ex.printStackTrace();
-		}
-		
-		return null;
-	}
-	
+
 	/**
 	 * Loads a sound from a file.
 	 * 

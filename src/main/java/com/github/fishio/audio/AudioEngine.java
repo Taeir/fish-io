@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
+import com.github.fishio.settings.Settings;
 
 /**
  * Singleton class for managing playing audio.
@@ -40,14 +41,18 @@ public final class AudioEngine {
 	private ClipRunnable background;
 	private int backgroundNr = -1;
 	private SimpleBooleanProperty musicRunningProperty = new SimpleBooleanProperty();
-	
-	private SimpleDoubleProperty masterVolumeProperty = new SimpleDoubleProperty(1.0);
-	private SimpleDoubleProperty musicVolumeProperty = new SimpleDoubleProperty(0.8);
-	private SimpleDoubleProperty effectsVolumeProperty = new SimpleDoubleProperty(0.8);
-	
 	private SimpleIntegerProperty muteStateProperty = new SimpleIntegerProperty(NO_MUTE);
 	
+	private SimpleDoubleProperty masterVolumeProperty;
+	private SimpleDoubleProperty musicVolumeProperty;
+	private SimpleDoubleProperty effectsVolumeProperty;	
+	
 	private AudioEngine() {
+		//Get volume properties from settings.
+		masterVolumeProperty = Settings.getInstance().getSliderProperty("MASTER_VOLUME");
+		musicVolumeProperty = Settings.getInstance().getSliderProperty("MUSIC_VOLUME");
+		effectsVolumeProperty = Settings.getInstance().getSliderProperty("EFFECTS_VOLUME");
+		
 		music = AudioLoader.loadMusicAsynchronous();
 		effects = AudioLoader.loadSoundEffectsAsynchronous();
 	}

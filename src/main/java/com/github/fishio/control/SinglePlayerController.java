@@ -66,6 +66,10 @@ public class SinglePlayerController implements ScreenController {
 			}
 		});
 		
+		//Update fields to initial values.
+		updateScoreDisplay(newPlayer.scoreProperty().get());
+		updateLivesDisplay(newPlayer.getLives());
+		
 		//TODO add listener to deathProperty of fish?
 	};
 	
