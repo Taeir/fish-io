@@ -19,7 +19,7 @@ public class AchievementScreenController implements ScreenController {
 	private Log log = Log.getLogger();
 	private Achievement playerDeath = new Achievement("playerDeath");
 	private Achievement enemyKill = new Achievement("enemyKill");
-
+	
 	@FXML
 	private Button btnBackToMenu;
 	@FXML
@@ -94,29 +94,31 @@ public class AchievementScreenController implements ScreenController {
 	/**
 	 * Controls the viewer for the second achievement: enemy kills.
 	 */
-		public void setEnemyKill() {
-			Achieve.checkEnemyKill(enemyKill);
-			if (enemyKill.getLevel() >= 1) {
-				smallachieve21.setOpacity(1);
+	public void setEnemyKill() {
+		
+		Achieve.checkEnemyKill(enemyKill);
+		if (enemyKill.getLevel() >= 1) {
+			smallachieve21.setOpacity(1);
 			log.log(LogLevel.INFO, "Survival of the fittest achievement level 1 gained!");
-			}
-			if (enemyKill.getLevel() >= 2) {
-				smallachieve22.setOpacity(1);
-			log.log(LogLevel.INFO, "Survival of the fittest achievement level 2 gained!");
-			}
-			if (enemyKill.getLevel() >= 3) {
-				smallachieve23.setOpacity(1);
-			log.log(LogLevel.INFO, "Survival of the fittest achievement level 3 gained!");
-			}
-			if (enemyKill.getLevel() >= 4) {
-				smallachieve24.setOpacity(1);
-			log.log(LogLevel.INFO, "Survival of the fittest achievement level 4 gained!");
-			}
-			if (enemyKill.getLevel() >= 5) {
-				smallachieve25.setOpacity(1);
-			log.log(LogLevel.INFO, "Survival of the fittest achievement level 5 gained!");
-			}
 		}
+		if (enemyKill.getLevel() >= 2) {
+			smallachieve22.setOpacity(1);
+			log.log(LogLevel.INFO, "Survival of the fittest achievement level 2 gained!");
+		}
+		if (enemyKill.getLevel() >= 3) {
+			smallachieve23.setOpacity(1);
+			log.log(LogLevel.INFO, "Survival of the fittest achievement level 3 gained!");
+		}
+		if (enemyKill.getLevel() >= 4) {
+			smallachieve24.setOpacity(1);
+			log.log(LogLevel.INFO, "Survival of the fittest achievement level 4 gained!");
+		}
+		if (enemyKill.getLevel() >= 5) {
+			smallachieve25.setOpacity(1);
+			log.log(LogLevel.INFO, "Survival of the fittest achievement level 5 gained!");
+			System.out.println("Achievecontroller reached");
+		}
+	}
 	
 	/**
 	 * Go back to main menu. This button loads the main menu.
@@ -164,5 +166,5 @@ public class AchievementScreenController implements ScreenController {
 		setEnemyKill();
 		
 	}
-
+	
 }
