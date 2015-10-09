@@ -28,7 +28,7 @@ public abstract class PlayingField {
 	private ConcurrentLinkedDeque<IDrawable> deadDrawables = new ConcurrentLinkedDeque<>();
 	private ConcurrentLinkedQueue<Entity> entities = new ConcurrentLinkedQueue<>();
 	private ConcurrentLinkedQueue<ICollidable> collidables = new ConcurrentLinkedQueue<>();
-	private Log log = Log.getLogger();
+	private Log logger = Log.getLogger();
 	private Settings settings = Settings.getInstance();
 
 	private int enemyCount;
@@ -57,10 +57,10 @@ public abstract class PlayingField {
 		enemyCount = 0;
 
 		gameThread = new GameThread(this);
-		log.log(LogLevel.INFO, "Created GameThread");
+		logger.log(LogLevel.INFO, "Created GameThread");
 		
 		renderer = new Renderer(this, canvas, fps);
-		log.log(LogLevel.INFO, "Created Renderer");
+		logger.log(LogLevel.INFO, "Created Renderer");
 	}
 
 	/**
@@ -141,7 +141,7 @@ public abstract class PlayingField {
 			}
 			
 			//Log action.
-			log.log(LogLevel.DEBUG, "Removed entity. Enemycount: " + enemyCount + ".");
+			logger.log(LogLevel.DEBUG, "Removed entity. Enemycount: " + enemyCount + ".");
 		}
 	}
 
@@ -157,7 +157,7 @@ public abstract class PlayingField {
 			add(eFish);
 			
 			enemyCount++;
-			log.log(LogLevel.DEBUG, "Added enemy fish. Enemycount: " +  enemyCount + ".");
+			logger.log(LogLevel.DEBUG, "Added enemy fish. Enemycount: " +  enemyCount + ".");
 		}
 	}
 

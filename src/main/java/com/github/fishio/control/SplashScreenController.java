@@ -20,7 +20,7 @@ import com.github.fishio.logging.LogLevel;
  */
 public class SplashScreenController implements ScreenController {
 
-	private Log log = Log.getLogger();
+	private Log logger = Log.getLogger();
 	
 	@FXML
 	private VBox company;
@@ -49,7 +49,7 @@ public class SplashScreenController implements ScreenController {
 			//Consume the event, so that it doesn't get passed along.
 			event.consume();
 			
-			log.log(LogLevel.INFO, "Player pressed key, skipping splashScreen.");
+			logger.log(LogLevel.INFO, "Player pressed key, skipping splashScreen.");
 			endSplash();
 		});
 

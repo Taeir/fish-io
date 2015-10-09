@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public final class Log {
 
-	private static final Log LOG = new Log();
+	private static final Log LOGGER = new Log();
 	private LogLevel logLevel = LogLevel.WARNING;
 	private ArrayList<IHandler> handlers = new ArrayList<IHandler>();
 	
@@ -26,7 +26,7 @@ public final class Log {
 	 * @return logging
 	 */
 	public static Log getLogger() {
-		return LOG;
+		return LOGGER;
 	}
 	
 	/**

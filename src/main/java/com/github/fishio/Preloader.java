@@ -20,7 +20,7 @@ import javafx.util.Duration;
  */
 public final class Preloader {
 	
-	private static Log log = Log.getLogger();
+	private static Log logger = Log.getLogger();
 	private Preloader() { }
 	
 	/**
@@ -138,7 +138,7 @@ public final class Preloader {
 		try {
 			image = new Image(file);
 		} catch (Exception ex) {
-			log.log(LogLevel.ERROR, "Error while trying to load image: " + file);
+			logger.log(LogLevel.ERROR, "Error while trying to load image: " + file);
 			return;
 		}
 		if (pixelData) {
@@ -255,7 +255,7 @@ public final class Preloader {
 			if (image != null) {
 				return image;
 			} else {
-				log.log(LogLevel.ERROR, "No image loaded for " + file + "!");
+				logger.log(LogLevel.ERROR, "No image loaded for " + file + "!");
 				throw new IllegalArgumentException("No image loaded for " + file + "!");
 			}
 		}
@@ -302,7 +302,7 @@ public final class Preloader {
 						oldScene = SCREENS.get(filename);
 					}
 				} catch (InterruptedException ex) {
-					log.log(LogLevel.ERROR, INTERRUPTED_MESSAGE);
+					logger.log(LogLevel.ERROR, INTERRUPTED_MESSAGE);
 					throw new LoaderException(INTERRUPTED_MESSAGE, ex);
 				}
 			} while (oldScene == EMPTY_SCENE);
@@ -318,7 +318,7 @@ public final class Preloader {
 			Pane rootLayout = (Pane) loader.load();
 			ScreenController controller = ((ScreenController) loader.getController());
 			if (controller == null) {
-				log.log(LogLevel.ERROR, "Screen controller not found for " + filename);
+				logger.log(LogLevel.ERROR, "Screen controller not found for " + filename);
 				return null;
 			}
 
@@ -331,7 +331,7 @@ public final class Preloader {
 			try {
 				controller.init(scene);
 			} catch (Exception ex) {
-				log.log(LogLevel.ERROR, "Error while initializing controller for " 
+				logger.log(LogLevel.ERROR, "Error while initializing controller for " 
 						+ filename + " Exeception: " + ex.getMessage());
 			}
 			
@@ -341,7 +341,7 @@ public final class Preloader {
 			
 			return scene;
 		} catch (IOException e) {
-			log.log(LogLevel.ERROR, "Error loading screen: " 
+			logger.log(LogLevel.ERROR, "Error loading screen: " 
 					+ " Exeception: " + e.getMessage());
 			return null;
 		}
@@ -370,7 +370,7 @@ public final class Preloader {
 		}
 		
 		if (scene == null) {
-			log.log(LogLevel.ERROR, "No screen with name " + filename + " is loaded!");
+			logger.log(LogLevel.ERROR, "No screen with name " + filename + " is loaded!");
 			throw new IllegalArgumentException("No screen with name " + filename + " is loaded!");
 		} else if (scene == EMPTY_SCENE) {
 			//Screen is being loaded, so sleep for a bit and try again
@@ -382,7 +382,7 @@ public final class Preloader {
 						scene = SCREENS.get(filename);
 					}
 				} catch (InterruptedException ex) {
-					log.log(LogLevel.ERROR, INTERRUPTED_MESSAGE);
+					logger.log(LogLevel.ERROR, INTERRUPTED_MESSAGE);
 					throw new LoaderException(INTERRUPTED_MESSAGE, ex);
 				}
 			}
