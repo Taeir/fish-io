@@ -58,5 +58,33 @@
             <Button fx:id="btnDSMenu" minWidth="100.0" mnemonicParsing="false" onAction="#backToMenu" text="Menu" />
          </children>
       </VBox>
+      <VBox fx:id="achievePopup" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="152.0" prefWidth="238.0" style="-fx-background-color: #d3d3d3;" visible="false" StackPane.alignment="BOTTOM_LEFT">
+         <children>
+            <GridPane prefHeight="148.0" prefWidth="266.0" visible="false">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="54.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="98.0" minHeight="10.0" prefHeight="98.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label prefHeight="17.0" prefWidth="256.0" text="Gained achievement!">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </Label>
+                  <ImageView fx:id="popupimage" fitHeight="109.0" fitWidth="183.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets left="10.0" />
+                     </GridPane.margin>
+                  </ImageView>
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
    </children>
 </StackPane>
