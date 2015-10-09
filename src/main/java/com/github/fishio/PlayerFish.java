@@ -3,7 +3,7 @@ package com.github.fishio;
 import com.github.fishio.achievements.State;
 import com.github.fishio.achievements.Subject;
 import com.github.fishio.settings.Settings;
-import com.github.fishio.behaviours.IBehaviour;
+import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.behaviours.KeyListenerBehaviour;
 
 import javafx.beans.property.SimpleIntegerProperty;
@@ -28,7 +28,7 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 	
 	private long invincible;
 	
-	private IBehaviour behaviour;
+	private IMoveBehaviour behaviour;
 
 	/**
 	 * Creates the Player fish which the user will be able to control.
@@ -251,12 +251,12 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 	}
 
 	@Override
-	public IBehaviour getBehaviour() {
+	public IMoveBehaviour getBehaviour() {
 		return behaviour;
 	}
 
 	@Override
-	public void setBehaviour(IBehaviour behaviour) {
+	public void setBehaviour(IMoveBehaviour behaviour) {
 		this.behaviour = behaviour;
 	}
 

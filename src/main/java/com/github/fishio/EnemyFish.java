@@ -1,7 +1,7 @@
 package com.github.fishio;
 
 import com.github.fishio.audio.AudioEngine;
-import com.github.fishio.behaviours.IBehaviour;
+import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.behaviours.RandomBehaviour;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
@@ -21,7 +21,7 @@ public class EnemyFish extends Entity implements IEatable {
 
 	private Image sprite;
 
-	private IBehaviour behaviour;
+	private IMoveBehaviour behaviour;
 	
 	/**
 	 * Main constructor of the enemy fish.
@@ -88,12 +88,12 @@ public class EnemyFish extends Entity implements IEatable {
 	}
 
 	@Override
-	public IBehaviour getBehaviour() {
+	public IMoveBehaviour getBehaviour() {
 		return behaviour;
 	}
 
 	@Override
-	public void setBehaviour(IBehaviour behaviour) {
+	public void setBehaviour(IMoveBehaviour behaviour) {
 		this.behaviour = behaviour;
 	}
 

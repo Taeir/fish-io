@@ -5,7 +5,7 @@ import com.github.fishio.Vec2d;
 /**
  * The behaviour of an entity decides how it moves.
  */
-public interface IBehaviour {
+public interface IMoveBehaviour {
 
 	/**
 	 * Gets the speedVector of the object.
@@ -29,7 +29,7 @@ public interface IBehaviour {
 	/**
 	 * Called just before the object moves.
 	 * 
-	 * Can be used to adjust the speedVector for AI for example.
+	 * Can be used to adjust the speedVector for clever AI.
 	 */
 	void preMove();
 }

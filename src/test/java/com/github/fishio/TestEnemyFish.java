@@ -10,12 +10,14 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.github.fishio.settings.Settings;
+import com.github.fishio.behaviours.FrozenBehaviour;
+import com.github.fishio.behaviours.IMoveBehaviour;
+import com.github.fishio.behaviours.RandomBehaviour;
 
 /**
  * This class tests the EnemyFish class.
  */
 public class TestEnemyFish extends TestIEatable {
-	
 	private final double maxSpeed = Settings.getInstance().getDouble("MAX_EFISH_SPEED");
 	private BoundingBox bb1;
 	private EnemyFish enemy1;
@@ -116,6 +118,26 @@ public class TestEnemyFish extends TestIEatable {
 	@Override
 	public void testGetSize() {
 		assertEquals(4, enemy1.getSize(), 0.0000001D);
+	}
+	
+	/**
+	 * Tests the getBehaviour method.
+	 */
+	@Test
+	public void testGetBehaviour() {
+		assertTrue(enemy1.getBehaviour() instanceof RandomBehaviour);
+	}
+	
+	/**
+	 * Tests the setBehaviour method.
+	 */
+	@Test
+	public void testSetBehaviour() {
+		IMoveBehaviour behaviour = new FrozenBehaviour();
+		
+		enemy1.setBehaviour(behaviour);
+		
+		assertEquals(behaviour, enemy1.getBehaviour());
 	}
 
 	@Override
