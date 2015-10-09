@@ -15,7 +15,7 @@ import javafx.scene.control.Button;
  */
 public class MainMenuController implements ScreenController {
 	
-	private Log log = Log.getLogger();
+	private Log logger = Log.getLogger();
 	
 	@FXML
 	private Button btnSingleplayer;
@@ -58,7 +58,7 @@ public class MainMenuController implements ScreenController {
 	public void startSinglePlayer() {
 		AudioEngine.getInstance().playEffect("button");
 		
-		log.log(LogLevel.INFO, "Player Pressed the SinglePlayer Button.");
+		logger.log(LogLevel.INFO, "Player Pressed the SinglePlayer Button.");
 		Preloader.switchTo("singlePlayer", 400);
 	}
 
@@ -103,7 +103,7 @@ public class MainMenuController implements ScreenController {
 	public void showAchievements() {
 		AudioEngine.getInstance().playEffect("button");
 		
-		log.log(LogLevel.INFO, "Player Pressed the achievementScreen Button.");
+		logger.log(LogLevel.INFO, "Player Pressed the achievementScreen Button.");
 		Preloader.switchTo("achievementScreen", 400);
 	}
 
@@ -124,7 +124,7 @@ public class MainMenuController implements ScreenController {
 	 */
 	@FXML
 	public void showSettings() {
-		log.log(LogLevel.INFO, "Player Pressed the Settings Button.");
+		logger.log(LogLevel.INFO, "Player Pressed the Settings Button.");
 		Preloader.switchTo("settingsScreen", 400);
 		AudioEngine.getInstance().playEffect("button");
 		
@@ -139,7 +139,7 @@ public class MainMenuController implements ScreenController {
 	public void showHelp() {
 		AudioEngine.getInstance().playEffect("button");
 		
-		log.log(LogLevel.INFO, "Player Pressed the Help Button.");
+		logger.log(LogLevel.INFO, "Player Pressed the Help Button.");
 		Preloader.switchTo("helpScreen", 400);
 	}
 
@@ -151,7 +151,7 @@ public class MainMenuController implements ScreenController {
 	public void exitGame() {
 		AudioEngine.getInstance().playEffect("button");
 		
-		log.log(LogLevel.INFO, "Player Pressed the Exit Button.");
+		logger.log(LogLevel.INFO, "Player Pressed the Exit Button.");
 		FishIO.getInstance().closeApplication();
 	}
 	
