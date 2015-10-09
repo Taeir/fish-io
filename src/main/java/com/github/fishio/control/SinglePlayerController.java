@@ -7,9 +7,9 @@ import com.github.fishio.PlayingField;
 import com.github.fishio.Preloader;
 import com.github.fishio.SinglePlayerPlayingField;
 import com.github.fishio.Util;
-import com.github.fishio.Vec2d;
 import com.github.fishio.achievements.EnemyKillObserver;
 import com.github.fishio.achievements.PlayerDeathObserver;
+import com.github.fishio.audio.AudioEngine;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
@@ -63,6 +63,10 @@ public class SinglePlayerController implements ScreenController {
 			}
 		});
 		
+		//Update fields to initial values.
+		updateScoreDisplay(newPlayer.scoreProperty().get());
+		updateLivesDisplay(newPlayer.getLives());
+		
 		//TODO add listener to deathProperty of fish?
 	};
 	
@@ -106,6 +110,16 @@ public class SinglePlayerController implements ScreenController {
 		playerChangeListener.changed(pf.playerProperty(), pf.getPlayer(), pf.getPlayer());
 		new PlayerDeathObserver(pf);
 		new EnemyKillObserver(pf);
+		
+		AudioEngine.getInstance().getMuteStateProperty().addListener((o, oVal, nVal) -> {
+			if (nVal.intValue() == AudioEngine.NO_MUTE) {
+				btnMute.setText("Mute music");
+			} else if (nVal.intValue() == AudioEngine.MUTE_MUSIC) {
+				btnMute.setText("Mute all sounds");
+			} else if (nVal.intValue() == AudioEngine.MUTE_ALL) {
+				btnMute.setText("Unmute all sounds");
+			}
+		});
 	}
 	
 	@Override
@@ -132,6 +146,8 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void onPause(ActionEvent event) {
+		AudioEngine.getInstance().playEffect("button");
+		
 		GameThread gameThread = pf.getGameThread();
 		if (gameThread.isRunning()) {
 			try {
@@ -146,6 +162,19 @@ public class SinglePlayerController implements ScreenController {
 			pf.startGame();
 			getBtnPause().setText(PAUSE_TEXT);
 		}
+	}
+	
+	/**
+	 * Called when the mute button is pressed.
+	 * 
+	 * @param event
+	 * 		the event of the user pressing the button.
+	 */
+	@FXML
+	public void onMute(ActionEvent event) {
+		AudioEngine.getInstance().playEffect("button");
+		
+		AudioEngine.getInstance().toggleMuteState();
 	}
 
 	/**
@@ -237,6 +266,8 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void backToMenu() {
+		AudioEngine.getInstance().playEffect("button");
+		
 		pf.stopGame();
 		pf.clear();
 		
@@ -249,6 +280,12 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void revive() {
+		AudioEngine.getInstance().playEffect("button");
+		
+		//Reset the pause button
+		getBtnPause().setText(PAUSE_TEXT);
+		getBtnPause().setDisable(false);
+		
 		//Remove all enemies.
 		pf.clearEnemies();
 		
@@ -270,6 +307,8 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void restartGame() {
+		AudioEngine.getInstance().playEffect("button");
+		
 		//Reset the pause button
 		getBtnPause().setText(PAUSE_TEXT);
 		getBtnPause().setDisable(false);

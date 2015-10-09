@@ -4,6 +4,7 @@ package com.github.fishio;
 import java.io.File;
 import java.io.IOException;
 
+import com.github.fishio.audio.AudioEngine;
 import com.github.fishio.logging.ConsoleHandler;
 import com.github.fishio.logging.TxtFileHandler;
 import com.github.fishio.logging.Log;
@@ -52,6 +53,14 @@ public class FishIO extends Application {
 		//Load and show the splash screen.
 		Preloader.loadAndShowScreen("splashScreen", 0);
 		primaryStage.show();
+		
+		//Start background music
+		AudioEngine.getInstance().startBackgroundMusicWhenLoaded();
+	}
+	
+	@Override
+	public void stop() throws Exception {
+		closeApplication();
 	}
 
 	/**
@@ -68,11 +77,16 @@ public class FishIO extends Application {
 	 */
 	public void closeApplication() {
 		log.log(LogLevel.INFO, "Game shutting Down.");
+		
+		//Shutdown AudioEngine
+		AudioEngine.getInstance().shutdown();
+		
 		try {
 			textFileHandler.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 		this.primaryStage.close();
 	}
 

@@ -1,8 +1,6 @@
 package com.github.fishio;
 
-import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.geom.AffineTransform;
+import javafx.scene.shape.Rectangle;
 
 import com.github.fishio.behaviours.IMoveBehaviour;
 
@@ -19,25 +17,33 @@ public interface ICollisionArea {
 	 * 		True if they collide, false otherwise.
 	 */
 	default boolean boxIntersects(ICollisionArea other) {
-		Shape rect1 = new Rectangle((int) (getCenterX() - 0.5 * getWidth()), 
-				(int) (getCenterY() - 0.5 * getHeight()), 
-				(int) getWidth(), (int) getHeight());
-		Rectangle rect2 = new Rectangle((int) (other.getCenterX() - 0.5 * other.getWidth()), 
-				(int) (other.getCenterY() - 0.5 * other.getHeight()), 
-				(int) other.getWidth(), (int) other.getHeight());
-
-		AffineTransform t1 = new AffineTransform();
-		AffineTransform t2 = new AffineTransform();
+		Rectangle myBox = getBox();
+		Rectangle otherBox = other.getBox();
 		
-		t1.rotate(Math.toRadians(this.getRotation()), 
-				this.getCenterX(), this.getCenterY()); //rotate self
-		t2.rotate(Math.toRadians(other.getRotation()), 
-				other.getCenterX(), other.getCenterY()); //rotate around other
+		return myBox.intersects(otherBox.getBoundsInParent());
+	}
+	
+	/**
+	 * @return
+	 * 		a rectangular box around this ICollisionArea.
+	 */
+	default Rectangle getBox() {
+		Rectangle tbr = new Rectangle(
+				getCenterX() - 0.5 * getWidth(),
+				getCenterY() - 0.5 * getHeight(),
+				getWidth(),
+				getHeight());
 		
-		rect1 = t1.createTransformedShape(rect1);
-		rect1 = t2.createTransformedShape(rect1);
-
-		return rect1.intersects(rect2);
+		tbr.setRotate(getRotation());
+		return tbr;
+	}
+	
+	/**
+	 * @return
+	 * 		if the collision area should be flipped upside down.
+	 */
+	default boolean isReversed() {
+		return getRotation() > 90 && getRotation() < 270;
 	}
 	
 	/**
@@ -149,20 +155,29 @@ public interface ICollisionArea {
 		Vec2d sv = m.getSpeedVector();
 		if (sv.x == 0) {
 			if (sv.y > 0) {
-				return setRotation(270);
-			} else if (sv.y < 0) {
+				//Set rotation to 90 (UP)
 				return setRotation(90);
+			} else if (sv.y < 0) {
+				//Set rotation to 270 (DOWN)
+				return setRotation(270);
 			} else {
-				return setRotation(0);
+				//not moving, so not updating rotation.
+				return getRotation();
 			}
 		} else if (sv.y == 0) {
 			if (sv.x >= 0) {
+				//Set rotation to 0 (RIGHT)
 				return setRotation(0);
 			} else {
+				//Set rotation to 180 (LEFT)
 				return setRotation(180);
 			}
 		} else {
-			return setRotation(Math.toDegrees(Math.atan(sv.y / sv.x)));
+			if (sv.x < 0) {
+				return setRotation(Math.toDegrees(Math.atan(sv.y / sv.x)) + 180);
+			} else {
+				return setRotation(Math.toDegrees(Math.atan(sv.y / sv.x)) + 360);
+			}
 		}
 	}
 	
@@ -194,7 +209,7 @@ public interface ICollisionArea {
 	 * 		the largest x coordinate of this ICollisionArea.
 	 */
 	default double getMaxX() {
-		return Math.max(getTopRight().x, getBottomRight().x);
+		return getBox().getBoundsInParent().getMaxX();
 	}
 	
 	/**
@@ -202,7 +217,7 @@ public interface ICollisionArea {
 	 * 		the smallest x coordinate of this ICollisionArea.
 	 */
 	default double getMinX() {
-		return Math.min(getTopLeft().x, getBottomLeft().x);
+		return getBox().getBoundsInParent().getMinX();
 	}
 	
 	/**
@@ -210,7 +225,7 @@ public interface ICollisionArea {
 	 * 		the largest y coordinate of this ICollisionArea.
 	 */
 	default double getMaxY() {
-		return Math.max(getBottomLeft().y, getBottomRight().y);
+		return getBox().getBoundsInParent().getMaxY();
 	}
 	
 	/**
@@ -218,6 +233,6 @@ public interface ICollisionArea {
 	 * 		the smallest y coordinate of this ICollisionArea.
 	 */
 	default double getMinY() {
-		return Math.min(getTopLeft().y, getTopRight().y);
+		return getBox().getBoundsInParent().getMinY();
 	}
 }

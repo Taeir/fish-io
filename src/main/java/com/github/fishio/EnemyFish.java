@@ -1,5 +1,6 @@
 package com.github.fishio;
 
+import com.github.fishio.audio.AudioEngine;
 import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.behaviours.RandomBehaviour;
 import com.github.fishio.logging.Log;
@@ -53,11 +54,7 @@ public class EnemyFish extends Entity implements IEatable {
 			return;
 		}
 		getBoundingArea().setRotation(behaviour);	//update rotation
-		if (behaviour.getSpeedVector().x > 0) {
-			drawRotatedImage(gc, sprite, getBoundingArea(), false);
-		} else {
-			drawRotatedImage(gc, sprite, getBoundingArea(), true);
-		}
+		drawRotatedImage(gc, sprite, getBoundingArea());
 	}
 
 	/**
@@ -83,6 +80,7 @@ public class EnemyFish extends Entity implements IEatable {
 	@Override
 	public void eat() {
 		kill();
+		AudioEngine.getInstance().playEffect("crunch");
 	}
 
 	@Override

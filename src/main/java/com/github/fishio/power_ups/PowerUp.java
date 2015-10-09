@@ -108,7 +108,7 @@ public abstract class PowerUp extends Entity implements IEatable {
 	
 	@Override
 	public void render(GraphicsContext gc) {
-		drawRotatedImage(gc, sprite, getBoundingArea(), false);
+		drawRotatedImage(gc, sprite, getBoundingArea());
 	}
 	
 	@Override
