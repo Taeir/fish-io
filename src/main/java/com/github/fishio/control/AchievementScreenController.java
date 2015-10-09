@@ -60,8 +60,10 @@ public class AchievementScreenController implements ScreenController {
 	private Label icon25;
 	
 	public static void onEnemyKill(int level) {
+		System.out.println("OnEnemyKill reached");
 		if (level == 1) {
 			smallachieve21.setOpacity(1);
+			System.out.println("OnEnemyKill lvl1 reached");
 		}
 		if (level == 2) {
 			smallachieve22.setOpacity(1);

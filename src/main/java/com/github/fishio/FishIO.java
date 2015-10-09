@@ -1,15 +1,15 @@
 package com.github.fishio;
 
-
 import java.io.File;
 import java.io.IOException;
 
+import com.github.fishio.achievements.AchievedController;
 import com.github.fishio.audio.AudioEngine;
 import com.github.fishio.logging.ConsoleHandler;
-import com.github.fishio.logging.TxtFileHandler;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.logging.TimeStampFormat;
+import com.github.fishio.logging.TxtFileHandler;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -23,23 +23,22 @@ public class FishIO extends Application {
 	
 	private Log log = Log.getLogger();
 	private ConsoleHandler consoleHandler = new ConsoleHandler(new TimeStampFormat());
-	private TxtFileHandler textFileHandler =
-			new TxtFileHandler(new TimeStampFormat(), new File("logs" +  File.separator + "log.txt"));
+	private TxtFileHandler textFileHandler = new TxtFileHandler(new TimeStampFormat(),
+			new File("logs" + File.separator + "log.txt"));
 	private LogLevel logLevel = LogLevel.WARNING;
-
-
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		instance = this;
 		
-		//Initialize Logger
+		// Initialize Logger
 		initiateLogger();
 		
 		log.log(LogLevel.INFO, "Starting up Fish.io.");
-		//Preload the screens
+		// Preload the screens
 		Preloader.preloadScreens();
 		log.log(LogLevel.DEBUG, "Preloaded the screens.");
-		//Preload the images
+		// Preload the images
 		Preloader.preloadImages();
 		log.log(LogLevel.DEBUG, "Preloaded the images.");
 		
@@ -50,46 +49,49 @@ public class FishIO extends Application {
 		primaryStage.setHeight(720.0);
 		
 		log.log(LogLevel.DEBUG, "Primary stage set.");
-		//Load and show the splash screen.
+		// Load and show the splash screen.
 		Preloader.loadAndShowScreen("splashScreen", 0);
 		primaryStage.show();
 		
-		//Start background music
+		// Start background music
 		AudioEngine.getInstance().startBackgroundMusicWhenLoaded();
+		AchievedController.updateAchievements();
 	}
 	
 	@Override
 	public void stop() throws Exception {
 		closeApplication();
 	}
-
+	
 	/**
 	 * Startup method.
+	 * 
 	 * @param args
-	 * 		program arguments.
+	 *            program arguments.
 	 */
 	public static void main(String[] args) {
 		launch();
 	}
-
+	
 	/**
 	 * Closes the program.
 	 */
 	public void closeApplication() {
 		log.log(LogLevel.INFO, "Game shutting Down.");
 		
-		//Shutdown AudioEngine
+		// Shutdown AudioEngine
 		AudioEngine.getInstance().shutdown();
 		
 		try {
 			textFileHandler.close();
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		this.primaryStage.close();
 	}
-
+	
 	/**
 	 * This method returns the Primary Stage.
 	 * 
@@ -112,17 +114,18 @@ public class FishIO extends Application {
 	 * Set up new logger.
 	 */
 	protected final void initiateLogger() {
-		//Remove any Handlers if, for GUI tests.
+		// Remove any Handlers if, for GUI tests.
 		log.removeAllHandlers();
 		
-		//Set Handlers with formatters
+		// Set Handlers with formatters
 		log.addHandler(consoleHandler);
 		log.addHandler(textFileHandler);
 		
-		//Set Log level
+		// Set Log level
 		log.setLogLevel(logLevel);
 		
-		//Log that logger has been setup
+		// Log that logger has been setup
 		log.log(LogLevel.INFO, "Logger has initialized. Ready to Start Logging!");
 	}
+	
 }

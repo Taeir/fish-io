@@ -8,16 +8,18 @@ import com.github.fishio.logging.LogLevel;
 
 public class AchievedController {
 	
-	private Achievement enemyKill = new Achievement("enemyKill");
-	private Achievement playerDeath = new Achievement("playerDeath");
-	private Log log = Log.getLogger();
+	private static Achievement enemyKill = new Achievement("enemyKill");
+	private static Achievement playerDeath = new Achievement("playerDeath");
+	private static Log log = Log.getLogger();
 	
 	/**
 	 * Controls the viewer for the second achievement: enemy kills.
 	 */
-	public void setEnemyKill() {
+	public static void setEnemyKill() {
+		System.out.println("SetenemyKill reached");
 		Achieve.checkEnemyKill(enemyKill);
 		if (enemyKill.getLevel() >= 1) {
+			System.out.println("SetenemyKill lvl1 reached");
 			log.log(LogLevel.INFO, "Survival of the fittest achievement level 1 gained!");
 			AchievementScreenController.onEnemyKill(1);
 			SinglePlayerController.showAchievePopup();
@@ -47,7 +49,7 @@ public class AchievedController {
 	/**
 	 * Controls the viewer for the second achievement: enemy kills.
 	 */
-	public void setPlayerDeath() {
+	public static void setPlayerDeath() {
 		Achieve.checkPlayerDeath(playerDeath);
 		if (playerDeath.getLevel() >= 1) {
 			log.log(LogLevel.INFO, "Survival of the fittest achievement level 1 gained!");
@@ -76,7 +78,10 @@ public class AchievedController {
 		}
 	}
 	
-	public void updateAchievements() {
+	/**
+	 * 
+	 */
+	public static void updateAchievements() {
 		Util.onJavaFX(() ->
 		{
 			setEnemyKill();
