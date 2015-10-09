@@ -161,8 +161,8 @@ public class SettingsScreenController implements ScreenController {
 			textField.setMaxWidth(200);
 			textField.setOnAction(e -> {
 				e.consume();
-				double value = Double.valueOf(textField.getText());
-				settings.setDouble(key, value);
+				int value = Integer.valueOf(textField.getText());
+				settings.setInteger(key, value);
 			});
 			gridPane.add(label, 0, row);
 			gridPane.add(textField, 1, row);

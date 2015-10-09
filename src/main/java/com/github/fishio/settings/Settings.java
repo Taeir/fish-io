@@ -1,13 +1,6 @@
 package com.github.fishio.settings;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 import javafx.beans.property.SimpleBooleanProperty;
@@ -15,7 +8,6 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.input.KeyCode;
 
-import com.esotericsoftware.yamlbeans.YamlReader;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
@@ -27,7 +19,6 @@ import com.github.fishio.logging.LogLevel;
 public final class Settings {
 	private static final Settings INSTANCE = new Settings();
 	
-	private File settingsFile;
 	private Log log = Log.getLogger();
 	private HashMap<String, SimpleDoubleProperty> doubleSettings = new HashMap<String, SimpleDoubleProperty>();
 	private HashMap<String, SimpleIntegerProperty> integerSettings = new HashMap<String, SimpleIntegerProperty>();
@@ -37,78 +28,15 @@ public final class Settings {
 	
 	private HashMap<String, String> descriptions = new HashMap<String, String>();
 	
-	private Settings() {
-		settingsFile = new File("settings.yml");
-		loadDescriptions();
-		// If file doesn't exists, then create it
-		try {
-			if (!settingsFile.exists()) {
-				createSettingsFile();				
-			} else {
-				loadSettings();
-			}
-		} catch (IOException e) {
-			log.log(LogLevel.ERROR, "Error creating setting file settings.yml!");
-		}
-	}
-	
-	private void loadDescriptions() {
-		descriptions.put("SCREEN_WIDTH", "The width of the screen in pixels");
-		descriptions.put("SCREEN_HEIGHT", "The height of the screen in pixels");
-		descriptions.put("DIRECTION_CHANGE_CHANCE", "The chance a fish will change trajectory per tick.");
-		descriptions.put("MIN_EFISH_SPEED", "The minimum speed of an enemy fish");
-		descriptions.put("MAX_EFISH_SPEED", "The maximum speed of an enemy fish");
-		descriptions.put("MAX_PLAYER_SPEED", "The maximum speed of the player fish");		
-		descriptions.put("DEBUG_DRAW", "Render debug values");
-		descriptions.put("GROWTH_SPEED", "The growth speed of the player fish");
-		descriptions.put("LOG_LEVEL", "The level of messages that will be logged");
-		descriptions.put("START_LIVES", "The amount of lives a player starts with");
-		descriptions.put("MAX_LIVES", "The maximum amount of lives a player can get");
-		descriptions.put("POWERUP_SPAWN_INTERVAL", "The interval between the spawning of powerups in seconds");
-	}
-
-	/**
-	 * Method called when the settings file does not exist.
-	 * Creates the file and writes standard settings to it.
-	 * @throws IOException
-	 * 		when something goes wrong with creating the files.
-	 */
-	private void createSettingsFile() throws IOException {
-		settingsFile.getAbsoluteFile().getParentFile().mkdirs();
-		settingsFile.createNewFile();
+	private Settings() {		
+		ISettingLoader parser = new YamlSettingLoader();
+		doubleSettings = parser.getDoubleSettings();
+		integerSettings = parser.getIntegerSettings();
+		booleanSettings = parser.getBooleanSettings();
+		keySettings = parser.getKeyCodeSettings();
+		sliderSettings = parser.getSliderSettings();
 		
-		// doubles
-		doubleSettings.put("SCREEN_WIDTH", new SimpleDoubleProperty(1280));
-		doubleSettings.put("SCREEN_HEIGHT", new SimpleDoubleProperty(720));
-		doubleSettings.put("FISH_EAT_THRESHOLD", new SimpleDoubleProperty(1.2));
-		doubleSettings.put("DIRECTION_CHANGE_CHANCE", new SimpleDoubleProperty(0.1));
-		doubleSettings.put("MIN_EFISH_SPEED", new SimpleDoubleProperty(1));
-		doubleSettings.put("MAX_EFISH_SPEED", new SimpleDoubleProperty(4));
-		doubleSettings.put("MAX_PLAYER_SPEED", new SimpleDoubleProperty(4.0));
-		
-		// booleans
-		booleanSettings.put("DEBUG_DRAW", new SimpleBooleanProperty(false));
-		booleanSettings.put("PIXEL_PERFECT_COLLISIONS", new SimpleBooleanProperty(true));
-		
-		// integers
-		integerSettings.put("GROWTH_SPEED", new SimpleIntegerProperty(2));
-		integerSettings.put("LOG_LEVEL", new SimpleIntegerProperty(2));
-		integerSettings.put("START_LIVES", new SimpleIntegerProperty(3));
-		integerSettings.put("MAX_LIVES", new SimpleIntegerProperty(5));
-		integerSettings.put("POWERUP_SPAWN_INTERVAL", new SimpleIntegerProperty(30));
-
-		// keys
-		keySettings.put("SWIM_UP", KeyCode.UP);
-		keySettings.put("SWIM_DOWN", KeyCode.DOWN);
-		keySettings.put("SWIM_LEFT", KeyCode.LEFT);
-		keySettings.put("SWIM_RIGHT", KeyCode.RIGHT);
-		
-		//slider values
-		sliderSettings.put("MASTER_VOLUME", new SimpleDoubleProperty(1.0));
-		sliderSettings.put("MUSIC_VOLUME", new SimpleDoubleProperty(0.8));
-		sliderSettings.put("EFFECTS_VOLUME", new SimpleDoubleProperty(1.0));
-		
-		save();		
+		descriptions = parser.getDescriptions();
 	}
 	
 	/**
@@ -300,88 +228,16 @@ public final class Settings {
 	}
 
 	/**
-	 * Method that loads the settings from the settings file.
-	 */
-	@SuppressWarnings("unchecked")
-	public void loadSettings() {
-		try (BufferedReader br = new BufferedReader(new FileReader(settingsFile))) {
-			YamlReader reader = new YamlReader(br);
-			Map<String, String> object = (Map<String, String>) reader.read();
-		    for (String key : object.keySet()) {
-		    	double value = Double.valueOf(object.get(key));
-		    	doubleSettings.put(key, new SimpleDoubleProperty(value));
-		    }
-		    object = (Map<String, String>) reader.read();
-		    for (String key : object.keySet()) {
-		    	int value = Integer.valueOf(object.get(key));
-		    	integerSettings.put(key, new SimpleIntegerProperty(value));
-		    }
-		    object = (Map<String, String>) reader.read();
-		    for (String key : object.keySet()) {
-		    	boolean value = Boolean.valueOf(object.get(key));
-		    	booleanSettings.put(key, new SimpleBooleanProperty(value));
-		    }
-		    object = (Map<String, String>) reader.read();
-		    for (String key : object.keySet()) {
-		    	KeyCode value = KeyCode.getKeyCode(object.get(key));
-		    	keySettings.put(key, value);
-		    }
-		    
-		    object = (Map<String, String>) reader.read();
-		    for (String key : object.keySet()) {
-		    	double value = Double.valueOf(object.get(key));
-		    	sliderSettings.put(key, new SimpleDoubleProperty(value));
-		    }
-		} catch (IOException e) {
-			log.log(LogLevel.ERROR, "Error reading settings.yml!");
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Saves the current settings to a file.
 	 */
 	public void save() {
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(settingsFile))) {
-			//TODO get yaml writing working
-			for (String key : doubleSettings.keySet()) {
-				bw.write(key + ": " + doubleSettings.get(key).getValue());
-				bw.newLine();
-			}
-			bw.write("---");
-			bw.newLine();
-			
-			for (String key : integerSettings.keySet()) {
-				bw.write(key + ": " + integerSettings.get(key).getValue());
-				bw.newLine();
-			}
-			bw.write("---");
-			bw.newLine();
-			
-			for (String key : booleanSettings.keySet()) {
-				bw.write(key + ": " + booleanSettings.get(key).getValue());
-				bw.newLine();
-			}
-			
-			bw.write("---");
-			bw.newLine();
-			
-			for (String key : keySettings.keySet()) {
-				bw.write(key + ": " + keySettings.get(key).getName());
-				bw.newLine();
-			}
-			
-			bw.write("---");
-			bw.newLine();
-			
-			for (String key : sliderSettings.keySet()) {
-				bw.write(key + ": " + sliderSettings.get(key).getValue());
-				bw.newLine();
-			}
-			
-		} catch (IOException e) {
-			log.log(LogLevel.ERROR, "Error saving settings file!");
-		}
+		ISettingWriter writer = new YamlSettingWriter();
+		writer.writeDoubleSettings(doubleSettings);
+		writer.writeIntegerSettings(integerSettings);
+		writer.writeBooleanSettings(booleanSettings);
+		writer.writeKeyCodeSettings(keySettings);
+		writer.writeSliderSettings(sliderSettings);
+		writer.flush();
 	}
 
 	/**
@@ -437,5 +293,71 @@ public final class Settings {
 	 */
 	public Set<String> getSliderSettings() {
 		return sliderSettings.keySet();
+	}
+
+	/**
+	 * @return
+	 * 		All the default values for the settings.
+	 */
+	public static HashMap<String, SimpleDoubleProperty> getDefaultDoubleSettings() {
+		HashMap<String, SimpleDoubleProperty> map = new HashMap<String, SimpleDoubleProperty>();
+		 map.put("SCREEN_WIDTH", new SimpleDoubleProperty(1280));
+		 map.put("SCREEN_HEIGHT", new SimpleDoubleProperty(720));
+		 map.put("FISH_EAT_THRESHOLD", new SimpleDoubleProperty(1.2));
+		 map.put("DIRECTION_CHANGE_CHANCE", new SimpleDoubleProperty(0.1));
+		 map.put("MIN_EFISH_SPEED", new SimpleDoubleProperty(1));
+		 map.put("MAX_EFISH_SPEED", new SimpleDoubleProperty(4));
+		 map.put("MAX_PLAYER_SPEED", new SimpleDoubleProperty(4.0));
+		return map;
+	}
+
+	/**
+	 * @return
+	 * 		All the default values for the settings.
+	 */
+	public static HashMap<String, SimpleIntegerProperty> getDefaultIntegerSettings() {
+		HashMap<String, SimpleIntegerProperty> map = new HashMap<String, SimpleIntegerProperty>();
+		 map.put("GROWTH_SPEED", new SimpleIntegerProperty(2));
+		 map.put("LOG_LEVEL", new SimpleIntegerProperty(2));
+		 map.put("START_LIVES", new SimpleIntegerProperty(3));
+		 map.put("MAX_LIVES", new SimpleIntegerProperty(5));
+		 map.put("POWERUP_SPAWN_INTERVAL", new SimpleIntegerProperty(30));
+		return map;
+	}
+
+	/**
+	 * @return
+	 * 		All the default values for the settings.
+	 */
+	public static HashMap<String, SimpleBooleanProperty> getDefaultBooleanSettings() {
+		HashMap<String, SimpleBooleanProperty> map = new HashMap<String, SimpleBooleanProperty>();
+		 map.put("DEBUG_DRAW", new SimpleBooleanProperty(false));
+		 map.put("PIXEL_PERFECT_COLLISIONS", new SimpleBooleanProperty(true));
+		return map;
+	}
+
+	/**
+	 * @return
+	 * 		All the default values for the settings.
+	 */
+	public static HashMap<String, KeyCode> getDefaultKeyCodeSettings() {
+		HashMap<String, KeyCode> map = new HashMap<String, KeyCode>();
+		 map.put("SWIM_UP", KeyCode.UP);
+		 map.put("SWIM_DOWN", KeyCode.DOWN);
+		 map.put("SWIM_LEFT", KeyCode.LEFT);
+		 map.put("SWIM_RIGHT", KeyCode.RIGHT);
+		return map;
+	}
+
+	/**
+	 * @return
+	 * 		All the default values for the settings.
+	 */
+	public static HashMap<String, SimpleDoubleProperty> getDefaultSliderSettings() {
+		HashMap<String, SimpleDoubleProperty> map = new HashMap<String, SimpleDoubleProperty>();
+		 map.put("MASTER_VOLUME", new SimpleDoubleProperty(1.0));
+		 map.put("MUSIC_VOLUME", new SimpleDoubleProperty(0.8));
+		 map.put("EFFECTS_VOLUME", new SimpleDoubleProperty(1.0));
+		return map;
 	}
 }
