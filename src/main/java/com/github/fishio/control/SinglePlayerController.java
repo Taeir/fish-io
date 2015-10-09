@@ -216,7 +216,6 @@ public class SinglePlayerController implements ScreenController {
 		achievePopup.getChildren().setAll(imageView);
 		
 		achievePopup.setVisible(true);
-		// imagepop.setImage(popupimage);
 		FadeTransition fadeIn = new FadeTransition(Duration.millis(in), achievePopup);
 		fadeIn.setFromValue(0.0);
 		fadeIn.setToValue(1.0);
