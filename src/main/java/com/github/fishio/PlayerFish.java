@@ -105,11 +105,13 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 			IEatable eatable = (IEatable) other;
 		
 			if (eatable.canBeEatenBy(this)) {
+				State old = getState();
+				
 				eatable.eat();
 				this.addPoints((int) (eatable.getSize() / 200));
 				double dSize = getGrowthSpeed() * eatable.getSize() / getSize();
 				getBoundingArea().increaseSize(dSize);	
-				State old = getState();
+				
 				notifyObservers(old, getState(), "EnemyKill");
 			} 
 
