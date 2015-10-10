@@ -10,6 +10,11 @@ import org.junit.Test;
  */
 public class TestBoundingBox extends TestICollisionArea {
 
+	@Override
+	public ICollisionArea getCollisionArea(Vec2d center, double width, double height) {
+		return new BoundingBox(center, width, height);
+	}
+	
 	/**
 	 * Test for {@link BoundingBox#hashCode()}.
 	 */
@@ -257,10 +262,5 @@ public class TestBoundingBox extends TestICollisionArea {
 		BoundingBox bb2 = new BoundingBox(1.0, 2.0, 3.0, 5.0);
 		
 		assertNotEquals(bb1, bb2);
-	}
-
-	@Override
-	public ICollisionArea getCollisionArea() {
-		return new BoundingBox(new Vec2d(0, 0), 10, 5);
 	}
 }

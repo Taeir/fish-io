@@ -6,7 +6,7 @@ package com.github.fishio;
 public class TestCollisionMaskInterface extends TestICollisionArea {
 
 	@Override
-	public ICollisionArea getCollisionArea() {
-		return new CollisionMask(new Vec2d(0, 0), 10, 5, null, 1);
+	public ICollisionArea getCollisionArea(Vec2d center, double width, double height) {
+		return new CollisionMask(center, width, height, null, 1);
 	}
 }
