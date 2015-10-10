@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import javafx.beans.value.ObservableDoubleValue;
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
@@ -30,7 +31,9 @@ public abstract class PlayingField {
 	private ConcurrentLinkedQueue<Entity> entities = new ConcurrentLinkedQueue<>();
 	private ConcurrentLinkedQueue<ICollidable> collidables = new ConcurrentLinkedQueue<>();
 	private Log log = Log.getLogger();
-	private Settings settings = Settings.getInstance();
+	
+	private ObservableDoubleValue widthProperty;
+	private ObservableDoubleValue heightProperty;
 
 	private int enemyCount;
 	private static final int MAX_ENEMY_COUNT = 10;
@@ -54,6 +57,10 @@ public abstract class PlayingField {
 	 *            the canvas to use, can be <code>null</code> to create one.
 	 */
 	public PlayingField(int fps, Canvas canvas) {
+		//Get width and height properties.
+		widthProperty = Settings.getInstance().getDoubleProperty("SCREEN_WIDTH");
+		heightProperty = Settings.getInstance().getDoubleProperty("SCREEN_HEIGHT").subtract(50.0);
+		
 		//count enemies
 		enemyCount = 0;
 
@@ -90,7 +97,7 @@ public abstract class PlayingField {
 	 * @return the width of the field.
 	 */
 	public double getWidth() {
-		return settings.getDouble("SCREEN_WIDTH");
+		return widthProperty.doubleValue();
 	}
 
 	/**
@@ -99,7 +106,7 @@ public abstract class PlayingField {
 	 * @return the height of the field.
 	 */
 	public double getHeigth() {
-		return settings.getDouble("SCREEN_HEIGHT") - 50;
+		return heightProperty.doubleValue();
 	}
 
 	/**
