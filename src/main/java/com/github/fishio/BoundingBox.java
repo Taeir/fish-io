@@ -121,30 +121,6 @@ public class BoundingBox implements ICollisionArea {
 		return height;
 	}
 
-	/**
-	 * Move this Bounding Box in the specified direction.
-	 * 
-	 * @param rad
-	 *            the radians of the direction to move in.
-	 * @param amount
-	 *            the amount to move (speed).
-	 */
-	@Deprecated
-	public void move(double rad, double amount) {
-		double dx = Math.cos(rad);
-		double dy = Math.sin(rad);
-
-		Vec2d v = new Vec2d(dx, dy);
-		if (v.lengthSquared() > 0) {
-			v = v.normalize();
-		}
-
-		v.x *= amount;
-		v.y *= amount;
-
-		center.add(v);
-	}
-
 	@Override
 	public void move(Vec2d v) {
 		v.y = -v.y;

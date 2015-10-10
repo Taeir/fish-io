@@ -144,24 +144,6 @@ public class TestBoundingBox extends TestICollisionArea {
 		
 		assertEquals(6.0, bb.getHeight(), 0.0D);
 	}
-
-	/**
-	 * Test for moving a bounding box by radians.
-	 * {@link BoundingBox#move(double, double)}
-	 */
-	@SuppressWarnings("deprecation")
-	@Test
-	public void testMoveDoubleDouble() {
-		BoundingBox bb = new BoundingBox(1.0, 2.0, 3.0, 4.0);
-		
-		//Move up right
-		bb.move(0.25 * Math.PI, 1.0);
-		
-		assertEquals(1.0 + 0.5 * Math.sqrt(2), bb.getTopLeft().x, 0.0000001D);
-		assertEquals(2.0 + 0.5 * Math.sqrt(2), bb.getTopLeft().y, 0.0000001D);
-		assertEquals(3.0 + 0.5 * Math.sqrt(2), bb.getTopRight().x, 0.0000001D);
-		assertEquals(4.0 + 0.5 * Math.sqrt(2), bb.getBottomRight().y, 0.0000001D);
-	}
 	
 	/**
 	 * Test for moving a bounding vox by vectors.
