@@ -1,5 +1,6 @@
 package com.github.fishio;
 
+import javafx.geometry.Bounds;
 import javafx.scene.shape.Rectangle;
 
 import com.github.fishio.behaviours.IMoveBehaviour;
@@ -36,6 +37,25 @@ public interface ICollisionArea {
 		
 		tbr.setRotate(getRotation());
 		return tbr;
+	}
+	
+	/**
+	 * @param minX
+	 * 		the minimal X coordinate.
+	 * @param minY
+	 * 		the minimal Y coordinate.
+	 * @param maxX
+	 * 		the maximal X coordinate.
+	 * @param maxY
+	 * 		the maximal Y coordinate.
+	 * 
+	 * @return
+	 * 		<code>true</code> if the center of this ICollisionArea is
+	 * 		outside the given coordinates. <code>false</code> otherwise.
+	 */
+	default boolean isOutside(double minX, double minY, double maxX, double maxY) {
+		Bounds b = getBox().getBoundsInParent();
+		return b.getMinX() <= minX || b.getMaxX() >= maxX || b.getMinY() <= minY || b.getMaxY() >= maxY;
 	}
 	
 	/**

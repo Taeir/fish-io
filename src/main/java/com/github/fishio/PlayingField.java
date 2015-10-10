@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import javafx.geometry.Bounds;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 
@@ -210,23 +211,13 @@ public abstract class PlayingField {
 	 */
 	private boolean hitsWall(Entity e, ICollisionArea box) {
 		// prevent playerfish from leaving the screen
-		if (e instanceof PlayerFish) {	
-			if (box.getMaxX() >= getWidth()
-					|| box.getMinX() <= 0
-					|| box.getMaxY() >= getHeigth()
-					|| box.getMinY() <= 0) {
-				return true;
-			}
+		if (e instanceof PlayerFish) {
+			return box.isOutside(0, 0, getWidth(), getHeigth());
 		} else {
-			if (box.getMaxX() >= getWidth() + 2.0 * box.getWidth()
-					|| box.getMinX() <= -(2.0 * box.getWidth()) - 1
-					|| box.getMaxY() >= getHeigth() + 2.0 * box.getHeight() + 1
-					|| box.getMinY() <= -(2.0 * box.getHeight()) - 1) {
-				return true;
-			}
+			double dw = 2.0 * box.getWidth() + 1;
+			double dh = 2.0 * box.getHeight() + 1;
+			return box.isOutside(-dw, -dh, getWidth() + dw, getHeigth() + dh);
 		}
-		
-		return false;
 	}
 
 	/**
@@ -237,20 +228,22 @@ public abstract class PlayingField {
 	 * 		the ICollisionArea to move.
 	 */
 	private void moveWithinScreen(ICollisionArea box) {
-		if (box.getMaxX() > getWidth()) {
-			box.move(new Vec2d(-(box.getMaxX() - getWidth()), 0));
-		}
-		
-		if (box.getMinX() < 0) {
-			box.move(new Vec2d(-box.getMinX(), 0));
-		}
-		
-		if (box.getMaxY() > getHeigth()) {
-			box.move(new Vec2d(0, box.getMaxY() - getHeigth()));
-		}
-		
-		if (box.getMinY() < 0) {
-			box.move(new Vec2d(0, box.getMinY()));
+		if (box.isOutside(0, 0, getWidth(), getHeigth())) {			
+			if (box.getMaxX() > getWidth()) {
+				box.move(new Vec2d(-(box.getMaxX() - getWidth()), 0));
+			}
+			
+			if (box.getMinX() < 0) {
+				box.move(new Vec2d(-box.getMinX(), 0));
+			}
+			
+			if (box.getMaxY() > getHeigth()) {
+				box.move(new Vec2d(0, box.getMaxY() - getHeigth()));
+			}
+			
+			if (box.getMinY() < 0) {
+				box.move(new Vec2d(0, box.getMinY()));
+			}
 		}
 	}
 	
