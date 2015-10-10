@@ -145,6 +145,14 @@ public interface ICollisionArea {
 	double getSize();
 	
 	/**
+	 * Set the size of the collisionArea.
+	 * 
+	 * @param size
+	 * 		The new size.
+	 */
+	void setSize(double size);
+	
+	/**
 	 * Increases the size (area) of the fish without
 	 * affecting the width/height (shape stays the same).
 	 * 
@@ -202,6 +210,12 @@ public interface ICollisionArea {
 	}
 	
 	/**
+	 * @return
+	 * 		the rotation of the boundingArea in degrees.
+	 */
+	double getRotation();
+	
+	/**
 	 * Sets the rotation of the CollisionArea.
 	 * @param angle
 	 * 		The new angle in degrees.
@@ -209,20 +223,6 @@ public interface ICollisionArea {
 	 * 		The set value of the angle.
 	 */
 	double setRotation(double angle);
-
-	/**
-	 * @return
-	 * 		the rotation of the boundingArea in degrees.
-	 */
-	double getRotation();
-	
-	/**
-	 * Set the size of the collisionArea.
-	 * 
-	 * @param size
-	 * 		The new size.
-	 */
-	void setSize(double size);
 
 	/**
 	 * @return
