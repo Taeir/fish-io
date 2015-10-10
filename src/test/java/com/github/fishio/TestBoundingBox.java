@@ -16,6 +16,33 @@ public class TestBoundingBox extends TestICollisionArea {
 	}
 	
 	/**
+	 * Test for {@link BoundingBox#BoundingBox(double, double, double, double)}.
+	 */
+	@Test
+	public void testConstructorDoubles() {
+		BoundingBox bb1 = new BoundingBox(1.0, 2.0, 3.0, 4.0);
+		
+		assertEquals(2.0, bb1.getCenterX(), 0.0);
+		assertEquals(3.0, bb1.getCenterY(), 0.0);
+		assertEquals(2.0, bb1.getWidth(), 0.0);
+		assertEquals(2.0, bb1.getHeight(), 0.0);
+	}
+	
+	/**
+	 * Test for {@link BoundingBox#BoundingBox(double, double, double, double)},
+	 * using the wrong order for min and max.
+	 */
+	@Test
+	public void testConstructorDoubles2() {
+		BoundingBox bb1 = new BoundingBox(1.0, 2.0, -3.0, -4.0);
+		
+		assertEquals(-1.0, bb1.getCenterX(), 0.0);
+		assertEquals(-1.0, bb1.getCenterY(), 0.0);
+		assertEquals(4.0, bb1.getWidth(), 0.0);
+		assertEquals(6.0, bb1.getHeight(), 0.0);
+	}
+	
+	/**
 	 * Test for {@link BoundingBox#hashCode()}.
 	 */
 	@Test
@@ -24,130 +51,6 @@ public class TestBoundingBox extends TestICollisionArea {
 		BoundingBox bb2 = new BoundingBox(1.0, 2.0, 3.0, 4.0);
 		
 		assertEquals(bb1.hashCode(), bb2.hashCode());
-	}
-
-	/**
-	 * Test for {@link BoundingBox#getTopLeft()}.
-	 */
-	@Test
-	public void testGetTopLeft() {
-		BoundingBox bb = new BoundingBox(1.0, 2.0, 3.0, 4.0);
-		
-		assertEquals(new Vec2d(1.0, 2.0), bb.getTopLeft());
-	}
-	
-	/**
-	 * Test for {@link BoundingBox#getTopLeft()} using 
-	 * the constructor {@link BoundingBox#BoundingBox(Vec2d, double, double)}.
-	 */
-	@Test
-	public void testGetTopLeft2() {
-		BoundingBox bb = new BoundingBox(new Vec2d(5.0, 5.0), 4.0, 5.0);
-		
-		assertEquals(new Vec2d(3.0, 2.5), bb.getTopLeft());
-	}
-
-	/**
-	 * Test for {@link BoundingBox#getTopRight()}.
-	 */
-	@Test
-	public void testGetTopRight() {
-		BoundingBox bb = new BoundingBox(1.0, 2.0, 3.0, 4.0);
-		
-		assertEquals(new Vec2d(3.0, 2.0), bb.getTopRight());
-	}
-	
-	/**
-	 * Test for {@link BoundingBox#getTopRight()} using 
-	 * the constructor {@link BoundingBox#BoundingBox(Vec2d, double, double)}.
-	 */
-	@Test
-	public void testGetTopRight2() {
-		BoundingBox bb = new BoundingBox(new Vec2d(5.0, 5.0), 4.0, 5.0);
-		
-		assertEquals(new Vec2d(7.0, 2.5), bb.getTopRight());
-	}
-
-	/**
-	 * Test for {@link BoundingBox#getBottomLeft()}.
-	 */
-	@Test
-	public void testGetBottomLeft() {
-		BoundingBox bb = new BoundingBox(1.0, 2.0, 3.0, 5.0);
-		
-		assertEquals(new Vec2d(1.0, 5.0), bb.getBottomLeft());
-	}
-	
-	/**
-	 * Test for {@link BoundingBox#getBottomLeft()} using 
-	 * the constructor {@link BoundingBox#BoundingBox(Vec2d, double, double)}.
-	 */
-	@Test
-	public void testGetBottomLeft2() {
-		BoundingBox bb = new BoundingBox(new Vec2d(5.0, 5.0), 4.0, 5.0);
-		
-		assertEquals(new Vec2d(3.0, 7.5), bb.getBottomLeft());
-	}
-
-	/**
-	 * Test for {@link BoundingBox#getBottomRight()}.
-	 */
-	@Test
-	public void testGetBottomRight() {
-		BoundingBox bb = new BoundingBox(1.0, 2.0, 3.0, 4.0);
-		
-		assertEquals(new Vec2d(3.0, 4.0), bb.getBottomRight());
-	}
-	
-	/**
-	 * Test for {@link BoundingBox#getMBottomRight()} using 
-	 * the constructor {@link BoundingBox#BoundingBox(Vec2d, double, double)}.
-	 */
-	@Test
-	public void testGetBottomRight2() {
-		BoundingBox bb = new BoundingBox(new Vec2d(5.0, 5.0), 4.0, 5.0);
-		
-		assertEquals(new Vec2d(7.0, 7.5), bb.getBottomRight());
-	}
-
-	/**
-	 * Test for {@link BoundingBox#getCenterX()}.
-	 */
-	@Test
-	public void testGetCenterX() {
-		BoundingBox bb = new BoundingBox(2.0, 1.0, 4.0, 7.0);
-		
-		assertEquals(3.0, bb.getCenterX(), 0.0D);
-	}
-
-	/**
-	 * Test for {@link BoundingBox#getCenterY()}.
-	 */
-	@Test
-	public void testGetCenterY() {
-		BoundingBox bb = new BoundingBox(2.0, 1.0, 4.0, 7.0);
-		
-		assertEquals(4.0, bb.getCenterY(), 0.0D);
-	}
-
-	/**
-	 * Test for {@link BoundingBox#getWidth()}.
-	 */
-	@Test
-	public void testGetWidth() {
-		BoundingBox bb = new BoundingBox(3.0, 1.0, 5.0, 7.0);
-		
-		assertEquals(2.0, bb.getWidth(), 0.0D);
-	}
-
-	/**
-	 * Test for {@link BoundingBox#getHeight()}.
-	 */
-	@Test
-	public void testGetHeight() {
-		BoundingBox bb = new BoundingBox(3.0, 1.0, 5.0, 7.0);
-		
-		assertEquals(6.0, bb.getHeight(), 0.0D);
 	}
 	
 	/**
@@ -167,20 +70,10 @@ public class TestBoundingBox extends TestICollisionArea {
 	}
 	
 	/**
-	 * Test for {@link BoundingBox#getSize()}.
-	 */
-	@Test
-	public void testGetSize() {
-		BoundingBox bb = new BoundingBox(new Vec2d(5.0, 5.0), 3.0, 5.0);
-		
-		assertEquals(15.0, bb.getSize(), 0.0000001D);
-	}
-	
-	/**
 	 * Test for {@link BoundingBox#increaseSize(double)}.
 	 */
 	@Test
-	public void testIncreaseSize() {
+	public void testIncreaseSize2() {
 		BoundingBox bb = new BoundingBox(1.0, 1.0, 3.0, 2.0);
 		
 		bb.increaseSize(10.0);
