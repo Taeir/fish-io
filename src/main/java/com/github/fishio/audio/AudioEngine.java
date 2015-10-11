@@ -5,15 +5,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 
-import com.github.fishio.logging.Log;
-import com.github.fishio.logging.LogLevel;
 import com.github.fishio.settings.Settings;
 
 /**
@@ -21,9 +17,10 @@ import com.github.fishio.settings.Settings;
  */
 public final class AudioEngine {
 	/**
-	 * The maximum amount of threads that can play sounds concurrently.
+	 * The maximum amount of threads that can play sound effects
+	 * concurrently.
 	 */
-	private static final int MAX_THREAD_COUNT = 11;
+	private static final int MAX_THREAD_COUNT = 10;
 	
 	public static final int NO_MUTE = 0;
 	public static final int MUTE_MUSIC = 1;
@@ -31,16 +28,14 @@ public final class AudioEngine {
 
 	private static AudioEngine instance = new AudioEngine();
 	
-	private ConcurrentHashMap<String, Sound> effects;
-	private ObservableList<Sound> music;
+	private IAudioFactory audioFactory;
 	
 	private ExecutorService executor = Executors.newFixedThreadPool(MAX_THREAD_COUNT);
 	
 	private ConcurrentHashMap<VolumeListener, ChangeListener<Number>> listeners = new ConcurrentHashMap<>();
 	
-	private ClipRunnable background;
-	private int backgroundNr = -1;
-	private SimpleBooleanProperty musicRunningProperty = new SimpleBooleanProperty();
+	private BackgroundMusic background = new BackgroundMusic();
+	
 	private SimpleIntegerProperty muteStateProperty = new SimpleIntegerProperty(NO_MUTE);
 	
 	private SimpleDoubleProperty masterVolumeProperty;
@@ -53,8 +48,8 @@ public final class AudioEngine {
 		musicVolumeProperty = Settings.getInstance().getSliderProperty("MUSIC_VOLUME");
 		effectsVolumeProperty = Settings.getInstance().getSliderProperty("EFFECTS_VOLUME");
 		
-		music = AudioLoader.loadMusicAsynchronous();
-		effects = AudioLoader.loadSoundEffectsAsynchronous();
+		//Use the DefaultAudioFactory initially.
+		this.audioFactory = new DefaultAudioFactory();
 	}
 	
 	/**
@@ -63,6 +58,24 @@ public final class AudioEngine {
 	 */
 	public static AudioEngine getInstance() {
 		return instance;
+	}
+	
+	/**
+	 * @return
+	 * 		the Audio factory used by the audio engine.
+	 */
+	public IAudioFactory getAudioFactory() {
+		return audioFactory;
+	}
+	
+	/**
+	 * Sets the audio factory used by the audio engine.
+	 * 
+	 * @param audioFactory
+	 * 		the audio factory to use.
+	 */
+	public void setAudioFactory(IAudioFactory audioFactory) {
+		this.audioFactory = audioFactory;
 	}
 	
 	/**
@@ -212,38 +225,31 @@ public final class AudioEngine {
 	}
 	
 	/**
-	 * @return
-	 * 		the observable list containing all the music sounds that have
-	 * 		been cached.<br>
-	 * 		Attach a changelistener to this list to get notified when
-	 * 		music is loaded/unloaded.
-	 */
-	public ObservableList<Sound> getMusic() {
-		return music;
-	}
-	
-	/**
 	 * Start the background music as soon as a music track is loaded.
 	 */
 	public void startBackgroundMusicWhenLoaded() {
-		ListChangeListener<Sound> cl = new ListChangeListener<Sound>() {
-			@Override
-			public void onChanged(Change<? extends Sound> c) {
-				while (c.next()) {
-					if (!c.wasAdded()) {
-						continue;
+		if (audioFactory.getAllMusic().isEmpty()) {
+			ListChangeListener<Sound> cl = new ListChangeListener<Sound>() {
+				@Override
+				public void onChanged(Change<? extends Sound> c) {
+					while (c.next()) {
+						if (!c.wasAdded()) {
+							continue;
+						}
+						
+						//Remove this listener, we are no longer needed
+						c.getList().removeListener(this);
+						
+						//Start playing background music
+						startBackgroundMusic();
 					}
-					
-					//Remove this listener, we are no longer needed
-					c.getList().removeListener(this);
-					
-					//Start playing background music
-					startBackgroundMusic();
 				}
-			}
-		};
-		
-		getMusic().addListener(cl);
+			};
+			
+			audioFactory.getAllMusic().addListener(cl);
+		} else {
+			startBackgroundMusic();
+		}
 	}
 	
 	/**
@@ -253,77 +259,13 @@ public final class AudioEngine {
 	 * song.
 	 */
 	public void startBackgroundMusic() {
-		//Already running, so we go to the next song
-		if (musicRunningProperty.get()) {
-			background.stop();
-			return;
-		}
-		
-		//Get the number of the next music
-		int next = getNextMusic(backgroundNr);
-		
-		//There is no next music
-		if (next == -1) {
-			return;
-		}
-		
-		try {
-			background = new ClipRunnable(getMusic(next).getClip());
-			backgroundNr = next;
-		} catch (Exception ex) {
-			Log.getLogger().log(LogLevel.WARNING, "[Audio Engine] Unable to start background music!");
-			ex.printStackTrace();
-			return;
-		}
-		
-		background.getRunningProperty().addListener((o, oldV, newV) -> {
-			//Background music should no longer be running.
-			if (!musicRunningProperty.get()) {
-				return;
-			}
-			
-			//We are done with the last song.
-			if (!newV) {
-				int nextMusicNr = getNextMusic(backgroundNr);
-				
-				if (nextMusicNr == -1) {
-					return;
-				}
-				
-				//Set the new music
-				try {
-					background.setClip(getMusic(nextMusicNr).getClip());
-					backgroundNr = nextMusicNr;
-				} catch (Exception ex) {
-					Log.getLogger().log(LogLevel.WARNING, "[Audio Engine] Unable to start next background music!");
-					ex.printStackTrace();
-					return;
-				}
-				
-				//Start playback again.
-				executor.submit(background);
-			}
-		});
-		
-		musicRunningProperty.set(true);
-		
-		//Start the new background music
-		executor.submit(background);
+		background.start();
 	}
 	
 	/**
 	 * Stops any background music that is running.
 	 */
 	public void stopBackgroundMusic() {
-		//We are not running background music, so we can simply return.
-		if (!musicRunningProperty.get()) {
-			return;
-		}
-		
-		//Mark that we are not running music
-		musicRunningProperty.set(false);
-		
-		//Stop background music
 		background.stop();
 	}
 	
@@ -337,21 +279,16 @@ public final class AudioEngine {
 	 * 		<code>true</code> if the effect will be played,
 	 * 		<code>false</code> if not (not found or error).
 	 */
+	@SuppressWarnings("resource")
 	public boolean playEffect(String effectName) {
-		Sound sound = getEffect(effectName);
-		if (sound == null) {
+		FishClip clip = audioFactory.createSoundEffectClip(effectName);
+		
+		if (clip == null) {
 			return false;
 		}
 		
-		try {
-			ClipRunnable cr = new ClipRunnable(sound.getClip());
-			executor.submit(cr);
-		} catch (Exception ex) {
-			Log.getLogger().log(LogLevel.WARNING,
-					"[Audio Engine] Error while trying to get clip for sound effect " + effectName);
-			ex.printStackTrace();
-			return false;
-		}
+		ClipRunnable cr = new ClipRunnable(clip);
+		executor.submit(cr);
 		
 		return true;
 	}
@@ -379,7 +316,7 @@ public final class AudioEngine {
 	 * 		or <code>null</code> if there is no music with this number.
 	 */
 	public Sound getMusic(int nr) {
-		return music.get(nr);
+		return audioFactory.getMusic(nr);
 	}
 	
 	/**
@@ -391,37 +328,6 @@ public final class AudioEngine {
 	 * 		if it does not exist.
 	 */
 	public Sound getEffect(String name) {
-		return effects.get(name);
-	}
-	
-	/**
-	 * Returns the number of the music track that should come after the
-	 * given one.
-	 * 
-	 * @param nr
-	 * 		the number of the current music track
-	 * 
-	 * @return
-	 * 		the number of the next music track, or -1 if there is no
-	 * 		music.
-	 */
-	public int getNextMusic(int nr) {
-		if (music.isEmpty()) {
-			return -1;
-		}
-		
-		int next = (nr + 1) % music.size();
-
-		//Ensure we don't keep looping
-		for (int i = 0; i < music.size(); i++) {
-			Sound sound = getMusic(next);
-			if (sound != null) {
-				return next;
-			}
-			
-			next = (next + 1) % music.size();
-		}
-		
-		return -1;
+		return audioFactory.getSoundEffect(name);
 	}
 }
