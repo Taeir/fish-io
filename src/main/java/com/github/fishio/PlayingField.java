@@ -9,7 +9,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javafx.beans.value.ObservableDoubleValue;
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.image.Image;
 
 import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.game.GameThread;
@@ -30,23 +29,15 @@ public abstract class PlayingField {
 	private ConcurrentLinkedDeque<IDrawable> deadDrawables = new ConcurrentLinkedDeque<>();
 	private ConcurrentLinkedQueue<Entity> entities = new ConcurrentLinkedQueue<>();
 	private ConcurrentLinkedQueue<ICollidable> collidables = new ConcurrentLinkedQueue<>();
-	private Log log = Log.getLogger();
+	private Log logger = Log.getLogger();
 	
 	private ObservableDoubleValue widthProperty;
 	private ObservableDoubleValue heightProperty;
 
-	private int enemyCount;
-	private static final int MAX_ENEMY_COUNT = 10;
+	
 
-	/**
-	 * Creates the playing field with a set framerate.
-	 * 
-	 * @param fps
-	 *            the (target) framerate.
-	 */
-	public PlayingField(int fps) {
-		this(fps, null);
-	}
+	private int enemyCount;
+	public static final int MAX_ENEMY_COUNT = 10;
 
 	/**
 	 * Creates the playing field with a set framerate and canvas.
@@ -65,10 +56,10 @@ public abstract class PlayingField {
 		enemyCount = 0;
 
 		gameThread = new GameThread(this);
-		log.log(LogLevel.INFO, "Created GameThread");
+		logger.log(LogLevel.INFO, "Created GameThread");
 		
 		renderer = new Renderer(this, canvas, fps);
-		log.log(LogLevel.INFO, "Created Renderer");
+		logger.log(LogLevel.INFO, "Created Renderer");
 	}
 
 	/**
@@ -105,7 +96,7 @@ public abstract class PlayingField {
 	 * 
 	 * @return the height of the field.
 	 */
-	public double getHeigth() {
+	public double getHeight() {
 		return heightProperty.doubleValue();
 	}
 
@@ -149,7 +140,7 @@ public abstract class PlayingField {
 			}
 			
 			//Log action.
-			log.log(LogLevel.DEBUG, "Removed entity. Enemycount: " + enemyCount + ".");
+			logger.log(LogLevel.DEBUG, "Removed entity. Enemycount: " + enemyCount + ".");
 		}
 	}
 
@@ -165,7 +156,7 @@ public abstract class PlayingField {
 			add(eFish);
 			
 			enemyCount++;
-			log.log(LogLevel.DEBUG, "Added enemy fish. Enemycount: " +  enemyCount + ".");
+			logger.log(LogLevel.DEBUG, "Added enemy fish. Enemycount: " +  enemyCount + ".");
 		}
 	}
 
@@ -219,11 +210,11 @@ public abstract class PlayingField {
 	private boolean hitsWall(Entity e, ICollisionArea box) {
 		// prevent playerfish from leaving the screen
 		if (e instanceof PlayerFish) {
-			return box.isOutside(0, 0, getWidth(), getHeigth());
+			return box.isOutside(0, 0, getWidth(), getHeight());
 		} else {
 			double dw = 2.0 * box.getWidth() + 1;
 			double dh = 2.0 * box.getHeight() + 1;
-			return box.isOutside(-dw, -dh, getWidth() + dw, getHeigth() + dh);
+			return box.isOutside(-dw, -dh, getWidth() + dw, getHeight() + dh);
 		}
 	}
 
@@ -235,7 +226,7 @@ public abstract class PlayingField {
 	 * 		the ICollisionArea to move.
 	 */
 	private void moveWithinScreen(ICollisionArea box) {
-		if (box.isOutside(0, 0, getWidth(), getHeigth())) {			
+		if (box.isOutside(0, 0, getWidth(), getHeight())) {			
 			if (box.getMaxX() > getWidth()) {
 				box.move(new Vec2d(-(box.getMaxX() - getWidth()), 0));
 			}
@@ -244,8 +235,8 @@ public abstract class PlayingField {
 				box.move(new Vec2d(-box.getMinX(), 0));
 			}
 			
-			if (box.getMaxY() > getHeigth()) {
-				box.move(new Vec2d(0, box.getMaxY() - getHeigth()));
+			if (box.getMaxY() > getHeight()) {
+				box.move(new Vec2d(0, box.getMaxY() - getHeight()));
 			}
 			
 			if (box.getMinY() < 0) {
@@ -428,15 +419,6 @@ public abstract class PlayingField {
 	 */
 	public ConcurrentLinkedDeque<IDrawable> getDeadDrawables() {
 		return deadDrawables;
-	}
-
-	/**
-	 * Set the background image of the level.
-	 * @param image
-	 * 			The background image.
-	 */
-	public void setBackground(Image image) {
-		renderer.setBackground(image);
 	}
 	
 	/**

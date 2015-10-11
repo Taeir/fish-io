@@ -12,7 +12,7 @@ import javafx.scene.image.Image;
  */
 public final class EnemyFishFactory {
 
-	private static Random rand = new Random();
+	private static Random random = new Random();
 	private static Settings settings = Settings.getInstance();
 	/**
 	 * Private constructor to prevent initiation.
@@ -35,7 +35,7 @@ public final class EnemyFishFactory {
 		int minSize = (int) (ca.getSize() * 0.2);
 		int maxSize = (int) (ca.getSize() * 4.5);
 
-		int size = rand.nextInt(maxSize - minSize + 1) + minSize;
+		int size = random.nextInt(maxSize - minSize + 1) + minSize;
 		String spriteString = getRandomSprite();
 		Image sprite = Preloader.getImageOrLoad(spriteString);
 		boolean[][] data = Preloader.getAlphaDataOrLoad(spriteString);
@@ -48,7 +48,7 @@ public final class EnemyFishFactory {
 		double vx = 0.0, vy = 0.0;
 		Vec2d position = null;
 		//pick a side
-		switch (rand.nextInt(4)) {
+		switch (random.nextInt(4)) {
 		case 0: 	// left
 			position = new Vec2d(-width, Math.random() * settings.getDouble("SCREEN_HEIGHT"));
 			vx = Math.abs(randomSpeed());
@@ -85,7 +85,7 @@ public final class EnemyFishFactory {
 	 * 		a random fish sprite.
 	 */
 	private static String getRandomSprite() {
-		final int i = rand.nextInt(28);
+		final int i = random.nextInt(28);
 		return "sprites/fish/fish" + i + ".png";
 	}
 

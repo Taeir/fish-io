@@ -19,7 +19,7 @@ import com.github.fishio.settings.Settings;
  */
 public class PowerUpSpawner implements TickListener {
 
-	private final PlayingField pf;
+	private final PlayingField playingField;
 	
 	private final int minX;
 	private final int maxX;
@@ -27,7 +27,7 @@ public class PowerUpSpawner implements TickListener {
 	public static final int WIDTH = 25;
 	public static final int HEIGHT = 25;
 	
-	private Log log;
+	private Log logger;
 	private Settings settings = Settings.getInstance();
 	
 	/**
@@ -50,7 +50,7 @@ public class PowerUpSpawner implements TickListener {
 	 * 		works on.
 	 */
 	public PowerUpSpawner(PlayingField pf) {
-		this.pf = pf;
+		this.playingField = pf;
 		
 		this.intervalTicks = getInterval() * pf.getFPS();
 		this.tickCounter = 0;
@@ -58,7 +58,7 @@ public class PowerUpSpawner implements TickListener {
 		this.minX = 0;
 		this.maxX = (int) pf.getWidth();
 		
-		this.log = Log.getLogger();
+		this.logger = Log.getLogger();
 		
 		pf.getGameThread().registerListener(this);
 	}
@@ -72,8 +72,8 @@ public class PowerUpSpawner implements TickListener {
 		
 		if (tickCounter % intervalTicks == 0) {
 			PowerUp pu = getRandomPowerUp();
-			pf.add(pu);
-			log.log(LogLevel.DEBUG, "Added a PowerUp of type \"" + pu.getName() + "\"");
+			playingField.add(pu);
+			logger.log(LogLevel.DEBUG, "Added a PowerUp of type \"" + pu.getName() + "\"");
 		}
 	}
 	
@@ -100,11 +100,11 @@ public class PowerUpSpawner implements TickListener {
 		//Choosing a random PowerUp.
 		switch (powerUpNumber) {
 		case 0:
-			return new PuFreeze(cm, pf, sprite);
+			return new PuFreeze(cm, playingField, sprite);
 		case 1:
-			return new PuSuperSpeed(cm, pf, sprite);
+			return new PuSuperSpeed(cm, playingField, sprite);
 		case 2:
-			return new PuExtraLife(cm, pf, sprite);
+			return new PuExtraLife(cm, playingField, sprite);
 		default:
 			return null;
 		}

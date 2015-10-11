@@ -7,6 +7,7 @@ import com.github.fishio.PlayingField;
 import com.github.fishio.Preloader;
 import com.github.fishio.SinglePlayerPlayingField;
 import com.github.fishio.Util;
+import com.github.fishio.achievements.AchievementManager;
 import com.github.fishio.achievements.EnemyKillObserver;
 import com.github.fishio.achievements.PlayerDeathObserver;
 import com.github.fishio.audio.AudioEngine;
@@ -15,6 +16,7 @@ import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
 import javafx.animation.FadeTransition;
+import javafx.animation.SequentialTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
@@ -24,6 +26,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -34,9 +37,9 @@ public class SinglePlayerController implements ScreenController {
 	private static final String PAUSE_TEXT = "Pause";
 	private static final String UNPAUSE_TEXT = "Unpause";
 
-	private Log log = Log.getLogger();
+	private Log logger = Log.getLogger();
 	
-	private SinglePlayerPlayingField pf;
+	private SinglePlayerPlayingField playingField;
 	
 	/**
 	 * ChangeListener that can be attached to the
@@ -56,10 +59,10 @@ public class SinglePlayerController implements ScreenController {
 			//If we lost a life (this includes death (0 lives))
 			if (newValue.intValue() < oldValue.intValue()) {
 				//Stop the game
-				pf.getGameThread().stop();
+				playingField.getGameThread().stop();
 				
 				//Show the death screen, and when done, stop rendering as well.
-				showDeathScreen(true, event -> pf.getRenderer().stopRendering());
+				showDeathScreen(true, event -> playingField.getRenderer().stopRendering());
 			}
 		});
 		
@@ -75,12 +78,13 @@ public class SinglePlayerController implements ScreenController {
 	@FXML
 	private VBox deathScreen;
 	@FXML
+	private VBox achievePopup;
+	@FXML
 	private Label scoreField;
 	@FXML
 	private Label livesField;
 	@FXML
 	private Label endScore;
-	
 	
 	@FXML
 	private Button btnPause;
@@ -95,21 +99,23 @@ public class SinglePlayerController implements ScreenController {
 	private Button btnDSRestart;
 	@FXML
 	private Button btnDSMenu;
-
+	
 	@Override
 	public void init(Scene scene) {
 		//setup the playing field
-		pf = new SinglePlayerPlayingField(60, gameCanvas);
-		pf.setBackground(Preloader.getImageOrLoad("background.png"));
+		playingField = new SinglePlayerPlayingField(60, gameCanvas);
+		playingField.getRenderer().setBackground(Preloader.getImageOrLoad("background.png"));
 		
 		//If the player fish changes, this listener will be called.
-		pf.playerProperty().addListener(playerChangeListener);
+		playingField.playerProperty().addListener(playerChangeListener);
 		
 		//The change listener has to be force called once. The player has already been created,
 		//but we still want to add the listeners.
-		playerChangeListener.changed(pf.playerProperty(), pf.getPlayer(), pf.getPlayer());
-		new PlayerDeathObserver(pf);
-		new EnemyKillObserver(pf);
+		playerChangeListener.changed(playingField.playerProperty(), playingField.getPlayer(), playingField.getPlayer());
+		
+		//Create observers for the achievements
+		new PlayerDeathObserver(playingField);
+		new EnemyKillObserver(playingField);
 		
 		AudioEngine.getInstance().getMuteStateProperty().addListener((o, oVal, nVal) -> {
 			if (nVal.intValue() == AudioEngine.NO_MUTE) {
@@ -119,6 +125,28 @@ public class SinglePlayerController implements ScreenController {
 			} else if (nVal.intValue() == AudioEngine.MUTE_ALL) {
 				btnMute.setText("Unmute all sounds");
 			}
+		});
+		
+		//TODO Invert relation.
+		registerAchievementPopups();
+	}
+
+	/**
+	 * Adds listeners to achievements to show popups.
+	 */
+	private void registerAchievementPopups() {
+		AchievementManager.ENEMY_KILL.getLevelProperty().addListener((o, oVal, nVal) -> {
+			Util.onJavaFX(() -> {
+				ImageView iv = new ImageView("/sprites/chieveLarge/Achieve1.png");
+				showAchievePopup(iv);
+			});
+		});
+		
+		AchievementManager.PLAYER_DEATH.getLevelProperty().addListener((o, oVal, nVal) -> {
+			Util.onJavaFX(() -> {
+				ImageView iv = new ImageView("/sprites/chieveLarge/Achieve2.png");
+				showAchievePopup(iv);
+			});
 		});
 	}
 	
@@ -134,8 +162,8 @@ public class SinglePlayerController implements ScreenController {
 		deathScreen.setVisible(false);
 		
 		//Start the game.
-		pf.startGame();
-		log.log(LogLevel.INFO, "Started Game.");
+		playingField.startGame();
+		logger.log(LogLevel.INFO, "Started Game.");
 	}
 
 	/**
@@ -148,18 +176,18 @@ public class SinglePlayerController implements ScreenController {
 	public void onPause(ActionEvent event) {
 		AudioEngine.getInstance().playEffect("button");
 		
-		GameThread gameThread = pf.getGameThread();
+		GameThread gameThread = playingField.getGameThread();
 		if (gameThread.isRunning()) {
 			try {
-				pf.stopGameAndWait();
+				playingField.stopGameAndWait();
 			} catch (InterruptedException ex) { }
 			getBtnPause().setText(UNPAUSE_TEXT);
 			
-			log.log(LogLevel.INFO, "Player paused the game.");
+			logger.log(LogLevel.INFO, "Player paused the game.");
 		} else {
-			log.log(LogLevel.INFO, "Player resumed the game.");
+			logger.log(LogLevel.INFO, "Player resumed the game.");
 			
-			pf.startGame();
+			playingField.startGame();
 			getBtnPause().setText(PAUSE_TEXT);
 		}
 	}
@@ -176,7 +204,35 @@ public class SinglePlayerController implements ScreenController {
 		
 		AudioEngine.getInstance().toggleMuteState();
 	}
-
+	
+	/**
+	 * Shows a fade-in and fade-out of a pop-up image when an achievement is
+	 * obtained.
+	 * 
+	 * @param imageView
+	 * 		the imageView to show.
+	 */
+	public void showAchievePopup(ImageView imageView) {
+		int in = 2000;
+		int out = 1000;
+		int duration = 5000;
+		
+		achievePopup.getChildren().setAll(imageView);
+		
+		achievePopup.setVisible(true);
+		FadeTransition fadeIn = new FadeTransition(Duration.millis(in), achievePopup);
+		fadeIn.setFromValue(0.0);
+		fadeIn.setToValue(1.0);
+		
+		FadeTransition fadeOut = new FadeTransition(Duration.millis(out), achievePopup);
+		fadeOut.setFromValue(1.0);
+		fadeOut.setToValue(0.0);
+		fadeOut.setDelay(Duration.millis(duration));
+		
+		SequentialTransition transition = new SequentialTransition(fadeIn, fadeOut);
+		transition.play();
+	}
+	
 	/**
 	 * Set the visibility of the death screen.
 	 * 
@@ -247,13 +303,13 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	private void updateReviveButton() {
 		//If there are no players in the game, we disable the revive button.
-		if (pf.getPlayers().isEmpty()) {
+		if (playingField.getPlayers().isEmpty()) {
 			btnDSRevive.setDisable(true);
 			return;
 		}
 		
 		//If player has lives left, we enable the revive button.
-		PlayerFish player = pf.getPlayers().get(0);
+		PlayerFish player = playingField.getPlayers().get(0);
 		if (player.getLives() > 0) {
 			btnDSRevive.setDisable(false);
 		} else {
@@ -268,10 +324,10 @@ public class SinglePlayerController implements ScreenController {
 	public void backToMenu() {
 		AudioEngine.getInstance().playEffect("button");
 		
-		pf.stopGame();
-		pf.clear();
+		playingField.stopGame();
+		playingField.clear();
 		
-		log.log(LogLevel.INFO, "Player pressed backToMenu button");
+		logger.log(LogLevel.INFO, "Player pressed backToMenu button");
 		Preloader.switchTo("mainMenu", 400);
 	}
 	
@@ -287,19 +343,19 @@ public class SinglePlayerController implements ScreenController {
 		getBtnPause().setDisable(false);
 		
 		//Remove all enemies.
-		pf.clearEnemies();
+		playingField.clearEnemies();
 		
-		PlayerFish player = pf.getPlayers().get(0);
+		PlayerFish player = playingField.getPlayers().get(0);
 		
 		//Reset the bounding box of the player fish.
-		ICollisionArea area = pf.getStartCollisionArea();
+		ICollisionArea area = playingField.getStartCollisionArea();
 		player.setBoundingArea(area);
 		
 		//Start the render thread (it takes some time to appear).
-		pf.getRenderer().startRendering();
+		playingField.getRenderer().startRendering();
 		
 		//Hide the deathscreen. When the animation is done, start the game thread.
-		showDeathScreen(false, event -> pf.getGameThread().start());
+		showDeathScreen(false, event -> playingField.getGameThread().start());
 	}
 
 	/**
@@ -315,16 +371,16 @@ public class SinglePlayerController implements ScreenController {
 		
 		//Stop the game, clear all items, and start it again.
 		try {
-			pf.stopGameAndWait();
+			playingField.stopGameAndWait();
 		} catch (InterruptedException ex) { }
-		pf.clear();
+		playingField.clear();
 		
 		//Start the render thread (it takes some time to appear).
-		pf.getRenderer().startRendering();
+		playingField.getRenderer().startRendering();
 
 		//Hide the deathscreen. When the animation is done, start the game thread.
 		showDeathScreen(false, event -> {
-			pf.startGame();
+			playingField.startGame();
 		});
 	}
 	
@@ -332,8 +388,8 @@ public class SinglePlayerController implements ScreenController {
 	 * Updates the pause button to the correct state.
 	 */
 	public void updatePauseButton() {
-		GameThread gameThread = pf.getGameThread();
-		if (!pf.isPlayerAlive()) {
+		GameThread gameThread = playingField.getGameThread();
+		if (!playingField.isPlayerAlive()) {
 			//All player fish are dead
 			getBtnPause().setText(PAUSE_TEXT);
 			getBtnPause().setDisable(true);
@@ -448,6 +504,6 @@ public class SinglePlayerController implements ScreenController {
 	 * 		the playingfield
 	 */
 	public PlayingField getPlayingField() {
-		return pf;
+		return playingField;
 	}
 }

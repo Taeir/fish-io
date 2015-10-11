@@ -12,7 +12,7 @@ import java.io.IOException;
 public class TxtFileHandler implements IHandler, Closeable {
 
 	private IFormatter format = new DefaultFormat();
-	private BufferedWriter bw;
+	private BufferedWriter bufferedWriter;
 	private int flushCounter = 0;
 	private final int flushNumber = 10;
 	
@@ -31,7 +31,7 @@ public class TxtFileHandler implements IHandler, Closeable {
 				file.createNewFile();
 			}
 			// Save BufferedWriter
-			bw = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
+			bufferedWriter = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -55,7 +55,7 @@ public class TxtFileHandler implements IHandler, Closeable {
 				file.createNewFile();
 			}
 			// Save BufferedWriter
-			bw = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
+			bufferedWriter = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -75,13 +75,13 @@ public class TxtFileHandler implements IHandler, Closeable {
 	@Override
 	public void output(LogLevel logLvl, String logMessage) {
 		try {
-			bw.write(format.formatOutput(logLvl, logMessage));
-			bw.newLine();
+			bufferedWriter.write(format.formatOutput(logLvl, logMessage));
+			bufferedWriter.newLine();
 			
 			// Flush every now and then to ensure 
 			flushCounter++;
 			if (flushCounter >= flushNumber) {
-				bw.flush();
+				bufferedWriter.flush();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -104,7 +104,7 @@ public class TxtFileHandler implements IHandler, Closeable {
 	 * 		BufferedWriter to be set.
 	 */
 	public void setBufferedWriter(BufferedWriter bw2) {
-		bw = bw2;
+		bufferedWriter = bw2;
 	}
 	
 	/**
@@ -113,7 +113,7 @@ public class TxtFileHandler implements IHandler, Closeable {
 	 * 		BufferedWriter that is set for this TxtFileHandler.
 	 */
 	public BufferedWriter getBufferedWriter() {
-		return bw;
+		return bufferedWriter;
 	}
 
 	@Override
@@ -121,8 +121,8 @@ public class TxtFileHandler implements IHandler, Closeable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result;
-		if (bw != null) {
-			result = result + bw.hashCode();
+		if (bufferedWriter != null) {
+			result = result + bufferedWriter.hashCode();
 		} 		
 		if (format == null) {
 			return result;
@@ -156,8 +156,8 @@ public class TxtFileHandler implements IHandler, Closeable {
 
 	@Override
 	public void close() throws IOException {
-		if (bw != null) {
-			bw.close();
+		if (bufferedWriter != null) {
+			bufferedWriter.close();
 		}
 	}
 }

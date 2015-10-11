@@ -1,6 +1,8 @@
 package com.github.fishio.achievements;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.github.fishio.SinglePlayerPlayingField;
 
@@ -9,10 +11,10 @@ import com.github.fishio.SinglePlayerPlayingField;
  * update when an enemy fish dies due to the player fish (kill).
  *
  */
-public class EnemyKillObserver implements Observer {
-	
+public class EnemyKillObserver implements AchievementObserver {
+	private List<Achievement> achievements = new ArrayList<>();
 	private Subject playerFish;
-	private static int enemykillcounter = 0;
+	private int enemykillcounter = 0;
 	
 	/**
 	 * Attaches the observer to the subject.
@@ -25,6 +27,8 @@ public class EnemyKillObserver implements Observer {
 		this.playerFish.attach(this);
 		
 		registerPlayerListener(subject);
+		
+		attachAchievement(AchievementManager.ENEMY_KILL);
 	}
 	
 	/**
@@ -50,6 +54,7 @@ public class EnemyKillObserver implements Observer {
 		}
 		
 		enemykillcounter++;
+		notifyAchievements();
 	}
 	
 	/**
@@ -58,7 +63,7 @@ public class EnemyKillObserver implements Observer {
 	 * 
 	 * @return The amount of times the player has died.
 	 */
-	public static int getCounter() {
+	public int getCounter() {
 		return enemykillcounter;
 	}
 	
@@ -70,8 +75,14 @@ public class EnemyKillObserver implements Observer {
 	 *            Number which sets the enemykillcounter to a specific value for
 	 *            testing.
 	 */
-	public static void setCounter(int counter) {
+	public void setCounter(int counter) {
 		enemykillcounter = counter;
+		notifyAchievements();
+	}
+
+	@Override
+	public List<Achievement> getAchievements() {
+		return achievements;
 	}
 
 }
