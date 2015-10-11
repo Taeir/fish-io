@@ -31,7 +31,7 @@ public class TestPlayingField extends GuiTest {
 	 */
 	@Before
 	public void setUp() {
-		this.canvas = Mockito.mock(Canvas.class);
+		this.canvas = Mockito.spy(new Canvas());
 		field = new SinglePlayerPlayingField(60, canvas);
 	}
 	
