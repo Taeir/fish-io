@@ -2,6 +2,8 @@ package com.github.fishio.power_ups;
 
 import javafx.scene.image.Image;
 
+import java.util.HashMap;
+
 import com.github.fishio.EnemyFish;
 import com.github.fishio.Entity;
 import com.github.fishio.ICollisionArea;
@@ -22,7 +24,7 @@ public class PuFreeze extends DurationPowerUp {
 	 */
 	private static final int DURATION = 10;
 	
-	private IMoveBehaviour oldBehaviour;
+	private HashMap<EnemyFish, IMoveBehaviour> oldBehaviours = new HashMap<>();;
 	
 	/**
 	 * Creates a new PowerUp of the Freeze type.
@@ -44,14 +46,17 @@ public class PuFreeze extends DurationPowerUp {
 	}
 
 	/**
-	 * Freezes all EnemyFishes on the field.
+	 * Gives all the EnemyFishes on the field a FrozenBehaviour
+	 * and also remembers what their old behaviour was.
 	 */
 	@Override
 	public void startEffect() {
+		
 		for (Entity e : getPField().getEntities()) {
 			if (e instanceof EnemyFish) {
-				oldBehaviour = e.getBehaviour();
-				((EnemyFish) e).setBehaviour(new FrozenBehaviour());
+				EnemyFish fish = (EnemyFish) e;
+				oldBehaviours.put(fish, fish.getBehaviour());
+				fish.setBehaviour(new FrozenBehaviour());
 			}
 		}
 	}
@@ -62,13 +67,18 @@ public class PuFreeze extends DurationPowerUp {
 	@Override
 	public void postTickEffect() { }
 
+	/** 
+	 * Resets the behaviour of the EnemyFishes.
+	 */
 	@Override
 	public void endEffect() {
-		for (Entity e : getPField().getEntities()) {
+		for (Entity e : oldBehaviours.keySet()) {
 			if (e instanceof EnemyFish) {
-				((EnemyFish) e).setBehaviour(oldBehaviour);
+				EnemyFish fish = (EnemyFish) e;
+				fish.setBehaviour(oldBehaviours.get(fish));
 			}
 		}
+		oldBehaviours.clear();
 	}
 
 	@Override

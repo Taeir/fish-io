@@ -96,15 +96,16 @@ public class TestPuFreeze extends TestDurationPowerUp {
 		//Making the PlayingField return our own entities.
 		when(pf.getEntities()).thenReturn(entities);
 		
-		//Invoking the startEffect method
+		//Invoking the startEffect method and then the endEffect
+		pu.startEffect();
 		pu.endEffect();
 		
 		EnemyFish ef1 = (EnemyFish) entities.get(0);
 		EnemyFish ef2 = (EnemyFish) entities.get(3);
 		
 		//Making sure the EnemyFishes got unfrozen (even though they weren't frozen in the first place).
-		verify(ef1).setBehaviour(Mockito.any(RandomBehaviour.class));
-		verify(ef2).setBehaviour(Mockito.any(RandomBehaviour.class));
+		verify(ef1, Mockito.atLeastOnce()).setBehaviour(Mockito.any(RandomBehaviour.class));
+		verify(ef2, Mockito.atLeastOnce()).setBehaviour(Mockito.any(RandomBehaviour.class));
 	}
 
 	@Override
