@@ -24,7 +24,7 @@ public class PuFreeze extends DurationPowerUp {
 	 */
 	private static final int DURATION = 10;
 	
-	private HashMap<EnemyFish, IMoveBehaviour> oldBehaviours;
+	private HashMap<EnemyFish, IMoveBehaviour> oldBehaviours = new HashMap<>();;
 	
 	/**
 	 * Creates a new PowerUp of the Freeze type.
@@ -52,8 +52,6 @@ public class PuFreeze extends DurationPowerUp {
 	@Override
 	public void startEffect() {
 		
-		oldBehaviours = new HashMap<>();
-		
 		for (Entity e : getPField().getEntities()) {
 			if (e instanceof EnemyFish) {
 				EnemyFish fish = (EnemyFish) e;
@@ -74,12 +72,13 @@ public class PuFreeze extends DurationPowerUp {
 	 */
 	@Override
 	public void endEffect() {
-		for (Entity e : getPField().getEntities()) {
+		for (Entity e : oldBehaviours.keySet()) {
 			if (e instanceof EnemyFish) {
 				EnemyFish fish = (EnemyFish) e;
 				fish.setBehaviour(oldBehaviours.get(fish));
 			}
 		}
+		oldBehaviours.clear();
 	}
 
 	@Override
