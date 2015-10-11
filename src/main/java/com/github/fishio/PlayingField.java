@@ -7,7 +7,6 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javafx.beans.value.ObservableDoubleValue;
-import javafx.geometry.Bounds;
 import javafx.scene.canvas.Canvas;
 
 import com.github.fishio.behaviours.IMoveBehaviour;
@@ -377,32 +376,37 @@ public abstract class PlayingField {
 	 * Clears everything but player fish from this PlayingField.
 	 */
 	public void clearEnemies() {
-		for (Entity e : entities) {
+		Iterator<Entity> it = entities.iterator();
+		while (it.hasNext()) {
+			Entity e = it.next();
+			//Skip playerfish
 			if (e instanceof PlayerFish) {
 				continue;
 			}
 			
+			//Kill and remove the entity
 			e.kill();
+			it.remove();
 		}
-
-		for (IDrawable d : drawables) {
+		
+		Iterator<IDrawable> it2 = drawables.iterator();
+		while (it2.hasNext()) {
+			IDrawable d = it2.next();
+			
+			//Skip playerfish
 			if (d instanceof PlayerFish) {
 				continue;
 			}
 			
+			//Add to deadDrawables and remove
 			deadDrawables.add(d);
+			it2.remove();
 		}
-		
-		entities.clear();
-		drawables.clear();
-		collidables.clear();
+
+		//Remove all non playerfish from collidables
+		collidables.removeIf((c) -> !(c instanceof PlayerFish));
 		
 		enemyCount = 0;
-		
-		//Re-add the players
-		for (PlayerFish player : getPlayers()) {
-			add(player);
-		}
 	}
 	
 	/**

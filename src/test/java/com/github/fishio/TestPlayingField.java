@@ -178,7 +178,7 @@ public class TestPlayingField extends GuiTest {
 		field.add(e);
 		
 		assertTrue(field.getEntities().contains(e));
-		assertSame(e, field.getDrawables().getFirst());
+		assertTrue(field.getDrawables().contains(e));
 		assertEquals(2, field.getDrawables().size());
 	}
 	
@@ -192,6 +192,8 @@ public class TestPlayingField extends GuiTest {
 		field.add(e);
 		field.remove(e);
 		
+		assertFalse(field.getEntities().contains(e));
+		assertFalse(field.getDrawables().contains(e));
 		assertEquals(1, field.getEntities().size());
 	}
 	
@@ -223,8 +225,8 @@ public class TestPlayingField extends GuiTest {
 		
 		field.clearEnemies();
 		
-		assertEquals(1, field.getEntities().size());
-		assertEquals(1, field.getDrawables().size());
+		assertEquals(11, field.getEntities().size());
+		assertEquals(11, field.getDrawables().size());
 	}
 	
 	/**
@@ -235,7 +237,7 @@ public class TestPlayingField extends GuiTest {
 		IDrawable d = Mockito.mock(Entity.class);
 		field.add(d);
 		
-		assertEquals(d, field.getDrawables().getFirst());
+		assertTrue(field.getDrawables().contains(d));
 		assertEquals(2, field.getDrawables().size());
 	}
 	
