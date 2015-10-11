@@ -52,6 +52,8 @@ public class EnemyFish extends Entity implements IEatable {
 		if (isDead()) {
 			return;
 		}
+		
+		//TODO IMPORTANT This should not be done in render!
 		getBoundingArea().setRotation(behaviour);	//update rotation
 		
 		//Only render if we have a sprite.
@@ -69,7 +71,7 @@ public class EnemyFish extends Entity implements IEatable {
 		kill();
 	}
 
-@Override
+	@Override
 	public void onCollide(ICollidable other) { }
 
 	@Override
