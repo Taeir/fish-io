@@ -13,13 +13,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 
@@ -28,83 +24,10 @@ import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
 /**
- * Class to load audio files (asynchronously).
+ * Utility class for locating and loading audio files.
  */
-public final class AudioLoader {
-	private AudioLoader() { }
-	
-	/**
-	 * Start loading music asynchronously (on a new thread).<br>
-	 * Music will be added to the returned list as it is loaded.
-	 * 
-	 * @return
-	 * 		an ObservableList of sounds in which the music will be placed
-	 * 		(one by one) when it is loaded. The returned list will 
-	 * 		initially be empty, but will be filled as music is loaded.
-	 */
-	public static ObservableList<Sound> loadMusicAsynchronous() {
-		ObservableList<Sound> tbr = FXCollections.<Sound>observableArrayList();
-		
-		new Thread(() -> {
-			int i = 0;
-			
-			List<Path> paths = getAudioFiles(false);
-			for (Path path : paths) {
-				Sound sound = loadSound(path, false);
-				
-				if (sound != null) {
-					Log.getLogger().log(LogLevel.DEBUG, "[Audio Loader] Loaded music " + path);
-					tbr.add(sound);
-					
-					i++;
-				} else {
-					Log.getLogger().log(LogLevel.DEBUG, "[Audio Loader] Unable to load music " + path);
-				}
-			}
-			
-			Log.getLogger().log(LogLevel.INFO, "[Audio Loader] Loaded " + i + " music files");
-		}).start();
-		
-		return tbr;
-	}
-	
-	/**
-	 * Start loading sound effects asynchronously (on a new thread).<br>
-	 * The returned ConcurrentHashMap will initially be empty, but as the
-	 * sounds effects are loaded, they will be added to the map.
-	 * 
-	 * @return
-	 * 		a ConcurrentHashMap of sounds in which the sound effects will
-	 * 		be placed (one by one) when it is loaded. The returned map
-	 * 		will initially be empty, but will be filled as music is
-	 * 		loaded.
-	 */
-	public static ConcurrentHashMap<String, Sound> loadSoundEffectsAsynchronous() {
-		ConcurrentHashMap<String, Sound> tbr = new ConcurrentHashMap<String, Sound>();
-		
-		new Thread(() -> {
-			int i = 0;
-			
-			List<Path> paths = getAudioFiles(true);
-			for (Path path : paths) {
-				Sound sound = loadSound(path, true);
-				String name = getSoundEffectName(path.toString());
-				
-				if (sound != null) {
-					Log.getLogger().log(LogLevel.DEBUG, "[Audio Loader] Loaded soundeffect " + name + " from " + path);
-					tbr.put(name, sound);
-					
-					i++;
-				} else {
-					Log.getLogger().log(LogLevel.DEBUG, "[Audio Loader] Unable to load soundeffect " + path);
-				}
-			}
-
-			Log.getLogger().log(LogLevel.INFO, "[Audio Loader] Loaded " + i + " sound effects");
-		}).start();
-		
-		return tbr;
-	}
+public final class AudioUtil {
+	private AudioUtil() { }
 	
 	private static Pattern pathPattern =
 			Pattern.compile("(.*[/\\\\])?sound[/\\\\]effects[/\\\\](?<path>(.*[/\\\\])*)(?<name>.*)\\.(?<ext>\\w{3})");
@@ -118,7 +41,7 @@ public final class AudioLoader {
 	 * @return
 	 * 		the name of the sound effect
 	 */
-	private static String getSoundEffectName(String path) {
+	public static String getSoundEffectName(String path) {
 		Matcher m = pathPattern.matcher(path);
 		if (!m.matches()) {
 			Log.getLogger().log(LogLevel.WARNING, "[Util] Unable to get name from path: " + path);
@@ -227,7 +150,7 @@ public final class AudioLoader {
 	 * 		<code>true</code> if the file is a valid audio file,
 	 * 		<code>false</code> otherwise.
 	 */
-	private static boolean isAudioFile(String path) {
+	public static boolean isAudioFile(String path) {
 		return path.endsWith(".mp3") || path.endsWith(".wav");
 	}
 	
