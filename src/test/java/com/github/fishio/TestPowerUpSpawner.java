@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.github.fishio.game.GameThread;
-import com.github.fishio.gui.GuiTest;
+import com.github.fishio.gui.SlimGuiTest;
 import com.github.fishio.power_ups.PowerUp;
 import com.github.fishio.power_ups.PuExtraLife;
 import com.github.fishio.power_ups.PuFreeze;
@@ -24,7 +24,7 @@ import com.github.fishio.power_ups.PuSuperSpeed;
 /**
  * Tests the PowerUpSpawer class.
  */
-public class TestPowerUpSpawner extends GuiTest {
+public class TestPowerUpSpawner extends SlimGuiTest {
 
 	private PowerUpSpawner pus;
 	

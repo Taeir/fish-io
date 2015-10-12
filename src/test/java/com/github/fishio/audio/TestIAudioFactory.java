@@ -15,10 +15,8 @@ import org.mockito.Mockito;
  */
 public abstract class TestIAudioFactory {
 	private IAudioFactory factory;
-	private Sound mockedMusicSound;
-	private FishClip mockedMusicClip;
-	private Sound mockedSoundEffectSound;
-	private FishClip mockedSoundEffectClip;
+	private Music mockedMusicSound;
+	private SoundEffect mockedSoundEffectSound;
 	
 	/**
 	 * Other test classes have to override this method and return a new
@@ -41,17 +39,8 @@ public abstract class TestIAudioFactory {
 		factory = createAudioFactory();
 		
 		//Create new mocks
-		mockedMusicClip = Mockito.mock(FishClip.class);
-		Mockito.when(mockedMusicClip.isSoundEffect()).thenReturn(false);
-		
-		mockedMusicSound = Mockito.mock(Sound.class);
-		Mockito.when(mockedMusicSound.getClip()).thenReturn(mockedMusicClip);
-		
-		mockedSoundEffectClip = Mockito.mock(FishClip.class);
-		Mockito.when(mockedSoundEffectClip.isSoundEffect()).thenReturn(true);
-		
-		mockedSoundEffectSound = Mockito.mock(Sound.class);
-		Mockito.when(mockedSoundEffectSound.getClip()).thenReturn(mockedSoundEffectClip);
+		mockedMusicSound = Mockito.mock(Music.class);
+		mockedSoundEffectSound = Mockito.mock(SoundEffect.class);
 		
 		//Add new mocks
 		factory.getAllMusic().add(mockedMusicSound);
@@ -90,27 +79,4 @@ public abstract class TestIAudioFactory {
 	public void testGetSoundEffect() {
 		assertSame(mockedSoundEffectSound, factory.getSoundEffect("MOCKED_EFFECT"));
 	}
-
-	/**
-	 * Test for {@link IAudioFactory#createMusicClip(int)}.
-	 */
-	@SuppressWarnings("resource")
-	@Test
-	public void testCreateMusicClip() {
-		int index = factory.getAllMusic().indexOf(mockedMusicSound);
-		
-		FishClip fc = factory.createMusicClip(index);
-		assertSame(mockedMusicClip, fc);
-	}
-
-	/**
-	 * Test for {@link IAudioFactory#createSoundEffectClip(String)}.
-	 */
-	@SuppressWarnings("resource")
-	@Test
-	public void testCreateSoundEffectClip() {
-		FishClip fc = factory.createSoundEffectClip("MOCKED_EFFECT");
-		assertSame(mockedSoundEffectClip, fc);
-	}
-
 }
