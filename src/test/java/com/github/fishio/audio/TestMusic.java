@@ -100,6 +100,9 @@ public class TestMusic extends SlimGuiTest {
 	 */
 	@Test
 	public void testPlay() {
+		if (!AudioTestUtil.checkMusic()) {
+			return;
+		}
 		Music music = getTestMusic();
 		
 		music.play();
@@ -113,6 +116,10 @@ public class TestMusic extends SlimGuiTest {
 	 */
 	@Test
 	public void testIsPlaying_True() {
+		if (!AudioTestUtil.checkMusic()) {
+			return;
+		}
+		
 		Music music = getTestMusic();
 		
 		//When playing is started, we set state to isPlaying.
@@ -136,6 +143,10 @@ public class TestMusic extends SlimGuiTest {
 	 */
 	@Test
 	public void testIsPlaying_Stop() {
+		if (!AudioTestUtil.checkMusic()) {
+			return;
+		}
+		
 		Music music = getTestMusic();
 		
 		music.play();
@@ -151,6 +162,10 @@ public class TestMusic extends SlimGuiTest {
 	 */
 	@Test
 	public void testSetOnStop() {
+		if (!AudioTestUtil.checkMusic()) {
+			return;
+		}
+		
 		Music music = getTestMusic();
 		Runnable r = Mockito.mock(Runnable.class);
 		

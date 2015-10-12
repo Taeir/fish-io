@@ -27,6 +27,9 @@ public class TestSoundEffect {
 	 */
 	@Test
 	public void testPlay() {
+		if (!AudioTestUtil.checkSoundEffects()) {
+			return;
+		}
 		SoundEffect se = getTestEffect();
 		
 		se.play();
@@ -39,6 +42,9 @@ public class TestSoundEffect {
 	 */
 	@Test
 	public void testStop() {
+		if (!AudioTestUtil.checkSoundEffects()) {
+			return;
+		}
 		SoundEffect se = getTestEffect();
 		
 		se.play();
