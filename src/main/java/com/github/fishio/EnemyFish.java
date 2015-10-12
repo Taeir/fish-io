@@ -53,12 +53,15 @@ public class EnemyFish extends Entity implements IEatable {
 			return;
 		}
 		
-		//TODO IMPORTANT This should not be done in render!
+		//TODO Move this to game thread.
 		getBoundingArea().setRotation(behaviour);	//update rotation
 		
 		//Only render if we have a sprite.
 		if (sprite != null) {
 			drawRotatedImage(gc, sprite, getBoundingArea());
+		} else {
+			//Call the render of the super (entity), which simply renders a red box.
+			super.render(gc);
 		}
 	}
 

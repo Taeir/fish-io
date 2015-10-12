@@ -148,11 +148,15 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 			return;
 		}
 		
+		//TODO Move this to game thread.
 		getBoundingArea().setRotation(behaviour); //update rotation;
 		
 		//Only render if the fish has a sprite
 		if (sprite != null) {
 			drawRotatedImage(gc, sprite, getBoundingArea());
+		} else {
+			//Call the render method of entity, which simply renders a red box.
+			super.render(gc);
 		}
 	}
 	
