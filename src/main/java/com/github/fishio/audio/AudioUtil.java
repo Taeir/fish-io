@@ -1,8 +1,5 @@
 package com.github.fishio.audio;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
@@ -16,8 +13,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
-
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.github.fishio.Util;
 import com.github.fishio.logging.Log;
@@ -49,39 +44,6 @@ public final class AudioUtil {
 		}
 		
 		return m.group("path") + m.group("name");
-	}
-
-	/**
-	 * Loads a sound from a file.
-	 * 
-	 * @param path
-	 * 		the path of the sound to load
-	 * @param soundEffect
-	 * 		true for sound effects, false for (background) music.
-	 * 
-	 * @return
-	 * 		a new Sound representing the sound for the given path, or
-	 * 		<code>null</code> if an exception occurred while trying to
-	 * 		load the sound.
-	 */
-	public static Sound loadSound(Path path, boolean soundEffect) {
-		try (InputStream is = Files.newInputStream(path)) {
-			//Use a buffered input stream if mark is not supported.
-			if (!is.markSupported()) {
-				return new Sound(new BufferedInputStream(is), isMp3(path.toString()), soundEffect);
-			} else {
-				return new Sound(is, isMp3(path.toString()), soundEffect);
-			}
-		} catch (IOException ex) {
-			Log.getLogger().log(LogLevel.ERROR, "[Audio Loader] Unable to load sound file " + path + "!");
-			ex.printStackTrace();
-		} catch (UnsupportedAudioFileException ex) {
-			Log.getLogger().log(LogLevel.ERROR,
-					"[Audio Loader] Unable to load sound file " + path + ": audio format not supported!");
-			ex.printStackTrace();
-		}
-		
-		return null;
 	}
 	
 	/**
@@ -152,17 +114,5 @@ public final class AudioUtil {
 	 */
 	public static boolean isAudioFile(String path) {
 		return path.endsWith(".mp3") || path.endsWith(".wav");
-	}
-	
-	/**
-	 * @param name
-	 * 		the name of the file to check.
-	 * 
-	 * @return
-	 * 		<code>true</code> if the given name is an mp3,
-	 * 		<code>false</code> otherwise.
-	 */
-	private static boolean isMp3(String name) {
-		return name.endsWith(".mp3");
 	}
 }
