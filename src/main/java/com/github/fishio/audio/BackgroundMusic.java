@@ -1,138 +1,131 @@
 package com.github.fishio.audio;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ObservableValue;
-
-import com.github.fishio.logging.Log;
-import com.github.fishio.logging.LogLevel;
+import javafx.collections.ObservableList;
 
 /**
- * A class representing a runnable for background music.
+ * Class for playing background music.
  */
-public class BackgroundMusic implements Runnable {
-	
+public class BackgroundMusic implements IPlayable {
 	private Random random = new Random();
-	private int last = -1;
+
 	private SimpleBooleanProperty stopProperty = new SimpleBooleanProperty();
-	private SimpleBooleanProperty runningProperty = new SimpleBooleanProperty();
-	private Thread thread;
+
+	private ArrayList<Music> history = new ArrayList<>();
+	private Music current;
 	
 	/**
-	 * Create a new BackgroundMusicRunnable.
+	 * Create a new BackgroundMusic object.
 	 */
-	public BackgroundMusic() {
-		thread = new Thread(this);
-	}
+	public BackgroundMusic() { }
 	
-	/**
-	 * Create a new BackgroundMusicRunnable.
-	 * 
-	 * @param stopProperty
-	 * 		an observable value that, when set to true, stops this
-	 * 		background music runnable.
-	 */
-	public BackgroundMusic(ObservableValue<Boolean> stopProperty) {
-		this();
-		
-		stopProperty.addListener((o, oVal, nVal) -> {
-			if (nVal) {
-				this.stopProperty.set(true);
-			}
-		});
-	}
-	
-	/**
-	 * Starts the background music.<br>
-	 * <br>
-	 * If it is already running (and not stopping), this method will cause
-	 * a switch to a different song.
-	 */
-	public void start() {
-		//If not stopping and already running, we call interrupt to switch to a new song
-		if (!stopProperty.get() && runningProperty.get()) {
-			thread.interrupt();
-			return;
-		}
-		
-		stopProperty.set(false);
-		thread = new Thread(this);
-		thread.start();
-	}
-	
-	/**
-	 * Stops the background music.
-	 */
-	public void stop() {
-		stopProperty.set(true);
-		thread.interrupt();
+	@Override
+	public void play() {
+		playNextSong();
 	}
 	
 	@Override
-	public void run() {
-		runningProperty.set(true);
-		
-		try {
-			while (!stopProperty.get()) {
-				FishClip clip = getRandomClip();
-				
-				//If the clip is invalid, we sleep for a second and try again.
-				if (clip == null) {
-					try {
-						Thread.sleep(1000L);
-					} catch (InterruptedException ex) {
-						//Don't do anything if we are interrupted here.
-					}
-					
-					continue;
-				}
-				
-				try {
-					clip.getClip().start();
-					clip.waitUntilDone();
-				} catch (InterruptedException ex) {
-					//If we should stop, we do
-					if (stopProperty.get()) {
-						break;
-					}
-				} finally {
-					try {
-						clip.close();
-					} catch (IOException ex) {
-						Log.getLogger().log(LogLevel.WARNING, "[Background Music] Error while closing clip!");
-						ex.printStackTrace();
-					}
-				}
+	public boolean isPlaying() {
+		return current != null && current.isPlaying();
+	}
+	
+	@Override
+	public void stop() {
+		stopProperty.set(true);
+		if (current != null) {
+			current.stop();
+		}
+	}
+	
+	@Override
+	public DoubleProperty getVolumeProperty() {
+		return AudioEngine.getInstance().getMusicVolumeProperty();
+	}
+	
+	/**
+	 * Starts playback of the next song.<br>
+	 * If background music was not playing, it is started.
+	 */
+	public synchronized void playNextSong() {
+		playNextSong(false);
+	}
+	
+	/**
+	 * Switches to the next song.
+	 * 
+	 * @param automatic
+	 * 		set to true if this method call is done automatically (when
+	 * 		another music track finishes, it starts the next one
+	 * 		automatically).
+	 */
+	private synchronized void playNextSong(boolean automatic) {
+		if (current != null) {
+			//If the current song is still playing, we stop it.
+			if (current.isPlaying()) {
+				current.setOnStop(null);
+				current.stop();
 			}
-		} finally {
-			runningProperty.set(false);
+			
+			//Add the old current song to the history.
+			history.add(current);
+		}
+		
+		//If we are not called automatically, we set stop to false.
+		if (!automatic) {
+			stopProperty.set(false);
+		}
+		//Music is stopped, so we dont start new music.
+		else if (stopProperty.get()) {
+			return;
+		}
+		
+		//Select a random music track and play it.
+		Music musicTrack = getRandomMusic();
+		if (musicTrack != null) {
+			current = musicTrack;
+			musicTrack.play();
 		}
 	}
 	
 	/**
+	 * Gets a random music track that is not in the history.
+	 * 
 	 * @return
-	 * 		a randomly selected FishClip.
+	 * 		a random music track or <code>null</code> if there are no
+	 * 		music tracks loaded.
 	 */
-	private FishClip getRandomClip() {
-		IAudioFactory iaf = AudioEngine.getInstance().getAudioFactory();
+	private synchronized Music getRandomMusic() {
+		ObservableList<Music> allMusic = AudioEngine.getInstance().getAudioFactory().getAllMusic();
+		//There is no next song
+		if (allMusic.isEmpty()) {
+			return null;
+		}
 		
-		//Select a random song from the AudioFactory.
-		while (iaf.getAllMusic().size() > 1) {
-			int nr = random.nextInt(iaf.getAllMusic().size());
-			if (nr != last) {
-				last = nr;
-				return iaf.createMusicClip(nr);
+		//Select all music tracks that are not in our history
+		ArrayList<Music> al = new ArrayList<>(allMusic);
+		al.removeAll(history);
+		
+		//If we have played everything, we clear our history
+		if (al.isEmpty()) {
+			history.clear();
+			al.addAll(allMusic);
+		}
+		
+		//Select a random music track
+		Music musicTrack = al.get(random.nextInt(al.size()));
+		Runnable oldr = musicTrack.getPlayer().getOnStopped();
+		musicTrack.setOnStop(() -> {
+			if (oldr != null) {
+				oldr.run();
 			}
-		}
+			playNextSong(true);
+			musicTrack.setOnStop(oldr);
+		});
 		
-		//If we only have 1 clip, we simply return it.
-		if (iaf.getAllMusic().size() == 1) {
-			return iaf.createMusicClip(0);
-		}
-		
-		//We end up here if clips is empty.
-		return null;
+		return musicTrack;
 	}
 }

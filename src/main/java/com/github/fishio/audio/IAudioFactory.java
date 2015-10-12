@@ -2,9 +2,6 @@ package com.github.fishio.audio;
 
 import java.util.Map;
 
-import com.github.fishio.logging.Log;
-import com.github.fishio.logging.LogLevel;
-
 import javafx.collections.ObservableList;
 
 /**
@@ -23,17 +20,24 @@ public interface IAudioFactory {
 	
 	/**
 	 * @return
+	 * 		<code>true</code> if this IAudioFactory is done loading.
+	 * 		<code>false</code> otherwise.
+	 */
+	boolean isDoneLoading();
+	
+	/**
+	 * @return
 	 * 		an observable list of all music this AudioFactory has loaded.
 	 * 		Attach a changelistener to this list to get notified when
 	 * 		music is loaded/unloaded.
 	 */
-	ObservableList<Sound> getAllMusic();
+	ObservableList<Music> getAllMusic();
 	
 	/**
 	 * @return
 	 * 		a map of all sound effects this AudioFactory has loaded.
 	 */
-	Map<String, Sound> getAllSoundEffects();
+	Map<String, SoundEffect> getAllSoundEffects();
 	
 	/**
 	 * @param nr
@@ -43,7 +47,7 @@ public interface IAudioFactory {
 	 * 		the music with the given number, or <code>null</code> if no
 	 * 		music with the given number exists.
 	 */
-	Sound getMusic(int nr);
+	Music getMusic(int nr);
 	
 	/**
 	 * @param name
@@ -53,60 +57,5 @@ public interface IAudioFactory {
 	 * 		the sound effect with the given name, or <code>null</code> if
 	 * 		no effect with that name is known.
 	 */
-	Sound getSoundEffect(String name);
-	
-	/**
-	 * Creates a new clip for the music with the given number.
-	 * 
-	 * @param nr
-	 * 		the number of the music to create a clip for.
-	 * 
-	 * @return
-	 * 		a clip for the music with the given number, or
-	 * 		<code>null</code> if it doesn't exist or if an error occurred
-	 * 		while creating the clip.
-	 */
-	default FishClip createMusicClip(int nr) {
-		Sound music = getMusic(nr);
-		
-		if (music == null) {
-			return null;
-		}
-		
-		try {
-			return music.getClip();
-		} catch (Exception ex) {
-			Log.getLogger().log(LogLevel.WARNING, "[Audio Factory] Unable to create clip for music #" + nr + "!");
-			ex.printStackTrace();
-			return null;
-		}
-	}
-	
-	/**
-	 * Creates a new clip for the sound effect with the given name.
-	 * 
-	 * @param name
-	 * 		the name of the sound effect to create a clip for.
-	 * 
-	 * @return
-	 * 		a clip for the sound effect with the given name, or
-	 * 		<code>null</code> if it doesn't exist or if an error occurred
-	 * 		while creating the clip.
-	 */
-	default FishClip createSoundEffectClip(String name) {
-		Sound effect = getSoundEffect(name);
-		
-		if (effect == null) {
-			return null;
-		}
-		
-		try {
-			return effect.getClip();
-		} catch (Exception ex) {
-			Log.getLogger().log(LogLevel.WARNING,
-					"[Audio Factory] Unable to create clip for sound effect " + name + "!");
-			ex.printStackTrace();
-			return null;
-		}
-	}
+	SoundEffect getSoundEffect(String name);
 }
