@@ -10,14 +10,14 @@ import java.util.HashSet;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.fishio.gui.GuiTest;
+import com.github.fishio.gui.SlimGuiTest;
 
 import javafx.scene.image.Image;
 
 /**
  * Test class for the CollisionMask class.
  */
-public class TestCollisionMask extends GuiTest {
+public class TestCollisionMask extends SlimGuiTest {
 	private CollisionMask ca;
 
 	/**

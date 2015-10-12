@@ -16,7 +16,6 @@ import com.github.fishio.control.HelpScreenController;
 import com.github.fishio.control.MainMenuController;
 import com.github.fishio.control.SinglePlayerController;
 import com.github.fishio.control.SplashScreenController;
-import com.github.fishio.settings.Settings;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
