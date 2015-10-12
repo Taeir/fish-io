@@ -64,18 +64,19 @@ public class YamlSettingLoader implements ISettingLoader {
 	 * 		the file to create.
 	 */
 	private void createSettingsFile(File file) {
-		file.getAbsoluteFile().getParentFile().mkdirs();
-		try {
-			file.createNewFile();
-			doubleSettings = Settings.getDefaultDoubleSettings();
-			integerSettings = Settings.getDefaultIntegerSettings();
-			booleanSettings = Settings.getDefaultBooleanSettings();
-			keyCodeSettings = Settings.getDefaultKeyCodeSettings();
-			sliderSettings = Settings.getDefaultSliderSettings();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		doubleSettings = Settings.getDefaultDoubleSettings();
+		integerSettings = Settings.getDefaultIntegerSettings();
+		booleanSettings = Settings.getDefaultBooleanSettings();
+		keyCodeSettings = Settings.getDefaultKeyCodeSettings();
+		sliderSettings = Settings.getDefaultSliderSettings();
 		
+		YamlSettingWriter writer = new YamlSettingWriter();
+		writer.writeBooleanSettings(booleanSettings);
+		writer.writeDoubleSettings(doubleSettings);
+		writer.writeIntegerSettings(integerSettings);
+		writer.writeKeyCodeSettings(keyCodeSettings);
+		writer.writeSliderSettings(sliderSettings);
+		writer.flush();
 	}
 
 	/**
