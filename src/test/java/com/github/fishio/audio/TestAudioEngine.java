@@ -150,6 +150,10 @@ public class TestAudioEngine extends SlimGuiTest {
 	 */
 	@Test
 	public void testStartBackgroundMusicWhenLoaded() {
+		if (!AudioTestUtil.checkMusic()) {
+			return;
+		}
+		
 		engine.startBackgroundMusicWhenLoaded();
 		
 		//Music should not have started if there are no songs to play.
@@ -159,7 +163,7 @@ public class TestAudioEngine extends SlimGuiTest {
 		
 		//When music starts playing, we set started to true.
 		music.getPlayer().setOnPlaying(() -> this.started = true);
-		music.getPlayer().setOnError(() -> this.started = true);
+
 		list.add(music);
 		
 		//We wait for a maximum of 5000 milliseconds
@@ -174,12 +178,15 @@ public class TestAudioEngine extends SlimGuiTest {
 	 */
 	@Test
 	public void testStartBackgroundMusicWhenLoaded2() {
+		if (!AudioTestUtil.checkMusic()) {
+			return;
+		}
+		
 		//Load one song
 		Music music = createMusic();
 		
 		//When music starts playing, we set started to true.
 		music.getPlayer().setOnPlaying(() -> this.started = true);
-		music.getPlayer().setOnError(() -> this.started = true);
 		
 		list.add(music);
 		
@@ -215,10 +222,13 @@ public class TestAudioEngine extends SlimGuiTest {
 	 */
 	@Test
 	public void testStartBackgroundMusic() {
+		if (!AudioTestUtil.checkMusic()) {
+			return;
+		}
+		
 		//Load one song
 		Music music = createMusic();
 		music.getPlayer().setOnPlaying(() -> this.started = true);
-		music.getPlayer().setOnError(() -> this.started = true);
 		
 		list.add(music);
 		
@@ -236,18 +246,16 @@ public class TestAudioEngine extends SlimGuiTest {
 	 */
 	@Test
 	public void testStopBackgroundMusic() {
+		if (!AudioTestUtil.checkMusic()) {
+			return;
+		}
+		
 		Music music = createMusic();
 		
 		//When music starts playing, we set started to true.
 		music.getPlayer().setOnPlaying(() -> this.started = true);
 		//When music stops playing, we set stopped to true.
 		music.setOnStop(() -> this.stopped = true);
-		
-		//When music is not supported, we need to set both to true.
-		music.getPlayer().setOnError(() -> {
-			this.started = true;
-			this.stopped = true;
-		});
 
 		list.add(music);
 		
