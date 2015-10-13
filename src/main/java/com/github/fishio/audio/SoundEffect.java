@@ -16,7 +16,17 @@ public class SoundEffect implements IPlayable {
 	 * 		the source URL of the audio.
 	 */
 	public SoundEffect(String source) {
-		this.clip = new AudioClip(source);
+		this(new AudioClip(source));
+	}
+	
+	/**
+	 * Creates a new SoundEffect using the given AudioClip.
+	 * 
+	 * @param clip
+	 * 		the clip to use in this sound effect.
+	 */
+	public SoundEffect(AudioClip clip) {
+		this.clip = clip;
 		
 		//Set lowered priority, so that music is not interrupted.
 		this.clip.setPriority(-1);

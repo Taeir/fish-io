@@ -1,25 +1,26 @@
 package com.github.fishio.audio;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import javafx.scene.media.AudioClip;
 
-import java.nio.file.Path;
-
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 /**
  * Test class for {@link SoundEffect}.
  */
 public class TestSoundEffect {
 
+	private AudioClip clip;
+	private SoundEffect soundEffect;
+	
 	/**
-	 * @return
-	 * 		a new SoundEffect for a test effect file.
+	 * Create a new soundEffect and clip before each test.
 	 */
-	private SoundEffect getTestEffect() {
-		Path path = AudioUtil.getAudioFiles(true).get(0);
-		SoundEffect se = new SoundEffect(path.toUri().toString());
-		return se;
+	@Before
+	public void setUp() {
+		clip = Mockito.mock(AudioClip.class);
+		soundEffect = new SoundEffect(clip);
 	}
 
 	/**
@@ -27,14 +28,9 @@ public class TestSoundEffect {
 	 */
 	@Test
 	public void testPlay() {
-		if (!AudioTestUtil.checkSoundEffects()) {
-			return;
-		}
-		SoundEffect se = getTestEffect();
+		soundEffect.play();
 		
-		se.play();
-		
-		assertTrue(se.isPlaying());
+		Mockito.verify(clip).play();
 	}
 
 	/**
@@ -42,15 +38,10 @@ public class TestSoundEffect {
 	 */
 	@Test
 	public void testStop() {
-		if (!AudioTestUtil.checkSoundEffects()) {
-			return;
-		}
-		SoundEffect se = getTestEffect();
+		soundEffect.play();
+		soundEffect.stop();
 		
-		se.play();
-		se.stop();
-		
-		assertFalse(se.isPlaying());
+		Mockito.verify(clip).stop();
 	}
 
 }
