@@ -35,7 +35,7 @@ public class YamlSettingLoader implements ISettingLoader {
 	public YamlSettingLoader() {
 		// If file doesn't exists, then create it
 		if (!settingsFile.exists()) {
-			createSettingsFile(settingsFile);				
+			createSettingsFile();				
 		} else {
 			try (FileReader fr = new FileReader(settingsFile)) {
 				doubleSettings = new HashMap<String, SimpleDoubleProperty>();
@@ -63,7 +63,7 @@ public class YamlSettingLoader implements ISettingLoader {
 	 * @param file
 	 * 		the file to create.
 	 */
-	private void createSettingsFile(File file) {
+	private void createSettingsFile() {
 		doubleSettings = Settings.getDefaultDoubleSettings();
 		integerSettings = Settings.getDefaultIntegerSettings();
 		booleanSettings = Settings.getDefaultBooleanSettings();
