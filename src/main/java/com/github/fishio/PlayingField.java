@@ -13,7 +13,6 @@ import com.github.fishio.game.GameThread;
 import com.github.fishio.gui.Renderer;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
-import com.github.fishio.settings.Settings;
 
 /**
  * Represents the PlayingField.
@@ -28,10 +27,9 @@ public abstract class PlayingField {
 	private ConcurrentLinkedQueue<Entity> entities = new ConcurrentLinkedQueue<>();
 	private ConcurrentLinkedQueue<ICollidable> collidables = new ConcurrentLinkedQueue<>();
 	private Log logger = Log.getLogger();
-	private Settings settings = Settings.getInstance();
 
 	private int enemyCount;
-	public static final int MAX_ENEMY_COUNT = 10;
+	public static final int MAX_ENEMY_COUNT = 0;
 
 	/**
 	 * Creates the playing field with a set framerate and canvas.
@@ -78,7 +76,7 @@ public abstract class PlayingField {
 	 * @return the width of the field.
 	 */
 	public double getWidth() {
-		return settings.getDouble("SCREEN_WIDTH");
+		return renderer.getCanvas().getWidth();
 	}
 
 	/**
@@ -87,7 +85,7 @@ public abstract class PlayingField {
 	 * @return the height of the field.
 	 */
 	public double getHeight() {
-		return settings.getDouble("SCREEN_HEIGHT") - 50;
+		return renderer.getCanvas().getHeight();
 	}
 
 	/**
