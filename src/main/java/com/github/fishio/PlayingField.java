@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import javafx.beans.value.ObservableDoubleValue;
 import javafx.scene.canvas.Canvas;
 
 import com.github.fishio.behaviours.IMoveBehaviour;
@@ -28,7 +29,11 @@ public abstract class PlayingField {
 	private ConcurrentLinkedQueue<Entity> entities = new ConcurrentLinkedQueue<>();
 	private ConcurrentLinkedQueue<ICollidable> collidables = new ConcurrentLinkedQueue<>();
 	private Log logger = Log.getLogger();
-	private Settings settings = Settings.getInstance();
+	
+	private ObservableDoubleValue widthProperty;
+	private ObservableDoubleValue heightProperty;
+
+	
 
 	private int enemyCount;
 	public static final int MAX_ENEMY_COUNT = 10;
@@ -42,6 +47,10 @@ public abstract class PlayingField {
 	 *            the canvas to use, can be <code>null</code> to create one.
 	 */
 	public PlayingField(int fps, Canvas canvas) {
+		//Get width and height properties.
+		widthProperty = Settings.getInstance().getDoubleProperty("SCREEN_WIDTH");
+		heightProperty = Settings.getInstance().getDoubleProperty("SCREEN_HEIGHT").subtract(50.0);
+		
 		//count enemies
 		enemyCount = 0;
 
@@ -78,7 +87,7 @@ public abstract class PlayingField {
 	 * @return the width of the field.
 	 */
 	public double getWidth() {
-		return settings.getDouble("SCREEN_WIDTH");
+		return widthProperty.doubleValue();
 	}
 
 	/**
@@ -87,7 +96,7 @@ public abstract class PlayingField {
 	 * @return the height of the field.
 	 */
 	public double getHeight() {
-		return settings.getDouble("SCREEN_HEIGHT") - 50;
+		return heightProperty.doubleValue();
 	}
 
 	/**
@@ -199,23 +208,13 @@ public abstract class PlayingField {
 	 */
 	private boolean hitsWall(Entity e, ICollisionArea box) {
 		// prevent playerfish from leaving the screen
-		if (e instanceof PlayerFish) {	
-			if (box.getMaxX() >= getWidth()
-					|| box.getMinX() <= 0
-					|| box.getMaxY() >= getHeight()
-					|| box.getMinY() <= 0) {
-				return true;
-			}
+		if (e instanceof PlayerFish) {
+			return box.isOutside(0, 0, getWidth(), getHeight());
 		} else {
-			if (box.getMaxX() >= getWidth() + 2.0 * box.getWidth()
-					|| box.getMinX() <= -(2.0 * box.getWidth()) - 1
-					|| box.getMaxY() >= getHeight() + 2.0 * box.getHeight() + 1
-					|| box.getMinY() <= -(2.0 * box.getHeight()) - 1) {
-				return true;
-			}
+			double dw = 2.0 * box.getWidth() + 1;
+			double dh = 2.0 * box.getHeight() + 1;
+			return box.isOutside(-dw, -dh, getWidth() + dw, getHeight() + dh);
 		}
-		
-		return false;
 	}
 
 	/**
@@ -226,20 +225,22 @@ public abstract class PlayingField {
 	 * 		the ICollisionArea to move.
 	 */
 	private void moveWithinScreen(ICollisionArea box) {
-		if (box.getMaxX() > getWidth()) {
-			box.move(new Vec2d(-(box.getMaxX() - getWidth()), 0));
-		}
-		
-		if (box.getMinX() < 0) {
-			box.move(new Vec2d(-box.getMinX(), 0));
-		}
-		
-		if (box.getMaxY() > getHeight()) {
-			box.move(new Vec2d(0, box.getMaxY() - getHeight()));
-		}
-		
-		if (box.getMinY() < 0) {
-			box.move(new Vec2d(0, box.getMinY()));
+		if (box.isOutside(0, 0, getWidth(), getHeight())) {			
+			if (box.getMaxX() > getWidth()) {
+				box.move(new Vec2d(-(box.getMaxX() - getWidth()), 0));
+			}
+			
+			if (box.getMinX() < 0) {
+				box.move(new Vec2d(-box.getMinX(), 0));
+			}
+			
+			if (box.getMaxY() > getHeight()) {
+				box.move(new Vec2d(0, box.getMaxY() - getHeight()));
+			}
+			
+			if (box.getMinY() < 0) {
+				box.move(new Vec2d(0, box.getMinY()));
+			}
 		}
 	}
 	
@@ -375,32 +376,37 @@ public abstract class PlayingField {
 	 * Clears everything but player fish from this PlayingField.
 	 */
 	public void clearEnemies() {
-		for (Entity e : entities) {
+		Iterator<Entity> it = entities.iterator();
+		while (it.hasNext()) {
+			Entity e = it.next();
+			//Skip playerfish
 			if (e instanceof PlayerFish) {
 				continue;
 			}
 			
+			//Kill and remove the entity
 			e.kill();
+			it.remove();
 		}
-
-		for (IDrawable d : drawables) {
+		
+		Iterator<IDrawable> it2 = drawables.iterator();
+		while (it2.hasNext()) {
+			IDrawable d = it2.next();
+			
+			//Skip playerfish
 			if (d instanceof PlayerFish) {
 				continue;
 			}
 			
+			//Add to deadDrawables and remove
 			deadDrawables.add(d);
+			it2.remove();
 		}
-		
-		entities.clear();
-		drawables.clear();
-		collidables.clear();
+
+		//Remove all non playerfish from collidables
+		collidables.removeIf((c) -> !(c instanceof PlayerFish));
 		
 		enemyCount = 0;
-		
-		//Re-add the players
-		for (PlayerFish player : getPlayers()) {
-			add(player);
-		}
 	}
 	
 	/**

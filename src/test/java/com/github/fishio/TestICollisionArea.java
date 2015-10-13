@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -12,13 +13,36 @@ import org.junit.Test;
 public abstract class TestICollisionArea {
 	
 	private static final double DELTA = 1E-12;
-	private ICollisionArea ca = getCollisionArea();
+	private ICollisionArea ca;
 	
 	/**
 	 * @return
 	 * 		an ICollisionArea object at position 0,0 with size 10x5.
 	 */
-	public abstract ICollisionArea getCollisionArea();
+	public ICollisionArea getCollisionArea() {
+		return getCollisionArea(new Vec2d(0, 0), 10, 5);
+	}
+	
+	/**
+	 * @param center
+	 * 		the center of the collision area.
+	 * @param width
+	 * 		the width of the collision area.
+	 * @param height
+	 * 		the height of the collision area.
+	 * 
+	 * @return
+	 * 		a collision area with the given dimensions.
+	 */
+	public abstract ICollisionArea getCollisionArea(Vec2d center, double width, double height);
+	
+	/**
+	 * Create a new Collision Area every time.
+	 */
+	@Before
+	public void setUpICollisionArea() {
+		ca = getCollisionArea();
+	}
 	
 	/**
 	 * Test for {@link ICollisionArea#boxIntersects(ICollisionArea).
@@ -283,5 +307,44 @@ public abstract class TestICollisionArea {
 		ca.setSize(12345.4);
 		assertEquals(ratio, ca.getWidth() / ca.getHeight(), 0.1E-8);		
 	}
+	
+	/**
+	 * Test for {@link ICollisionArea#isOutside(double, double, double, double)}.
+	 */
+	@Test
+	public void testIsOutside_false() {
+		assertFalse(ca.isOutside(-5.1, -2.6, 5.1, 2.6));
+	}
 
+	/**
+	 * Test for {@link ICollisionArea#isOutside(double, double, double, double)}.
+	 */
+	@Test
+	public void testIsOutside_minX() {
+		assertTrue(ca.isOutside(-4.9, -2.6, 5.1, 2.6));
+	}
+	
+	/**
+	 * Test for {@link ICollisionArea#isOutside(double, double, double, double)}.
+	 */
+	@Test
+	public void testIsOutside_minY() {
+		assertTrue(ca.isOutside(-5.1, -2.4, 5.1, 2.6));
+	}
+	
+	/**
+	 * Test for {@link ICollisionArea#isOutside(double, double, double, double)}.
+	 */
+	@Test
+	public void testIsOutside_maxX() {
+		assertTrue(ca.isOutside(-5.1, -2.6, 4.9, 2.6));
+	}
+	
+	/**
+	 * Test for {@link ICollisionArea#isOutside(double, double, double, double)}.
+	 */
+	@Test
+	public void testIsOutside_maxY() {
+		assertTrue(ca.isOutside(-5.1, -2.6, 5.1, 2.4));
+	}
 }
