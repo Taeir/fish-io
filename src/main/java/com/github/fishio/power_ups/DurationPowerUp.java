@@ -73,16 +73,6 @@ public abstract class DurationPowerUp extends PowerUp implements TickListener {
 	public abstract void startEffect();
 	
 	/**
-	 * The effect that should happen each time before a game tick.
-	 */
-	public abstract void preTickEffect();
-	
-	/**
-	 * The effect that should happen each time after a game tick.
-	 */
-	public abstract void postTickEffect();
-	
-	/**
 	 * The effect that should happen after the duration of the PowerUp.
 	 */
 	public abstract void endEffect();
@@ -93,11 +83,6 @@ public abstract class DurationPowerUp extends PowerUp implements TickListener {
 		if (!active) {
 			return;
 		}
-		
-		if (tickCounter >= 1) {
-			preTickEffect();
-		}
-			
 	}
 	
 	@Override
@@ -115,8 +100,6 @@ public abstract class DurationPowerUp extends PowerUp implements TickListener {
 			active = false;
 			return;
 		}
-		
-		postTickEffect();
 	}
 	
 	/**

@@ -61,12 +61,6 @@ public class PuSuperSpeed extends DurationPowerUp {
 		keyBehaviour.setMaxSpeed(keyBehaviour.getMaxSpeed() * MAX_SPEED_FACTOR);
 	}
 
-	@Override
-	public void preTickEffect() { }
-
-	@Override
-	public void postTickEffect() { }
-
 	/** 
 	 * Restores the acceleration and the MaxSpeed of
 	 * the PlayerFish we just drugged.
