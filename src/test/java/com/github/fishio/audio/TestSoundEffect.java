@@ -1,14 +1,24 @@
 package com.github.fishio.audio;
 
+import static org.mockito.Mockito.when;
+
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.media.AudioClip;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 /**
  * Test class for {@link SoundEffect}.
  */
+@PrepareForTest(AudioClip.class)
+@RunWith(PowerMockRunner.class)
 public class TestSoundEffect {
 
 	private AudioClip clip;
@@ -19,7 +29,10 @@ public class TestSoundEffect {
 	 */
 	@Before
 	public void setUp() {
-		clip = Mockito.mock(AudioClip.class);
+		DoubleProperty property = new SimpleDoubleProperty();
+		clip = PowerMockito.mock(AudioClip.class);
+		when(clip.volumeProperty()).thenReturn(property);
+		
 		soundEffect = new SoundEffect(clip);
 	}
 
