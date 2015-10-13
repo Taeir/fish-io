@@ -1,6 +1,5 @@
 package com.github.fishio.audio;
 
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ObservableValue;
 
 /**
