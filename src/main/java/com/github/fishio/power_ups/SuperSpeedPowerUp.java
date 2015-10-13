@@ -13,7 +13,7 @@ import com.github.fishio.behaviours.KeyListenerBehaviour;
  * drastically increasing the acceleration and speed
  * of the PlayerFish.
  */
-public class PuSuperSpeed extends DurationPowerUp {
+public class SuperSpeedPowerUp extends PowerUpDuration {
 
 	private static final int DURATION = 10;
 	public static final double ACCELERATION_FACTOR = 2.5;
@@ -31,7 +31,7 @@ public class PuSuperSpeed extends DurationPowerUp {
 	 * @param sprite
 	 * 		The sprite of this PowerUp.
 	 */
-	public PuSuperSpeed(ICollisionArea ba, PlayingField pfield, Image sprite) {
+	public SuperSpeedPowerUp(ICollisionArea ba, PlayingField pfield, Image sprite) {
 		super(ba, pfield, sprite);
 	}
 

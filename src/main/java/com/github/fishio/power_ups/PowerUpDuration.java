@@ -10,7 +10,7 @@ import com.github.fishio.listeners.TickListener;
 /**
  * A PowerUp where the effect takes time.
  */
-public abstract class DurationPowerUp extends PowerUp implements TickListener {
+public abstract class PowerUpDuration extends PowerUp implements TickListener {
 
 	private final int timeSeconds;
 	private final int timeTicks;
@@ -30,7 +30,7 @@ public abstract class DurationPowerUp extends PowerUp implements TickListener {
 	 * @param sprite
 	 * 		The sprite of this PowerUp
 	 */
-	public DurationPowerUp(ICollisionArea ba, PlayingField pfield, Image sprite) {
+	public PowerUpDuration(ICollisionArea ba, PlayingField pfield, Image sprite) {
 		super(ba, pfield, sprite);
 		
 		this.timeSeconds = getDuration();
