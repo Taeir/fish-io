@@ -5,10 +5,12 @@ import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.settings.Settings;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -30,8 +32,16 @@ public class SettingsScreenController implements ScreenController {
 	@FXML
 	private GridPane gridPane;
 	
+	@FXML
+	private ScrollPane scrollPane;
 	@Override
-	public void init(Scene scene) {	}
+	public void init(Scene scene) {
+		SimpleDoubleProperty p = settings.getDoubleProperty("SCREEN_HEIGHT");
+		p.addListener((o, old, newVal) -> {
+			scrollPane.setMaxHeight(newVal.intValue() - 240);
+		});
+		scrollPane.setMaxHeight(p.intValue() - 240);
+	}
 
 	@Override
 	public void onSwitchTo() {
