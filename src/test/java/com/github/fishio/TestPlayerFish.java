@@ -11,10 +11,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.github.fishio.settings.Settings;
 import com.github.fishio.behaviours.FrozenBehaviour;
 import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.behaviours.KeyListenerBehaviour;
+import com.github.fishio.settings.Settings;
 
 import javafx.stage.Stage;
 
@@ -33,7 +33,7 @@ public class TestPlayerFish extends TestIEatable {
 	 */
 	@Before
 	public void setUp() {
-		pf = Mockito.spy(new PlayerFish(Mockito.mock(BoundingBox.class), Mockito.mock(Stage.class), null));
+		pf = Mockito.spy(new PlayerFish(Mockito.mock(CollisionMask.class), Mockito.mock(Stage.class), null));
 		when(pf.getBoundingArea().getSize()).thenReturn(5.0);
 	}
 	
@@ -169,7 +169,8 @@ public class TestPlayerFish extends TestIEatable {
 	 */
 	@Test
 	public void testCollideWithOtherPlayerFish() {
-		PlayerFish pf2 = Mockito.spy(new PlayerFish(Mockito.mock(BoundingBox.class), Mockito.mock(Stage.class), null));
+		PlayerFish pf2 = Mockito
+				.spy(new PlayerFish(Mockito.mock(CollisionMask.class), Mockito.mock(Stage.class), null));
 		when(pf2.getBoundingArea().getSize()).thenReturn(1000000.0);
 		pf.livesProperty().set(1);
 		pf.onCollide(pf2);

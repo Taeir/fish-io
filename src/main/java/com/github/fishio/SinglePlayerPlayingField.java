@@ -57,7 +57,7 @@ public class SinglePlayerPlayingField extends PlayingField {
 	 * Creates and adds the player fish.
 	 */
 	protected final void addPlayerFish() {
-		setPlayer(new PlayerFish(getStartCollisionArea(),
+		setPlayer(new PlayerFish(getStartCollisionMask(),
 				FishIO.getInstance().getPrimaryStage(), 
 				Preloader.getImageOrLoad("sprites/fish/playerFish.png")));
 
@@ -65,10 +65,9 @@ public class SinglePlayerPlayingField extends PlayingField {
 	}
 	
 	/**
-	 * @return
-	 * 		the starting collision area of a playerfish.
+	 * @return the starting collision mask of a playerfish.
 	 */
-	public ICollisionArea getStartCollisionArea() {
+	public CollisionMask getStartCollisionMask() {
 		return new CollisionMask(new Vec2d(START_X, START_Y), 60, 30, 
 				Preloader.getAlphaDataOrLoad("sprites/fish/playerFish.png"),
 				Preloader.getSpriteAlphaRatioOrLoad("sprites/fish/playerFish.png"));

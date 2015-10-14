@@ -1,7 +1,7 @@
 package com.github.fishio.control;
 
+import com.github.fishio.CollisionMask;
 import com.github.fishio.FishIO;
-import com.github.fishio.ICollisionArea;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
 import com.github.fishio.Preloader;
@@ -348,7 +348,7 @@ public class SinglePlayerController implements ScreenController {
 		PlayerFish player = playingField.getPlayers().get(0);
 		
 		//Reset the bounding box of the player fish.
-		ICollisionArea area = playingField.getStartCollisionArea();
+		CollisionMask area = playingField.getStartCollisionMask();
 		player.setBoundingArea(area);
 		
 		//Start the render thread (it takes some time to appear).

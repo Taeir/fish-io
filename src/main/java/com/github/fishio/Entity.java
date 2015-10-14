@@ -80,12 +80,12 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	
 	
 	@Override
-	public ICollisionArea getBoundingArea() {
-		return boundingArea;
+	public CollisionMask getBoundingArea() {
+		return (CollisionMask) boundingArea;
 	}
 	
 	@Override
-	public void setBoundingArea(ICollisionArea area) {
+	public void setBoundingArea(CollisionMask area) {
 		this.boundingArea = area;
 	}
 	
