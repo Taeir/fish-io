@@ -82,7 +82,6 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 		pu.preTick();
 		
 		assertEquals(0, pu.getTickCounter());
-		Mockito.verify(pu, never()).preTickEffect();
 	}
 	
 	/**
@@ -99,7 +98,6 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 		pu.preTick();
 		
 		assertEquals(1, pu.getTickCounter());
-		Mockito.verify(pu).preTickEffect();
 	}
 	
 	/**
@@ -115,7 +113,6 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 		pu.preTick();
 		
 		assertEquals(0, pu.getTickCounter());
-		Mockito.verify(pu, never()).preTickEffect();
 	}
 	
 	/**
@@ -128,7 +125,6 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 		pu.postTick();
 		
 		assertEquals(0, pu.getTickCounter());
-		Mockito.verify(pu, never()).postTickEffect();
 		Mockito.verify(pu, never()).endEffect();
 		assertFalse(pu.isActive());
 	}
@@ -147,7 +143,6 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 		pu.postTick();
 		
 		assertEquals(pu.getTimeTicks(), pu.getTickCounter());
-		Mockito.verify(pu, never()).postTickEffect();
 		Mockito.verify(pu).endEffect();
 		assertFalse(pu.isActive());
 		
@@ -170,7 +165,6 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 		pu.postTick();
 		
 		assertEquals(pu.getTimeTicks() - 1, pu.getTickCounter());
-		Mockito.verify(pu).postTickEffect();
 		Mockito.verify(pu, never()).endEffect();
 		assertTrue(pu.isActive());
 		

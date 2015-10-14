@@ -61,12 +61,6 @@ public class FreezePowerUp extends PowerUpDuration {
 		}
 	}
 
-	@Override
-	public void preTickEffect() { }
-
-	@Override
-	public void postTickEffect() { }
-
 	/** 
 	 * Resets the behaviour of the EnemyFishes.
 	 */
