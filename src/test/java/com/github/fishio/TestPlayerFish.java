@@ -186,7 +186,7 @@ public class TestPlayerFish extends TestIEatable {
 	 */
 	@Test
 	public void testCollideWithLargerEnemyFish() {
-		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(BoundingBox.class), 
+		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(CollisionMask.class), 
 				null, 0.0, 0.0));
 		when(ef.getBoundingArea().getSize()).thenReturn(6.1);
 		
@@ -212,7 +212,7 @@ public class TestPlayerFish extends TestIEatable {
 	 */
 	@Test
 	public void testCollideWithLargerEnemyFish2() {
-		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(BoundingBox.class), 
+		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(CollisionMask.class), 
 				null, 0.0, 0.0));
 		when(ef.getBoundingArea().getSize()).thenReturn(6.1);
 		
@@ -236,7 +236,7 @@ public class TestPlayerFish extends TestIEatable {
 	 */
 	@Test
 	public void testCollideWithSmallerEnemyFish() {
-		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(BoundingBox.class), 
+		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(CollisionMask.class), 
 				null, 0.0, 0.0));
 		when(ef.getBoundingArea().getSize()).thenReturn(3.9);
 		ICollisionArea bb = pf.getBoundingArea();
@@ -252,7 +252,7 @@ public class TestPlayerFish extends TestIEatable {
 	 */
 	@Test
 	public void testCollideWithSameSizeEnemyFish() {
-		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(BoundingBox.class), 
+		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(CollisionMask.class), 
 				null, 0.0, 0.0));
 		when(ef.getBoundingArea().getSize()).thenReturn(5.0);
 
@@ -268,7 +268,7 @@ public class TestPlayerFish extends TestIEatable {
 	 */
 	@Test
 	public void testCollideWithDeadEnemyFish() {
-		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(BoundingBox.class), 
+		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(CollisionMask.class), 
 				null, 0.0, 0.0));
 		when(ef.getBoundingArea().getSize()).thenReturn(5.1);
 		ef.kill();

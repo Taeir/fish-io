@@ -337,7 +337,7 @@ public class TestPlayingField extends GuiTest {
 	 */
 	@Test
 	public void testMoveMovables() {
-		BoundingBox ca = Mockito.mock(BoundingBox.class);
+		CollisionMask ca = Mockito.mock(CollisionMask.class);
 		Entity e = new EnemyFish(ca, null, 0, 0);
 		VerticalBehaviour b = Mockito.spy(new VerticalBehaviour(3));
 		e.setBehaviour(b);
