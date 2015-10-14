@@ -21,9 +21,6 @@ public class PowerUpSpawner implements TickListener {
 
 	private final PlayingField playingField;
 	
-	private final int minX;
-	private final int maxX;
-	
 	public static final int WIDTH = 25;
 	public static final int HEIGHT = 25;
 	
@@ -55,9 +52,6 @@ public class PowerUpSpawner implements TickListener {
 		this.intervalTicks = getInterval() * pf.getFPS();
 		this.tickCounter = 0;
 		
-		this.minX = 0;
-		this.maxX = (int) pf.getWidth();
-		
 		this.logger = Log.getLogger();
 		
 		pf.getGameThread().registerListener(this);
@@ -85,7 +79,7 @@ public class PowerUpSpawner implements TickListener {
 		
 		//Creating the BoundingBox for the PowerUp with a on the
 		//top of the screen and with a random x location.
-		int x = rand.nextInt(maxX - minX + 1) + minX;
+		int x = rand.nextInt((int) settings.getDouble("SCREEN_WIDTH") - 1);
 		int y = -HEIGHT; //(top of the screen: y=0, to spawn outside it, we need Ytop - height)
 		
 		int powerUpNumber = rand.nextInt(POWERUP_COUNT);

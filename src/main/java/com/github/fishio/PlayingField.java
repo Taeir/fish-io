@@ -29,7 +29,7 @@ public abstract class PlayingField {
 	private Log logger = Log.getLogger();
 
 	private int enemyCount;
-	public static final int MAX_ENEMY_COUNT = 0;
+	public static final int MAX_ENEMY_COUNT = 10;
 
 	/**
 	 * Creates the playing field with a set framerate and canvas.
