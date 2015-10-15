@@ -1,5 +1,8 @@
 package com.github.fishio.behaviours;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import com.github.fishio.Vec2d;
@@ -46,6 +49,7 @@ public class RandomBehaviour implements IMoveBehaviour, Serializable {
 	 */
 	@Override
 	public void preMove() {
+		//TODO #167 Use random so multiplayer can have client prediction
 		if (Math.random() < directionChangeChance) {
 			//Only change one direction
 			if (Math.random() <= 0.5) {
@@ -100,5 +104,23 @@ public class RandomBehaviour implements IMoveBehaviour, Serializable {
 		this.vx = rb.vx;
 		this.vy = rb.vy;
 		this.directionChangeChance = rb.directionChangeChance;
+	}
+	
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.writeDouble(vx);
+		out.writeDouble(vy);
+		out.writeDouble(directionChangeChance);
+		
+		//TODO #167 Use random so multiplayer can have client prediction
+		//out.writeObject(random);
+	}
+	
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		this.vx = in.readDouble();
+		this.vy = in.readDouble();
+		this.directionChangeChance = in.readDouble();
+		
+		//TODO #167 Use random so multiplayer can have client prediction
+		//this.random = (Random) in.readObject();
 	}
 }
