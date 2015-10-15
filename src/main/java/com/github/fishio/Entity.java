@@ -20,7 +20,7 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	private List<AchievementObserver> observers = new ArrayList<AchievementObserver>();
 	
 	private boolean isDead;
-	private ICollisionArea boundingArea;
+	private CollisionMask boundingArea;
 	protected Log logger = Log.getLogger();
 	
 	/**
@@ -29,7 +29,7 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	 * @param boundingArea
 	 *            the bounding area of this Entity
 	 */
-	public Entity(ICollisionArea boundingArea) {
+	public Entity(CollisionMask boundingArea) {
 		this.boundingArea = boundingArea;
 	}
 	
@@ -64,28 +64,27 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	}
 	
 	/**
-	 * @return
-	 * 		The behaviour of this entity.
+	 * @return The behavior of this entity.
 	 */
 	public abstract IMoveBehaviour getBehaviour();
 	
 	/**
-	 * Changes the behaviour of this entity.
+	 * Changes the behavior of this entity.
 	 * 
 	 * @param behaviour
-	 * 		The behaviour this entity should adopt
+	 *            The behavior this entity should adopt
 	 */
 	public abstract void setBehaviour(IMoveBehaviour behaviour);
 
 	
 	
 	@Override
-	public ICollisionArea getBoundingArea() {
+	public CollisionMask getBoundingArea() {
 		return boundingArea;
 	}
 	
 	@Override
-	public void setBoundingArea(ICollisionArea area) {
+	public void setBoundingArea(CollisionMask area) {
 		this.boundingArea = area;
 	}
 	

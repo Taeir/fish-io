@@ -2,9 +2,9 @@ package com.github.fishio;
 
 import com.github.fishio.achievements.State;
 import com.github.fishio.achievements.Subject;
-import com.github.fishio.settings.Settings;
 import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.behaviours.KeyListenerBehaviour;
+import com.github.fishio.settings.Settings;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.canvas.GraphicsContext;
@@ -40,7 +40,7 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 	 * @param sprite
 	 *            The sprite of the player fish
 	 */
-	public PlayerFish(ICollisionArea ca, Stage stage, Image sprite) {
+	public PlayerFish(CollisionMask ca, Stage stage, Image sprite) {
 		super(ca);		
 
 		this.sprite = sprite;

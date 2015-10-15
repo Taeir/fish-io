@@ -1,9 +1,9 @@
 package com.github.fishio;
 
+import com.github.fishio.behaviours.IMoveBehaviour;
+
 import javafx.geometry.Bounds;
 import javafx.scene.shape.Rectangle;
-
-import com.github.fishio.behaviours.IMoveBehaviour;
 
 /**
  * Interface used to represent collision areas of entities.
@@ -65,17 +65,7 @@ public interface ICollisionArea {
 	default boolean isReversed() {
 		return getRotation() > 90 && getRotation() < 270;
 	}
-	
-	/**
-	 * Performs a few checks to find out whether the Bounding Box has any
-	 * overlap with an IBoundingAres object.
-	 * 
-	 * @param other
-	 *            the boundingArea to check with.
-	 * @return true if this bounding box collides with the given BoundingArea,
-	 *         false if not.
-	 */
-	boolean intersects(ICollisionArea other);
+
 	
 	/**
 	 * A method which gives back the top left coordinate of the Bounding Box.

@@ -27,7 +27,7 @@ public class EnemyFish extends Entity implements IEatable {
 	 * Main constructor of the enemy fish.
 	 * 
 	 * @param ca
-	 *            ICollisionArea of enemy fish object.
+	 *            CollisionMask of enemy fish object.
 	 * @param sprite
 	 *            Sprite of the enemy fish object.
 	 * @param startvx
@@ -35,7 +35,7 @@ public class EnemyFish extends Entity implements IEatable {
 	 * @param startvy
 	 *            Starting speed of the enemy fish object in the y direction.
 	 */
-	public EnemyFish(ICollisionArea ca, Image sprite, double startvx, double startvy) {
+	public EnemyFish(CollisionMask ca, Image sprite, double startvx, double startvy) {
 		super(ca);
 		this.sprite = sprite;
 		
