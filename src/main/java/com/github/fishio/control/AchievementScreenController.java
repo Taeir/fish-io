@@ -76,8 +76,7 @@ public class AchievementScreenController implements ScreenController {
 		p.addListener((o, old, newVal) -> {
 			scrollPane.setMaxHeight(newVal.intValue() - 200);
 		});
-		scrollPane.setMaxHeight(p.intValue() - 200);
-		System.out.println(icon11.getBackground().getImages().get(0));
+		scrollPane.setMaxHeight(p.intValue() - 200); 
 	
 	}
 

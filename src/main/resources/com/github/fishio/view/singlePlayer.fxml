@@ -58,32 +58,29 @@
             <Button fx:id="btnDSMenu" minWidth="100.0" mnemonicParsing="false" onAction="#backToMenu" text="Menu" />
          </children>
       </VBox>
-      <VBox fx:id="achievePopup" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.8" prefHeight="191.0" prefWidth="238.0" style="-fx-background-color: #d3d3d3;" visible="false" StackPane.alignment="BOTTOM_LEFT">
+      <VBox fx:id="achievePopup" alignment="TOP_CENTER" fillWidth="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.0" prefHeight="130.0" prefWidth="238.0" style="-fx-background-color: #d3d3d3;" StackPane.alignment="BOTTOM_LEFT">
          <children>
-            <GridPane prefHeight="181.0" prefWidth="238.0" visible="false">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="54.0" minHeight="10.0" prefHeight="14.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="138.0" minHeight="10.0" prefHeight="138.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+            <Label prefHeight="19.0" prefWidth="238.0" text="Gained achievement!">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </Label>
+            <HBox fx:id="imageBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                <children>
-                  <Label prefHeight="19.0" prefWidth="238.0" text="Gained achievement!">
+                  <ImageView fx:id="popupImage" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label fx:id="pupupDescription" maxWidth="210.0" text="Achievement description is supposed to be displayed here." wrapText="true">
                      <font>
-                        <Font size="24.0" />
+                        <Font name="System Italic" size="14.0" />
                      </font>
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
                   </Label>
-                  <ImageView fx:id="popupimage" fitHeight="109.0" fitWidth="183.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets left="10.0" />
-                     </GridPane.margin>
-                  </ImageView>
                </children>
-            </GridPane>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </HBox>
          </children>
       </VBox>
    </children>
