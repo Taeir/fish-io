@@ -231,22 +231,24 @@ public class Renderer implements Listenable {
 	 */
 	public void startRendering() {
 		Stage primaryStage = FishIO.getInstance().getPrimaryStage();
-		Scene scene = primaryStage.getScene();
-		 double h = Bindings.createObjectBinding(() -> 
-	        new Insets(scene.getY(), 
-	                primaryStage.getWidth() - scene.getWidth() - scene.getX(), 
-	                primaryStage.getHeight() - scene.getHeight() - scene.getY(), 
-	                scene.getX()),
-	                scene.xProperty(),
-	                scene.yProperty(),
-	                scene.widthProperty(),
-	                scene.heightProperty(),
-	                primaryStage.widthProperty(),
-	                primaryStage.heightProperty()
-	            ).get().getTop();
+		double h = 0;
+		if (primaryStage != null) { 
+			Scene scene = primaryStage.getScene();
+			 h = Bindings.createObjectBinding(() -> 
+		        new Insets(scene.getY(), 
+		                primaryStage.getWidth() - scene.getWidth() - scene.getX(), 
+		                primaryStage.getHeight() - scene.getHeight() - scene.getY(), 
+		                scene.getX()),
+		                scene.xProperty(),
+		                scene.yProperty(),
+		                scene.widthProperty(),
+		                scene.heightProperty(),
+		                primaryStage.widthProperty(),
+		                primaryStage.heightProperty()
+		            ).get().getTop();
+			}
 		width.bind(settings.getDoubleProperty("SCREEN_WIDTH"));
-		height.bind(settings.getDoubleProperty("SCREEN_HEIGHT").subtract(
-				h + yBorder)); 
+		height.bind(settings.getDoubleProperty("SCREEN_HEIGHT").subtract(h + yBorder)); 
 		
 		renderThread.play();
 		Log.getLogger().log(LogLevel.TRACE, "[Renderer] Starting Renderer...");
