@@ -1,11 +1,13 @@
 package com.github.fishio;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import com.github.fishio.audio.AudioEngine;
 import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.behaviours.RandomBehaviour;
-import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
-import com.github.fishio.settings.Settings;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -15,10 +17,9 @@ import javafx.scene.image.Image;
  * enemy fish on the screen.
  */
 public class EnemyFish extends Entity implements IEatable {
+	private static final long serialVersionUID = -3625685120024363192L;
 
-	private Settings settings = Settings.getInstance();
-	private Log logger = Log.getLogger();
-
+	private String spriteLocation;
 	private Image sprite;
 
 	private IMoveBehaviour behaviour;
@@ -28,16 +29,19 @@ public class EnemyFish extends Entity implements IEatable {
 	 * 
 	 * @param ca
 	 *            ICollisionArea of enemy fish object.
-	 * @param sprite
-	 *            Sprite of the enemy fish object.
+	 * @param spriteLocation
+	 *            String URL of the sprite of the enemy fish object.
 	 * @param startvx
 	 *            Starting speed of the enemy fish object in the x direction.
 	 * @param startvy
 	 *            Starting speed of the enemy fish object in the y direction.
 	 */
-	public EnemyFish(ICollisionArea ca, Image sprite, double startvx, double startvy) {
+	public EnemyFish(ICollisionArea ca, String spriteLocation, double startvx, double startvy) {
 		super(ca);
-		this.sprite = sprite;
+		this.spriteLocation = spriteLocation;
+		if (this.spriteLocation != null) {
+			this.sprite = Preloader.getImageOrLoad(this.spriteLocation);
+		}
 		
 		this.behaviour = new RandomBehaviour(startvx, startvy, settings.getDouble("DIRECTION_CHANGE_CHANCE"));
 		
@@ -111,4 +115,16 @@ public class EnemyFish extends Entity implements IEatable {
 		return true;
 	}
 
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.writeUTF(this.spriteLocation);
+		out.writeObject(this.behaviour);
+	}
+	
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		this.spriteLocation = in.readUTF();
+		this.behaviour = (IMoveBehaviour) in.readObject();
+		
+		//Load the sprite
+		this.sprite = Preloader.getImageOrLoad(this.spriteLocation);
+	}
 }

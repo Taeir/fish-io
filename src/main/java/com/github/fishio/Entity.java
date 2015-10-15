@@ -1,7 +1,12 @@
 package com.github.fishio;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.github.fishio.achievements.AchievementObserver;
 import com.github.fishio.achievements.State;
@@ -9,6 +14,7 @@ import com.github.fishio.achievements.Subject;
 import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
+import com.github.fishio.settings.Settings;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -16,12 +22,18 @@ import javafx.scene.paint.Color;
 /**
  * Represents an entity in the game.
  */
-public abstract class Entity implements ICollidable, IPositional, IDrawable, Subject {
+public abstract class Entity implements ICollidable, IPositional, IDrawable, Subject, Serializable {
+	private static final long serialVersionUID = 650039406095374770L;
+	protected static Log logger = Log.getLogger();
+	protected static Settings settings = Settings.getInstance();
+	
+	private static AtomicInteger entityIdCounter = new AtomicInteger(0);
 	private List<AchievementObserver> observers = new ArrayList<AchievementObserver>();
 	
-	private boolean isDead;
 	private ICollisionArea boundingArea;
-	protected Log logger = Log.getLogger();
+	private boolean isDead;
+	
+	private int entityId;
 	
 	/**
 	 * This constructor creates an entity in the game.
@@ -31,6 +43,38 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	 */
 	public Entity(ICollisionArea boundingArea) {
 		this.boundingArea = boundingArea;
+		this.entityId = getFreeEntityId();
+	}
+	
+	/**
+	 * Protected constructor to create an entity using the given entityId.<br>
+	 * This is used by the multiplayer implementation to decorate
+	 * entities.
+	 * 
+	 * @param boundingArea
+	 * 		the bounding area of this Entity
+	 * @param entityId
+	 * 		the entityId to use.
+	 */
+	protected Entity(ICollisionArea boundingArea, int entityId) {
+		this.boundingArea = boundingArea;
+		this.entityId = entityId;
+	}
+	
+	/**
+	 * @return
+	 * 		a free entity id.
+	 */
+	private static int getFreeEntityId() {
+		return entityIdCounter.getAndIncrement();
+	}
+	
+	/**
+	 * @return
+	 * 		the entity id of this entity.
+	 */
+	public int getEntityId() {
+		return entityId;
 	}
 	
 	@Override
@@ -76,8 +120,6 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	 * 		The behaviour this entity should adopt
 	 */
 	public abstract void setBehaviour(IMoveBehaviour behaviour);
-
-	
 	
 	@Override
 	public ICollisionArea getBoundingArea() {
@@ -129,5 +171,31 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	 */
 	public void hitWall() {
 		kill();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Entity)) {
+			return false;
+		}
+		
+		return ((Entity) obj).getEntityId() == this.getEntityId();
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.getEntityId();
+	}
+	
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.writeInt(this.entityId);
+		out.writeBoolean(this.isDead);
+		out.writeObject(this.boundingArea);
+	}
+	
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		this.entityId = in.readInt();
+		this.isDead = in.readBoolean();
+		this.boundingArea = (ICollisionArea) in.readObject();
 	}
 }

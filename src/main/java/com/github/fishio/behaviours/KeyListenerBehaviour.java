@@ -1,6 +1,13 @@
 package com.github.fishio.behaviours;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
+import com.github.fishio.PlayerFish;
 import com.github.fishio.Vec2d;
+import com.github.fishio.settings.Settings;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -9,8 +16,9 @@ import javafx.stage.Stage;
 /**
  * A behaviour that listens for the user pressing keys.
  */
-public class KeyListenerBehaviour implements IMoveBehaviour {
-
+public class KeyListenerBehaviour implements IMoveBehaviour, Serializable {
+	private static final long serialVersionUID = -8462037501296518403L;
+	
 	private double vx;
 	private double vy;
 	
@@ -223,5 +231,18 @@ public class KeyListenerBehaviour implements IMoveBehaviour {
 	public void setSpeedVector(Vec2d speedVector) {
 		this.vx = speedVector.x;
 		this.vy = speedVector.y;
+	}
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.writeDouble(vx);
+		out.writeDouble(vy);
+		out.writeDouble(acceleration);
+		out.writeDouble(maxSpeed);
+	}
+	
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		this.vx = in.readDouble();
+		this.vy = in.readDouble();
+		this.acceleration = in.readDouble();
+		this.maxSpeed = in.readDouble();
 	}
 }

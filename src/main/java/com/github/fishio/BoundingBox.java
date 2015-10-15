@@ -1,10 +1,14 @@
 package com.github.fishio;
 
+import java.io.Serializable;
+
 /**
  * Class to represent an (Axis Aligned) Bounding Box.
  */
 
-public class BoundingBox implements ICollisionArea {
+public class BoundingBox implements ICollisionArea, Serializable {
+	private static final long serialVersionUID = 8596897445938544587L;
+	
 	private Vec2d center;
 	private double height;
 	private double width;

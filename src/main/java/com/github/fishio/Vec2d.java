@@ -1,11 +1,14 @@
 package com.github.fishio;
 
+import java.io.Serializable;
+
 /**
  * Class to represent a 2D Vector.
  */
-public class Vec2d {
-	//We want these fields public for easy use.
+public class Vec2d implements Serializable {
+	private static final long serialVersionUID = -3102801818928296146L;
 	
+	//We want these fields public for easy use.
 	@SuppressWarnings("checkstyle:visibilitymodifier")
 	public double x;
 	@SuppressWarnings("checkstyle:visibilitymodifier")
