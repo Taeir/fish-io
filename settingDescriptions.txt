@@ -4,7 +4,7 @@ DIRECTION_CHANGE_CHANCE: The chance a fish will change trajectory per tick.
 MIN_EFISH_SPEED: The minimum speed of an enemy fish.
 MAX_EFISH_SPEED: The maximum speed of an enemy fish.
 MAX_PLAYER_SPEED: The maximum speed of the player fish.
-DEBUG_DRAW: Render debug values.
+DEBUG_DRAW: The game is rendered with debug values.
 GROWTH_SPEED: The growth speed of the player fish.
 LOG_LEVEL: The level of messages that will be logged.
 START_LIVES: The amount of lives a player starts with.
@@ -17,4 +17,5 @@ SWIM_LEFT: The button that must be pressed to swim to the left.
 MASTER_VOLUME: The master volume of the sounds in the game.
 EFFECTS_VOLUME: The volume of the sound effects.
 MUSIC_VOLUME: The volume of the background music.
-
+FISH_EAT_THRESHOLD: The minimum ratio a fish should be bigger in order to eat another fish.
+PIXEL_PERFECT_COLLISIONS: The size of the fish is determined by it's pixels.
