@@ -1,12 +1,12 @@
 package com.github.fishio.power_ups;
 
-import javafx.scene.image.Image;
-
-import com.github.fishio.ICollisionArea;
+import com.github.fishio.CollisionMask;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
 import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.behaviours.KeyListenerBehaviour;
+
+import javafx.scene.image.Image;
 
 /**
  * PuSuperSpeed is a PowerUp where the effect is
@@ -25,13 +25,13 @@ public class PuSuperSpeed extends DurationPowerUp {
 	 * Creates a new PowerUp of the SuperSpeed type.
 	 * 
 	 * @param ba
-	 * 		The CollisonArea of the PowerUp.
+	 *            The CollisonMask of the PowerUp.
 	 * @param pfield
-	 * 		The PlayingField in which this PowerUp is located.
+	 *            The PlayingField in which this PowerUp is located.
 	 * @param sprite
-	 * 		The sprite of this PowerUp.
+	 *            The sprite of this PowerUp.
 	 */
-	public PuSuperSpeed(ICollisionArea ba, PlayingField pfield, Image sprite) {
+	public PuSuperSpeed(CollisionMask ba, PlayingField pfield, Image sprite) {
 		super(ba, pfield, sprite);
 	}
 

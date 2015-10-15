@@ -1,15 +1,15 @@
 package com.github.fishio.power_ups;
 
-import javafx.scene.image.Image;
-
 import java.util.HashMap;
 
+import com.github.fishio.CollisionMask;
 import com.github.fishio.EnemyFish;
 import com.github.fishio.Entity;
-import com.github.fishio.ICollisionArea;
 import com.github.fishio.PlayingField;
 import com.github.fishio.behaviours.FrozenBehaviour;
 import com.github.fishio.behaviours.IMoveBehaviour;
+
+import javafx.scene.image.Image;
 
 /**
  * A PowerUp with the effect that it freezes all
@@ -30,13 +30,13 @@ public class PuFreeze extends DurationPowerUp {
 	 * Creates a new PowerUp of the Freeze type.
 	 * 
 	 * @param ba
-	 * 		The CollisonArea of the PowerUp.
+	 * 		The CollisonMask of the PowerUp.
 	 * @param pfield
 	 * 		The PlayingField in which this PowerUp is located.
 	 * @param sprite
 	 * 		The sprite of this PowerUp
 	 */
-	public PuFreeze(ICollisionArea ba, PlayingField pfield, Image sprite) {
+	public PuFreeze(CollisionMask ba, PlayingField pfield, Image sprite) {
 		super(ba, pfield, sprite);
 	}
 

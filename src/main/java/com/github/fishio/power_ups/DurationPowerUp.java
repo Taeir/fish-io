@@ -1,11 +1,11 @@
 package com.github.fishio.power_ups;
 
-import javafx.scene.image.Image;
-
-import com.github.fishio.ICollisionArea;
+import com.github.fishio.CollisionMask;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
 import com.github.fishio.listeners.TickListener;
+
+import javafx.scene.image.Image;
 
 /**
  * A PowerUp where the effect takes time.
@@ -24,13 +24,13 @@ public abstract class DurationPowerUp extends PowerUp implements TickListener {
 	 * Creates a new DurationPowerUp.
 	 * 
 	 * @param ba
-	 * 		The CollisionArea of the Power-Up
+	 *            The CollisionMask of the Power-Up
 	 * @param pfield
-	 * 		The PlayingField this PowerUp is located in
+	 *            The PlayingField this PowerUp is located in
 	 * @param sprite
-	 * 		The sprite of this PowerUp
+	 *            The sprite of this PowerUp
 	 */
-	public DurationPowerUp(ICollisionArea ba, PlayingField pfield, Image sprite) {
+	public DurationPowerUp(CollisionMask ba, PlayingField pfield, Image sprite) {
 		super(ba, pfield, sprite);
 		
 		this.timeSeconds = getDuration();

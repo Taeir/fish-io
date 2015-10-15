@@ -1,10 +1,10 @@
 package com.github.fishio.power_ups;
 
-import javafx.scene.image.Image;
-
-import com.github.fishio.ICollisionArea;
+import com.github.fishio.CollisionMask;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
+
+import javafx.scene.image.Image;
 
 /**
  * A PowerUp with the effect that it instantly increases
@@ -18,13 +18,13 @@ public class PuExtraLife extends PowerUp {
 	 * Creates a new PowerUp of the Extra Life type.
 	 * 
 	 * @param ba
-	 * 		The CollisonArea of the PowerUp.
+	 *            The CollisonMask of the PowerUp.
 	 * @param pfield
-	 * 		The PlayingField in which this PowerUp is located.
+	 *            The PlayingField in which this PowerUp is located.
 	 * @param sprite
-	 * 		The sprite of this PowerUp.
+	 *            The sprite of this PowerUp.
 	 */
-	public PuExtraLife(ICollisionArea ba, PlayingField pfield, Image sprite) {
+	public PuExtraLife(CollisionMask ba, PlayingField pfield, Image sprite) {
 		super(ba, pfield, sprite);
 	}
 
