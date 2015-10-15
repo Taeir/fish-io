@@ -426,7 +426,7 @@ public final class Preloader {
 	 * 		the length of the FadeTransition for this screen.
 	 */
 	private static void showScreen(Scene scene, int length) {
-		ScreenController controller = (ScreenController) scene.getProperties().get("Controller");
+		ScreenController controller = getController(scene);
 		controller.onSwitchTo();
 		
 		//DoubleProperty opacity = scene.getRoot().opacityProperty();
@@ -442,5 +442,55 @@ public final class Preloader {
 		} else {
 			FishIO.getInstance().getPrimaryStage().setScene(scene);
 		}
+	}
+	
+	/**
+	 * Gets the controller of the screen with the given filename. If that
+	 * screen is not yet loaded, it is loaded first.
+	 * 
+	 * @param filename
+	 * 		the filename (without extension) of the screen to get the
+	 * 		controller of.
+	 * @param <T>
+	 * 		the ScreenController implementation that is expected.
+	 * 
+	 * @return
+	 * 		the controller of the screen with the given filename, or 
+	 * 		<code>null</code> if no such screen exists.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T extends ScreenController> T getControllerOrLoad(String filename) {
+		Scene scene;
+		synchronized (SCREENS) {
+			scene = SCREENS.get(filename);
+		}
+		
+		if (scene == null) {
+			scene = loadScreen(filename);
+		}
+		
+		if (scene == null) {
+			return null;
+		}
+		
+		return (T) scene.getProperties().get("Controller");
+	}
+	
+	/**
+	 * @param scene
+	 * 		the scene to get the controller of.
+	 * @param <T>
+	 * 		the ScreenController implementation that is expected.
+	 * 
+	 * @return
+	 * 		the controller of the given Scene.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T extends ScreenController> T getController(Scene scene) {
+		if (scene == null) {
+			return null;
+		}
+		
+		return (T) scene.getProperties().get("Controller");
 	}
 }
