@@ -38,15 +38,17 @@ public abstract class PlayingField {
 	 *            the (target) framerate.
 	 * @param canvas
 	 *            the canvas to use, can be <code>null</code> to create one.
+	 * @param yBorder
+	 * 			  the vertical border to be applied.
 	 */
-	public PlayingField(int fps, Canvas canvas) {
+	public PlayingField(int fps, Canvas canvas, int yBorder) {
 		//count enemies
 		enemyCount = 0;
 
 		gameThread = new GameThread(this);
 		logger.log(LogLevel.INFO, "Created GameThread");
 		
-		renderer = new Renderer(this, canvas, fps);
+		renderer = new Renderer(this, canvas, fps, yBorder);
 		logger.log(LogLevel.INFO, "Created Renderer");
 	}
 

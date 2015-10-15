@@ -26,7 +26,7 @@ public class SinglePlayerPlayingField extends PlayingField {
 	 *            the canvas to use, can be <code>null</code> to create one.
 	 */
 	public SinglePlayerPlayingField(int fps, Canvas canvas) {
-		super(fps, canvas);
+		super(fps, canvas, 50);
 
 		//Add playerFish listeners (has to be the first method called in the constructor.)
 		addPlayerFishListeners();

@@ -108,5 +108,4 @@ public class HelpScreenController implements ScreenController {
 	public Button getBtnBackToMenu() {
 		return btnBackToMenu;
 	}
-
 }

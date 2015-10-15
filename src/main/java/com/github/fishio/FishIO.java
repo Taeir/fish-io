@@ -102,6 +102,7 @@ public class FishIO extends Application {
 			e.printStackTrace();
 		}
 		
+		Preloader.switchAway();
 		this.primaryStage.close();
 	}
 

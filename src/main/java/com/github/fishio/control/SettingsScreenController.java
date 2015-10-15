@@ -224,5 +224,4 @@ public class SettingsScreenController implements ScreenController {
 	public Button getBtnBackToMenu() {
 		return btnBackToMenu;
 	}
-
 }

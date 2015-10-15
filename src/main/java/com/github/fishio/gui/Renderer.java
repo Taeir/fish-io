@@ -39,6 +39,7 @@ public class Renderer implements Listenable {
 	private SimpleIntegerProperty fps = new SimpleIntegerProperty();
 	private PlayingField playingField;
 	private Image background;
+	private int yBorder;
 	
 	/**
 	 * Create a new Renderer for the given PlayingField.
@@ -49,8 +50,10 @@ public class Renderer implements Listenable {
 	 * 		the canvas to render on.
 	 * @param fps
 	 * 		the framerate in frames per second.
+	 * @param yBorder
+	 * 		the vertical border to be applied.
 	 */
-	public Renderer(PlayingField playingField, Canvas canvas, int fps) {
+	public Renderer(PlayingField playingField, Canvas canvas, int fps, int yBorder) {
 		if (canvas == null) {
 			this.canvas = new Canvas(width.doubleValue(), height.doubleValue());
 		} else {
@@ -59,6 +62,7 @@ public class Renderer implements Listenable {
 		canvas.widthProperty().bind(width);
 		canvas.heightProperty().bind(height);
 		
+		this.yBorder = yBorder;
 		this.fps.set(fps);
 		this.playingField = playingField;
 		this.renderThread = newRenderThread(fps);
@@ -235,7 +239,7 @@ public class Renderer implements Listenable {
 	            ).get().getTop();
 		width.bind(settings.getDoubleProperty("SCREEN_WIDTH"));
 		height.bind(settings.getDoubleProperty("SCREEN_HEIGHT").subtract(
-				h + 50)); 
+				h + yBorder)); 
 		
 		renderThread.play();
 		Log.getLogger().log(LogLevel.TRACE, "[Renderer] Starting Renderer...");
