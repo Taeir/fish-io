@@ -107,14 +107,21 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 		if (isDead()) {
 			return;
 		}
+		
 		//If invincible, ignore death.
 		if (isInvincible()) {
 			return;
 		}
+		
 		int nvalue = Math.max(lives.get() - 1, 0);
 		lives.set(nvalue);
 		
 		if (nvalue == 0) {
+			//Unregister key handlers
+			if (getBehaviour() instanceof KeyListenerBehaviour) {
+				((KeyListenerBehaviour) getBehaviour()).unregisterKeyHandlers();
+			}
+			
 			super.kill();			
 			return;
 		}		
