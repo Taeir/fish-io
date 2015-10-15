@@ -7,12 +7,14 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import com.github.fishio.Preloader;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
+import com.github.fishio.settings.Settings;
 
 /**
  * The splashScreenController class manages the splash screens.
@@ -22,6 +24,8 @@ public class SplashScreenController implements ScreenController {
 
 	private Log logger = Log.getLogger();
 	
+	@FXML
+	private ImageView background;
 	@FXML
 	private VBox company;
 	@FXML
@@ -42,6 +46,10 @@ public class SplashScreenController implements ScreenController {
 
 	@Override
 	public void init(Scene scene) {
+		background.preserveRatioProperty().set(false);
+		Settings settings = Settings.getInstance();
+		background.fitHeightProperty().bind(settings.getDoubleProperty("SCREEN_HEIGHT"));
+		background.fitWidthProperty().bind(settings.getDoubleProperty("SCREEN_WIDTH"));
 		slogan.setText(slogans[(int) (Math.random() * slogans.length)]);
 
 		//If you press any key, we skip the splash.
