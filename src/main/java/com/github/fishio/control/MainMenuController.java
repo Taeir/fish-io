@@ -70,7 +70,8 @@ public class MainMenuController implements ScreenController {
 	public void startMultiplayer() {
 		AudioEngine.getInstance().playEffect("button");
 		
-		//TODO (not now)
+		logger.log(LogLevel.INFO, "Player Pressed the multiplayer Button.");
+		Preloader.switchTo("multiplayerScreen", 400);
 	}
 
 	/**
