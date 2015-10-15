@@ -14,7 +14,7 @@ import org.mockito.Mockito;
 
 import com.github.fishio.Vec2d;
 
-import javafx.stage.Stage;
+import javafx.scene.Scene;
 
 /**
  * Tests the adjustSpeedX method in the KeyListenerBehaviour class 
@@ -42,7 +42,7 @@ public class TestKeyListenerBehaviourAdjustSpeedX {
 	public TestKeyListenerBehaviourAdjustSpeedX(boolean leftPressed, boolean rightPressed, 
 			double speedX, double expectedSpeedX) {
 		
-		behaviour = new KeyListenerBehaviour(Mockito.mock(Stage.class), 
+		behaviour = new KeyListenerBehaviour(Mockito.mock(Scene.class), 
 				null, null, null, null, acceleration, 4);
 		
 		behaviour.setLeftPressed(leftPressed);

@@ -10,10 +10,10 @@ import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.behaviours.KeyListenerBehaviour;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.stage.Stage;
 
 /**
  * Represents a fish that the user can control using
@@ -36,16 +36,16 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 	/**
 	 * Creates the Player fish which the user will be able to control.
 	 * 
-	 * @param ca
-	 *            The (inital) bounding area of the PlayerFish
-	 * @param stage
+	 * @param collisionArea
+	 *            The (initial) collision area of the PlayerFish
+	 * @param scene
 	 *            The scene in which the player fish is located at
 	 * @param sprite
 	 *            The sprite of the player fish
 	 */
-	public PlayerFish(ICollisionArea ca, Stage stage, Image sprite) {
-		super(ca);		
-
+	public PlayerFish(ICollisionArea collisionArea, Scene scene, Image sprite) {
+		super(collisionArea);
+		
 		this.sprite = sprite;
 
 		double maxSpeed = settings.getDouble("MAX_PLAYER_SPEED");
@@ -54,7 +54,7 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 		KeyCode keyDown = settings.getKeyCode("SWIM_DOWN");
 		KeyCode keyLeft = settings.getKeyCode("SWIM_LEFT");
 		KeyCode keyRight = settings.getKeyCode("SWIM_RIGHT");
-		this.behaviour = new KeyListenerBehaviour(stage, keyUp, keyDown, keyLeft, keyRight,
+		this.behaviour = new KeyListenerBehaviour(scene, keyUp, keyDown, keyLeft, keyRight,
 				acceleration, maxSpeed);
 	}
 	

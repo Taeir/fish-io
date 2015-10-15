@@ -103,7 +103,7 @@ public class SinglePlayerController implements ScreenController {
 	@Override
 	public void init(Scene scene) {
 		//setup the playing field
-		playingField = new SinglePlayerPlayingField(60, gameCanvas);
+		playingField = new SinglePlayerPlayingField(60, gameCanvas, scene);
 		playingField.getRenderer().setBackground(Preloader.getImageOrLoad("background.png"));
 		
 		//If the player fish changes, this listener will be called.
@@ -309,7 +309,7 @@ public class SinglePlayerController implements ScreenController {
 		}
 		
 		//If player has lives left, we enable the revive button.
-		PlayerFish player = playingField.getPlayers().get(0);
+		PlayerFish player = playingField.getPlayer();
 		if (player.getLives() > 0) {
 			btnDSRevive.setDisable(false);
 		} else {
@@ -345,7 +345,7 @@ public class SinglePlayerController implements ScreenController {
 		//Remove all enemies.
 		playingField.clearEnemies();
 		
-		PlayerFish player = playingField.getPlayers().get(0);
+		PlayerFish player = playingField.getPlayer();
 		
 		//Reset the bounding box of the player fish.
 		ICollisionArea area = playingField.getStartCollisionArea();

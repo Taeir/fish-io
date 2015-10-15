@@ -9,6 +9,8 @@ import com.github.fishio.PlayerFish;
 import com.github.fishio.Vec2d;
 import com.github.fishio.settings.Settings;
 
+import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -30,10 +32,14 @@ public class KeyListenerBehaviour implements IMoveBehaviour, Serializable {
 	private boolean leftPressed;
 	private boolean rightPressed;
 	
+	private Scene scene;
+	private EventHandler<? super KeyEvent> pressHandler;
+	private EventHandler<? super KeyEvent> releaseHandler;
+	
 	/**
 	 * Creates a new KeyListenerBehaviour.
 	 * 
-	 * @param stage
+	 * @param scene
 	 * 		The stage of the GUI on which the KeyListener should get registered to.
 	 * @param upKey
 	 * 		The KeyCode of the key that when pressed, the entity with this behaviour goes up. 
@@ -48,13 +54,71 @@ public class KeyListenerBehaviour implements IMoveBehaviour, Serializable {
 	 * @param maxSpeed
 	 * 		The maximum speed of the entity.
 	 */
-	public KeyListenerBehaviour(Stage stage, KeyCode upKey, KeyCode downKey, 
+	public KeyListenerBehaviour(Scene scene, KeyCode upKey, KeyCode downKey, 
 			KeyCode leftKey, KeyCode rightKey, double acceleration, double maxSpeed) {
+		this(acceleration, maxSpeed);
 		
+		registerHandlers(scene, upKey, downKey, leftKey, rightKey);
+	}
+	
+	/**
+	 * Creates a new KeyListenerBehaviour that does not register any key
+	 * listeners.<br>
+	 * <br>
+	 * This should only be used by the
+	 * {@link com.github.fishio.multiplayer.server.FishIOServer FishIOServer}.
+	 * 
+	 * @param acceleration
+	 * 		The amount of speed that can change each tick.
+	 * @param maxSpeed
+	 * 		The maximum speed of the entity.
+	 */
+	public KeyListenerBehaviour(double acceleration, double maxSpeed) {
 		this.acceleration = acceleration;
 		this.maxSpeed = maxSpeed;
+	}
+	
+	/**
+	 * Creates a new KeyListenerBehaviour with default settings.
+	 * 
+	 * @param scene
+	 * 		the scene to attach the keylisteners to.
+	 * 
+	 * @return
+	 * 		a new KeyListenerBehaviour with default settings for the given stage.
+	 */
+	public static KeyListenerBehaviour createWithDefaultSettings(Scene scene) {
+		Settings settings = Settings.getInstance();
 		
-		stage.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+		double maxSpeed = settings.getDouble("MAX_PLAYER_SPEED");
+		double acceleration = PlayerFish.FISH_ACCELERATION;
+		KeyCode keyUp = settings.getKeyCode("SWIM_UP");
+		KeyCode keyDown = settings.getKeyCode("SWIM_DOWN");
+		KeyCode keyLeft = settings.getKeyCode("SWIM_LEFT");
+		KeyCode keyRight = settings.getKeyCode("SWIM_RIGHT");
+		
+		return new KeyListenerBehaviour(scene, keyUp, keyDown, keyLeft, keyRight, acceleration, maxSpeed);
+	}
+
+	/**
+	 * Registers handlers for key events.
+	 * 
+	 * @param scene
+	 * 		the stage to register the handlers on.
+	 * @param upKey
+	 * 		The KeyCode of the key that when pressed, the entity with this behaviour goes up. 
+	 * @param downKey
+	 * 		The KeyCode of the key that when pressed, the entity with this behaviour goes down. 
+	 * @param leftKey
+	 * 		The KeyCode of the key that when pressed, the entity with this behaviour goes left. 
+	 * @param rightKey
+	 * 		The KeyCode of the key that when pressed, the entity with this behaviour goes right. 
+	 */
+	private void registerHandlers(Scene scene, KeyCode upKey, KeyCode downKey, KeyCode leftKey, KeyCode rightKey) {
+		this.scene = scene;
+		
+		//Create the press handler
+		pressHandler = event -> {
 			KeyCode pressedKey = event.getCode();
 			if (pressedKey == upKey) {
 				upPressed = true;
@@ -65,9 +129,11 @@ public class KeyListenerBehaviour implements IMoveBehaviour, Serializable {
 			} else if (pressedKey == rightKey) {
 				rightPressed = true;
 			}
-		});
+		};
+		scene.addEventHandler(KeyEvent.KEY_PRESSED, pressHandler);
 
-		stage.addEventHandler(KeyEvent.KEY_RELEASED, event -> {
+		//Create the release handler
+		releaseHandler = event -> {
 			KeyCode releasedKey = event.getCode();
 			if (releasedKey == upKey) {
 				upPressed = false;
@@ -78,7 +144,21 @@ public class KeyListenerBehaviour implements IMoveBehaviour, Serializable {
 			} else if (releasedKey == rightKey) {
 				rightPressed = false;
 			}
-		});
+		};
+		scene.addEventHandler(KeyEvent.KEY_RELEASED, releaseHandler);
+	}
+	
+	/**
+	 * Unregisters key handlers from the scene they were registered to.
+	 */
+	public void unregisterKeyHandlers() {
+		if (this.scene == null) {
+			return;
+		}
+		
+		scene.removeEventHandler(KeyEvent.KEY_PRESSED, pressHandler);
+		scene.removeEventHandler(KeyEvent.KEY_RELEASED, releaseHandler);
+		this.scene = null;
 	}
 	
 	@Override

@@ -14,8 +14,8 @@ import com.github.fishio.behaviours.VerticalBehaviour;
 import com.github.fishio.game.GameState;
 import com.github.fishio.gui.GuiTest;
 
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.stage.Stage;
 
 /**
  * Tests the PlayingField class.
@@ -31,7 +31,7 @@ public class TestPlayingField extends GuiTest {
 	@Before
 	public void setUp() {
 		this.canvas = Mockito.spy(new Canvas());
-		field = new SinglePlayerPlayingField(60, canvas);
+		field = new SinglePlayerPlayingField(60, canvas, Mockito.mock(Scene.class));
 	}
 	
 	/**
@@ -219,7 +219,7 @@ public class TestPlayingField extends GuiTest {
 	public void clearEnemies() {
 		for (int i = 0; i < 10; i++) {
 			field.add(Mockito.mock(Entity.class));
-			field.add(new PlayerFish(null, Mockito.mock(Stage.class), null));
+			field.add(new PlayerFish(null, Mockito.mock(Scene.class), null));
 		}
 		
 		field.clearEnemies();
