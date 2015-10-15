@@ -277,6 +277,20 @@ public class CollisionMask implements ICollisionArea, Serializable {
 		width = height * r;
 	}
 
+	@Override
+	public void updateTo(ICollisionArea area) {
+		if (!(area instanceof CollisionMask)) {
+			throw new IllegalArgumentException("Cannot update to different type!");
+		}
+		
+		CollisionMask mask = (CollisionMask) area;
+		this.center.x = mask.center.x;
+		this.center.y = mask.center.y;
+		this.width = mask.width;
+		this.height = mask.height;
+		this.rotation = mask.rotation;
+	}
+	
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		out.writeObject(this.center);
 		out.writeDouble(this.height);

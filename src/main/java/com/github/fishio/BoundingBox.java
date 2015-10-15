@@ -218,4 +218,18 @@ public class BoundingBox implements ICollisionArea, Serializable {
 		height = Math.sqrt(size / r);
 		width = height * r;
 	}
+	
+	@Override
+	public void updateTo(ICollisionArea area) {
+		if (!(area instanceof BoundingBox)) {
+			throw new IllegalArgumentException("Cannot update to different type!");
+		}
+		
+		BoundingBox box = (BoundingBox) area;
+		this.center.x = box.center.x;
+		this.center.y = box.center.y;
+		this.width = box.width;
+		this.height = box.height;
+		this.rotation = box.rotation;
+	}
 }
