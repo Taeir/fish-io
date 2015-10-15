@@ -2,7 +2,6 @@ package com.github.fishio;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -31,7 +30,7 @@ public class TestPlayingField extends GuiTest {
 	 */
 	@Before
 	public void setUp() {
-		this.canvas = Mockito.mock(Canvas.class);
+		this.canvas = Mockito.spy(new Canvas());
 		field = new SinglePlayerPlayingField(60, canvas);
 	}
 	
@@ -178,7 +177,7 @@ public class TestPlayingField extends GuiTest {
 		field.add(e);
 		
 		assertTrue(field.getEntities().contains(e));
-		assertSame(e, field.getDrawables().getFirst());
+		assertTrue(field.getDrawables().contains(e));
 		assertEquals(2, field.getDrawables().size());
 	}
 	
@@ -192,6 +191,8 @@ public class TestPlayingField extends GuiTest {
 		field.add(e);
 		field.remove(e);
 		
+		assertFalse(field.getEntities().contains(e));
+		assertFalse(field.getDrawables().contains(e));
 		assertEquals(1, field.getEntities().size());
 	}
 	
@@ -223,8 +224,8 @@ public class TestPlayingField extends GuiTest {
 		
 		field.clearEnemies();
 		
-		assertEquals(1, field.getEntities().size());
-		assertEquals(1, field.getDrawables().size());
+		assertEquals(11, field.getEntities().size());
+		assertEquals(11, field.getDrawables().size());
 	}
 	
 	/**
@@ -235,7 +236,7 @@ public class TestPlayingField extends GuiTest {
 		IDrawable d = Mockito.mock(Entity.class);
 		field.add(d);
 		
-		assertEquals(d, field.getDrawables().getFirst());
+		assertTrue(field.getDrawables().contains(d));
 		assertEquals(2, field.getDrawables().size());
 	}
 	

@@ -36,6 +36,7 @@ public class FishIO extends Application {
 		initiateLogger();
 		
 		log.log(LogLevel.INFO, "Starting up Fish.io.");
+		
 		//Preload the screens
 		Preloader.preloadScreens();
 		log.log(LogLevel.DEBUG, "Preloaded the screens.");
@@ -69,7 +70,8 @@ public class FishIO extends Application {
 			primaryStage.setWidth(width.doubleValue());
 		});
 
-		//Start background music
+		//Start loading audio and start background music
+		AudioEngine.getInstance().getAudioFactory().startLoading();
 		AudioEngine.getInstance().startBackgroundMusicWhenLoaded();
 	}
 	

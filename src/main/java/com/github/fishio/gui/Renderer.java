@@ -126,12 +126,17 @@ public class Renderer implements Listenable {
 	 */
 	public void redraw() {
 		GraphicsContext gc = canvas.getGraphicsContext2D();
+		if (gc == null) {
+			return;
+		}
 
 		//Clear screen
 		gc.clearRect(0, 0, width.doubleValue(), height.doubleValue());
 
 		//draw background image
-		gc.drawImage(background, 0, 0, width.doubleValue(), height.doubleValue());
+		if (background != null) {
+			gc.drawImage(background, 0, 0, width.doubleValue(), height.doubleValue());
+		}
 
 		//Render all drawables, in reverse order
 		Iterator<IDrawable> it = playingField.getDrawables().descendingIterator();

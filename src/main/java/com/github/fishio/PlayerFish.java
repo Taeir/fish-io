@@ -105,11 +105,13 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 			IEatable eatable = (IEatable) other;
 		
 			if (eatable.canBeEatenBy(this)) {
+				State old = getState();
+				
 				eatable.eat();
 				this.addPoints((int) (eatable.getSize() / 200));
 				double dSize = getGrowthSpeed() * eatable.getSize() / getSize();
 				getBoundingArea().increaseSize(dSize);	
-				State old = getState();
+				
 				notifyObservers(old, getState(), "EnemyKill");
 			} 
 
@@ -146,8 +148,16 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 			return;
 		}
 		
+		//TODO Move this to game thread.
 		getBoundingArea().setRotation(behaviour); //update rotation;
-		drawRotatedImage(gc, sprite, getBoundingArea());
+		
+		//Only render if the fish has a sprite
+		if (sprite != null) {
+			drawRotatedImage(gc, sprite, getBoundingArea());
+		} else {
+			//Call the render method of entity, which simply renders a red box.
+			super.render(gc);
+		}
 	}
 	
 

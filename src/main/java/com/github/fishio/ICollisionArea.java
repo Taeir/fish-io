@@ -1,5 +1,6 @@
 package com.github.fishio;
 
+import javafx.geometry.Bounds;
 import javafx.scene.shape.Rectangle;
 
 import com.github.fishio.behaviours.IMoveBehaviour;
@@ -36,6 +37,25 @@ public interface ICollisionArea {
 		
 		tbr.setRotate(getRotation());
 		return tbr;
+	}
+	
+	/**
+	 * @param minX
+	 * 		the minimal X coordinate.
+	 * @param minY
+	 * 		the minimal Y coordinate.
+	 * @param maxX
+	 * 		the maximal X coordinate.
+	 * @param maxY
+	 * 		the maximal Y coordinate.
+	 * 
+	 * @return
+	 * 		<code>true</code> if the center of this ICollisionArea is
+	 * 		outside the given coordinates. <code>false</code> otherwise.
+	 */
+	default boolean isOutside(double minX, double minY, double maxX, double maxY) {
+		Bounds b = getBox().getBoundsInParent();
+		return b.getMinX() <= minX || b.getMaxX() >= maxX || b.getMinY() <= minY || b.getMaxY() >= maxY;
 	}
 	
 	/**
@@ -125,6 +145,14 @@ public interface ICollisionArea {
 	double getSize();
 	
 	/**
+	 * Set the size of the collisionArea.
+	 * 
+	 * @param size
+	 * 		The new size.
+	 */
+	void setSize(double size);
+	
+	/**
 	 * Increases the size (area) of the fish without
 	 * affecting the width/height (shape stays the same).
 	 * 
@@ -182,6 +210,12 @@ public interface ICollisionArea {
 	}
 	
 	/**
+	 * @return
+	 * 		the rotation of the boundingArea in degrees.
+	 */
+	double getRotation();
+	
+	/**
 	 * Sets the rotation of the CollisionArea.
 	 * @param angle
 	 * 		The new angle in degrees.
@@ -189,20 +223,6 @@ public interface ICollisionArea {
 	 * 		The set value of the angle.
 	 */
 	double setRotation(double angle);
-
-	/**
-	 * @return
-	 * 		the rotation of the boundingArea in degrees.
-	 */
-	double getRotation();
-	
-	/**
-	 * Set the size of the collisionArea.
-	 * 
-	 * @param size
-	 * 		The new size.
-	 */
-	void setSize(double size);
 
 	/**
 	 * @return

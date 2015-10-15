@@ -8,9 +8,9 @@ import com.github.fishio.listeners.TickListener;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.power_ups.PowerUp;
-import com.github.fishio.power_ups.PuExtraLife;
-import com.github.fishio.power_ups.PuFreeze;
-import com.github.fishio.power_ups.PuSuperSpeed;
+import com.github.fishio.power_ups.ExtraLifePowerUp;
+import com.github.fishio.power_ups.FreezePowerUp;
+import com.github.fishio.power_ups.SuperSpeedPowerUp;
 import com.github.fishio.settings.Settings;
 
 /**
@@ -94,11 +94,11 @@ public class PowerUpSpawner implements TickListener {
 		//Choosing a random PowerUp.
 		switch (powerUpNumber) {
 		case 0:
-			return new PuFreeze(cm, playingField, sprite);
+			return new FreezePowerUp(cm, playingField, sprite);
 		case 1:
-			return new PuSuperSpeed(cm, playingField, sprite);
+			return new SuperSpeedPowerUp(cm, playingField, sprite);
 		case 2:
-			return new PuExtraLife(cm, playingField, sprite);
+			return new ExtraLifePowerUp(cm, playingField, sprite);
 		default:
 			return null;
 		}
