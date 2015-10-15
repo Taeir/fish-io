@@ -230,9 +230,10 @@ public class Renderer implements Listenable {
 	 * The game itself will be unaffected by this call.
 	 */
 	public void startRendering() {
-		Stage primaryStage = FishIO.getInstance().getPrimaryStage();
+		FishIO instance = FishIO.getInstance();
 		double h = 0;
-		if (primaryStage != null) { 
+		if (instance != null) { 
+			Stage primaryStage = instance.getPrimaryStage();
 			Scene scene = primaryStage.getScene();
 			 h = Bindings.createObjectBinding(() -> 
 		        new Insets(scene.getY(), 
