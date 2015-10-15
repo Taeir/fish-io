@@ -55,10 +55,12 @@ public class Renderer implements Listenable {
 	 */
 	public Renderer(PlayingField playingField, Canvas canvas, int fps, int yBorder) {
 		if (canvas == null) {
-			this.canvas = new Canvas(width.doubleValue(), height.doubleValue());
+			this.canvas = new Canvas(640, 430);
 		} else {
 			this.canvas = canvas;
 		}
+		width.set(canvas.getWidth());
+		height.set(canvas.getHeight());
 		canvas.widthProperty().bind(width);
 		canvas.heightProperty().bind(height);
 		
