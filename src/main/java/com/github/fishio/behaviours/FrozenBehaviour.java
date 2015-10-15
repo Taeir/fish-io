@@ -34,4 +34,10 @@ public class FrozenBehaviour implements IMoveBehaviour, Serializable {
 		return obj.getClass() == FrozenBehaviour.class;
 	}
 	
+	@Override
+	public void updateTo(IMoveBehaviour behaviour) {
+		if (!(behaviour instanceof FrozenBehaviour)) {
+			throw new IllegalArgumentException("Cannot update behaviour to different type!");
+		}
+	}
 }

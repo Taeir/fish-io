@@ -28,7 +28,16 @@ public class VerticalBehaviour implements IMoveBehaviour, Serializable {
 	public Vec2d getSpeedVector() {
 		return new Vec2d(0, -speed);
 	}
+	
 	@Override
 	public void preMove() { }
 	
+	@Override
+	public void updateTo(IMoveBehaviour behaviour) {
+		if (!(behaviour instanceof VerticalBehaviour)) {
+			throw new IllegalArgumentException("Cannot update behaviour to different type!");
+		}
+		
+		this.speed = ((VerticalBehaviour) behaviour).speed;
+	}
 }

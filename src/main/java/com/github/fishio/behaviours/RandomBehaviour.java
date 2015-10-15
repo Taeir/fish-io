@@ -89,4 +89,16 @@ public class RandomBehaviour implements IMoveBehaviour, Serializable {
 			vy = Math.min(-MIN_EFISH_SPEED, Math.max(vy, -MAX_EFISH_SPEED));
 		}
 	}
+
+	@Override
+	public void updateTo(IMoveBehaviour behaviour) {
+		if (!(behaviour instanceof RandomBehaviour)) {
+			throw new IllegalArgumentException("Cannot update behaviour to different type!");
+		}
+		
+		RandomBehaviour rb = (RandomBehaviour) behaviour;
+		this.vx = rb.vx;
+		this.vy = rb.vy;
+		this.directionChangeChance = rb.directionChangeChance;
+	}
 }

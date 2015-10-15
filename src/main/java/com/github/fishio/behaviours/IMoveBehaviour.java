@@ -32,4 +32,16 @@ public interface IMoveBehaviour {
 	 * Can be used to adjust the speedVector for clever AI.
 	 */
 	void preMove();
+	
+	/**
+	 * Updates this behaviour to the given behaviour, if it is of the same
+	 * type.
+	 * 
+	 * @param behaviour
+	 * 		the behaviour to update to.
+	 * 
+	 * @throws IllegalArgumentException
+	 * 		if the type of the given behaviour does not match our type.
+	 */
+	void updateTo(IMoveBehaviour behaviour);
 }

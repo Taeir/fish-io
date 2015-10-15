@@ -312,6 +312,19 @@ public class KeyListenerBehaviour implements IMoveBehaviour, Serializable {
 		this.vx = speedVector.x;
 		this.vy = speedVector.y;
 	}
+	
+	@Override
+	public void updateTo(IMoveBehaviour behaviour) {
+		if (!(behaviour instanceof KeyListenerBehaviour)) {
+			throw new IllegalArgumentException("Cannot update behaviour to different type!");
+		}
+		
+		KeyListenerBehaviour other = (KeyListenerBehaviour) behaviour;
+		this.vx = other.vx;
+		this.vy = other.vy;
+		this.acceleration = other.acceleration;
+	}
+	
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		out.writeDouble(vx);
 		out.writeDouble(vy);
