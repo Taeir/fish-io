@@ -226,28 +226,7 @@ public class GameThread implements Runnable, Listenable {
 			while (!stop) {
 				start = System.currentTimeMillis();
 
-				//Call listeners pretick
-				callPreTick("GameThread");
-
-				//Move all movables
-				playingField.moveMovables();
-
-				//Add new entities
-				playingField.addEntities();
-
-				//Check for stop again halfway.
-				if (stop) {
-					break;
-				}
-				
-				//Check for collisions
-				playingField.checkPlayerCollisions();
-
-				//Cleanup dead entities.
-				playingField.cleanupDead();
-
-				//Call listeners posttick
-				callPostTick("GameThread");
+				gameTick();
 				
 				end = System.currentTimeMillis();
 				
@@ -268,6 +247,37 @@ public class GameThread implements Runnable, Listenable {
 			//We are now in the state STOPPED
 			stateProperty.set(GameState.STOPPED);
 		}
+	}
+
+	/**
+	 * Runs one gametick.
+	 */
+	protected void gameTick() {
+		//Call listeners pretick
+		callPreTick("GameThread");
+
+		//Move all movables
+		playingField.moveMovables();
+
+		//Add new entities
+		playingField.addEntities();
+		
+		//Check for collisions
+		playingField.checkPlayerCollisions();
+
+		//Cleanup dead entities.
+		playingField.cleanupDead();
+
+		//Call listeners posttick
+		callPostTick("GameThread");
+	}
+	
+	/**
+	 * @return
+	 * 		the playingfield this GameThread is ticking.
+	 */
+	public PlayingField getPlayingField() {
+		return this.playingField;
 	}
 	
 	@Override

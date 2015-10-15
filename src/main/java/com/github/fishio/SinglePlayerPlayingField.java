@@ -2,6 +2,9 @@ package com.github.fishio;
 
 import java.util.ArrayList;
 
+import com.github.fishio.game.GameThread;
+import com.github.fishio.logging.LogLevel;
+
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -18,6 +21,7 @@ public class SinglePlayerPlayingField extends PlayingField {
 	private final SimpleObjectProperty<PlayerFish> player = new SimpleObjectProperty<PlayerFish>();
 	private final ArrayList<PlayerFish> players = new ArrayList<PlayerFish>(1);
 	
+	private GameThread gameThread;
 	private Scene scene;
 
 	/**
@@ -32,6 +36,9 @@ public class SinglePlayerPlayingField extends PlayingField {
 		super(fps, canvas);
 		
 		this.scene = scene;
+		
+		gameThread = new GameThread(this);
+		logger.log(LogLevel.INFO, "Created GameThread");
 
 		//Add playerFish listeners (has to be the first method called in the constructor.)
 		addPlayerFishListeners();
@@ -66,6 +73,11 @@ public class SinglePlayerPlayingField extends PlayingField {
 				Preloader.getImageOrLoad("sprites/fish/playerFish.png")));
 
 		add(getPlayer());
+	}
+	
+	@Override
+	public GameThread getGameThread() {
+		return gameThread;
 	}
 	
 	/**

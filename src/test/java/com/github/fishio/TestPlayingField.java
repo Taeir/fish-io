@@ -85,8 +85,8 @@ public class TestPlayingField extends GuiTest {
 	 */
 	@Test
 	public void testGetEntities() {
-		assertEquals(1, field.getEntities().size());
-		assertTrue(field.getEntities().get(0) instanceof PlayerFish);
+		assertEquals(1, field.getEntitiesList().size());
+		assertTrue(field.getEntitiesList().get(0) instanceof PlayerFish);
 	}
 	
 	/**
@@ -176,7 +176,7 @@ public class TestPlayingField extends GuiTest {
 		
 		field.add(e);
 		
-		assertTrue(field.getEntities().contains(e));
+		assertTrue(field.getEntitiesList().contains(e));
 		assertTrue(field.getDrawables().contains(e));
 		assertEquals(2, field.getDrawables().size());
 	}
@@ -191,9 +191,9 @@ public class TestPlayingField extends GuiTest {
 		field.add(e);
 		field.remove(e);
 		
-		assertFalse(field.getEntities().contains(e));
+		assertFalse(field.getEntitiesList().contains(e));
 		assertFalse(field.getDrawables().contains(e));
-		assertEquals(1, field.getEntities().size());
+		assertEquals(1, field.getEntitiesList().size());
 	}
 	
 	/**
@@ -208,7 +208,7 @@ public class TestPlayingField extends GuiTest {
 		field.clear();
 		
 		// Everything is gone but the PlayerFish.
-		assertEquals(1, field.getEntities().size());
+		assertEquals(1, field.getEntitiesList().size());
 		assertEquals(1, field.getDrawables().size());
 	}
 	
@@ -224,7 +224,7 @@ public class TestPlayingField extends GuiTest {
 		
 		field.clearEnemies();
 		
-		assertEquals(11, field.getEntities().size());
+		assertEquals(11, field.getEntitiesList().size());
 		assertEquals(11, field.getDrawables().size());
 	}
 	
@@ -308,9 +308,9 @@ public class TestPlayingField extends GuiTest {
 		
 		field.cleanupDead();
 		
-		assertEquals(2, field.getEntities().size());
-		assertTrue(field.getEntities().contains(e2));
-		assertFalse(field.getEntities().contains(e1));
+		assertEquals(2, field.getEntitiesList().size());
+		assertTrue(field.getEntitiesList().contains(e2));
+		assertFalse(field.getEntitiesList().contains(e1));
 	}
 	
 	/**
@@ -320,16 +320,16 @@ public class TestPlayingField extends GuiTest {
 	public void testAddEntities() {
 		field.addEntities();
 		
-		assertEquals(PlayingField.MAX_ENEMY_COUNT + 1, field.getEntities().size());
+		assertEquals(PlayingField.MAX_ENEMY_COUNT + 1, field.getEntitiesList().size());
 		
 		for (int i = 5; i < 11; i++) {
-			field.getEntities().get(i).kill();
+			field.getEntitiesList().get(i).kill();
 		}
 		field.cleanupDead();
 		
 		field.addEntities();
 		
-		assertEquals(PlayingField.MAX_ENEMY_COUNT + 1, field.getEntities().size());
+		assertEquals(PlayingField.MAX_ENEMY_COUNT + 1, field.getEntitiesList().size());
 	}
 	
 	/**

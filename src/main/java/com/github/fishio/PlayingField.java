@@ -1,8 +1,10 @@
 package com.github.fishio;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -21,19 +23,18 @@ import com.github.fishio.settings.Settings;
  */
 public abstract class PlayingField {
 
-	private GameThread gameThread;
+	protected Log logger = Log.getLogger();
+	
 	private Renderer renderer;
 
 	private ConcurrentLinkedDeque<IDrawable> drawables = new ConcurrentLinkedDeque<>();
 	private ConcurrentLinkedDeque<IDrawable> deadDrawables = new ConcurrentLinkedDeque<>();
 	private ConcurrentLinkedQueue<Entity> entities = new ConcurrentLinkedQueue<>();
 	private ConcurrentLinkedQueue<ICollidable> collidables = new ConcurrentLinkedQueue<>();
-	private Log logger = Log.getLogger();
+	
 	
 	private ObservableDoubleValue widthProperty;
 	private ObservableDoubleValue heightProperty;
-
-	
 
 	private int enemyCount;
 	public static final int MAX_ENEMY_COUNT = 10;
@@ -53,9 +54,6 @@ public abstract class PlayingField {
 		
 		//count enemies
 		enemyCount = 0;
-
-		gameThread = new GameThread(this);
-		logger.log(LogLevel.INFO, "Created GameThread");
 		
 		renderer = new Renderer(this, canvas, fps);
 		logger.log(LogLevel.INFO, "Created Renderer");
@@ -164,14 +162,22 @@ public abstract class PlayingField {
 	 * 
 	 * @return all the players in this field.
 	 */
-	public abstract ArrayList<PlayerFish> getPlayers();
+	public abstract Collection<PlayerFish> getPlayers();
 	
 	/**
 	 * @return
 	 * 		All the entities in this field.
 	 */
-	public List<Entity> getEntities() {
+	public List<Entity> getEntitiesList() {
 		return new ArrayList<Entity>(entities);
+	}
+	
+	/**
+	 * @return
+	 * 		the entities queue used by this PlayingField.
+	 */
+	public Queue<Entity> getEntities() {
+		return entities;
 	}
 
 	/**
@@ -256,9 +262,7 @@ public abstract class PlayingField {
 	 * @return
 	 * 		the GameThread for this PlayingField.
 	 */
-	public GameThread getGameThread() {
-		return gameThread;
-	}
+	public abstract GameThread getGameThread();
 
 	/**
 	 * Starts the game.<br>
@@ -268,10 +272,10 @@ public abstract class PlayingField {
 	 */
 	public void startGame() {
 		//Start the rendering first
-		renderer.startRendering();
+		getRenderer().startRendering();
 		
 		//Start the game thread after that.
-		gameThread.start();
+		getGameThread().start();
 	}
 	
 	/**
@@ -283,17 +287,17 @@ public abstract class PlayingField {
 	 * @see #startGame()
 	 */
 	public void startGameAndWait() throws InterruptedException {
-		renderer.startRendering();
+		getRenderer().startRendering();
 		
-		gameThread.startAndWait();
+		getGameThread().startAndWait();
 	}
 
 	/**
 	 * Stops (pauses) the game and the rendering.
 	 */
 	public void stopGame() {
-		gameThread.stop();
-		renderer.stopRendering();
+		getGameThread().stop();
+		getRenderer().stopRendering();
 	}
 	
 	/**
@@ -309,7 +313,7 @@ public abstract class PlayingField {
 		stopGame();
 		
 		//Wait until the game thread has stopped.
-		gameThread.stopAndWait();
+		getGameThread().stopAndWait();
 	}
 
 	/**

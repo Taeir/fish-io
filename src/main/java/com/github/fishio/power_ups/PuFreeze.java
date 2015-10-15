@@ -52,7 +52,7 @@ public class PuFreeze extends DurationPowerUp {
 	@Override
 	public void startEffect() {
 		
-		for (Entity e : getPField().getEntities()) {
+		for (Entity e : getPField().getEntitiesList()) {
 			if (e instanceof EnemyFish) {
 				EnemyFish fish = (EnemyFish) e;
 				oldBehaviours.put(fish, fish.getBehaviour());
