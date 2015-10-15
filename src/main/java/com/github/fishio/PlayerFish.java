@@ -107,14 +107,21 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 		if (isDead()) {
 			return;
 		}
+		
 		//If invincible, ignore death.
 		if (isInvincible()) {
 			return;
 		}
+		
 		int nvalue = Math.max(lives.get() - 1, 0);
 		lives.set(nvalue);
 		
 		if (nvalue == 0) {
+			//Unregister key handlers
+			if (getBehaviour() instanceof KeyListenerBehaviour) {
+				((KeyListenerBehaviour) getBehaviour()).unregisterKeyHandlers();
+			}
+			
 			super.kill();			
 			return;
 		}		
@@ -225,6 +232,7 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 		state.add("EnemyKill", isDead()).add("score", score.get()).add("Lives", getLives());
 		return state;
 	}
+	
 	/**
 	 * Make this PlayerFish invincible until endTime.
 	 * 
@@ -259,8 +267,7 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 	 * 		if this PlayerFish is currently invincible.
 	 */
 	public boolean isInvincible() {
-		return invincible != 0L && invincible > System.currentTimeMillis();
-		
+		return invincible > System.currentTimeMillis();
 	}
 
 	@Override
