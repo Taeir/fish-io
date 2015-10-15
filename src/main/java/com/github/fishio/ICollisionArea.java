@@ -65,16 +65,6 @@ public interface ICollisionArea {
 	default boolean isReversed() {
 		return getRotation() > 90 && getRotation() < 270;
 	}
-	
-	/**
-	 * Performs a few checks to find out whether the Bounding Box has any
-	 * overlap with an IBoundingAres object.
-	 * 
-	 * @param other
-	 *            the boundingArea to check with.
-	 * @return true if this bounding box collides with the given BoundingArea,
-	 *         false if not.
-	 */
 
 	
 	/**
