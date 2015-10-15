@@ -10,7 +10,7 @@ import javafx.scene.image.Image;
  * A PowerUp with the effect that it instantly increases
  * the PlayerFish' life (if it isn't maxed out already).
  */
-public class PuExtraLife extends PowerUp {
+public class ExtraLifePowerUp extends PowerUp {
 
 	private static final String NAME = "Extra Life";
 	
@@ -24,7 +24,8 @@ public class PuExtraLife extends PowerUp {
 	 * @param sprite
 	 *            The sprite of this PowerUp.
 	 */
-	public PuExtraLife(CollisionMask ba, PlayingField pfield, Image sprite) {
+
+	public ExtraLifePowerUp(CollisionMask ba, PlayingField pfield, Image sprite) {
 		super(ba, pfield, sprite);
 	}
 

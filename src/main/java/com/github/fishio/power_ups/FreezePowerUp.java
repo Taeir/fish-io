@@ -15,7 +15,7 @@ import javafx.scene.image.Image;
  * A PowerUp with the effect that it freezes all
  * current EnemyFishes in the PlayingField for 10 seconds. 
  */
-public class PuFreeze extends DurationPowerUp {
+public class FreezePowerUp extends PowerUpDuration {
 
 	private static final String NAME = "Freeze";
 	
@@ -36,7 +36,8 @@ public class PuFreeze extends DurationPowerUp {
 	 * @param sprite
 	 * 		The sprite of this PowerUp
 	 */
-	public PuFreeze(CollisionMask ba, PlayingField pfield, Image sprite) {
+
+	public FreezePowerUp(CollisionMask ba, PlayingField pfield, Image sprite) {
 		super(ba, pfield, sprite);
 	}
 

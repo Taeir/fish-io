@@ -22,7 +22,7 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 * @return
 	 * 		The DurationPowerUp used for testing.
 	 */
-	public abstract DurationPowerUp getDurationPowerUp();
+	public abstract PowerUpDuration getDurationPowerUp();
 	
 	@Override
 	public PowerUp getPowerUp() {
@@ -31,7 +31,7 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	
 	@Override
 	public void testExecuteEffect() {
-		DurationPowerUp pu = getDurationPowerUp();
+		PowerUpDuration pu = getDurationPowerUp();
 		
 		assertFalse(pu.isActive());
 		
@@ -77,7 +77,7 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 */
 	@Test
 	public void testPreTickNotActive() {
-		DurationPowerUp pu = getDurationPowerUp();
+		PowerUpDuration pu = getDurationPowerUp();
 		
 		pu.preTick();
 		
@@ -90,7 +90,7 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 */
 	@Test
 	public void testPreTickActiveOnPoint() {
-		DurationPowerUp pu = getDurationPowerUp();
+		PowerUpDuration pu = getDurationPowerUp();
 		
 		pu.setActive(true);
 		pu.setTickCounter(1);
@@ -106,7 +106,7 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 */
 	@Test
 	public void testPreTickActiveOffPoint() {
-		DurationPowerUp pu = getDurationPowerUp();
+		PowerUpDuration pu = getDurationPowerUp();
 		
 		pu.setActive(true);
 		
@@ -120,7 +120,7 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 */
 	@Test
 	public void testPostTickNotActive() {
-		DurationPowerUp pu = getDurationPowerUp();
+		PowerUpDuration pu = getDurationPowerUp();
 		
 		pu.postTick();
 		
@@ -135,7 +135,7 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 */
 	@Test
 	public void testPostTickActiveOnPoint() {
-		DurationPowerUp pu = getDurationPowerUp();
+		PowerUpDuration pu = getDurationPowerUp();
 		
 		pu.setActive(true);
 		pu.setTickCounter(pu.getTimeTicks() - 1); // The on-point
@@ -157,7 +157,7 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 */
 	@Test
 	public void testPostTickActiveOffPoint() {
-		DurationPowerUp pu = getDurationPowerUp();
+		PowerUpDuration pu = getDurationPowerUp();
 		
 		pu.setActive(true);
 		pu.setTickCounter(pu.getTimeTicks() - 2); // The off-point
@@ -178,7 +178,7 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 */
 	@Test
 	public void testGetTarget() {
-		DurationPowerUp pu = getDurationPowerUp();
+		PowerUpDuration pu = getDurationPowerUp();
 		
 		PlayerFish pf = Mockito.mock(PlayerFish.class);
 		
@@ -192,7 +192,7 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 */
 	@Test
 	public void testGetSetTarget() {
-		DurationPowerUp pu = getDurationPowerUp();
+		PowerUpDuration pu = getDurationPowerUp();
 		
 		PlayerFish pf = Mockito.mock(PlayerFish.class);
 		
