@@ -9,11 +9,13 @@ import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.settings.Settings;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -32,9 +34,17 @@ public class HelpScreenController implements ScreenController {
 	
 	@FXML
 	private Canvas keyboard;
+	@FXML
+	private ScrollPane scrollPane;
 	
 	@Override
-	public void init(Scene scene) { }
+	public void init(Scene scene) { 
+		SimpleDoubleProperty p = settings.getDoubleProperty("SCREEN_HEIGHT");
+		p.addListener((o, old, newVal) -> {
+			scrollPane.setMaxHeight(newVal.intValue() - 200);
+		});
+		scrollPane.setMaxHeight(p.intValue() - 200);
+	}
 
 	/**
 	 * Shows the connection between a key and its function.
