@@ -23,7 +23,7 @@ import com.github.fishio.game.GameThread;
  */
 public class TestPuSuperSpeed extends TestDurationPowerUp {
 
-	private PuSuperSpeed pu;
+	private SuperSpeedPowerUp pu;
 	private PlayingField pf;
 	
 	private static final double DELTA = 0.0000001D;
@@ -37,7 +37,7 @@ public class TestPuSuperSpeed extends TestDurationPowerUp {
 		this.pf = Mockito.mock(SinglePlayerPlayingField.class);
 		GameThread gt = Mockito.spy(new GameThread(pf));
 		when(pf.getGameThread()).thenReturn(gt);
-		this.pu = Mockito.spy(new PuSuperSpeed(null, pf, Mockito.mock(Image.class)));
+		this.pu = Mockito.spy(new SuperSpeedPowerUp(null, pf, Mockito.mock(Image.class)));
 		
 		//To prevent NullPointerExceptions, mocking the target of the PowerUp.
 		PlayerFish fish = Mockito.mock(PlayerFish.class);
@@ -49,7 +49,7 @@ public class TestPuSuperSpeed extends TestDurationPowerUp {
 	}
 	
 	@Override
-	public DurationPowerUp getDurationPowerUp() {
+	public PowerUpDuration getDurationPowerUp() {
 		return pu;
 	}
 
@@ -68,9 +68,9 @@ public class TestPuSuperSpeed extends TestDurationPowerUp {
 		
 		pu.startEffect();
 		
-		assertEquals(oldAcceleration *  PuSuperSpeed.ACCELERATION_FACTOR, 
+		assertEquals(oldAcceleration *  SuperSpeedPowerUp.ACCELERATION_FACTOR, 
 				klb.getAcceleration(), DELTA);
-		assertEquals(oldMaxSpeed * PuSuperSpeed.MAX_SPEED_FACTOR, 
+		assertEquals(oldMaxSpeed * SuperSpeedPowerUp.MAX_SPEED_FACTOR, 
 				klb.getMaxSpeed(), DELTA);
 	}
 

@@ -36,15 +36,15 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 	/**
 	 * Creates the Player fish which the user will be able to control.
 	 * 
-	 * @param collisionArea
-	 *            The (initial) collision area of the PlayerFish
+	 * @param collisionMask
+	 *            The (initial) collision mask of the PlayerFish
 	 * @param scene
 	 *            The scene in which the player fish is located at
 	 * @param sprite
 	 *            The sprite of the player fish
 	 */
-	public PlayerFish(ICollisionArea collisionArea, Scene scene, Image sprite) {
-		super(collisionArea);
+	public PlayerFish(CollisionMask collisionMask, Scene scene, Image sprite) {
+		super(collisionMask);
 		
 		this.sprite = sprite;
 
@@ -65,13 +65,13 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 	 * This constructor should only be used by the
 	 * {@link com.github.fishio.multiplayer.server.FishIOServer FishIOServer}.
 	 * 
-	 * @param collisionArea
+	 * @param collisionMask
 	 * 		the collision area to use
 	 * @param sprite
 	 * 		the sprite to use for the player fish.
 	 */
-	public PlayerFish(ICollisionArea collisionArea, Image sprite) {
-		super(collisionArea);
+	public PlayerFish(CollisionMask collisionMask, Image sprite) {
+		super(collisionMask);
 		
 		this.sprite = sprite;
 		
