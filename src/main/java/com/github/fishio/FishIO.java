@@ -9,6 +9,7 @@ import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.logging.TimeStampFormat;
 import com.github.fishio.logging.TxtFileHandler;
+import com.github.fishio.multiplayer.server.FishIOServer;
 import com.github.fishio.settings.Settings;
 
 import javafx.application.Application;
@@ -93,6 +94,9 @@ public class FishIO extends Application {
 	public void closeApplication() {
 		log.log(LogLevel.INFO, "Game shutting Down.");
 		settings.save();
+		
+		//Stop the server
+		FishIOServer.getInstance().stop();
 		
 		//Shutdown AudioEngine
 		AudioEngine.getInstance().shutdown();
