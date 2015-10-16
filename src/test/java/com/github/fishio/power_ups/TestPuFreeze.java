@@ -27,7 +27,7 @@ import com.github.fishio.game.GameThread;
  */
 public class TestPuFreeze extends TestDurationPowerUp {
 
-	private PuFreeze pu;
+	private FreezePowerUp pu;
 	private PlayingField pf;
 	
 	/**
@@ -39,14 +39,14 @@ public class TestPuFreeze extends TestDurationPowerUp {
 		this.pf = Mockito.mock(SinglePlayerPlayingField.class);
 		GameThread gt = Mockito.spy(new GameThread(pf));
 		when(pf.getGameThread()).thenReturn(gt);
-		this.pu = Mockito.spy(new PuFreeze(null, pf, Mockito.mock(Image.class)));
+		this.pu = Mockito.spy(new FreezePowerUp(null, pf, Mockito.mock(Image.class)));
 		
 		//To prevent nullPointerException, mock the target of the PowerUp.
 		this.pu.setTarget(Mockito.mock(PlayerFish.class));
 	}
 	
 	@Override
-	public DurationPowerUp getDurationPowerUp() {
+	public PowerUpDuration getDurationPowerUp() {
 		return pu;
 	}
 
@@ -61,7 +61,7 @@ public class TestPuFreeze extends TestDurationPowerUp {
 		List<Entity> entities = new ArrayList<Entity>();
 		entities.add(Mockito.mock(EnemyFish.class));
 		entities.add(Mockito.mock(PlayerFish.class));
-		entities.add(Mockito.mock(PuFreeze.class));
+		entities.add(Mockito.mock(FreezePowerUp.class));
 		entities.add(Mockito.mock(EnemyFish.class));
 		
 		//Making the PlayingField return our own entities.
@@ -90,7 +90,7 @@ public class TestPuFreeze extends TestDurationPowerUp {
 		List<Entity> entities = new ArrayList<Entity>();
 		entities.add(Mockito.mock(EnemyFish.class));
 		entities.add(Mockito.mock(PlayerFish.class));
-		entities.add(Mockito.mock(PuFreeze.class));
+		entities.add(Mockito.mock(FreezePowerUp.class));
 		entities.add(Mockito.mock(EnemyFish.class));
 		
 		//Making the PlayingField return our own entities.

@@ -10,6 +10,7 @@ import com.github.fishio.logging.LogLevel;
 import com.github.fishio.logging.TimeStampFormat;
 import com.github.fishio.logging.TxtFileHandler;
 import com.github.fishio.multiplayer.client.FishIOClient;
+import com.github.fishio.multiplayer.server.FishIOServer;
 import com.github.fishio.settings.Settings;
 
 import javafx.application.Application;
@@ -96,6 +97,9 @@ public class FishIO extends Application {
 		
 		//Disconnect the client
 		FishIOClient.getInstance().disconnect();
+		
+		//Stop the server
+		FishIOServer.getInstance().stop();
 		
 		//Save the settings
 		settings.save();

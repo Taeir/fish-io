@@ -234,11 +234,17 @@ public class CollisionMask implements ICollisionArea, Serializable {
 	}
 
 	/**
-	 * @see <a
-	 *      href="http://forum.codecall.net/topic/65950-pixel-perfect-collision-detection-use-for-your-java-games/">
+	 * Performs a few checks to find out whether the CollisionMask has any
+	 * overlap with an ICollisionArea object.
+	 * 
+	 * @param other
+	 *            the ICollisionArea to check with.
+	 * @return true if this bounding box collides with the given ICollisionArea,
+	 *         false if not.
+	 * @see <a href=
+	 *      "http://forum.codecall.net/topic/65950-pixel-perfect-collision-detection-use-for-your-java-games/">
 	 *      pixel-perfect sprite collision</a>
 	 */
-	@Override
 	public boolean intersects(ICollisionArea other) {
 		// check normal bounding
 		if (boxIntersects(other)) { // use normal

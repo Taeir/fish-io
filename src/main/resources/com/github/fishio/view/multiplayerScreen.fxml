@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="1280.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.github.fishio.control.MultiplayerScreenController">
+  <children>
+    <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+      <children>
+        <ImageView fitHeight="150.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true">
+          <VBox.margin>
+            <Insets top="50.0" />
+          </VBox.margin>
+          <image>
+            <Image url="logo.png" />
+          </image>
+        </ImageView>
+        <Label prefHeight="54.0" prefWidth="462.0" text="Multiplayer set up menu">
+          <font>
+            <Font name="System Bold" size="40.0" />
+          </font>
+        </Label>
+        <VBox alignment="CENTER" prefHeight="276.0" prefWidth="1280.0">
+          <children>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+              <children>
+                <Label prefWidth="223.0" text="Join existing multiplayer game" />
+                <TextField fx:id="joinIP" prefWidth="200.0"  promptText="Fill in IP address"/>
+                <Button fx:id="joinGame" contentDisplay="TOP" minWidth="-Infinity" mnemonicParsing="false" prefWidth="100" text="Join Game" onAction="#joinGame"/>
+              </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+              <children>
+                <Label prefWidth="223.0" text="Create new multiplayer game" />
+                <TextField fx:id="createGamePort" prefWidth="200.0"  promptText="Fill in port"/>
+                <Button fx:id="hostGame" mnemonicParsing="false" text="Host Game" onAction="#hostGame" prefWidth="100"/>
+              </children>
+            </HBox>
+          </children>
+        </VBox>
+      </children>
+    </VBox>
+    <Button fx:id="btnBackToMenu" mnemonicParsing="false" onAction="#backToMenu" text="Back to menu" StackPane.alignment="BOTTOM_CENTER">
+      <StackPane.margin>
+        <Insets bottom="40.0" />
+      </StackPane.margin>
+    </Button>
+  </children>
+</StackPane>

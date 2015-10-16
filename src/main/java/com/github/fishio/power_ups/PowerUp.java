@@ -1,11 +1,8 @@
 package com.github.fishio.power_ups;
 
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-
+import com.github.fishio.CollisionMask;
 import com.github.fishio.Entity;
 import com.github.fishio.ICollidable;
-import com.github.fishio.ICollisionArea;
 import com.github.fishio.IEatable;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
@@ -13,6 +10,9 @@ import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.behaviours.VerticalBehaviour;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
+
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
 /**
  * A PowerUp is an entity that, when colliding with a player fish,
@@ -34,13 +34,13 @@ public abstract class PowerUp extends Entity implements IEatable {
 	 * Creates a new PowerUp.
 	 * 
 	 * @param ba
-	 * 		The CollisionArea of the Power-Up
+	 *            The CollisionMask of the Power-Up
 	 * @param pfield
-	 * 		The PlayingField this PowerUp is located in
+	 *            The PlayingField this PowerUp is located in
 	 * @param image
-	 * 		The sprite of this PowerUp
+	 *            The sprite of this PowerUp
 	 */
-	public PowerUp(ICollisionArea ba, PlayingField pfield, Image image) {
+	public PowerUp(CollisionMask ba, PlayingField pfield, Image image) {
 		super(ba);
 		
 		this.playingField = pfield;
