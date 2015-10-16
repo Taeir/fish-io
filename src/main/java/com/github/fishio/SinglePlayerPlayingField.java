@@ -33,7 +33,7 @@ public class SinglePlayerPlayingField extends PlayingField {
 	 *            the canvas to use, can be <code>null</code> to create one.
 	 */
 	public SinglePlayerPlayingField(int fps, Canvas canvas, Scene scene) {
-		super(fps, canvas);
+		super(fps, canvas, 50);
 		
 		this.scene = scene;
 		

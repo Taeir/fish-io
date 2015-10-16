@@ -388,7 +388,6 @@ public final class Preloader {
 				}
 			}
 		}
-		
 		showScreen(scene, length);
 		return scene;
 	}
@@ -427,10 +426,9 @@ public final class Preloader {
 	 * 		the length of the FadeTransition for this screen.
 	 */
 	private static void showScreen(Scene scene, int length) {
+		switchAway();
 		ScreenController controller = getController(scene);
 		controller.onSwitchTo();
-		
-		//DoubleProperty opacity = scene.getRoot().opacityProperty();
 		
 		if (length > 0) {
 			scene.getRoot().setOpacity(0);
@@ -493,5 +491,15 @@ public final class Preloader {
 		}
 		
 		return (T) scene.getProperties().get("Controller");
+	}
+
+	/**
+	 * Switch away from the current screen.
+	 */
+	public static void switchAway() {
+		Scene current = FishIO.getInstance().getPrimaryStage().getScene();
+		if (current != null) {
+			getController(current).onSwitchAway();
+		}		
 	}
 }

@@ -3,28 +3,35 @@ package com.github.fishio.gui;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import com.github.fishio.FishIO;
 import com.github.fishio.IDrawable;
 import com.github.fishio.PlayingField;
 import com.github.fishio.listeners.Listenable;
 import com.github.fishio.listeners.TickListener;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
-
+import com.github.fishio.settings.Settings;
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
  * Class that renders a game.
  */
 public class Renderer implements Listenable {
-	public static final int WINDOW_X = 1280;
-	public static final int WINDOW_Y = 670;
+	private Settings settings = Settings.getInstance();
+	private SimpleDoubleProperty width = new SimpleDoubleProperty();
+	private SimpleDoubleProperty height = new SimpleDoubleProperty();
 	
 	private ConcurrentLinkedQueue<TickListener> listeners = new ConcurrentLinkedQueue<>();
 	private Canvas canvas;
@@ -32,6 +39,7 @@ public class Renderer implements Listenable {
 	private SimpleIntegerProperty fps = new SimpleIntegerProperty();
 	private PlayingField playingField;
 	private Image background;
+	private int yBorder;
 	
 	/**
 	 * Create a new Renderer for the given PlayingField.
@@ -42,14 +50,21 @@ public class Renderer implements Listenable {
 	 * 		the canvas to render on.
 	 * @param fps
 	 * 		the framerate in frames per second.
+	 * @param yBorder
+	 * 		the vertical border to be applied.
 	 */
-	public Renderer(PlayingField playingField, Canvas canvas, int fps) {
+	public Renderer(PlayingField playingField, Canvas canvas, int fps, int yBorder) {
 		if (canvas == null) {
-			this.canvas = new Canvas(WINDOW_X, WINDOW_Y);
+			this.canvas = new Canvas(640, 430);
 		} else {
 			this.canvas = canvas;
 		}
+		width.set(canvas.getWidth());
+		height.set(canvas.getHeight());
+		canvas.widthProperty().bind(width);
+		canvas.heightProperty().bind(height);
 		
+		this.yBorder = yBorder;
 		this.fps.set(fps);
 		this.playingField = playingField;
 		this.renderThread = newRenderThread(fps);
@@ -118,11 +133,11 @@ public class Renderer implements Listenable {
 		}
 
 		//Clear screen
-		gc.clearRect(0, 0, WINDOW_X, WINDOW_Y);
+		gc.clearRect(0, 0, width.doubleValue(), height.doubleValue());
 
 		//draw background image
 		if (background != null) {
-			gc.drawImage(background, 0, 0);
+			gc.drawImage(background, 0, 0, width.doubleValue(), height.doubleValue());
 		}
 
 		//Render all drawables, in reverse order
@@ -215,6 +230,27 @@ public class Renderer implements Listenable {
 	 * The game itself will be unaffected by this call.
 	 */
 	public void startRendering() {
+		FishIO instance = FishIO.getInstance();
+		double h = 0;
+		if (instance != null) { 
+			Stage primaryStage = instance.getPrimaryStage();
+			Scene scene = primaryStage.getScene();
+			 h = Bindings.createObjectBinding(() -> 
+		        new Insets(scene.getY(), 
+		                primaryStage.getWidth() - scene.getWidth() - scene.getX(), 
+		                primaryStage.getHeight() - scene.getHeight() - scene.getY(), 
+		                scene.getX()),
+		                scene.xProperty(),
+		                scene.yProperty(),
+		                scene.widthProperty(),
+		                scene.heightProperty(),
+		                primaryStage.widthProperty(),
+		                primaryStage.heightProperty()
+		            ).get().getTop();
+			}
+		width.bind(settings.getDoubleProperty("SCREEN_WIDTH"));
+		height.bind(settings.getDoubleProperty("SCREEN_HEIGHT").subtract(h + yBorder)); 
+		
 		renderThread.play();
 		Log.getLogger().log(LogLevel.TRACE, "[Renderer] Starting Renderer...");
 	}

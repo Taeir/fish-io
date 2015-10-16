@@ -10,29 +10,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.fishio.control.AchievementScreenController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="480.0" minWidth="640.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.fishio.control.AchievementScreenController">
   <children>
-      <GridPane prefHeight="564.0" prefWidth="971.0">
-         <columnConstraints>
-            <ColumnConstraints hgrow="ALWAYS" minWidth="720" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints maxHeight="-Infinity" minHeight="3.0" prefHeight="120.0" vgrow="ALWAYS" />
-            <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
-            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="50.0" vgrow="ALWAYS" />
-         </rowConstraints>
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" StackPane.alignment="TOP_CENTER">
          <children>
-          <VBox alignment="CENTER" spacing="10.0">
-            <children>
-              <Label fx:id="achievementTitle" prefHeight="54.0" prefWidth="219.0" text="Achievements" textAlignment="CENTER">
-                     <font>
-                        <Font size="35.0" />
-                     </font>
-                  </Label>
-              <Button fx:id="btnBackToMenu" mnemonicParsing="false" onAction="#backToMenu" text="Back to menu" />
-            </children>
-          </VBox>
-            <ScrollPane prefHeight="300" prefWidth="720.0" vbarPolicy="ALWAYS" GridPane.rowIndex="1">
+        <Label fx:id="achievementTitle" alignment="TOP_CENTER" text="Achievements" textAlignment="CENTER">
+               <font>
+                  <Font size="35.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="25.0" />
+               </VBox.margin>
+            </Label>
+            <ScrollPane fx:id="scrollPane" maxHeight="350.0" vbarPolicy="ALWAYS">
                <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
@@ -1403,6 +1393,11 @@
                </content>
             </ScrollPane>
          </children>
-      </GridPane>
+      </VBox>
+  <Button fx:id="btnBackToMenu" mnemonicParsing="false" onAction="#backToMenu" text="Back to menu" StackPane.alignment="BOTTOM_CENTER">
+         <StackPane.margin>
+            <Insets bottom="20.0" />
+         </StackPane.margin>
+      </Button>
   </children>
 </StackPane>

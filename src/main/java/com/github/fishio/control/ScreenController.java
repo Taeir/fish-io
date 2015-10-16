@@ -19,4 +19,9 @@ public interface ScreenController {
 	 * Called right before the screen is switched to.
 	 */
 	void onSwitchTo();
+	
+	/**
+	 * Called when the game switches away from this screen.
+	 */
+	default void onSwitchAway() { };
 }
