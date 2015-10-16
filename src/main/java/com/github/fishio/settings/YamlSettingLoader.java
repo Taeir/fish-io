@@ -18,6 +18,7 @@ import javafx.scene.input.KeyCode;
  * Class implementing the settingLoader interface.
  * This class reads the settings from settings.yml.
  */
+@SuppressWarnings("unchecked")
 public class YamlSettingLoader implements ISettingLoader {
 	
 	private HashMap<String, SimpleDoubleProperty> doubleSettings;
@@ -87,7 +88,6 @@ public class YamlSettingLoader implements ISettingLoader {
 	 * 		when something goes wrong when reading the file.
 	 */
 	private void loadDoubleSettings(YamlReader reader) throws IOException {
-		@SuppressWarnings("unchecked")
 		HashMap<String, String> map = (HashMap<String, String>) reader.read();
 	    for (String key : map.keySet()) {
 	    	double value = Double.valueOf(map.get(key));
@@ -103,7 +103,6 @@ public class YamlSettingLoader implements ISettingLoader {
 	 * 		when something goes wrong when reading the file.
 	 */
 	private void loadIntegerSettings(YamlReader reader) throws IOException {
-		@SuppressWarnings("unchecked")
 		HashMap<String, String> map = (HashMap<String, String>) reader.read();
 	    for (String key : map.keySet()) {
 	    	int value = Integer.valueOf(map.get(key));
@@ -119,7 +118,6 @@ public class YamlSettingLoader implements ISettingLoader {
 	 * 		when something goes wrong when reading the file.
 	 */
 	private void loadBooleanSettings(YamlReader reader) throws IOException {
-		@SuppressWarnings("unchecked")
 		HashMap<String, String> map = (HashMap<String, String>) reader.read();
 	    for (String key : map.keySet()) {
 	    	boolean value = Boolean.valueOf(map.get(key));
@@ -135,7 +133,6 @@ public class YamlSettingLoader implements ISettingLoader {
 	 * 		when something goes wrong when reading the file.
 	 */
 	private void loadKeyCodeSettings(YamlReader reader) throws IOException {
-		@SuppressWarnings("unchecked")
 		HashMap<String, String> map = (HashMap<String, String>) reader.read();
 	    for (String key : map.keySet()) {
 	    	KeyCode value = KeyCode.getKeyCode(map.get(key));
@@ -151,7 +148,6 @@ public class YamlSettingLoader implements ISettingLoader {
 	 * 		when something goes wrong when reading the file.
 	 */
 	private void loadSliderSettings(YamlReader reader) throws IOException {	    
-		@SuppressWarnings("unchecked")
 		HashMap<String, String> map = (HashMap<String, String>) reader.read();
 	    for (String key : map.keySet()) {
 	    	double value = Double.valueOf(map.get(key));
@@ -185,7 +181,6 @@ public class YamlSettingLoader implements ISettingLoader {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public HashMap<String, String> getDescriptions() {
 		try (FileReader fr = new FileReader("settingDescriptions.txt")) {
 			return (HashMap<String, String>) (new YamlReader(fr)).read();

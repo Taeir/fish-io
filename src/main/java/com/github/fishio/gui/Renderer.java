@@ -59,10 +59,11 @@ public class Renderer implements Listenable {
 		} else {
 			this.canvas = canvas;
 		}
-		width.set(canvas.getWidth());
-		height.set(canvas.getHeight());
-		canvas.widthProperty().bind(width);
-		canvas.heightProperty().bind(height);
+		
+		this.width.set(this.canvas.getWidth());
+		this.height.set(this.canvas.getHeight());
+		this.canvas.widthProperty().bind(this.width);
+		this.canvas.heightProperty().bind(this.height);
 		
 		this.yBorder = yBorder;
 		this.fps.set(fps);
