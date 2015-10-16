@@ -24,8 +24,7 @@ public abstract class MultiplayerPlayingField extends PlayingField {
 	 * 		the canvas to render on.
 	 */
 	public MultiplayerPlayingField(int fps, Canvas canvas) {
-		super(fps, canvas);
-		
+		super(fps, canvas, 50);
 	}
 
 	@Override
