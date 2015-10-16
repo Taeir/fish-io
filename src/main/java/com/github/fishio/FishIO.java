@@ -10,6 +10,7 @@ import com.github.fishio.logging.LogLevel;
 import com.github.fishio.logging.TimeStampFormat;
 import com.github.fishio.logging.TxtFileHandler;
 import com.github.fishio.multiplayer.client.FishIOClient;
+import com.github.fishio.multiplayer.server.FishIOServer;
 import com.github.fishio.settings.Settings;
 
 import javafx.application.Application;
@@ -50,6 +51,8 @@ public class FishIO extends Application {
 		primaryStage.setTitle("Fish.io");
 		primaryStage.setWidth(settings.getDouble("SCREEN_WIDTH"));
 		primaryStage.setHeight(settings.getDouble("SCREEN_HEIGHT"));
+		primaryStage.setMinHeight(480);
+		primaryStage.setMinWidth(640);
 		
 		log.log(LogLevel.DEBUG, "Primary stage set.");
 		//Load and show the splash screen.
@@ -96,18 +99,23 @@ public class FishIO extends Application {
 		
 		//Disconnect the client
 		FishIOClient.getInstance().disconnect();
+				
+		//Stop the server
+		FishIOServer.getInstance().stop();
+		
+		//Shutdown AudioEngine
+		AudioEngine.getInstance().shutdown();
 		
 		//Save the settings
 		settings.save();
 		
-		//Shutdown AudioEngine
-		AudioEngine.getInstance().shutdown();
 		try {
 			textFileHandler.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
+		Preloader.switchAway();
 		this.primaryStage.close();
 	}
 

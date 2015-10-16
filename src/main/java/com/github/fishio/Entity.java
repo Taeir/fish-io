@@ -30,7 +30,7 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	private static AtomicInteger entityIdCounter = new AtomicInteger(0);
 	private List<AchievementObserver> observers = new ArrayList<AchievementObserver>();
 	
-	private ICollisionArea boundingArea;
+	private CollisionMask boundingArea;
 	private boolean isDead;
 	
 	private int entityId;
@@ -41,7 +41,7 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	 * @param boundingArea
 	 *            the bounding area of this Entity
 	 */
-	public Entity(ICollisionArea boundingArea) {
+	public Entity(CollisionMask boundingArea) {
 		this.boundingArea = boundingArea;
 		this.entityId = getFreeEntityId();
 	}
@@ -56,7 +56,7 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	 * @param entityId
 	 * 		the entityId to use.
 	 */
-	protected Entity(ICollisionArea boundingArea, int entityId) {
+	protected Entity(CollisionMask boundingArea, int entityId) {
 		this.boundingArea = boundingArea;
 		this.entityId = entityId;
 	}
@@ -108,26 +108,25 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	}
 	
 	/**
-	 * @return
-	 * 		The behaviour of this entity.
+	 * @return The behavior of this entity.
 	 */
 	public abstract IMoveBehaviour getBehaviour();
 	
 	/**
-	 * Changes the behaviour of this entity.
+	 * Changes the behavior of this entity.
 	 * 
 	 * @param behaviour
-	 * 		The behaviour this entity should adopt
+	 *            The behavior this entity should adopt
 	 */
 	public abstract void setBehaviour(IMoveBehaviour behaviour);
 	
 	@Override
-	public ICollisionArea getBoundingArea() {
+	public CollisionMask getBoundingArea() {
 		return boundingArea;
 	}
 	
 	@Override
-	public void setBoundingArea(ICollisionArea area) {
+	public void setBoundingArea(CollisionMask area) {
 		this.boundingArea = area;
 	}
 	
@@ -196,6 +195,6 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		this.entityId = in.readInt();
 		this.isDead = in.readBoolean();
-		this.boundingArea = (ICollisionArea) in.readObject();
+		this.boundingArea = (CollisionMask) in.readObject();
 	}
 }

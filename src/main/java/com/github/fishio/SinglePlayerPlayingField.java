@@ -33,7 +33,7 @@ public class SinglePlayerPlayingField extends PlayingField {
 	 *            the canvas to use, can be <code>null</code> to create one.
 	 */
 	public SinglePlayerPlayingField(int fps, Canvas canvas, Scene scene) {
-		super(fps, canvas);
+		super(fps, canvas, 50);
 		
 		this.scene = scene;
 		
@@ -69,7 +69,7 @@ public class SinglePlayerPlayingField extends PlayingField {
 	 * Creates and adds the player fish.
 	 */
 	protected final void addPlayerFish() {
-		setPlayer(new PlayerFish(getStartCollisionArea(), scene,
+		setPlayer(new PlayerFish(getStartCollisionMask(), scene,
 				Preloader.getImageOrLoad("sprites/fish/playerFish.png")));
 
 		add(getPlayer());
@@ -81,10 +81,9 @@ public class SinglePlayerPlayingField extends PlayingField {
 	}
 	
 	/**
-	 * @return
-	 * 		the starting collision area of a playerfish.
+	 * @return the starting collision mask of a playerfish.
 	 */
-	public ICollisionArea getStartCollisionArea() {
+	public CollisionMask getStartCollisionMask() {
 		return new CollisionMask(new Vec2d(START_X, START_Y), 60, 30, 
 				Preloader.getAlphaDataOrLoad("sprites/fish/playerFish.png"),
 				Preloader.getSpriteAlphaRatioOrLoad("sprites/fish/playerFish.png"));
