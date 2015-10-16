@@ -5,7 +5,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import com.github.fishio.audio.AudioEngine;
-import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.behaviours.RandomBehaviour;
 import com.github.fishio.logging.LogLevel;
 
@@ -21,8 +20,6 @@ public class EnemyFish extends Entity implements IEatable {
 
 	private String spriteLocation;
 	private Image sprite;
-
-	private IMoveBehaviour behaviour;
 	
 	/**
 	 * Main constructor of the enemy fish.
@@ -37,14 +34,13 @@ public class EnemyFish extends Entity implements IEatable {
 	 *            Starting speed of the enemy fish object in the y direction.
 	 */
 	public EnemyFish(CollisionMask ca, String spriteLocation, double startvx, double startvy) {
-		super(ca);
+		super(ca, new RandomBehaviour(startvx, startvy, 
+				settings.getDouble("DIRECTION_CHANGE_CHANCE")));
 		
 		this.spriteLocation = spriteLocation;
 		if (this.spriteLocation != null) {
 			this.sprite = Preloader.getImageOrLoad(this.spriteLocation);
 		}
-		
-		this.behaviour = new RandomBehaviour(startvx, startvy, settings.getDouble("DIRECTION_CHANGE_CHANCE"));
 		
 		logger.log(LogLevel.TRACE, "Created Enemfish: Properties{[position = " + ca.getCenterX() 
 				+ ", " + ca.getCenterY() + "],[height = " + ca.getHeight() + "],[width = "
@@ -59,7 +55,7 @@ public class EnemyFish extends Entity implements IEatable {
 		}
 		
 		//TODO Move this to game thread.
-		getBoundingArea().setRotation(behaviour);	//update rotation
+		getBoundingArea().setRotation(getBehaviour());	//update rotation
 		
 		//Only render if we have a sprite.
 		if (sprite != null) {
@@ -102,28 +98,16 @@ public class EnemyFish extends Entity implements IEatable {
 	}
 
 	@Override
-	public IMoveBehaviour getBehaviour() {
-		return behaviour;
-	}
-
-	@Override
-	public void setBehaviour(IMoveBehaviour behaviour) {
-		this.behaviour = behaviour;
-	}
-
-	@Override
 	public boolean canMoveThroughWall() {
 		return true;
 	}
 
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		out.writeUTF(this.spriteLocation);
-		out.writeObject(this.behaviour);
 	}
 	
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		this.spriteLocation = in.readUTF();
-		this.behaviour = (IMoveBehaviour) in.readObject();
 		
 		//Load the sprite
 		this.sprite = Preloader.getImageOrLoad(this.spriteLocation);
