@@ -2,16 +2,22 @@ package com.github.fishio.control;
 
 import com.github.fishio.Preloader;
 import com.github.fishio.achievements.AchievementManager;
+import com.github.fishio.settings.Settings;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.image.ImageView;
 
 /**
  * Achievement screen controller.
  */
 public class AchievementScreenController implements ScreenController {
+	@FXML 
+	private ScrollPane scrollPane;
 	@FXML
 	private Button btnBackToMenu;
 	@FXML
@@ -64,6 +70,14 @@ public class AchievementScreenController implements ScreenController {
 		addDeathListener();
 		
 		addKillListener();
+		
+		 
+		SimpleDoubleProperty p = Settings.getInstance().getDoubleProperty("SCREEN_HEIGHT");
+		p.addListener((o, old, newVal) -> {
+			scrollPane.setMaxHeight(newVal.intValue() - 200);
+		});
+		scrollPane.setMaxHeight(p.intValue() - 200); 
+	
 	}
 
 	/**

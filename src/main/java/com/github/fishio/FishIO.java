@@ -49,6 +49,8 @@ public class FishIO extends Application {
 		primaryStage.setTitle("Fish.io");
 		primaryStage.setWidth(settings.getDouble("SCREEN_WIDTH"));
 		primaryStage.setHeight(settings.getDouble("SCREEN_HEIGHT"));
+		primaryStage.setMinHeight(480);
+		primaryStage.setMinWidth(640);
 		
 		log.log(LogLevel.DEBUG, "Primary stage set.");
 		//Load and show the splash screen.
@@ -102,6 +104,7 @@ public class FishIO extends Application {
 			e.printStackTrace();
 		}
 		
+		Preloader.switchAway();
 		this.primaryStage.close();
 	}
 
