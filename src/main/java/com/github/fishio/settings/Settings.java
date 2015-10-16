@@ -324,7 +324,7 @@ public final class Settings {
 	 */
 	public static HashMap<String, SimpleIntegerProperty> getDefaultIntegerSettings() {
 		HashMap<String, SimpleIntegerProperty> map = new HashMap<String, SimpleIntegerProperty>();
-		 map.put("GROWTH_SPEED", new SimpleIntegerProperty(2));
+		 map.put("GROWTH_SPEED", new SimpleIntegerProperty(500));
 		 map.put("LOG_LEVEL", new SimpleIntegerProperty(2));
 		 map.put("START_LIVES", new SimpleIntegerProperty(3));
 		 map.put("MAX_LIVES", new SimpleIntegerProperty(5));
