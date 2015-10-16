@@ -3,6 +3,7 @@ package com.github.fishio.settings;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -21,22 +22,23 @@ import javafx.scene.input.KeyCode;
  * This class
  */
 public class SettingsTest {
-
-	private static Settings instance;
+	private static final String SETTINGS_FILE = "settings.yml";
 	private static final double DELTA = 10E-8;
+	
+	private static Settings instance;
 	
 	/**
 	 * Copy the settings file and load the default settings.
 	 */
 	@BeforeClass
 	public static void beforeClass() {
-		File file = new File("settings.yml");
+		File file = new File(SETTINGS_FILE);
 		if (file.exists()) {
 			file.renameTo(new File(".settings.yml.tmp"));
 		}
 		instance = Settings.getInstance();
 		
-		if (!new File("settings.yml").exists()) {
+		if (!new File(SETTINGS_FILE).exists()) {
 			instance.load();
 		}
 		
@@ -48,7 +50,7 @@ public class SettingsTest {
 	 */
 	@Before
 	public void before() {
-		new File("settings.yml").delete();
+		new File(SETTINGS_FILE).delete();
 		instance.load();
 	}
 	
@@ -57,7 +59,7 @@ public class SettingsTest {
 	 */
 	@AfterClass
 	public static void afterClass() {
-		File file = new File("settings.yml");
+		File file = new File(SETTINGS_FILE);
 		File temp = new File(".settings.yml.tmp");
 		file.delete();
 		temp.renameTo(file);
@@ -69,7 +71,7 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testGetInstance() {
-		assertTrue(instance == Settings.getInstance());
+		assertSame(instance, Settings.getInstance());
 	}
 	
 	/**

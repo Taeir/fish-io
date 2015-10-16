@@ -6,7 +6,6 @@ import java.io.ObjectOutputStream;
 
 import com.github.fishio.achievements.State;
 import com.github.fishio.achievements.Subject;
-import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.behaviours.KeyListenerBehaviour;
 
 import javafx.beans.property.SimpleIntegerProperty;
@@ -20,6 +19,8 @@ import javafx.scene.image.Image;
  */
 public class PlayerFish extends Entity implements IEatable, IPositional, Subject {
 	private static final long serialVersionUID = 4226766216723804140L;
+	
+	public static final String SPRITE_LOCATION = "sprites/fish/playerFish.png";
 
 	public static final double FISH_ACCELERATION = 0.1;
 	
@@ -293,6 +294,6 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 		this.invincible = in.readLong();
 		
 		//Load the sprite
-		this.sprite = Preloader.getImageOrLoad("sprites/fish/playerFish.png");
+		this.sprite = Preloader.getImageOrLoad(SPRITE_LOCATION);
 	}
 }

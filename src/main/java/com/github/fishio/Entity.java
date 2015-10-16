@@ -53,26 +53,7 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 		
 		this.behaviour = behaviour;
 	}
-	
-	/**
-	 * Protected constructor to create an entity using the given entityId.<br>
-	 * This is used by the multiplayer implementation to decorate
-	 * entities.
-	 * 
-	 * @param boundingArea
-	 * 		the bounding area of this Entity
-	 * @param entityId
-	 * 		the entityId to use.
-	 * @param behaviour
-	 * 		The behaviour of this entity.
-	 */
-	protected Entity(CollisionMask boundingArea, int entityId, IMoveBehaviour behaviour) {
-		this.boundingArea = boundingArea;
-		this.entityId = entityId;
-		
-		this.behaviour = behaviour;
-	}
-	
+
 	/**
 	 * @return
 	 * 		a free entity id.

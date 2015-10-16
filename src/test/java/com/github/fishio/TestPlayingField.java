@@ -10,19 +10,34 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.github.fishio.behaviours.VerticalBehaviour;
 import com.github.fishio.game.GameState;
-import com.github.fishio.gui.GuiTest;
 import com.github.fishio.gui.SlimGuiTest;
 
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 
 /**
- * Tests the PlayingField class.
+ * Abstract test class for the PlayingField class.
  */
-public class TestPlayingField extends SlimGuiTest {
+public abstract class TestPlayingField extends SlimGuiTest {
 
+	/**
+	 * @param fps
+	 * 		the fps of the playing field.
+	 * @param canvas
+	 * 		the canvas to use
+
+	 * @return
+	 * 		a new PlayingField.
+	 */
+	public abstract PlayingField getPlayingField(int fps, Canvas canvas);
+	
+	/**
+	 * @return
+	 * 		the amount of entities that is in the field by default.
+	 */
+	public abstract int getDefaultAmount();
+	
 	private PlayingField field;
 	private Canvas canvas;
 	
@@ -32,7 +47,7 @@ public class TestPlayingField extends SlimGuiTest {
 	@Before
 	public void setUp() {
 		this.canvas = Mockito.spy(new Canvas(1280, 670));
-		this.field = new SinglePlayerPlayingField(60, canvas, Mockito.mock(Scene.class));
+		this.field = getPlayingField(60, canvas);
 	}
 	
 	/**
@@ -79,15 +94,6 @@ public class TestPlayingField extends SlimGuiTest {
 	@Test
 	public void testGetHeight() {
 		assertEquals(670.0, field.getHeight(), 0.0D);
-	}
-	
-	/**
-	 * Tests the getEntities method.
-	 */
-	@Test
-	public void testGetEntities() {
-		assertEquals(1, field.getEntitiesList().size());
-		assertTrue(field.getEntitiesList().get(0) instanceof PlayerFish);
 	}
 	
 	/**
@@ -173,13 +179,14 @@ public class TestPlayingField extends SlimGuiTest {
 	 */
 	@Test
 	public void testAdd() {
+		int amount = field.getEntities().size();
 		Entity e = Mockito.mock(Entity.class);
 		
 		field.add(e);
 		
-		assertTrue(field.getEntitiesList().contains(e));
+		assertTrue(field.getEntities().contains(e));
 		assertTrue(field.getDrawables().contains(e));
-		assertEquals(2, field.getDrawables().size());
+		assertEquals(amount + 1, field.getDrawables().size());
 	}
 	
 	/**
@@ -187,6 +194,7 @@ public class TestPlayingField extends SlimGuiTest {
 	 */
 	@Test
 	public void testRemove() {
+		int amount = field.getEntities().size();
 		Entity e = Mockito.mock(Entity.class);
 		
 		field.add(e);
@@ -194,7 +202,7 @@ public class TestPlayingField extends SlimGuiTest {
 		
 		assertFalse(field.getEntitiesList().contains(e));
 		assertFalse(field.getDrawables().contains(e));
-		assertEquals(1, field.getEntitiesList().size());
+		assertEquals(amount, field.getEntitiesList().size());
 	}
 	
 	/**
@@ -209,8 +217,8 @@ public class TestPlayingField extends SlimGuiTest {
 		field.clear();
 		
 		// Everything is gone but the PlayerFish.
-		assertEquals(1, field.getEntitiesList().size());
-		assertEquals(1, field.getDrawables().size());
+		assertEquals(getDefaultAmount(), field.getEntities().size());
+		assertEquals(getDefaultAmount(), field.getDrawables().size());
 	}
 	
 	/**
@@ -225,8 +233,8 @@ public class TestPlayingField extends SlimGuiTest {
 		
 		field.clearEnemies();
 		
-		assertEquals(11, field.getEntitiesList().size());
-		assertEquals(11, field.getDrawables().size());
+		assertEquals(getDefaultAmount() + 10, field.getEntities().size());
+		assertEquals(getDefaultAmount() + 10, field.getDrawables().size());
 	}
 	
 	/**
@@ -234,26 +242,19 @@ public class TestPlayingField extends SlimGuiTest {
 	 */
 	@Test
 	public void testGetDrawables() {
+		int amount = field.getEntities().size();
 		IDrawable d = Mockito.mock(Entity.class);
 		field.add(d);
 		
 		assertTrue(field.getDrawables().contains(d));
-		assertEquals(2, field.getDrawables().size());
-	}
-	
-	/**
-	 * Tests the isPlayerAlive method using one living PlayerFish.
-	 */
-	@Test
-	public void testIsPlayerAlive1() {
-		assertTrue(field.isPlayerAlive());
+		assertEquals(amount + 1, field.getDrawables().size());
 	}
 	
 	/**
 	 * Tests the isPlayerAlive method using one dead PlayerFish.
 	 */
 	@Test
-	public void testIsPlayerAlive2() {
+	public void testIsPlayerAlive() {
 		//Replacing the current PlayerFish with our own mocked PlayerFish.
 		field.getPlayers().clear();
 		PlayerFish pf = Mockito.mock(PlayerFish.class);
@@ -261,37 +262,6 @@ public class TestPlayingField extends SlimGuiTest {
 		Mockito.when(pf.isDead()).thenReturn(true);
 		
 		assertFalse(field.isPlayerAlive());
-	}
-	
-	/**
-	 * Tests the checkPlayerCollisions method.
-	 */
-	@Test
-	public void testCheckPlayerCollisions1() {
-		Entity[] entities = new Entity[3];
-		for (int i = 0; i < 3; i++) {
-			entities[i] = Mockito.mock(Entity.class);
-			field.add(entities[i]);
-		}
-		
-		//Replacing the current PlayerFish with our own mocked PlayerFish.
-		field.getPlayers().clear();
-		PlayerFish pf = Mockito.mock(PlayerFish.class);
-		field.getPlayers().add(pf);
-		
-		Mockito.when(pf.doesCollides(entities[0])).thenReturn(true);
-		Mockito.when(pf.doesCollides(entities[1])).thenReturn(true);
-		Mockito.when(pf.doesCollides(entities[2])).thenReturn(false);
-		
-		field.checkPlayerCollisions();
-		
-		Mockito.verify(entities[0]).onCollide(pf);
-		Mockito.verify(entities[1]).onCollide(pf);
-		Mockito.verify(entities[2], Mockito.never()).onCollide(pf);
-		Mockito.verify(pf).onCollide(entities[0]);
-		Mockito.verify(pf).onCollide(entities[1]);
-		Mockito.verify(pf, Mockito.never()).onCollide(entities[2]);
-		Mockito.verify(entities[0], Mockito.never()).onCollide(entities[1]);
 	}
 	
 	/**
@@ -309,46 +279,16 @@ public class TestPlayingField extends SlimGuiTest {
 		
 		field.cleanupDead();
 		
-		assertEquals(2, field.getEntitiesList().size());
-		assertTrue(field.getEntitiesList().contains(e2));
-		assertFalse(field.getEntitiesList().contains(e1));
+		assertEquals(getDefaultAmount() + 1, field.getEntities().size());
+		assertTrue(field.getEntities().contains(e2));
+		assertFalse(field.getEntities().contains(e1));
 	}
-	
+
 	/**
-	 * Tests the addEntities method.
+	 * @return
+	 * 		the PlayingField created. Can be used by extending classes.
 	 */
-	@Test
-	public void testAddEntities() {
-		field.addEntities();
-		
-		assertEquals(PlayingField.MAX_ENEMY_COUNT + 1, field.getEntitiesList().size());
-		
-		for (int i = 5; i < 11; i++) {
-			field.getEntitiesList().get(i).kill();
-		}
-		field.cleanupDead();
-		
-		field.addEntities();
-		
-		assertEquals(PlayingField.MAX_ENEMY_COUNT + 1, field.getEntitiesList().size());
-	}
-	
-	/**
-	 * Tests the moveMovables method.
-	 */
-	@Test
-	public void testMoveMovables() {
-		CollisionMask ca = Mockito.mock(CollisionMask.class);
-		Entity e = new EnemyFish(ca, null, 0, 0);
-		VerticalBehaviour b = Mockito.spy(new VerticalBehaviour(3));
-		e.setBehaviour(b);
-		
-		field.add(e);
-		
-		field.moveMovables();
-		
-		Mockito.verify(b).preMove();
-		Mockito.verify(ca).move(new Vec2d(0, -3));
-		
+	protected PlayingField getField() {
+		return field;
 	}
 }

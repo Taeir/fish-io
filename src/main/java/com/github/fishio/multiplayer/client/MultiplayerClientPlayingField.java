@@ -127,9 +127,8 @@ public class MultiplayerClientPlayingField extends MultiplayerPlayingField {
 		current.getBoundingArea().updateTo(updated.getBoundingArea());
 		if (current.getBehaviour().getClass() == updated.getBehaviour().getClass()) {
 			current.getBehaviour().updateTo(updated.getBehaviour());
-		} else {
-			//TODO Swap behaviors
 		}
+		//TODO Allow swapping behaviors
 		
 		//TODO Additional updating for playerfish of other players?
 	}

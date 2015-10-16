@@ -80,11 +80,11 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 	 * 		a new PlayerFish without any keys registered.
 	 */
 	public PlayerFish createClientPlayer() {
-		Image sprite = Preloader.getImageOrLoad("sprites/fish/playerFish.png");
+		Image sprite = Preloader.getImageOrLoad(PlayerFish.SPRITE_LOCATION);
 		CollisionMask cm = new CollisionMask(
 				new Vec2d(SinglePlayerPlayingField.START_X, SinglePlayerPlayingField.START_Y), 60, 30, 
-				Preloader.getAlphaDataOrLoad("sprites/fish/playerFish.png"),
-				Preloader.getSpriteAlphaRatioOrLoad("sprites/fish/playerFish.png"));
+				Preloader.getAlphaDataOrLoad(PlayerFish.SPRITE_LOCATION),
+				Preloader.getSpriteAlphaRatioOrLoad(PlayerFish.SPRITE_LOCATION));
 		PlayerFish tbr = new PlayerFish(cm, sprite);
 		
 		//TODO #168 Make setting for this "spawn invincibility"
@@ -99,12 +99,13 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 	 * Respawn the player of the server.
 	 */
 	public void respawnOwnPlayer() {
-		Image sprite = Preloader.getImageOrLoad("sprites/fish/playerFish.png");
+		Image sprite = Preloader.getImageOrLoad(PlayerFish.SPRITE_LOCATION);
 		CollisionMask cm = new CollisionMask(
 				new Vec2d(SinglePlayerPlayingField.START_X, SinglePlayerPlayingField.START_Y), 60, 30, 
-				Preloader.getAlphaDataOrLoad("sprites/fish/playerFish.png"),
-				Preloader.getSpriteAlphaRatioOrLoad("sprites/fish/playerFish.png"));
+				Preloader.getAlphaDataOrLoad(PlayerFish.SPRITE_LOCATION),
+				Preloader.getSpriteAlphaRatioOrLoad(PlayerFish.SPRITE_LOCATION));
 		PlayerFish nplayer = new PlayerFish(cm, Preloader.loadScreen("multiplayerGameScreen"), sprite);
+		
 		//TODO #168 Make setting for this "spawn invincibility"
 		nplayer.setInvincible(System.currentTimeMillis() + SPAWN_INVINCIBILITY);
 		

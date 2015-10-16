@@ -18,6 +18,7 @@ import javafx.scene.image.Image;
  * Test class for the CollisionMask class.
  */
 public class TestCollisionMask extends SlimGuiTest {
+	private static final String TEST_SPRITE_LOCATION = "AlphaDataTest.png";
 	private CollisionMask ca;
 
 	/**
@@ -26,7 +27,7 @@ public class TestCollisionMask extends SlimGuiTest {
 	 */
 	@Before
 	public void before() {
-		Image image = new Image("AlphaDataTest.png");
+		Image image = new Image(TEST_SPRITE_LOCATION);
 		boolean[][] data = CollisionMask.buildData(image);
 		ca = new CollisionMask(new Vec2d(0, 0), 4, 4, data, 1);
 	}
@@ -40,7 +41,7 @@ public class TestCollisionMask extends SlimGuiTest {
 				{true, true, true},
 				{false, false, true}};
 
-		Image image = new Image("AlphaDataTest.png");
+		Image image = new Image(TEST_SPRITE_LOCATION);
 		boolean[][] data = CollisionMask.buildData(image);
 
 		assertArrayEquals(exp, data);
@@ -51,7 +52,7 @@ public class TestCollisionMask extends SlimGuiTest {
 	 */
 	@Test
 	public void testGetAlphaRatio() {
-		Image image = new Image("AlphaDataTest.png");
+		Image image = new Image(TEST_SPRITE_LOCATION);
 		boolean[][] data = CollisionMask.buildData(image);
 		double ratio = CollisionMask.getAlphaRatio(data);
 		assertEquals(5.0 / 9.0 , ratio, 0.1E-12);
@@ -63,7 +64,7 @@ public class TestCollisionMask extends SlimGuiTest {
 	 */
 	@Test
 	public void testGetMaskSize() {
-		Image image = new Image("AlphaDataTest.png");
+		Image image = new Image(TEST_SPRITE_LOCATION);
 		boolean[][] data = CollisionMask.buildData(image);
 		CollisionMask ca = new CollisionMask(new Vec2d(0, 0), 10, 10, data, 1);	
 
@@ -76,7 +77,7 @@ public class TestCollisionMask extends SlimGuiTest {
 	 */
 	@Test
 	public void testGetMask() {
-		Image image = new Image("AlphaDataTest.png");
+		Image image = new Image(TEST_SPRITE_LOCATION);
 		boolean[][] data = CollisionMask.buildData(image);
 		CollisionMask ca = new CollisionMask(new Vec2d(0, 0), 4, 4, data, 1);	
 		ca.setRotation(23.45);

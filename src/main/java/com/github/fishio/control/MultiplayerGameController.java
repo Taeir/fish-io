@@ -57,8 +57,6 @@ public class MultiplayerGameController implements ScreenController {
 	@FXML
 	private Label scoreField;
 	@FXML
-	private Label livesField;
-	@FXML
 	private Label endScore;
 	
 	@FXML
@@ -121,7 +119,7 @@ public class MultiplayerGameController implements ScreenController {
 	 */
 	@FXML
 	public void onMute() {
-		AudioEngine.getInstance().playEffect("button");
+		AudioEngine.getInstance().playButtonSound();
 		
 		AudioEngine.getInstance().toggleMuteState();
 	}
@@ -131,7 +129,7 @@ public class MultiplayerGameController implements ScreenController {
 	 */
 	@FXML
 	public void onRevive() {
-		AudioEngine.getInstance().playEffect("button");
+		AudioEngine.getInstance().playButtonSound();
 		
 		if (FishIOClient.getInstance().isConnectedQuick()) {
 			FishIOClient.getInstance().queueMessage(new FishClientRequestPlayerMessage(), true);
@@ -146,7 +144,7 @@ public class MultiplayerGameController implements ScreenController {
 	 */
 	@FXML
 	public void onEnd() {
-		AudioEngine.getInstance().playEffect("button");
+		AudioEngine.getInstance().playButtonSound();
 		
 		//Wait for the client/server to stop running.
 		try {

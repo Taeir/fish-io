@@ -65,19 +65,19 @@ public class GuiTest extends AppTest {
 		FISH_IO.start(stage);
 		
 		splashScene = Preloader.loadScreen("splashScreen");
-		splashController = (SplashScreenController) splashScene.getProperties().get("Controller");
+		splashController = Preloader.getController(splashScene);
 		
 		mainScene = Preloader.loadScreen("mainMenu");
-		mainMenuController = (MainMenuController) mainScene.getProperties().get("Controller");
+		mainMenuController = Preloader.getController(mainScene);
 		
 		singleScene = Preloader.loadScreen("singlePlayer");
-		singleController = (SinglePlayerController) singleScene.getProperties().get("Controller");
+		singleController = Preloader.getController(singleScene);
 		
 		helpScene = Preloader.loadScreen("helpScreen");
-		helpController = (HelpScreenController) helpScene.getProperties().get("Controller");
+		helpController = Preloader.getController(helpScene);
 		
 		achievementScene = Preloader.loadScreen("achievementScreen");
-		achievementController = (AchievementScreenController) achievementScene.getProperties().get("Controller");
+		achievementController = Preloader.getController(achievementScene);
 	}
 	
 	/**
