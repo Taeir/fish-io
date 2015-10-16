@@ -46,22 +46,7 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 		this.boundingArea = boundingArea;
 		this.entityId = getFreeEntityId();
 	}
-	
-	/**
-	 * Protected constructor to create an entity using the given entityId.<br>
-	 * This is used by the multiplayer implementation to decorate
-	 * entities.
-	 * 
-	 * @param boundingArea
-	 * 		the bounding area of this Entity
-	 * @param entityId
-	 * 		the entityId to use.
-	 */
-	protected Entity(CollisionMask boundingArea, int entityId) {
-		this.boundingArea = boundingArea;
-		this.entityId = entityId;
-	}
-	
+
 	/**
 	 * @return
 	 * 		a free entity id.
