@@ -16,6 +16,7 @@ import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.settings.Settings;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -31,7 +32,7 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	private List<AchievementObserver> observers = new ArrayList<AchievementObserver>();
 	
 	private CollisionMask boundingArea;
-	private boolean isDead;
+	private SimpleBooleanProperty deathProperty = new SimpleBooleanProperty();
 	
 	private int entityId;
 	
@@ -81,12 +82,20 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	public abstract void onCollide(ICollidable other);
 	
 	/**
+	 * @return
+	 * 		the death property of this Entity.
+	 */
+	public SimpleBooleanProperty getDeathProperty() {
+		return this.deathProperty;
+	}
+	
+	/**
 	 * This method checks whether the entity is dead or not.
 	 * 
 	 * @return if the Entity is dead or not.
 	 */
 	public boolean isDead() {
-		return isDead;
+		return deathProperty.get();
 	}
 	
 	/**
@@ -94,13 +103,13 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	 */
 	public void kill() {
 		//We cannot die twice.
-		if (isDead) {
+		if (isDead()) {
 			return;
 		}
 		
 		State oldState = getState();
 		
-		isDead = true;
+		deathProperty.set(true);
 		logger.log(LogLevel.TRACE, this.getClass().getSimpleName() + " got killed");
 		
 		//Notify observers that we have died.
@@ -188,13 +197,15 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		out.writeInt(this.entityId);
-		out.writeBoolean(this.isDead);
+		out.writeBoolean(this.isDead());
 		out.writeObject(this.boundingArea);
 	}
 	
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		this.entityId = in.readInt();
-		this.isDead = in.readBoolean();
+		this.deathProperty = new SimpleBooleanProperty(in.readBoolean());
 		this.boundingArea = (CollisionMask) in.readObject();
+		
+		this.observers = new ArrayList<AchievementObserver>();
 	}
 }
