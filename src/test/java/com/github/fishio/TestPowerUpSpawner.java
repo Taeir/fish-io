@@ -20,6 +20,7 @@ import com.github.fishio.power_ups.PowerUp;
 import com.github.fishio.power_ups.ExtraLifePowerUp;
 import com.github.fishio.power_ups.FreezePowerUp;
 import com.github.fishio.power_ups.SuperSpeedPowerUp;
+import com.github.fishio.settings.Settings;
 
 /**
  * Tests the PowerUpSpawer class.
@@ -99,7 +100,7 @@ public class TestPowerUpSpawner extends SlimGuiTest {
 	 */
 	@Test
 	public void testGetRandomPowerUpLocation() {
-		when(rand.nextInt(101)).thenReturn(51);
+		when(rand.nextInt((int) (Settings.getInstance().getDouble("SCREEN_WIDTH") - 1))).thenReturn(51);
 		
 		//Checking for each different PowerUp whether it has the correct location.
 		int cases = pus.getPowerUpCount() - 1;

@@ -19,14 +19,18 @@ import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -137,15 +141,15 @@ public class SinglePlayerController implements ScreenController {
 	private void registerAchievementPopups() {
 		AchievementManager.ENEMY_KILL.getLevelProperty().addListener((o, oVal, nVal) -> {
 			Util.onJavaFX(() -> {
-				ImageView iv = new ImageView("/sprites/chieveLarge/Achieve1.png");
-				showAchievePopup(iv);
+				Image img = new Image("/sprites/chieveLarge/Achieve1.png");
+				showAchievePopup(img, "Glutton!");
 			});
 		});
 		
 		AchievementManager.PLAYER_DEATH.getLevelProperty().addListener((o, oVal, nVal) -> {
 			Util.onJavaFX(() -> {
-				ImageView iv = new ImageView("/sprites/chieveLarge/Achieve2.png");
-				showAchievePopup(iv);
+				Image img = new Image("/sprites/chieveLarge/Achieve2.png");
+				showAchievePopup(img, "Survival of the fittest!");
 			});
 		});
 	}
@@ -211,21 +215,28 @@ public class SinglePlayerController implements ScreenController {
 	 * 
 	 * @param imageView
 	 * 		the imageView to show.
+	 * @param description 
+	 * 		the description of the popup
 	 */
-	public void showAchievePopup(ImageView imageView) {
+	public void showAchievePopup(Image image, String description) {
 		int in = 2000;
 		int out = 1000;
 		int duration = 5000;
 		
-		achievePopup.getChildren().setAll(imageView);
+		ObservableList<Node> list = ((HBox) achievePopup.getChildren().get(1)).getChildren();
+		ImageView img = (ImageView) list.get(0);
+		Label label = (Label) list.get(1);
+		
+		img.setImage(image);
+		label.setText(description);
 		
 		achievePopup.setVisible(true);
 		FadeTransition fadeIn = new FadeTransition(Duration.millis(in), achievePopup);
 		fadeIn.setFromValue(0.0);
-		fadeIn.setToValue(1.0);
+		fadeIn.setToValue(0.8);
 		
 		FadeTransition fadeOut = new FadeTransition(Duration.millis(out), achievePopup);
-		fadeOut.setFromValue(1.0);
+		fadeOut.setFromValue(0.8);
 		fadeOut.setToValue(0.0);
 		fadeOut.setDelay(Duration.millis(duration));
 		

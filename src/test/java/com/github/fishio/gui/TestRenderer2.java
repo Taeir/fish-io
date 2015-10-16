@@ -19,7 +19,7 @@ public class TestRenderer2 extends TestListenable {
 
 	@Override
 	public Listenable getListenable() {
-		return new Renderer(mock(SinglePlayerPlayingField.class), new Canvas(), 60);
+		return new Renderer(mock(SinglePlayerPlayingField.class), new Canvas(), 60, 0);
 	}
 
 }

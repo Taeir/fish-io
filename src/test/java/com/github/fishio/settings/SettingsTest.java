@@ -8,13 +8,13 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.Set;
 
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.scene.input.KeyCode;
-
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.scene.input.KeyCode;
 
 /**
  * Tests for the {@link Settings} class.
@@ -172,7 +172,7 @@ public class SettingsTest {
 	 * Test for {link {@link Settings#getDescription(String)} with non existing setting.
 	 */
 	@Test
-	public void testGetDescritionNull() {
+	public void testGetDescriptionNull() {
 		String desc = instance.getDescription("NON_EXISTENT");
 		assertEquals("No description available.", desc);
 	}
@@ -183,7 +183,7 @@ public class SettingsTest {
 	@Test
 	public void testGetDescriptionValue() {
 		String desc = instance.getDescription("DEBUG_DRAW");
-		assertEquals("Render debug values.", desc);
+		assertEquals("The game is rendered with debug values.", desc);
 	}
 	
 	/**

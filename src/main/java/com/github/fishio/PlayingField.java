@@ -8,7 +8,6 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import javafx.beans.value.ObservableDoubleValue;
 import javafx.scene.canvas.Canvas;
 
 import com.github.fishio.behaviours.IMoveBehaviour;
@@ -16,7 +15,6 @@ import com.github.fishio.game.GameThread;
 import com.github.fishio.gui.Renderer;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
-import com.github.fishio.settings.Settings;
 
 /**
  * Represents the PlayingField.
@@ -31,10 +29,6 @@ public abstract class PlayingField {
 	private ConcurrentLinkedDeque<IDrawable> deadDrawables = new ConcurrentLinkedDeque<>();
 	private ConcurrentLinkedQueue<Entity> entities = new ConcurrentLinkedQueue<>();
 	private ConcurrentLinkedQueue<ICollidable> collidables = new ConcurrentLinkedQueue<>();
-	
-	
-	private ObservableDoubleValue widthProperty;
-	private ObservableDoubleValue heightProperty;
 
 	private int enemyCount;
 	public static final int MAX_ENEMY_COUNT = 10;
@@ -46,16 +40,14 @@ public abstract class PlayingField {
 	 *            the (target) framerate.
 	 * @param canvas
 	 *            the canvas to use, can be <code>null</code> to create one.
+	 * @param yBorder
+	 * 			  the vertical border to be applied.
 	 */
-	public PlayingField(int fps, Canvas canvas) {
-		//Get width and height properties.
-		widthProperty = Settings.getInstance().getDoubleProperty("SCREEN_WIDTH");
-		heightProperty = Settings.getInstance().getDoubleProperty("SCREEN_HEIGHT").subtract(50.0);
-		
+	public PlayingField(int fps, Canvas canvas, int yBorder) {
 		//count enemies
 		enemyCount = 0;
 		
-		renderer = new Renderer(this, canvas, fps);
+		renderer = new Renderer(this, canvas, fps, yBorder);
 		logger.log(LogLevel.INFO, "Created Renderer");
 	}
 
@@ -85,7 +77,7 @@ public abstract class PlayingField {
 	 * @return the width of the field.
 	 */
 	public double getWidth() {
-		return widthProperty.doubleValue();
+		return renderer.getCanvas().getWidth();
 	}
 
 	/**
@@ -94,7 +86,7 @@ public abstract class PlayingField {
 	 * @return the height of the field.
 	 */
 	public double getHeight() {
-		return heightProperty.doubleValue();
+		return renderer.getCanvas().getHeight();
 	}
 
 	/**

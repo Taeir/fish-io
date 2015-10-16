@@ -10,96 +10,101 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.fishio.control.HelpScreenController">
+<StackPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.fishio.control.HelpScreenController">
   <children>
-    <VBox alignment="TOP_CENTER" prefHeight="720.0" prefWidth="1280.0" spacing="10.0" StackPane.alignment="TOP_CENTER">
-      <children>
-            <Label text="Help">
-               <font>
-                  <Font size="40.0" />
-               </font>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </Label>
-        <Label prefWidth="700.0" text="In the game Fish.io the main objective is to grow larger. This is done by eating fish that are smaller than you, while avoiding fish that are larger than you." wrapText="true">
-               <VBox.margin>
-                  <Insets top="40.0" />
-               </VBox.margin></Label>
-            <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefWidth="700.0" spacing="15.0">
-               <children>
-                  <ImageView fitHeight="30.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../sprites/fish/playerFish.png" />
-                     </image>
-                  </ImageView>
-                  <Label text="← This is your fish." />
-               </children>
-            </HBox>
-        <Label prefWidth="700.0" text="Power ups are items that, when eaten by your fish, will give it some special powers." wrapText="true" />
-            <GridPane maxWidth="-Infinity" prefWidth="700.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="32.0" minWidth="10.0" prefWidth="32.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="1247.0" minWidth="10.0" prefWidth="200.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../sprites/powerup/pu0.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
-                     <image>
-                        <Image url="@../../../../sprites/powerup/pu1.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
-                     <image>
-                        <Image url="@../../../../sprites/powerup/pu2.png" />
-                     </image>
-                  </ImageView>
-                  <Label text="Freeze: Temporary freezes all the enemies in the game." GridPane.columnIndex="1" />
-                  <Label text="Speed: Temporary increase of your movement speed." GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label text="Life: Additional life." GridPane.columnIndex="1" GridPane.rowIndex="2" />
-               </children>
-            </GridPane>
-            <HBox alignment="CENTER" prefHeight="100.0">
-               <children>
-                  <Canvas fx:id="keyboard" height="251.0" width="1000.0" />
-                  <VBox prefHeight="200.0" prefWidth="100.0">
-                     <children>
-                        <Label text="Movement">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets left="-20.0" />
-                           </VBox.margin>
-                        </Label>
-                        <Label text="Swim left" />
-                        <Label text="Swim up" />
-                        <Label text="Swim down" />
-                        <Label text="Swim right" />
-                     </children>
-                     <HBox.margin>
-                        <Insets left="-140.0" />
-                     </HBox.margin>
-                  </VBox>
-               </children>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </HBox>
-      </children>
+      <Label text="Help" StackPane.alignment="TOP_CENTER">
+         <font>
+            <Font size="40.0" />
+         </font>
          <StackPane.margin>
-            <Insets top="50.0" />
+            <Insets top="30.0" />
          </StackPane.margin>
-    </VBox>
+      </Label>
+      <ScrollPane fx:id="scrollPane" hvalue="0.5" prefWidth="600.0" style="-fx-background-color: transparent;" StackPane.alignment="TOP_CENTER">
+         <StackPane.margin>
+            <Insets top="90.0" />
+         </StackPane.margin>
+         <content>
+          <VBox alignment="TOP_CENTER" maxWidth="600.0" spacing="10.0">
+            <children>
+              <Label maxWidth="600.0" text="In the game Fish.io the main objective is to grow larger. This is done by eating fish that are smaller than you, while avoiding fish that are larger than you." wrapText="true">
+                     <VBox.margin>
+                        <Insets top="40.0" />
+                     </VBox.margin>
+                  </Label>
+                  <HBox alignment="CENTER_LEFT" maxWidth="600.0" spacing="15.0">
+                     <children>
+                        <ImageView fitHeight="30.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../sprites/fish/playerFish.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="← This is your fish." />
+                     </children>
+                  </HBox>
+              <Label maxWidth="600.0" text="Power ups are items that, when eaten by your fish, will give it some special powers." wrapText="true" />
+                  <GridPane maxWidth="600.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="32.0" minWidth="10.0" prefWidth="32.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="1247.0" minWidth="10.0" prefWidth="200.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../sprites/powerup/pu0.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+                           <image>
+                              <Image url="@../../../../sprites/powerup/pu1.png" />
+                           </image>
+                        </ImageView>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+                           <image>
+                              <Image url="@../../../../sprites/powerup/pu2.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="Freeze: Temporary freezes all the enemies in the game." GridPane.columnIndex="1" />
+                        <Label text="Speed: Temporary increase of your movement speed." GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Life: Additional life." GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                     </children>
+                  </GridPane>
+                  <HBox alignment="CENTER" minWidth="1000.0" prefHeight="100.0" prefWidth="1000.0">
+                     <children>
+                        <Canvas fx:id="keyboard" height="251.0" width="1000.0" />
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label text="Movement">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets left="-20.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Label text="Swim left" />
+                              <Label text="Swim up" />
+                              <Label text="Swim down" />
+                              <Label text="Swim right" />
+                           </children>
+                           <HBox.margin>
+                              <Insets left="-140.0" />
+                           </HBox.margin>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </HBox>
+            </children>
+          </VBox>
+         </content>
+      </ScrollPane>
   <Button fx:id="btnBackToMenu" mnemonicParsing="false" onAction="#backToMenu" text="Back to menu" StackPane.alignment="BOTTOM_CENTER">
          <StackPane.margin>
             <Insets bottom="35.0" />

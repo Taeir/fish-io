@@ -35,7 +35,7 @@ public class SinglePlayerPlayingField extends PlayingField {
 	 *            the scene to use (for registering keylisteners)
 	 */
 	public SinglePlayerPlayingField(int fps, Canvas canvas, Scene scene) {
-		super(fps, canvas);
+		super(fps, canvas, 50);
 		
 		this.scene = scene;
 		

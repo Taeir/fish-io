@@ -51,6 +51,8 @@ public class FishIO extends Application {
 		primaryStage.setTitle("Fish.io");
 		primaryStage.setWidth(settings.getDouble("SCREEN_WIDTH"));
 		primaryStage.setHeight(settings.getDouble("SCREEN_HEIGHT"));
+		primaryStage.setMinHeight(480);
+		primaryStage.setMinWidth(640);
 		
 		log.log(LogLevel.DEBUG, "Primary stage set.");
 		//Load and show the splash screen.
@@ -93,31 +95,32 @@ public class FishIO extends Application {
 	 * Closes the program.
 	 */
 	public void closeApplication() {
-		log.log(LogLevel.INFO, "Game shutting Down.");
-		
-		//Disconnect the client
-		FishIOClient.getInstance().disconnect();
-		
-		//Stop the server
-		FishIOServer.getInstance().stop();
-		
-		//Save the settings
-		settings.save();
-		
-		//Shutdown AudioEngine
-		AudioEngine.getInstance().shutdown();
-		
-		//Close the window
-		this.primaryStage.close();
-		
-		//Unregister logger handlers
-		log.removeAllHandlers();
-		
-		//Close the log handler
 		try {
-			textFileHandler.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+			log.log(LogLevel.INFO, "Game shutting Down.");
+			
+			//Disconnect the client and stop the server
+			FishIOClient.getInstance().disconnect();
+			FishIOServer.getInstance().stop();
+			
+			//Close the window
+			Preloader.switchAway();
+			this.primaryStage.close();
+			
+			//Shutdown AudioEngine
+			AudioEngine.getInstance().shutdown();
+			
+			//Save the settings
+			settings.save();
+		} finally {
+			//Unregister logger handlers
+			log.removeAllHandlers();
+			
+			//Close the log handler
+			try {
+				textFileHandler.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

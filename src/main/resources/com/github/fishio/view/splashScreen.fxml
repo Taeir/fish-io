@@ -9,27 +9,24 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<StackPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.fishio.control.SplashScreenController">
+<StackPane minHeight="480.0" minWidth="640.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.fishio.control.SplashScreenController">
    <children>
-      <ImageView pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="background" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="background.png" />
+            <Image url="splashBackground.png" />
          </image>
-         <effect>
-            <ColorAdjust contrast="-0.44" />
-         </effect>
       </ImageView>
-      <VBox fx:id="company" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.0">
+      <VBox fx:id="company" alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.0">
          <children>
             <Label text="A game by">
                <font>
-                  <Font name="System Bold" size="56.0" />
+                  <Font name="System Bold" size="49.0" />
                </font>
                <padding>
                   <Insets top="20.0" />
                </padding>
             </Label>
-            <HBox>
+            <HBox alignment="CENTER">
                <children>
                   <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -38,7 +35,7 @@
                   </ImageView>
                   <Label text="The Fishermen">
                      <font>
-                        <Font name="System Bold" size="87.0" />
+                        <Font name="System Bold" size="58.0" />
                      </font>
                      <padding>
                         <Insets top="20.0" />
@@ -52,21 +49,21 @@
                   <Insets />
                </opaqueInsets>
                <VBox.margin>
-                  <Insets top="50.0" />
+                  <Insets left="15.0" right="15.0" top="50.0" />
                </VBox.margin>
             </HBox>
          </children>
       </VBox>
       <VBox fx:id="game" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.0" StackPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="300.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="213.0" fitWidth="640.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="logo.png" />
                </image>
             </ImageView>
             <Label fx:id="slogan" text="Not even squidding!">
                <font>
-                  <Font name="System Bold" size="64.0" />
+                  <Font name="System Bold" size="33.0" />
                </font>
                <padding>
                   <Insets left="20.0" top="20.0" />
