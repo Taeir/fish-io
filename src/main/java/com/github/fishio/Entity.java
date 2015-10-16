@@ -25,8 +25,6 @@ import javafx.scene.paint.Color;
  */
 public abstract class Entity implements ICollidable, IPositional, IDrawable, Subject, Serializable {
 	
-	private IMoveBehaviour behaviour;
-	
 	private static final long serialVersionUID = 650039406095374770L;
 	protected static Log logger = Log.getLogger();
 	protected static Settings settings = Settings.getInstance();
@@ -38,6 +36,8 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	private SimpleBooleanProperty deathProperty = new SimpleBooleanProperty();
 	
 	private int entityId;
+	
+	private IMoveBehaviour behaviour;
 	
 	/**
 	 * This constructor creates an entity in the game.
