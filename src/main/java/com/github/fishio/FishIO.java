@@ -32,6 +32,8 @@ public class FishIO extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		this.primaryStage = primaryStage;
+		
 		instance = this;
 		
 		//Initialize Logger
@@ -39,15 +41,15 @@ public class FishIO extends Application {
 		
 		log.log(LogLevel.INFO, "Starting up Fish.io.");
 		
-		//Preload the screens
-		Preloader.preloadScreens();
-		log.log(LogLevel.DEBUG, "Preloaded the screens.");
 		//Preload the images
 		Preloader.preloadImages();
 		log.log(LogLevel.DEBUG, "Preloaded the images.");
 		
-		this.primaryStage = primaryStage;
+		//Preload the screens
+		Preloader.preloadScreens();
+		log.log(LogLevel.DEBUG, "Preloaded the screens.");
 		
+		//Set settings
 		primaryStage.setTitle("Fish.io");
 		primaryStage.setWidth(settings.getDouble("SCREEN_WIDTH"));
 		primaryStage.setHeight(settings.getDouble("SCREEN_HEIGHT"));
