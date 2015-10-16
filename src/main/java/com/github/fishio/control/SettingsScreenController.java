@@ -53,6 +53,7 @@ public class SettingsScreenController implements ScreenController {
 	private int showSliderSettings(int row) {
 		for (String key : settings.getSliderSettings()) {
 			Label label = new Label(settings.getDescription(key));
+			label.setTooltip(new Tooltip(key));
 			Slider slider = new Slider();
 			double value = settings.getSlider(key);
 			Label valueLabel = new Label(Math.round(value * 100) + "%");
