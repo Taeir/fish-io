@@ -1,9 +1,8 @@
 package com.github.fishio.multiplayer.server;
 
-import java.io.Closeable;
-
 import com.github.fishio.Preloader;
-import com.github.fishio.control.MultiPlayerGameController;
+import com.github.fishio.Util;
+import com.github.fishio.control.MultiplayerGameController;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.multiplayer.FishMessage;
@@ -14,6 +13,8 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
+import io.netty.channel.group.ChannelGroup;
+import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -21,6 +22,7 @@ import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GlobalEventExecutor;
 
 /**
  * Singleton class that represents this program in a multiplayer game
@@ -31,12 +33,13 @@ import io.netty.util.concurrent.Future;
 public final class FishIOServer implements Runnable {
 	private static FishIOServer instance;
 	private int port;
+	private ChannelGroup allChannels;
 	private Channel channel;
 	private boolean started;
 	private MultiplayerServerPlayingField playingField;
 	
 	private FishIOServer() {
-		MultiPlayerGameController controller = Preloader.getControllerOrLoad("multiPlayerGame");
+		MultiplayerGameController controller = Preloader.getControllerOrLoad("multiplayerGameScreen");
 		playingField = new MultiplayerServerPlayingField(60, controller.getCanvas());
 	}
 	
@@ -81,10 +84,15 @@ public final class FishIOServer implements Runnable {
 			this.started = true;
 		}
 		
+		Log.getLogger().log(LogLevel.INFO, "[Server] Starting server on port " + port);
+		
 		//Handles accepting connections
 		EventLoopGroup bossGroup = new NioEventLoopGroup();
 		//Handles sending/receiving messages
 		EventLoopGroup workerGroup = new NioEventLoopGroup();
+		
+		allChannels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+		
 		try {
 			ServerBootstrap b = new ServerBootstrap();
 			b.group(bossGroup, workerGroup)
@@ -92,16 +100,14 @@ public final class FishIOServer implements Runnable {
 			.childHandler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				public void initChannel(SocketChannel ch) throws Exception {
-					ch.pipeline().addLast(
-							new ObjectDecoder(ClassResolvers.softCachingResolver(ClassLoader.getSystemClassLoader())),
-							new ObjectEncoder(),
-							new FishServerHandler());
+					ch.pipeline().addLast("decoder",
+							new ObjectDecoder(ClassResolvers.softCachingResolver(ClassLoader.getSystemClassLoader())));
+					ch.pipeline().addLast("encoder", new ObjectEncoder());
+					ch.pipeline().addLast("handler", new FishServerHandler(allChannels));
 				}
 			})
 			.option(ChannelOption.SO_BACKLOG, 128)
 			.childOption(ChannelOption.SO_KEEPALIVE, true);
-
-			Log.getLogger().log(LogLevel.INFO, "[Server] Starting server on port " + port);
 			
 			//Bind and start to accept incoming connections.
 			ChannelFuture f = b.bind(port).sync();
@@ -110,7 +116,12 @@ public final class FishIOServer implements Runnable {
 				this.channel = f.channel();
 			}
 
+			//Call onStop when we stop
 			f.channel().closeFuture().addListener((future) -> onStop());
+			
+			//Create own player and start the game
+			this.playingField.respawnOwnPlayer();
+			this.playingField.startGame();
 			
 			//Wait until the server socket is closed.
 			f.channel().closeFuture().sync();
@@ -118,10 +129,14 @@ public final class FishIOServer implements Runnable {
 			//Wrap the exception in a runtime exception
 			throw new RuntimeException(ex);
 		} finally {
+			//Close all connected channels.
+			allChannels.close();
+			
 			//Set started to false and the channel to null
 			synchronized (this) {
 				this.started = false;
 				this.channel = null;
+				this.allChannels = null;
 			}
 			
 			//Shutdown the groups
@@ -205,7 +220,7 @@ public final class FishIOServer implements Runnable {
 		Log.getLogger().log(LogLevel.INFO, "[Server] Server stopped");
 		
 		//Switch to the main menu
-		Preloader.switchTo("mainMenu", 1000);
+		Util.onJavaFX(() -> Preloader.switchTo("mainMenu", 1000));
 	}
 	
 	/**
@@ -221,18 +236,26 @@ public final class FishIOServer implements Runnable {
 	 * 
 	 * @param message
 	 * 		the message to queue up for sending.
+	 * @param flush
+	 * 		if <code>true</code>, the queue is flushed after this call.
 	 * 
 	 * @return
 	 * 		<code>true</code> if the message was queued,
 	 * 		<code>false</code> otherwise (e.g. server not running).
 	 */
-	public boolean queueMessage(FishMessage message) {
-		Channel ch = getChannel();
-		if (ch == null) {
+	public boolean queueMessage(FishMessage message, boolean flush) {
+		Log.getLogger().log(LogLevel.TRACE, "[Server] Queueing message " + message.getClass().getSimpleName());
+		
+		ChannelGroup cg = this.allChannels;
+		if (cg == null) {
 			return false;
 		}
 		
-		ch.write(message);
+		if (flush) {
+			cg.writeAndFlush(message);
+		} else {
+			cg.write(message);
+		}
 		return true;
 	}
 	
@@ -241,9 +264,12 @@ public final class FishIOServer implements Runnable {
 	 * to all connected clients.
 	 */
 	public void flush() {
-		Channel ch = getChannel();
-		if (ch != null) {
-			ch.flush();
+		Log.getLogger().log(LogLevel.TRACE, "[Server] Flushing messages");
+		
+		ChannelGroup cg = this.allChannels;
+		
+		if (cg != null) {
+			cg.flush();
 		}
 	}
 }

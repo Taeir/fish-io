@@ -59,15 +59,16 @@ public class FishClientHandler extends SimpleChannelInboundHandler<FishServerMes
 			}
 		}
 		
-		//Set the new player fish
-		FishIOClient.getInstance().getPlayingField().setOwnPlayer(msg.getPlayer());
 		
 		//Create a new key listener
 		KeyListenerBehaviour klb = KeyListenerBehaviour.createWithDefaultSettings(
-				Preloader.loadScreen("multiplayerGame"));
+				Preloader.loadScreen("multiplayerGameScreen"));
 		
 		//Update the new key listener to the correct behaviour.
 		klb.updateTo(msg.getPlayer().getBehaviour());
 		msg.getPlayer().setBehaviour(klb);
+		
+		//Set the new player fish
+		FishIOClient.getInstance().getPlayingField().setOwnPlayer(msg.getPlayer());
 	}
 }

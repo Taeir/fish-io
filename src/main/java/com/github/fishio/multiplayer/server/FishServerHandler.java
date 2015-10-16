@@ -7,22 +7,41 @@ import com.github.fishio.multiplayer.client.FishClientPlayerFishMessage;
 import com.github.fishio.multiplayer.client.FishClientRequestPlayerMessage;
 import com.github.fishio.multiplayer.client.FishClientMessage;
 
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.group.ChannelGroup;
 
 /**
  * Handler used by the server for messages sent from the client.
  */
 public class FishServerHandler extends SimpleChannelInboundHandler<FishClientMessage> {
-
+	
+	private ChannelGroup allChannels;
+	
+	/**
+	 * Creates a new FishServerHandler.
+	 * 
+	 * @param channelGroup
+	 * 		the channelgroup to add new channels to.
+	 */
+	public FishServerHandler(ChannelGroup channelGroup) {
+		allChannels = channelGroup;
+	}
+	
+	@Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        //Add channels to the group.
+        allChannels.add(ctx.channel());
+        super.channelActive(ctx);
+    }
+	
 	@Override
 	protected void messageReceived(ChannelHandlerContext ctx, FishClientMessage msg) throws Exception {
 		Log.getLogger().log(LogLevel.INFO,
 				"[Server] [" + ctx.channel().remoteAddress() + "] Received " + msg.getClass().getSimpleName());
 		
 		if (msg instanceof FishClientRequestPlayerMessage) {
-			handlePlayerRequest((FishClientRequestPlayerMessage) msg, ctx.channel());
+			handlePlayerRequest((FishClientRequestPlayerMessage) msg, ctx);
 		}
 		
 		if (msg instanceof FishClientPlayerFishMessage) {
@@ -35,20 +54,17 @@ public class FishServerHandler extends SimpleChannelInboundHandler<FishClientMes
 	 * 
 	 * @param msg
 	 * 		the message from the client.
-	 * @param channel
-	 * 		the channel that can be used to send messages back.
+	 * @param ctx
+	 * 		the ChannelHandlerContext that can be used to send messages back.
 	 */
-	public void handlePlayerRequest(FishClientRequestPlayerMessage msg, Channel channel) {
+	public void handlePlayerRequest(FishClientRequestPlayerMessage msg, ChannelHandlerContext ctx) {
 		//A client is requesting a new playerfish, so we need to create one.
 		MultiplayerServerPlayingField mspf = FishIOServer.getInstance().getPlayingField();
-		PlayerFish player = mspf.createPlayer();
+		PlayerFish player = mspf.createClientPlayer();
 		
 		//Send a message back to the client with the newly spawned player fish
 		FishServerPlayerMessage fspm = new FishServerPlayerMessage(player);
-		channel.write(fspm);
-		
-		//Add the playerfish to the field.
-		mspf.add(fspm);
+		ctx.writeAndFlush(fspm);
 	}
 	
 	/**
@@ -58,7 +74,6 @@ public class FishServerHandler extends SimpleChannelInboundHandler<FishClientMes
 	 * 		the message from the client.
 	 */
 	public void handleClientUpdate(FishClientPlayerFishMessage msg) {
-		PlayerFish updated = msg.getPlayer();
 		MultiplayerServerPlayingField mspf = FishIOServer.getInstance().getPlayingField();
 		
 		mspf.updatePlayer(msg.getPlayer());

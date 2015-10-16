@@ -46,8 +46,7 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 	 */
 	public void sendEntitiesUpdate() {
 		FishServerEntitiesMessage fsem = new FishServerEntitiesMessage(this);
-		FishIOServer.getInstance().queueMessage(fsem);
-		FishIOServer.getInstance().flush();
+		FishIOServer.getInstance().queueMessage(fsem, true);
 	}
 	
 	/**
@@ -75,13 +74,12 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 	}
 	
 	/**
-	 * Don't forget to add the player AFTER sending the playerfish message
-	 * to the corresponding client.
+	 * Creates a new playerfish for a client.
 	 * 
 	 * @return
 	 * 		a new PlayerFish without any keys registered.
 	 */
-	public PlayerFish createPlayer() {
+	public PlayerFish createClientPlayer() {
 		Image sprite = Preloader.getImageOrLoad("sprites/fish/playerFish.png");
 		CollisionMask cm = new CollisionMask(
 				new Vec2d(SinglePlayerPlayingField.START_X, SinglePlayerPlayingField.START_Y), 60, 30, 
@@ -92,6 +90,25 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 		//TODO #168 Make setting for this "spawn invincibility"
 		tbr.setInvincible(System.currentTimeMillis() + SPAWN_INVINCIBILITY);
 		
+		add(tbr);
+		
 		return tbr;
+	}
+	
+	/**
+	 * Respawn the player of the server.
+	 */
+	public void respawnOwnPlayer() {
+		Image sprite = Preloader.getImageOrLoad("sprites/fish/playerFish.png");
+		CollisionMask cm = new CollisionMask(
+				new Vec2d(SinglePlayerPlayingField.START_X, SinglePlayerPlayingField.START_Y), 60, 30, 
+				Preloader.getAlphaDataOrLoad("sprites/fish/playerFish.png"),
+				Preloader.getSpriteAlphaRatioOrLoad("sprites/fish/playerFish.png"));
+		PlayerFish nplayer = new PlayerFish(cm, Preloader.loadScreen("multiplayerGameScreen"), sprite);
+		//TODO #168 Make setting for this "spawn invincibility"
+		nplayer.setInvincible(System.currentTimeMillis() + SPAWN_INVINCIBILITY);
+		
+		setOwnPlayer(nplayer);
+		add(nplayer);
 	}
 }

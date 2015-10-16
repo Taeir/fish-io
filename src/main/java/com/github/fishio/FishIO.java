@@ -32,6 +32,8 @@ public class FishIO extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		this.primaryStage = primaryStage;
+		
 		instance = this;
 		
 		//Initialize Logger
@@ -39,15 +41,15 @@ public class FishIO extends Application {
 		
 		log.log(LogLevel.INFO, "Starting up Fish.io.");
 		
-		//Preload the screens
-		Preloader.preloadScreens();
-		log.log(LogLevel.DEBUG, "Preloaded the screens.");
 		//Preload the images
 		Preloader.preloadImages();
 		log.log(LogLevel.DEBUG, "Preloaded the images.");
 		
-		this.primaryStage = primaryStage;
+		//Preload the screens
+		Preloader.preloadScreens();
+		log.log(LogLevel.DEBUG, "Preloaded the screens.");
 		
+		//Set settings
 		primaryStage.setTitle("Fish.io");
 		primaryStage.setWidth(settings.getDouble("SCREEN_WIDTH"));
 		primaryStage.setHeight(settings.getDouble("SCREEN_HEIGHT"));
@@ -95,28 +97,33 @@ public class FishIO extends Application {
 	 * Closes the program.
 	 */
 	public void closeApplication() {
-		log.log(LogLevel.INFO, "Game shutting Down.");
-		
-		//Disconnect the client
-		FishIOClient.getInstance().disconnect();
-				
-		//Stop the server
-		FishIOServer.getInstance().stop();
-		
-		//Shutdown AudioEngine
-		AudioEngine.getInstance().shutdown();
-		
-		//Save the settings
-		settings.save();
-		
 		try {
-			textFileHandler.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+			log.log(LogLevel.INFO, "Game shutting Down.");
+			
+			//Disconnect the client and stop the server
+			FishIOClient.getInstance().disconnect();
+			FishIOServer.getInstance().stop();
+			
+			//Close the window
+			Preloader.switchAway();
+			this.primaryStage.close();
+			
+			//Shutdown AudioEngine
+			AudioEngine.getInstance().shutdown();
+			
+			//Save the settings
+			settings.save();
+		} finally {
+			//Unregister logger handlers
+			log.removeAllHandlers();
+			
+			//Close the log handler
+			try {
+				textFileHandler.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-		
-		Preloader.switchAway();
-		this.primaryStage.close();
 	}
 
 	/**

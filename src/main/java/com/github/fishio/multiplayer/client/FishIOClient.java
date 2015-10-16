@@ -1,7 +1,10 @@
 package com.github.fishio.multiplayer.client;
 
 import com.github.fishio.Preloader;
-import com.github.fishio.control.MultiPlayerGameController;
+import com.github.fishio.Util;
+import com.github.fishio.control.MultiplayerGameController;
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
 import com.github.fishio.multiplayer.FishMessage;
 
 import io.netty.bootstrap.Bootstrap;
@@ -37,7 +40,7 @@ public final class FishIOClient implements Runnable {
 	private int port;
 	
 	private FishIOClient() {
-		MultiPlayerGameController controller = Preloader.getControllerOrLoad("multiPlayerGame");
+		MultiplayerGameController controller = Preloader.getControllerOrLoad("multiplayerGameScreen");
 		playingField = new MultiplayerClientPlayingField(60, controller.getCanvas());
 	}
 	
@@ -76,6 +79,7 @@ public final class FishIOClient implements Runnable {
 		new Thread(this).start();
 	}
 	
+	@SuppressWarnings("resource")
 	@Override
 	public void run() {
 		synchronized (this) {
@@ -89,6 +93,8 @@ public final class FishIOClient implements Runnable {
 			connecting = true;
 		}
 		
+		Log.getLogger().log(LogLevel.INFO, "[Client] Starting client");
+		
 		//Handles incoming/outgoing messages
 		EventLoopGroup workerGroup = new NioEventLoopGroup();
 
@@ -100,10 +106,10 @@ public final class FishIOClient implements Runnable {
 			b.handler(new ChannelInitializer<SocketChannel>() {
 				@Override
 				public void initChannel(SocketChannel ch) throws Exception {
-					ch.pipeline().addLast(
-							new ObjectDecoder(ClassResolvers.softCachingResolver(ClassLoader.getSystemClassLoader())),
-							new ObjectEncoder(),
-							new FishClientHandler());
+					ch.pipeline().addLast("decoder",
+							new ObjectDecoder(ClassResolvers.softCachingResolver(ClassLoader.getSystemClassLoader())));
+					ch.pipeline().addLast("encoder", new ObjectEncoder());
+					ch.pipeline().addLast("handler", new FishClientHandler());
 				}
 			});
 
@@ -122,9 +128,14 @@ public final class FishIOClient implements Runnable {
 			//We are no longer connecting
 			connecting = false;
 			
-			//TODO
-			//Clear the playing field when we are closed
+			//Call onDisconnect when we disconnect from the server.
 			f.channel().closeFuture().addListener((future) -> onDisconnect());
+			
+			//Send the player request
+			f.channel().writeAndFlush(new FishClientRequestPlayerMessage());
+			
+			//Start the game
+			getPlayingField().startGame();
 			
 			//Wait until the connection is closed.
 			f.channel().closeFuture().sync();
@@ -242,18 +253,24 @@ public final class FishIOClient implements Runnable {
 	 * 
 	 * @param message
 	 * 		the message to queue up for sending.
+	 * @param flush
+	 * 		if <code>true</code>, the queue is flushed after this call.
 	 * 
 	 * @return
 	 * 		<code>true</code> if the message was queued,
 	 * 		<code>false</code> otherwise (e.g. not connected to server).
 	 */
-	public boolean queueMessage(FishMessage message) {
+	public boolean queueMessage(FishMessage message, boolean flush) {
 		Channel ch = getChannel();
 		if (ch == null) {
 			return false;
 		}
 		
-		ch.write(message);
+		if (flush) {
+			ch.writeAndFlush(message);
+		} else {
+			ch.write(message);
+		}
 		return true;
 	}
 	
@@ -263,6 +280,7 @@ public final class FishIOClient implements Runnable {
 	 */
 	public void flush() {
 		Channel ch = getChannel();
+
 		if (ch != null) {
 			ch.flush();
 		}
@@ -280,11 +298,13 @@ public final class FishIOClient implements Runnable {
 	 * Called when we are disconnected from the server.
 	 */
 	public void onDisconnect() {
+		//Stop the game and clear the field
+		getPlayingField().stopGame();
 		getPlayingField().clear();
 		
 		//TODO #169 Show message to client?
 		
 		//Switch back to main menu
-		Preloader.switchTo("mainMenu", 1000);
+		Util.onJavaFX(() -> Preloader.switchTo("mainMenu", 1000));
 	}
 }

@@ -52,6 +52,10 @@ public final class EnemyFishFactory {
 	 * 		a randomized EnemyFish.
 	 */
 	public static EnemyFish randomizedFish(Collection<? extends Entity> sizes) {
+		if (sizes.isEmpty()) {
+			return randomizedFish(500, 1000);
+		}
+		
 		int minSize = Integer.MAX_VALUE;
 		int maxSize = Integer.MIN_VALUE;
 		
