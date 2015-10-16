@@ -31,6 +31,8 @@ public class SinglePlayerPlayingField extends PlayingField {
 	 *            the (target) framerate.
 	 * @param canvas
 	 *            the canvas to use, can be <code>null</code> to create one.
+	 * @param scene
+	 *            the scene to use (for registering keylisteners)
 	 */
 	public SinglePlayerPlayingField(int fps, Canvas canvas, Scene scene) {
 		super(fps, canvas);
