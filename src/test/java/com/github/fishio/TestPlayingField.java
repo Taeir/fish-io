@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import com.github.fishio.behaviours.VerticalBehaviour;
 import com.github.fishio.game.GameState;
 import com.github.fishio.gui.GuiTest;
+import com.github.fishio.gui.SlimGuiTest;
 
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -20,7 +21,7 @@ import javafx.scene.canvas.Canvas;
 /**
  * Tests the PlayingField class.
  */
-public class TestPlayingField extends GuiTest {
+public class TestPlayingField extends SlimGuiTest {
 
 	private PlayingField field;
 	private Canvas canvas;
