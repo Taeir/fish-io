@@ -2,6 +2,9 @@ package com.github.fishio.multiplayer.server;
 
 import com.github.fishio.game.GameThread;
 
+/**
+ * GameThread for the server side of a multiplayer game.
+ */
 public class ServerGameThread extends GameThread {
 
 	/**

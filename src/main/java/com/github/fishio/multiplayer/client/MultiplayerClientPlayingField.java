@@ -1,18 +1,13 @@
 package com.github.fishio.multiplayer.client;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.canvas.Canvas;
 
 import com.github.fishio.Entity;
-import com.github.fishio.ICollisionArea;
-import com.github.fishio.IDrawable;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.logging.LogLevel;
@@ -23,10 +18,16 @@ import com.github.fishio.multiplayer.server.FishServerEntitiesMessage;
  * Represents a playing field for a client in a multiplayer game.
  */
 public class MultiplayerClientPlayingField extends MultiplayerPlayingField {
-	private ObjectProperty<PlayerFish> playerFishProperty = new SimpleObjectProperty<>();
-	
 	private GameThread gameThread;
 	
+	/**
+	 * Creates a new MultiplayerClientPlayingField.
+	 * 
+	 * @param fps
+	 * 		the fps of the renderer of this PlayingField.
+	 * @param canvas
+	 * 		the canvas to render on.
+	 */
 	public MultiplayerClientPlayingField(int fps, Canvas canvas) {
 		super(fps, canvas);
 		
@@ -39,32 +40,6 @@ public class MultiplayerClientPlayingField extends MultiplayerPlayingField {
 		return this.gameThread;
 	}
 	
-	/**
-	 * @return
-	 * 		a property holding the playerfish owned by this client.
-	 */
-	public ObjectProperty<PlayerFish> getOwnPlayerProperty() {
-		return this.playerFishProperty;
-	}
-	
-	/**
-	 * Sets the player corresponding to this client.
-	 * 
-	 * @param player
-	 * 		the player to set.
-	 */
-	public void setOwnPlayer(PlayerFish player) {
-		this.playerFishProperty.set(player);
-	}
-	
-	/**
-	 * @return
-	 * 		the player owned by this Client.
-	 */
-	public PlayerFish getOwnPlayer() {
-		return this.playerFishProperty.get();
-	}
-	
 	@Override
 	public void addEntities() {
 		//The server handles adding entities.
@@ -74,7 +49,9 @@ public class MultiplayerClientPlayingField extends MultiplayerPlayingField {
 	public void moveMovables() {
 		//The server handles moving of enemyfish
 		PlayerFish player = getOwnPlayer();
-		player.getBehaviour().preMove();
+		if (player != null) {
+			player.getBehaviour().preMove();
+		}
 	}
 	
 	@Override
@@ -123,7 +100,7 @@ public class MultiplayerClientPlayingField extends MultiplayerPlayingField {
 			updateEntity(currentEntity, optionalEntity.get());
 		}
 		
-		if (!getEntities().contains(getOwnPlayer())) {
+		if (getOwnPlayer() != null && !getEntities().contains(getOwnPlayer())) {
 			getOwnPlayer().setDead();
 		}
 	}
@@ -137,7 +114,7 @@ public class MultiplayerClientPlayingField extends MultiplayerPlayingField {
 	 * 		the entity to update with
 	 */
 	private void updateEntity(Entity current, Entity updated) {
-		if (current instanceof PlayerFish && current == getOwnPlayer()) {
+		if (current instanceof PlayerFish && current.equals(getOwnPlayer())) {
 			//Dont update the speed and position of our own player, we handle that ourselves.
 			if (updated.isDead()) {
 				current.kill();

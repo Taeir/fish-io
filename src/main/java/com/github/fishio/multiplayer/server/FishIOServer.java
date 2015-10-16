@@ -1,9 +1,8 @@
 package com.github.fishio.multiplayer.server;
 
-import java.io.Closeable;
-
 import com.github.fishio.Preloader;
-import com.github.fishio.control.MultiPlayerGameController;
+import com.github.fishio.Util;
+import com.github.fishio.control.MultiplayerGameController;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.multiplayer.FishMessage;
@@ -36,7 +35,7 @@ public final class FishIOServer implements Runnable {
 	private MultiplayerServerPlayingField playingField;
 	
 	private FishIOServer() {
-		MultiPlayerGameController controller = Preloader.getControllerOrLoad("multiPlayerGame");
+		MultiplayerGameController controller = Preloader.getControllerOrLoad("multiplayerGameScreen");
 		playingField = new MultiplayerServerPlayingField(60, controller.getCanvas());
 	}
 	
@@ -81,6 +80,8 @@ public final class FishIOServer implements Runnable {
 			this.started = true;
 		}
 		
+		Log.getLogger().log(LogLevel.INFO, "[Server] Starting server on port " + port);
+		
 		//Handles accepting connections
 		EventLoopGroup bossGroup = new NioEventLoopGroup();
 		//Handles sending/receiving messages
@@ -100,8 +101,6 @@ public final class FishIOServer implements Runnable {
 			})
 			.option(ChannelOption.SO_BACKLOG, 128)
 			.childOption(ChannelOption.SO_KEEPALIVE, true);
-
-			Log.getLogger().log(LogLevel.INFO, "[Server] Starting server on port " + port);
 			
 			//Bind and start to accept incoming connections.
 			ChannelFuture f = b.bind(port).sync();
@@ -110,7 +109,12 @@ public final class FishIOServer implements Runnable {
 				this.channel = f.channel();
 			}
 
+			//Call onStop when we stop
 			f.channel().closeFuture().addListener((future) -> onStop());
+			
+			//Create own player and start the game
+			this.playingField.respawnOwnPlayer();
+			this.playingField.startGame();
 			
 			//Wait until the server socket is closed.
 			f.channel().closeFuture().sync();
@@ -205,7 +209,7 @@ public final class FishIOServer implements Runnable {
 		Log.getLogger().log(LogLevel.INFO, "[Server] Server stopped");
 		
 		//Switch to the main menu
-		Preloader.switchTo("mainMenu", 1000);
+		Util.onJavaFX(() -> Preloader.switchTo("mainMenu", 1000));
 	}
 	
 	/**

@@ -22,7 +22,7 @@ public class FishServerHandler extends SimpleChannelInboundHandler<FishClientMes
 				"[Server] [" + ctx.channel().remoteAddress() + "] Received " + msg.getClass().getSimpleName());
 		
 		if (msg instanceof FishClientRequestPlayerMessage) {
-			handlePlayerRequest((FishClientRequestPlayerMessage) msg, ctx.channel());
+			handlePlayerRequest((FishClientRequestPlayerMessage) msg, ctx);
 		}
 		
 		if (msg instanceof FishClientPlayerFishMessage) {
@@ -35,20 +35,17 @@ public class FishServerHandler extends SimpleChannelInboundHandler<FishClientMes
 	 * 
 	 * @param msg
 	 * 		the message from the client.
-	 * @param channel
-	 * 		the channel that can be used to send messages back.
+	 * @param ctx
+	 * 		the ChannelHandlerContext that can be used to send messages back.
 	 */
-	public void handlePlayerRequest(FishClientRequestPlayerMessage msg, Channel channel) {
+	public void handlePlayerRequest(FishClientRequestPlayerMessage msg, ChannelHandlerContext ctx) {
 		//A client is requesting a new playerfish, so we need to create one.
 		MultiplayerServerPlayingField mspf = FishIOServer.getInstance().getPlayingField();
-		PlayerFish player = mspf.createPlayer();
+		PlayerFish player = mspf.createClientPlayer();
 		
 		//Send a message back to the client with the newly spawned player fish
 		FishServerPlayerMessage fspm = new FishServerPlayerMessage(player);
-		channel.write(fspm);
-		
-		//Add the playerfish to the field.
-		mspf.add(fspm);
+		ctx.writeAndFlush(fspm);
 	}
 	
 	/**
@@ -58,7 +55,6 @@ public class FishServerHandler extends SimpleChannelInboundHandler<FishClientMes
 	 * 		the message from the client.
 	 */
 	public void handleClientUpdate(FishClientPlayerFishMessage msg) {
-		PlayerFish updated = msg.getPlayer();
 		MultiplayerServerPlayingField mspf = FishIOServer.getInstance().getPlayingField();
 		
 		mspf.updatePlayer(msg.getPlayer());
