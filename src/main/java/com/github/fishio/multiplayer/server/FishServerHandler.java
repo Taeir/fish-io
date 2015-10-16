@@ -7,15 +7,34 @@ import com.github.fishio.multiplayer.client.FishClientPlayerFishMessage;
 import com.github.fishio.multiplayer.client.FishClientRequestPlayerMessage;
 import com.github.fishio.multiplayer.client.FishClientMessage;
 
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.group.ChannelGroup;
 
 /**
  * Handler used by the server for messages sent from the client.
  */
 public class FishServerHandler extends SimpleChannelInboundHandler<FishClientMessage> {
-
+	
+	private ChannelGroup allChannels;
+	
+	/**
+	 * Creates a new FishServerHandler.
+	 * 
+	 * @param channelGroup
+	 * 		the channelgroup to add new channels to.
+	 */
+	public FishServerHandler(ChannelGroup channelGroup) {
+		allChannels = channelGroup;
+	}
+	
+	@Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        //Add channels to the group.
+        allChannels.add(ctx.channel());
+        super.channelActive(ctx);
+    }
+	
 	@Override
 	protected void messageReceived(ChannelHandlerContext ctx, FishClientMessage msg) throws Exception {
 		Log.getLogger().log(LogLevel.INFO,

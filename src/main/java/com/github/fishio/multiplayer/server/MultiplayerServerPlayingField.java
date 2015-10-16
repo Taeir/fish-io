@@ -46,8 +46,7 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 	 */
 	public void sendEntitiesUpdate() {
 		FishServerEntitiesMessage fsem = new FishServerEntitiesMessage(this);
-		FishIOServer.getInstance().queueMessage(fsem);
-		FishIOServer.getInstance().flush();
+		FishIOServer.getInstance().queueMessage(fsem, true);
 	}
 	
 	/**
