@@ -24,6 +24,7 @@ import javafx.scene.paint.Color;
  * Represents an entity in the game.
  */
 public abstract class Entity implements ICollidable, IPositional, IDrawable, Subject, Serializable {
+	
 	private static final long serialVersionUID = 650039406095374770L;
 	protected static Log logger = Log.getLogger();
 	protected static Settings settings = Settings.getInstance();
@@ -36,15 +37,21 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	
 	private int entityId;
 	
+	private IMoveBehaviour behaviour;
+	
 	/**
 	 * This constructor creates an entity in the game.
 	 * 
 	 * @param boundingArea
 	 *            the bounding area of this Entity
+	 * @param behaviour
+	 * 		The behaviour of this entity.
 	 */
-	public Entity(CollisionMask boundingArea) {
+	public Entity(CollisionMask boundingArea, IMoveBehaviour behaviour) {
 		this.boundingArea = boundingArea;
 		this.entityId = getFreeEntityId();
+		
+		this.behaviour = behaviour;
 	}
 	
 	/**
@@ -56,10 +63,14 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	 * 		the bounding area of this Entity
 	 * @param entityId
 	 * 		the entityId to use.
+	 * @param behaviour
+	 * 		The behaviour of this entity.
 	 */
-	protected Entity(CollisionMask boundingArea, int entityId) {
+	protected Entity(CollisionMask boundingArea, int entityId, IMoveBehaviour behaviour) {
 		this.boundingArea = boundingArea;
 		this.entityId = entityId;
+		
+		this.behaviour = behaviour;
 	}
 	
 	/**
@@ -117,17 +128,21 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 	}
 	
 	/**
-	 * @return The behavior of this entity.
-	 */
-	public abstract IMoveBehaviour getBehaviour();
-	
-	/**
 	 * Changes the behavior of this entity.
 	 * 
 	 * @param behaviour
 	 *            The behavior this entity should adopt
 	 */
-	public abstract void setBehaviour(IMoveBehaviour behaviour);
+	public void setBehaviour(IMoveBehaviour behaviour) {
+		this.behaviour = behaviour;
+	}
+	
+	/**
+	 * @return The current behaviour of this entity.
+	 */
+	public IMoveBehaviour getBehaviour() {
+		return behaviour;
+	}
 	
 	@Override
 	public CollisionMask getBoundingArea() {
@@ -199,12 +214,14 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 		out.writeInt(this.entityId);
 		out.writeBoolean(this.isDead());
 		out.writeObject(this.boundingArea);
+		out.writeObject(this.behaviour);
 	}
 	
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		this.entityId = in.readInt();
 		this.deathProperty = new SimpleBooleanProperty(in.readBoolean());
 		this.boundingArea = (CollisionMask) in.readObject();
+		this.behaviour = (IMoveBehaviour) in.readObject();
 		
 		this.observers = new ArrayList<AchievementObserver>();
 	}

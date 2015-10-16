@@ -6,7 +6,6 @@ import com.github.fishio.ICollidable;
 import com.github.fishio.IEatable;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
-import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.behaviours.VerticalBehaviour;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
@@ -26,8 +25,6 @@ public abstract class PowerUp extends Entity implements IEatable {
 	
 	private Image sprite;
 	
-	private IMoveBehaviour behaviour;
-	
 	private static final double DEFAULT_SPEED = 2;
 	
 	/**
@@ -41,12 +38,10 @@ public abstract class PowerUp extends Entity implements IEatable {
 	 *            The sprite of this PowerUp
 	 */
 	public PowerUp(CollisionMask ba, PlayingField pfield, Image image) {
-		super(ba);
+		super(ba, new VerticalBehaviour(DEFAULT_SPEED));
 		
 		this.playingField = pfield;
 		this.sprite = image;
-		
-		this.behaviour = new VerticalBehaviour(DEFAULT_SPEED);
 	}
 	
 	/**
@@ -65,16 +60,6 @@ public abstract class PowerUp extends Entity implements IEatable {
 	 * 		The PlayerFish this PowerUp collided with
 	 */
 	public abstract void executeEffect(PlayerFish pfish);
-	
-	@Override
-	public IMoveBehaviour getBehaviour() {
-		return behaviour;
-	}
-	
-	@Override
-	public void setBehaviour(IMoveBehaviour behaviour) {
-		this.behaviour = behaviour;
-	}
 	
 	/**
 	 * @return
