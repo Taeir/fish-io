@@ -106,13 +106,19 @@ public class FishIO extends Application {
 		
 		//Shutdown AudioEngine
 		AudioEngine.getInstance().shutdown();
+		
+		//Close the window
+		this.primaryStage.close();
+		
+		//Unregister logger handlers
+		log.removeAllHandlers();
+		
+		//Close the log handler
 		try {
 			textFileHandler.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		this.primaryStage.close();
 	}
 
 	/**
