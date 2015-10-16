@@ -149,10 +149,6 @@ public class BoundingBox implements ICollisionArea, Serializable {
 		height += b;
 	}
 
-	@Override
-	public boolean intersects(ICollisionArea other) {
-		return boxIntersects(other);
-	}
 
 	@Override
 	public double getRotation() {

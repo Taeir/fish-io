@@ -15,7 +15,7 @@ import com.github.fishio.SinglePlayerPlayingField;
  */
 public class TestPuExtraLife extends TestPowerUp {
 
-	private PuExtraLife pu;
+	private ExtraLifePowerUp pu;
 	private PlayingField pf;
 	
 	/**
@@ -25,7 +25,7 @@ public class TestPuExtraLife extends TestPowerUp {
 	@Before
 	public void setUp() {
 		this.pf = Mockito.mock(SinglePlayerPlayingField.class);
-		this.pu = Mockito.spy(new PuExtraLife(null, pf, Mockito.mock(Image.class)));
+		this.pu = Mockito.spy(new ExtraLifePowerUp(null, pf, Mockito.mock(Image.class)));
 	}
 	
 	@Override
