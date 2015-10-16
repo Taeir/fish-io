@@ -13,14 +13,15 @@ import org.mockito.Mockito;
 import com.github.fishio.behaviours.VerticalBehaviour;
 import com.github.fishio.game.GameState;
 import com.github.fishio.gui.GuiTest;
+import com.github.fishio.gui.SlimGuiTest;
 
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.stage.Stage;
 
 /**
  * Tests the PlayingField class.
  */
-public class TestPlayingField extends GuiTest {
+public class TestPlayingField extends SlimGuiTest {
 
 	private PlayingField field;
 	private Canvas canvas;
@@ -30,8 +31,8 @@ public class TestPlayingField extends GuiTest {
 	 */
 	@Before
 	public void setUp() {
-		this.canvas = Mockito.spy(new Canvas());
-		field = new SinglePlayerPlayingField(60, canvas);
+		this.canvas = Mockito.spy(new Canvas(1280, 670));
+		this.field = new SinglePlayerPlayingField(60, canvas, Mockito.mock(Scene.class));
 	}
 	
 	/**
@@ -85,8 +86,8 @@ public class TestPlayingField extends GuiTest {
 	 */
 	@Test
 	public void testGetEntities() {
-		assertEquals(1, field.getEntities().size());
-		assertTrue(field.getEntities().get(0) instanceof PlayerFish);
+		assertEquals(1, field.getEntitiesList().size());
+		assertTrue(field.getEntitiesList().get(0) instanceof PlayerFish);
 	}
 	
 	/**
@@ -176,7 +177,7 @@ public class TestPlayingField extends GuiTest {
 		
 		field.add(e);
 		
-		assertTrue(field.getEntities().contains(e));
+		assertTrue(field.getEntitiesList().contains(e));
 		assertTrue(field.getDrawables().contains(e));
 		assertEquals(2, field.getDrawables().size());
 	}
@@ -191,9 +192,9 @@ public class TestPlayingField extends GuiTest {
 		field.add(e);
 		field.remove(e);
 		
-		assertFalse(field.getEntities().contains(e));
+		assertFalse(field.getEntitiesList().contains(e));
 		assertFalse(field.getDrawables().contains(e));
-		assertEquals(1, field.getEntities().size());
+		assertEquals(1, field.getEntitiesList().size());
 	}
 	
 	/**
@@ -208,7 +209,7 @@ public class TestPlayingField extends GuiTest {
 		field.clear();
 		
 		// Everything is gone but the PlayerFish.
-		assertEquals(1, field.getEntities().size());
+		assertEquals(1, field.getEntitiesList().size());
 		assertEquals(1, field.getDrawables().size());
 	}
 	
@@ -219,12 +220,12 @@ public class TestPlayingField extends GuiTest {
 	public void clearEnemies() {
 		for (int i = 0; i < 10; i++) {
 			field.add(Mockito.mock(Entity.class));
-			field.add(new PlayerFish(null, Mockito.mock(Stage.class), null));
+			field.add(new PlayerFish(null, Mockito.mock(Scene.class), null));
 		}
 		
 		field.clearEnemies();
 		
-		assertEquals(11, field.getEntities().size());
+		assertEquals(11, field.getEntitiesList().size());
 		assertEquals(11, field.getDrawables().size());
 	}
 	
@@ -308,9 +309,9 @@ public class TestPlayingField extends GuiTest {
 		
 		field.cleanupDead();
 		
-		assertEquals(2, field.getEntities().size());
-		assertTrue(field.getEntities().contains(e2));
-		assertFalse(field.getEntities().contains(e1));
+		assertEquals(2, field.getEntitiesList().size());
+		assertTrue(field.getEntitiesList().contains(e2));
+		assertFalse(field.getEntitiesList().contains(e1));
 	}
 	
 	/**
@@ -320,16 +321,16 @@ public class TestPlayingField extends GuiTest {
 	public void testAddEntities() {
 		field.addEntities();
 		
-		assertEquals(PlayingField.MAX_ENEMY_COUNT + 1, field.getEntities().size());
+		assertEquals(PlayingField.MAX_ENEMY_COUNT + 1, field.getEntitiesList().size());
 		
 		for (int i = 5; i < 11; i++) {
-			field.getEntities().get(i).kill();
+			field.getEntitiesList().get(i).kill();
 		}
 		field.cleanupDead();
 		
 		field.addEntities();
 		
-		assertEquals(PlayingField.MAX_ENEMY_COUNT + 1, field.getEntities().size());
+		assertEquals(PlayingField.MAX_ENEMY_COUNT + 1, field.getEntitiesList().size());
 	}
 	
 	/**
@@ -337,7 +338,7 @@ public class TestPlayingField extends GuiTest {
 	 */
 	@Test
 	public void testMoveMovables() {
-		BoundingBox ca = Mockito.mock(BoundingBox.class);
+		CollisionMask ca = Mockito.mock(CollisionMask.class);
 		Entity e = new EnemyFish(ca, null, 0, 0);
 		VerticalBehaviour b = Mockito.spy(new VerticalBehaviour(3));
 		e.setBehaviour(b);

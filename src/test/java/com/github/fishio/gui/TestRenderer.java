@@ -49,7 +49,7 @@ public class TestRenderer {
 		canvas = spy(new Canvas());
 		
 		//Create the renderer
-		renderer = new Renderer(sppf, canvas, 60);
+		renderer = new Renderer(sppf, canvas, 60, 0);
 	}
 
 	/**

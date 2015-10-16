@@ -1,6 +1,7 @@
 package com.github.fishio.control;
 
 import com.github.fishio.FishIO;
+import com.github.fishio.MenuField;
 import com.github.fishio.Preloader;
 import com.github.fishio.audio.AudioEngine;
 import com.github.fishio.logging.Log;
@@ -8,6 +9,7 @@ import com.github.fishio.logging.LogLevel;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 
 /**
@@ -16,6 +18,11 @@ import javafx.scene.control.Button;
 public class MainMenuController implements ScreenController {
 	
 	private Log logger = Log.getLogger();
+	private MenuField field;
+	
+	
+	@FXML
+	private Canvas canvas;
 	
 	@FXML
 	private Button btnSingleplayer;
@@ -48,7 +55,10 @@ public class MainMenuController implements ScreenController {
 	public void init(Scene scene) { }
 	
 	@Override
-	public void onSwitchTo() { }
+	public void onSwitchTo() {
+		field = new MenuField(60, canvas);
+		field.startGame();
+	}
 
 	/**
 	 * Start a singleplayer game.
@@ -70,7 +80,8 @@ public class MainMenuController implements ScreenController {
 	public void startMultiplayer() {
 		AudioEngine.getInstance().playEffect("button");
 		
-		//TODO (not now)
+		logger.log(LogLevel.INFO, "Player Pressed the multiplayer Button.");
+		Preloader.switchTo("multiplayerScreen", 400);
 	}
 
 	/**
@@ -225,6 +236,11 @@ public class MainMenuController implements ScreenController {
 	 */
 	public Button getBtnExit() {
 		return btnExit;
+	}
+
+	@Override
+	public void onSwitchAway() {
+		field.stopGame();		
 	}
 
 }

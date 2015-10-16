@@ -8,9 +8,9 @@ import com.github.fishio.listeners.TickListener;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.power_ups.PowerUp;
-import com.github.fishio.power_ups.PuExtraLife;
-import com.github.fishio.power_ups.PuFreeze;
-import com.github.fishio.power_ups.PuSuperSpeed;
+import com.github.fishio.power_ups.ExtraLifePowerUp;
+import com.github.fishio.power_ups.FreezePowerUp;
+import com.github.fishio.power_ups.SuperSpeedPowerUp;
 import com.github.fishio.settings.Settings;
 
 /**
@@ -20,9 +20,6 @@ import com.github.fishio.settings.Settings;
 public class PowerUpSpawner implements TickListener {
 
 	private final PlayingField playingField;
-	
-	private final int minX;
-	private final int maxX;
 	
 	public static final int WIDTH = 25;
 	public static final int HEIGHT = 25;
@@ -55,9 +52,6 @@ public class PowerUpSpawner implements TickListener {
 		this.intervalTicks = getInterval() * pf.getFPS();
 		this.tickCounter = 0;
 		
-		this.minX = 0;
-		this.maxX = (int) pf.getWidth();
-		
 		this.logger = Log.getLogger();
 		
 		pf.getGameThread().registerListener(this);
@@ -85,7 +79,7 @@ public class PowerUpSpawner implements TickListener {
 		
 		//Creating the BoundingBox for the PowerUp with a on the
 		//top of the screen and with a random x location.
-		int x = rand.nextInt(maxX - minX + 1) + minX;
+		int x = rand.nextInt((int) settings.getDouble("SCREEN_WIDTH") - 1);
 		int y = -HEIGHT; //(top of the screen: y=0, to spawn outside it, we need Ytop - height)
 		
 		int powerUpNumber = rand.nextInt(POWERUP_COUNT);
@@ -100,11 +94,11 @@ public class PowerUpSpawner implements TickListener {
 		//Choosing a random PowerUp.
 		switch (powerUpNumber) {
 		case 0:
-			return new PuFreeze(cm, playingField, sprite);
+			return new FreezePowerUp(cm, playingField, sprite);
 		case 1:
-			return new PuSuperSpeed(cm, playingField, sprite);
+			return new SuperSpeedPowerUp(cm, playingField, sprite);
 		case 2:
-			return new PuExtraLife(cm, playingField, sprite);
+			return new ExtraLifePowerUp(cm, playingField, sprite);
 		default:
 			return null;
 		}

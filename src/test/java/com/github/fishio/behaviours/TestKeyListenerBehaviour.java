@@ -8,7 +8,7 @@ import org.mockito.Mockito;
 
 import com.github.fishio.Vec2d;
 
-import javafx.stage.Stage;
+import javafx.scene.Scene;
 
 /**
  * Test class for the KeyListenerBehaviour class.
@@ -23,7 +23,7 @@ public class TestKeyListenerBehaviour {
 	@Before
 	public void setUp() {
 		
-		this.behaviour = Mockito.spy(new KeyListenerBehaviour(Mockito.mock(Stage.class), 
+		this.behaviour = Mockito.spy(new KeyListenerBehaviour(Mockito.mock(Scene.class), 
 				null, null, null, null, 0.1, 4));
 	}
 	

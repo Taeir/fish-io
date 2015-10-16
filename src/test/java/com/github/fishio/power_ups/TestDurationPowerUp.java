@@ -22,7 +22,7 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 * @return
 	 * 		The DurationPowerUp used for testing.
 	 */
-	public abstract DurationPowerUp getDurationPowerUp();
+	public abstract PowerUpDuration getDurationPowerUp();
 	
 	@Override
 	public PowerUp getPowerUp() {
@@ -31,7 +31,7 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	
 	@Override
 	public void testExecuteEffect() {
-		DurationPowerUp pu = getDurationPowerUp();
+		PowerUpDuration pu = getDurationPowerUp();
 		
 		assertFalse(pu.isActive());
 		
@@ -77,12 +77,11 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 */
 	@Test
 	public void testPreTickNotActive() {
-		DurationPowerUp pu = getDurationPowerUp();
+		PowerUpDuration pu = getDurationPowerUp();
 		
 		pu.preTick();
 		
 		assertEquals(0, pu.getTickCounter());
-		Mockito.verify(pu, never()).preTickEffect();
 	}
 	
 	/**
@@ -91,7 +90,7 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 */
 	@Test
 	public void testPreTickActiveOnPoint() {
-		DurationPowerUp pu = getDurationPowerUp();
+		PowerUpDuration pu = getDurationPowerUp();
 		
 		pu.setActive(true);
 		pu.setTickCounter(1);
@@ -99,7 +98,6 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 		pu.preTick();
 		
 		assertEquals(1, pu.getTickCounter());
-		Mockito.verify(pu).preTickEffect();
 	}
 	
 	/**
@@ -108,14 +106,13 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 */
 	@Test
 	public void testPreTickActiveOffPoint() {
-		DurationPowerUp pu = getDurationPowerUp();
+		PowerUpDuration pu = getDurationPowerUp();
 		
 		pu.setActive(true);
 		
 		pu.preTick();
 		
 		assertEquals(0, pu.getTickCounter());
-		Mockito.verify(pu, never()).preTickEffect();
 	}
 	
 	/**
@@ -123,12 +120,11 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 */
 	@Test
 	public void testPostTickNotActive() {
-		DurationPowerUp pu = getDurationPowerUp();
+		PowerUpDuration pu = getDurationPowerUp();
 		
 		pu.postTick();
 		
 		assertEquals(0, pu.getTickCounter());
-		Mockito.verify(pu, never()).postTickEffect();
 		Mockito.verify(pu, never()).endEffect();
 		assertFalse(pu.isActive());
 	}
@@ -139,7 +135,7 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 */
 	@Test
 	public void testPostTickActiveOnPoint() {
-		DurationPowerUp pu = getDurationPowerUp();
+		PowerUpDuration pu = getDurationPowerUp();
 		
 		pu.setActive(true);
 		pu.setTickCounter(pu.getTimeTicks() - 1); // The on-point
@@ -147,7 +143,6 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 		pu.postTick();
 		
 		assertEquals(pu.getTimeTicks(), pu.getTickCounter());
-		Mockito.verify(pu, never()).postTickEffect();
 		Mockito.verify(pu).endEffect();
 		assertFalse(pu.isActive());
 		
@@ -162,7 +157,7 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 */
 	@Test
 	public void testPostTickActiveOffPoint() {
-		DurationPowerUp pu = getDurationPowerUp();
+		PowerUpDuration pu = getDurationPowerUp();
 		
 		pu.setActive(true);
 		pu.setTickCounter(pu.getTimeTicks() - 2); // The off-point
@@ -170,7 +165,6 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 		pu.postTick();
 		
 		assertEquals(pu.getTimeTicks() - 1, pu.getTickCounter());
-		Mockito.verify(pu).postTickEffect();
 		Mockito.verify(pu, never()).endEffect();
 		assertTrue(pu.isActive());
 		
@@ -184,7 +178,7 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 */
 	@Test
 	public void testGetTarget() {
-		DurationPowerUp pu = getDurationPowerUp();
+		PowerUpDuration pu = getDurationPowerUp();
 		
 		PlayerFish pf = Mockito.mock(PlayerFish.class);
 		
@@ -198,7 +192,7 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	 */
 	@Test
 	public void testGetSetTarget() {
-		DurationPowerUp pu = getDurationPowerUp();
+		PowerUpDuration pu = getDurationPowerUp();
 		
 		PlayerFish pf = Mockito.mock(PlayerFish.class);
 		

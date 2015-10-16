@@ -1,5 +1,6 @@
 package com.github.fishio;
 
+import java.util.Collection;
 import java.util.Random;
 
 import com.github.fishio.settings.Settings;
@@ -20,21 +21,73 @@ public final class EnemyFishFactory {
 	private EnemyFishFactory() {
 		//to prevent initiation
 	}
-
+	
 	/**
 	 * Creates a random EnemyFish. This fish will get a sprite and always spawn
 	 * outside the screen and always move towards the inside.
 	 * 
 	 * @param ca
-	 *            A Bounding Area which decides about what size the fish will
-	 *            have.
-	 * @return random Enemyfish
+	 * 		a Collision Area which decides the minimum and maximum size
+	 * 		of the fish being spawned.
+	 * 
+	 * @return
+	 * 		a randomized EnemyFish.
 	 */
 	public static EnemyFish randomizedFish(ICollisionArea ca) {
-		//randomize fish properties 
 		int minSize = (int) (ca.getSize() * 0.2);
 		int maxSize = (int) (ca.getSize() * 4.5);
+		
+		return randomizedFish(minSize, maxSize);
+	}
+	
+	/**
+	 * Creates a random EnemyFish. This fish will get a sprite and always spawn
+	 * outside the screen and always move towards the inside.
+	 * 
+	 * @param sizes
+	 * 		a collection of entities used for determining the size of the
+	 * 		fish being spawned.
+	 * 
+	 * @return
+	 * 		a randomized EnemyFish.
+	 */
+	public static EnemyFish randomizedFish(Collection<? extends Entity> sizes) {
+		if (sizes.isEmpty()) {
+			return randomizedFish(500, 1000);
+		}
+		
+		int minSize = Integer.MAX_VALUE;
+		int maxSize = Integer.MIN_VALUE;
+		
+		for (Entity e : sizes) {
+			int min = (int) (e.getBoundingArea().getSize() * 0.2);
+			int max = (int) (e.getBoundingArea().getSize() * 4.5);
+			
+			if (min < minSize) {
+				minSize = min;
+			}
+			if (max > maxSize) {
+				maxSize = max;
+			}
+		}
+		
+		return randomizedFish(minSize, maxSize);
+	}
 
+	/**
+	 * Creates a random EnemyFish. This fish will get a sprite and always spawn
+	 * outside the screen and always move towards the inside.
+	 * 
+	 * @param minSize
+	 * 		the minimum size of the fish
+	 * @param maxSize
+	 * 		the maximum size of the fish
+	 * 
+	 * @return
+	 * 		a random Enemyfish
+	 */
+	public static EnemyFish randomizedFish(int minSize, int maxSize) {
+		//randomize fish properties 
 		int size = random.nextInt(maxSize - minSize + 1) + minSize;
 		String spriteString = getRandomSprite();
 		Image sprite = Preloader.getImageOrLoad(spriteString);
@@ -73,7 +126,8 @@ public final class EnemyFishFactory {
 			break;
 		}
 
-		EnemyFish eFish = new EnemyFish(new CollisionMask(position, width, height, data, relSize), sprite , vx, vy);
+		EnemyFish eFish =
+				new EnemyFish(new CollisionMask(position, width, height, data, relSize), spriteString, vx, vy);
 		
 		//TODO Check for decent properties
 		//eFish.checkProperties()

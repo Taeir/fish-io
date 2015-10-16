@@ -17,9 +17,10 @@ import org.mockito.Mockito;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.gui.SlimGuiTest;
 import com.github.fishio.power_ups.PowerUp;
-import com.github.fishio.power_ups.PuExtraLife;
-import com.github.fishio.power_ups.PuFreeze;
-import com.github.fishio.power_ups.PuSuperSpeed;
+import com.github.fishio.power_ups.ExtraLifePowerUp;
+import com.github.fishio.power_ups.FreezePowerUp;
+import com.github.fishio.power_ups.SuperSpeedPowerUp;
+import com.github.fishio.settings.Settings;
 
 /**
  * Tests the PowerUpSpawer class.
@@ -60,7 +61,7 @@ public class TestPowerUpSpawner extends SlimGuiTest {
 		when(rand.nextInt(pus.getPowerUpCount())).thenReturn(0);
 		
 		PowerUp pu = pus.getRandomPowerUp();
-		assertTrue(pu instanceof PuFreeze);
+		assertTrue(pu instanceof FreezePowerUp);
 		
 		//TODO check the correct CollisionMask of the PowerUp
 		//once CollisionMasks are implemented in PowerUps.
@@ -75,7 +76,7 @@ public class TestPowerUpSpawner extends SlimGuiTest {
 		when(rand.nextInt(pus.getPowerUpCount())).thenReturn(1);
 		
 		PowerUp pu = pus.getRandomPowerUp();
-		assertTrue(pu instanceof PuSuperSpeed);
+		assertTrue(pu instanceof SuperSpeedPowerUp);
 		
 		//TODO check the correct CollisionMask of the PowerUp
 		//once CollisionMasks are implemented in PowerUps.
@@ -90,7 +91,7 @@ public class TestPowerUpSpawner extends SlimGuiTest {
 		when(rand.nextInt(pus.getPowerUpCount())).thenReturn(2);
 		
 		PowerUp pu = pus.getRandomPowerUp();
-		assertTrue(pu instanceof PuExtraLife);
+		assertTrue(pu instanceof ExtraLifePowerUp);
 	}
 	
 	/**
@@ -99,7 +100,7 @@ public class TestPowerUpSpawner extends SlimGuiTest {
 	 */
 	@Test
 	public void testGetRandomPowerUpLocation() {
-		when(rand.nextInt(101)).thenReturn(51);
+		when(rand.nextInt((int) (Settings.getInstance().getDouble("SCREEN_WIDTH") - 1))).thenReturn(51);
 		
 		//Checking for each different PowerUp whether it has the correct location.
 		int cases = pus.getPowerUpCount() - 1;

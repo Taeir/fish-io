@@ -1,19 +1,19 @@
 package com.github.fishio.power_ups;
 
-import javafx.scene.image.Image;
-
-import com.github.fishio.ICollisionArea;
+import com.github.fishio.CollisionMask;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
 import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.behaviours.KeyListenerBehaviour;
+
+import javafx.scene.image.Image;
 
 /**
  * PuSuperSpeed is a PowerUp where the effect is
  * drastically increasing the acceleration and speed
  * of the PlayerFish.
  */
-public class PuSuperSpeed extends DurationPowerUp {
+public class SuperSpeedPowerUp extends PowerUpDuration {
 
 	private static final int DURATION = 10;
 	public static final double ACCELERATION_FACTOR = 2.5;
@@ -25,13 +25,14 @@ public class PuSuperSpeed extends DurationPowerUp {
 	 * Creates a new PowerUp of the SuperSpeed type.
 	 * 
 	 * @param ba
-	 * 		The CollisonArea of the PowerUp.
+	 *            The CollisonMask of the PowerUp.
 	 * @param pfield
-	 * 		The PlayingField in which this PowerUp is located.
+	 *            The PlayingField in which this PowerUp is located.
 	 * @param sprite
-	 * 		The sprite of this PowerUp.
+	 *            The sprite of this PowerUp.
 	 */
-	public PuSuperSpeed(ICollisionArea ba, PlayingField pfield, Image sprite) {
+	public SuperSpeedPowerUp(CollisionMask ba, PlayingField pfield, Image sprite) {
+
 		super(ba, pfield, sprite);
 	}
 
@@ -60,12 +61,6 @@ public class PuSuperSpeed extends DurationPowerUp {
 		keyBehaviour.setAcceleration(keyBehaviour.getAcceleration() * ACCELERATION_FACTOR);
 		keyBehaviour.setMaxSpeed(keyBehaviour.getMaxSpeed() * MAX_SPEED_FACTOR);
 	}
-
-	@Override
-	public void preTickEffect() { }
-
-	@Override
-	public void postTickEffect() { }
 
 	/** 
 	 * Restores the acceleration and the MaxSpeed of
