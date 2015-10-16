@@ -1,26 +1,29 @@
 package com.github.fishio;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import com.github.fishio.achievements.State;
 import com.github.fishio.achievements.Subject;
 import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.behaviours.KeyListenerBehaviour;
-import com.github.fishio.settings.Settings;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.stage.Stage;
 
 /**
  * Represents a fish that the user can control using
  * the keyboard.
  */
 public class PlayerFish extends Entity implements IEatable, IPositional, Subject {
+	private static final long serialVersionUID = 4226766216723804140L;
+
+	public static final double FISH_ACCELERATION = 0.1;
 	
-	private static final double FISH_ACCELERATION = 0.1;
-	
-	private Settings settings = Settings.getInstance();
 	private Image sprite;
 
 	private SimpleIntegerProperty score = new SimpleIntegerProperty(0);	
@@ -33,25 +36,48 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 	/**
 	 * Creates the Player fish which the user will be able to control.
 	 * 
-	 * @param ca
-	 *            The (inital) bounding area of the PlayerFish
-	 * @param stage
+	 * @param collisionMask
+	 *            The (initial) collision mask of the PlayerFish
+	 * @param scene
 	 *            The scene in which the player fish is located at
 	 * @param sprite
 	 *            The sprite of the player fish
 	 */
-	public PlayerFish(CollisionMask ca, Stage stage, Image sprite) {
-		super(ca);		
-
+	public PlayerFish(CollisionMask collisionMask, Scene scene, Image sprite) {
+		super(collisionMask);
+		
 		this.sprite = sprite;
+
 		double maxSpeed = settings.getDouble("MAX_PLAYER_SPEED");
 		double acceleration = FISH_ACCELERATION;
 		KeyCode keyUp = settings.getKeyCode("SWIM_UP");
 		KeyCode keyDown = settings.getKeyCode("SWIM_DOWN");
 		KeyCode keyLeft = settings.getKeyCode("SWIM_LEFT");
 		KeyCode keyRight = settings.getKeyCode("SWIM_RIGHT");
-		this.behaviour = new KeyListenerBehaviour(stage, keyUp, keyDown, keyLeft, keyRight,
+		this.behaviour = new KeyListenerBehaviour(scene, keyUp, keyDown, keyLeft, keyRight,
 				acceleration, maxSpeed);
+	}
+	
+	/**
+	 * Creates a PlayerFish with a KeyListenerBehaviour not listening to
+	 * any keys.<br>
+	 * <br>
+	 * This constructor should only be used by the
+	 * {@link com.github.fishio.multiplayer.server.FishIOServer FishIOServer}.
+	 * 
+	 * @param collisionMask
+	 * 		the collision area to use
+	 * @param sprite
+	 * 		the sprite to use for the player fish.
+	 */
+	public PlayerFish(CollisionMask collisionMask, Image sprite) {
+		super(collisionMask);
+		
+		this.sprite = sprite;
+		
+		double maxSpeed = settings.getDouble("MAX_PLAYER_SPEED");
+		double acceleration = FISH_ACCELERATION;
+		this.behaviour = new KeyListenerBehaviour(acceleration, maxSpeed);
 	}
 
 	/**
@@ -270,4 +296,20 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 		this.behaviour = behaviour;
 	}
 
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.writeInt(this.score.intValue());
+		out.writeInt(this.lives.intValue());
+		out.writeLong(this.invincible);
+		out.writeObject(this.behaviour);
+	}
+	
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		this.score = new SimpleIntegerProperty(in.readInt());
+		this.lives = new SimpleIntegerProperty(in.readInt());
+		this.invincible = in.readLong();
+		this.behaviour = (IMoveBehaviour) in.readObject();
+		
+		//Load the sprite
+		this.sprite = Preloader.getImageOrLoad("sprites/fish/playerFish.png");
+	}
 }

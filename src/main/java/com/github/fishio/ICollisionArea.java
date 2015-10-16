@@ -245,4 +245,16 @@ public interface ICollisionArea {
 	default double getMinY() {
 		return getBox().getBoundsInParent().getMinY();
 	}
+	
+	/**
+	 * Update the parameters of this ICollisionArea to those of the given
+	 * area.
+	 * 
+	 * @param area
+	 * 		the ICollisionArea to update the parameters to.
+	 * 
+	 * @throws IllegalArgumentException
+	 * 		if the type of the given area and this area do not match.
+	 */
+	void updateTo(ICollisionArea area);
 }

@@ -2,7 +2,11 @@ package com.github.fishio;
 
 import java.util.ArrayList;
 
+import com.github.fishio.game.GameThread;
+import com.github.fishio.logging.LogLevel;
+
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 
 /**
@@ -16,6 +20,9 @@ public class SinglePlayerPlayingField extends PlayingField {
 	
 	private final SimpleObjectProperty<PlayerFish> player = new SimpleObjectProperty<PlayerFish>();
 	private final ArrayList<PlayerFish> players = new ArrayList<PlayerFish>(1);
+	
+	private GameThread gameThread;
+	private Scene scene;
 
 	/**
 	 * Creates the playing field for a single player.
@@ -25,8 +32,13 @@ public class SinglePlayerPlayingField extends PlayingField {
 	 * @param canvas
 	 *            the canvas to use, can be <code>null</code> to create one.
 	 */
-	public SinglePlayerPlayingField(int fps, Canvas canvas) {
+	public SinglePlayerPlayingField(int fps, Canvas canvas, Scene scene) {
 		super(fps, canvas, 50);
+		
+		this.scene = scene;
+		
+		gameThread = new GameThread(this);
+		logger.log(LogLevel.INFO, "Created GameThread");
 
 		//Add playerFish listeners (has to be the first method called in the constructor.)
 		addPlayerFishListeners();
@@ -57,11 +69,15 @@ public class SinglePlayerPlayingField extends PlayingField {
 	 * Creates and adds the player fish.
 	 */
 	protected final void addPlayerFish() {
-		setPlayer(new PlayerFish(getStartCollisionMask(),
-				FishIO.getInstance().getPrimaryStage(), 
+		setPlayer(new PlayerFish(getStartCollisionMask(), scene,
 				Preloader.getImageOrLoad("sprites/fish/playerFish.png")));
 
 		add(getPlayer());
+	}
+	
+	@Override
+	public GameThread getGameThread() {
+		return gameThread;
 	}
 	
 	/**

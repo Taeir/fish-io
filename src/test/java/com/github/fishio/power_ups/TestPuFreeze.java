@@ -65,7 +65,7 @@ public class TestPuFreeze extends TestDurationPowerUp {
 		entities.add(Mockito.mock(EnemyFish.class));
 		
 		//Making the PlayingField return our own entities.
-		when(pf.getEntities()).thenReturn(entities);
+		when(pf.getEntitiesList()).thenReturn(entities);
 		
 		//Invoking the startEffect method
 		pu.startEffect();
@@ -94,7 +94,7 @@ public class TestPuFreeze extends TestDurationPowerUp {
 		entities.add(Mockito.mock(EnemyFish.class));
 		
 		//Making the PlayingField return our own entities.
-		when(pf.getEntities()).thenReturn(entities);
+		when(pf.getEntitiesList()).thenReturn(entities);
 		
 		//Invoking the startEffect method and then the endEffect
 		pu.startEffect();

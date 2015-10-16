@@ -3,10 +3,9 @@ package com.github.fishio.power_ups;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
-
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
-import javafx.stage.Stage;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +44,7 @@ public class TestPuSuperSpeed extends TestDurationPowerUp {
 		this.pu.setTarget(fish);
 		
 		KeyListenerBehaviour klb = Mockito.spy(new KeyListenerBehaviour(
-				Mockito.mock(Stage.class), KeyCode.A, KeyCode.A, KeyCode.A, KeyCode.A, 5.0, 7.0));
+				Mockito.mock(Scene.class), KeyCode.A, KeyCode.A, KeyCode.A, KeyCode.A, 5.0, 7.0));
 		when(fish.getBehaviour()).thenReturn(klb);
 	}
 	

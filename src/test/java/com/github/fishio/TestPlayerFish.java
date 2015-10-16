@@ -16,14 +16,12 @@ import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.behaviours.KeyListenerBehaviour;
 import com.github.fishio.settings.Settings;
 
-import javafx.stage.Stage;
+import javafx.scene.Scene;
 
 /**
  * Tests the PlayerFish class.
  */
 public class TestPlayerFish extends TestIEatable {
-	//TODO Change some of the Mockito mocks and testing calls with verify(never), to simple getters.
-	//TODO - Comment made by Taeir - 2015/09/18
 	private PlayerFish pf;
 	private Settings settings = Settings.getInstance();
 	
@@ -33,7 +31,7 @@ public class TestPlayerFish extends TestIEatable {
 	 */
 	@Before
 	public void setUp() {
-		pf = Mockito.spy(new PlayerFish(Mockito.mock(CollisionMask.class), Mockito.mock(Stage.class), null));
+		pf = Mockito.spy(new PlayerFish(Mockito.mock(CollisionMask.class), Mockito.mock(Scene.class), null));
 		when(pf.getBoundingArea().getSize()).thenReturn(5.0);
 	}
 	
@@ -170,7 +168,7 @@ public class TestPlayerFish extends TestIEatable {
 	@Test
 	public void testCollideWithOtherPlayerFish() {
 		PlayerFish pf2 = Mockito
-				.spy(new PlayerFish(Mockito.mock(CollisionMask.class), Mockito.mock(Stage.class), null));
+				.spy(new PlayerFish(Mockito.mock(CollisionMask.class), Mockito.mock(Scene.class), null));
 		when(pf2.getBoundingArea().getSize()).thenReturn(1000000.0);
 		pf.livesProperty().set(1);
 		pf.onCollide(pf2);

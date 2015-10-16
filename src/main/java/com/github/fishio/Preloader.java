@@ -427,10 +427,8 @@ public final class Preloader {
 	 */
 	private static void showScreen(Scene scene, int length) {
 		switchAway();
-		ScreenController controller = (ScreenController) scene.getProperties().get("Controller");
+		ScreenController controller = getController(scene);
 		controller.onSwitchTo();
-		
-		//DoubleProperty opacity = scene.getRoot().opacityProperty();
 		
 		if (length > 0) {
 			scene.getRoot().setOpacity(0);
@@ -444,6 +442,56 @@ public final class Preloader {
 			FishIO.getInstance().getPrimaryStage().setScene(scene);
 		}
 	}
+	
+	/**
+	 * Gets the controller of the screen with the given filename. If that
+	 * screen is not yet loaded, it is loaded first.
+	 * 
+	 * @param filename
+	 * 		the filename (without extension) of the screen to get the
+	 * 		controller of.
+	 * @param <T>
+	 * 		the ScreenController implementation that is expected.
+	 * 
+	 * @return
+	 * 		the controller of the screen with the given filename, or 
+	 * 		<code>null</code> if no such screen exists.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T extends ScreenController> T getControllerOrLoad(String filename) {
+		Scene scene;
+		synchronized (SCREENS) {
+			scene = SCREENS.get(filename);
+		}
+		
+		if (scene == null) {
+			scene = loadScreen(filename);
+		}
+		
+		if (scene == null) {
+			return null;
+		}
+		
+		return (T) scene.getProperties().get("Controller");
+	}
+	
+	/**
+	 * @param scene
+	 * 		the scene to get the controller of.
+	 * @param <T>
+	 * 		the ScreenController implementation that is expected.
+	 * 
+	 * @return
+	 * 		the controller of the given Scene.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T extends ScreenController> T getController(Scene scene) {
+		if (scene == null) {
+			return null;
+		}
+		
+		return (T) scene.getProperties().get("Controller");
+	}
 
 	/**
 	 * Switch away from the current screen.
@@ -451,7 +499,7 @@ public final class Preloader {
 	public static void switchAway() {
 		Scene current = FishIO.getInstance().getPrimaryStage().getScene();
 		if (current != null) {
-			((ScreenController) current.getProperties().get("Controller")).onSwitchAway();
+			getController(current).onSwitchAway();
 		}		
 	}
 }

@@ -1,5 +1,9 @@
 package com.github.fishio;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.HashSet;
 
 import com.github.fishio.settings.Settings;
@@ -10,7 +14,8 @@ import javafx.scene.image.PixelReader;
 /**
  * Class for checking collisions of sprites.
  */
-public class CollisionMask implements ICollisionArea {
+public class CollisionMask implements ICollisionArea, Serializable {
+	private static final long serialVersionUID = -2752164590884475330L;
 
 	private Vec2d center;
 
@@ -278,4 +283,31 @@ public class CollisionMask implements ICollisionArea {
 		width = height * r;
 	}
 
+	@Override
+	public void updateTo(ICollisionArea area) {
+		if (!(area instanceof CollisionMask)) {
+			throw new IllegalArgumentException("Cannot update to different type!");
+		}
+		
+		CollisionMask mask = (CollisionMask) area;
+		this.center.x = mask.center.x;
+		this.center.y = mask.center.y;
+		this.width = mask.width;
+		this.height = mask.height;
+		this.rotation = mask.rotation;
+	}
+	
+	private void writeObject(ObjectOutputStream out) throws IOException {
+		out.writeObject(this.center);
+		out.writeDouble(this.height);
+		out.writeDouble(this.width);
+		out.writeDouble(this.rotation);
+	}
+	
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		this.center = (Vec2d) in.readObject();
+		this.height = in.readDouble();
+		this.width = in.readDouble();
+		this.rotation = in.readDouble();
+	}
 }

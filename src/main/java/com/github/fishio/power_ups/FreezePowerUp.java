@@ -53,7 +53,7 @@ public class FreezePowerUp extends PowerUpDuration {
 	@Override
 	public void startEffect() {
 		
-		for (Entity e : getPField().getEntities()) {
+		for (Entity e : getPField().getEntitiesList()) {
 			if (e instanceof EnemyFish) {
 				EnemyFish fish = (EnemyFish) e;
 				oldBehaviours.put(fish, fish.getBehaviour());
