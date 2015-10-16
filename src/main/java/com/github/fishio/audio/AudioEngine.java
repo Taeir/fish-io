@@ -250,6 +250,17 @@ public final class AudioEngine {
 	}
 	
 	/**
+	 * Plays the button sound effect.
+	 * 
+	 * @return
+	 * 		<code>true</code> if the effect will be played,
+	 * 		<code>false</code> if not (not found or error).
+	 */
+	public boolean playButtonSound() {
+		return playEffect("button");
+	}
+	
+	/**
 	 * Plays the sound effect with the given name.
 	 * 
 	 * @param effectName

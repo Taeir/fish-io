@@ -16,7 +16,6 @@ import com.github.fishio.multiplayer.server.FishIOServer;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
@@ -43,9 +42,6 @@ public class MultiplayerScreenController implements ScreenController {
 	@FXML
 	private TextField createGamePort;
 	
-	@FXML
-	private Canvas keyboard;
-	
 	@Override
 	public void init(Scene scene) {
 		ChangeListener<? super GameState> cl = (o, oVal, nVal) -> {
@@ -69,7 +65,7 @@ public class MultiplayerScreenController implements ScreenController {
 	 */
 	@FXML
 	public void backToMenu() {
-		AudioEngine.getInstance().playEffect("button");
+		AudioEngine.getInstance().playButtonSound();
 		logger.log(LogLevel.INFO, "Player Pressed the back to menu Button.");
 		Preloader.switchTo("mainMenu", 400);
 	}
@@ -79,7 +75,7 @@ public class MultiplayerScreenController implements ScreenController {
 	 */
 	@FXML
 	public void joinGame() {
-		AudioEngine.getInstance().playEffect("button");
+		AudioEngine.getInstance().playButtonSound();
 		logger.log(LogLevel.INFO, "Player Pressed JoinGame Button.");
 
 		String s = joinIP.getText();
@@ -111,7 +107,7 @@ public class MultiplayerScreenController implements ScreenController {
 	 */
 	@FXML
 	public void hostGame() {
-		AudioEngine.getInstance().playEffect("button");
+		AudioEngine.getInstance().playButtonSound();
 		logger.log(LogLevel.INFO, "Player Pressed HostGame Button.");
 
 		String s = createGamePort.getText();

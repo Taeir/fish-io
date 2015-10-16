@@ -178,7 +178,7 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void onPause(ActionEvent event) {
-		AudioEngine.getInstance().playEffect("button");
+		AudioEngine.getInstance().playButtonSound();
 		
 		GameThread gameThread = playingField.getGameThread();
 		if (gameThread.isRunning()) {
@@ -204,7 +204,7 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void onMute(ActionEvent event) {
-		AudioEngine.getInstance().playEffect("button");
+		AudioEngine.getInstance().playButtonSound();
 		
 		AudioEngine.getInstance().toggleMuteState();
 	}
@@ -333,7 +333,7 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void backToMenu() {
-		AudioEngine.getInstance().playEffect("button");
+		AudioEngine.getInstance().playButtonSound();
 		
 		playingField.stopGame();
 		playingField.clear();
@@ -347,7 +347,7 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void revive() {
-		AudioEngine.getInstance().playEffect("button");
+		AudioEngine.getInstance().playButtonSound();
 		
 		//Reset the pause button
 		getBtnPause().setText(PAUSE_TEXT);
@@ -374,7 +374,7 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void restartGame() {
-		AudioEngine.getInstance().playEffect("button");
+		AudioEngine.getInstance().playButtonSound();
 		
 		//Reset the pause button
 		getBtnPause().setText(PAUSE_TEXT);

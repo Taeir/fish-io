@@ -51,7 +51,7 @@ public abstract class TestAchievement {
 	 */
 	@Test
 	public void testAchievementconstructor_level() {
-		Achievement a = newAchievement("hello", 3);
+		Achievement a = newAchievement("hello2", 3);
 		assertEquals(3, a.getLevel());
 	}
 	
@@ -60,8 +60,8 @@ public abstract class TestAchievement {
 	 */
 	@Test
 	public void testgetName1() {
-		Achievement a = newAchievement("hello", 0);
-		assertEquals("hello", a.getName());
+		Achievement a = newAchievement("hello3", 0);
+		assertEquals("hello3", a.getName());
 	}
 	
 	/**

@@ -21,6 +21,8 @@ import javafx.scene.input.KeyCode;
  */
 public class PlayerFish extends Entity implements IEatable, IPositional, Subject {
 	private static final long serialVersionUID = 4226766216723804140L;
+	
+	public static final String SPRITE_LOCATION = "sprites/fish/playerFish.png";
 
 	public static final double FISH_ACCELERATION = 0.1;
 	
@@ -317,6 +319,6 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 		this.behaviour = (IMoveBehaviour) in.readObject();
 		
 		//Load the sprite
-		this.sprite = Preloader.getImageOrLoad("sprites/fish/playerFish.png");
+		this.sprite = Preloader.getImageOrLoad(SPRITE_LOCATION);
 	}
 }

@@ -106,7 +106,7 @@ public class HelpScreenController implements ScreenController {
 	 */
 	@FXML
 	public void backToMenu() {
-		AudioEngine.getInstance().playEffect("button");
+		AudioEngine.getInstance().playButtonSound();
 		logger.log(LogLevel.INFO, "Player Pressed the back to menu Button.");
 		Preloader.switchTo("mainMenu", 400);
 	}
