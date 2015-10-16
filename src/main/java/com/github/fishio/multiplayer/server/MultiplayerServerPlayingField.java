@@ -104,7 +104,7 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 				new Vec2d(SinglePlayerPlayingField.START_X, SinglePlayerPlayingField.START_Y), 60, 30, 
 				Preloader.getAlphaDataOrLoad(PlayerFish.SPRITE_LOCATION),
 				Preloader.getSpriteAlphaRatioOrLoad(PlayerFish.SPRITE_LOCATION));
-		PlayerFish nplayer = new PlayerFish(cm, Preloader.loadScreen(PlayerFish.SPRITE_LOCATION), sprite);
+		PlayerFish nplayer = new PlayerFish(cm, Preloader.loadScreen("multiplayerGameScreen"), sprite);
 		
 		//TODO #168 Make setting for this "spawn invincibility"
 		nplayer.setInvincible(System.currentTimeMillis() + SPAWN_INVINCIBILITY);

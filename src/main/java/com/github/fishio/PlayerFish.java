@@ -6,14 +6,12 @@ import java.io.ObjectOutputStream;
 
 import com.github.fishio.achievements.State;
 import com.github.fishio.achievements.Subject;
-import com.github.fishio.behaviours.IMoveBehaviour;
 import com.github.fishio.behaviours.KeyListenerBehaviour;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 
 /**
  * Represents a fish that the user can control using
@@ -32,8 +30,6 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 	private SimpleIntegerProperty lives = new SimpleIntegerProperty(settings.getInteger("START_LIVES"));
 	
 	private long invincible;
-	
-	private IMoveBehaviour behaviour;
 
 	/**
 	 * Creates the Player fish which the user will be able to control.
@@ -46,18 +42,12 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 	 *            The sprite of the player fish
 	 */
 	public PlayerFish(CollisionMask collisionMask, Scene scene, Image sprite) {
-		super(collisionMask);
+		super(collisionMask, new KeyListenerBehaviour(scene, settings.getKeyCode("SWIM_UP"), 
+				settings.getKeyCode("SWIM_DOWN"), settings.getKeyCode("SWIM_LEFT"), 
+				settings.getKeyCode("SWIM_RIGHT"), FISH_ACCELERATION, 
+				settings.getDouble("MAX_PLAYER_SPEED")));
 		
 		this.sprite = sprite;
-
-		double maxSpeed = settings.getDouble("MAX_PLAYER_SPEED");
-		double acceleration = FISH_ACCELERATION;
-		KeyCode keyUp = settings.getKeyCode("SWIM_UP");
-		KeyCode keyDown = settings.getKeyCode("SWIM_DOWN");
-		KeyCode keyLeft = settings.getKeyCode("SWIM_LEFT");
-		KeyCode keyRight = settings.getKeyCode("SWIM_RIGHT");
-		this.behaviour = new KeyListenerBehaviour(scene, keyUp, keyDown, keyLeft, keyRight,
-				acceleration, maxSpeed);
 	}
 	
 	/**
@@ -73,13 +63,10 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 	 * 		the sprite to use for the player fish.
 	 */
 	public PlayerFish(CollisionMask collisionMask, Image sprite) {
-		super(collisionMask);
+		super(collisionMask, new KeyListenerBehaviour(FISH_ACCELERATION, 
+				settings.getDouble("MAX_PLAYER_SPEED")));
 		
 		this.sprite = sprite;
-		
-		double maxSpeed = settings.getDouble("MAX_PLAYER_SPEED");
-		double acceleration = FISH_ACCELERATION;
-		this.behaviour = new KeyListenerBehaviour(acceleration, maxSpeed);
 	}
 
 	/**
@@ -184,7 +171,7 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 		}
 		
 		//TODO Move this to game thread.
-		getBoundingArea().setRotation(behaviour); //update rotation;
+		getBoundingArea().setRotation(getBehaviour()); //update rotation;
 		
 		//Only render if the fish has a sprite
 		if (sprite != null) {
@@ -295,28 +282,16 @@ public class PlayerFish extends Entity implements IEatable, IPositional, Subject
 		return getBoundingArea().getSize();
 	}
 
-	@Override
-	public IMoveBehaviour getBehaviour() {
-		return behaviour;
-	}
-
-	@Override
-	public void setBehaviour(IMoveBehaviour behaviour) {
-		this.behaviour = behaviour;
-	}
-
 	private void writeObject(ObjectOutputStream out) throws IOException {
 		out.writeInt(this.score.intValue());
 		out.writeInt(this.lives.intValue());
 		out.writeLong(this.invincible);
-		out.writeObject(this.behaviour);
 	}
 	
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		this.score = new SimpleIntegerProperty(in.readInt());
 		this.lives = new SimpleIntegerProperty(in.readInt());
 		this.invincible = in.readLong();
-		this.behaviour = (IMoveBehaviour) in.readObject();
 		
 		//Load the sprite
 		this.sprite = Preloader.getImageOrLoad(SPRITE_LOCATION);
