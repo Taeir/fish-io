@@ -36,7 +36,7 @@
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
               <children>
                 <Label prefWidth="223.0" text="Create new multiplayer game" />
-                <TextField fx:id="createGamePort" prefWidth="200.0"  promptText="Fill in port"/>
+                <TextField fx:id="createGamePort" prefWidth="200.0" text="25565" promptText="Fill in port"/>
                 <Button fx:id="hostGame" mnemonicParsing="false" text="Host Game" onAction="#hostGame" prefWidth="100"/>
               </children>
             </HBox>
