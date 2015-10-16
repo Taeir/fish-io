@@ -62,7 +62,8 @@ public class SettingsScreenController implements ScreenController {
 	 */
 	private int showSliderSettings(int row) {
 		for (String key : settings.getSliderSettings()) {
-			Label label = new Label(key);
+			Label label = new Label(settings.getDescription(key));
+			label.setTooltip(new Tooltip(key));
 			Slider slider = new Slider();
 			double value = settings.getSlider(key);
 			Label valueLabel = new Label(Math.round(value * 100) + "%");
@@ -93,9 +94,9 @@ public class SettingsScreenController implements ScreenController {
 	 */
 	private int showKeySettings(int row) {
 		for (String key : settings.getKeySettings()) {
-			Label label = new Label(key);
+			Label label = new Label(settings.getDescription(key));
 			Label value = new Label(settings.getKeyCode(key).getName());
-			label.setTooltip(new Tooltip(settings.getDescription(key)));
+			label.setTooltip(new Tooltip(key));
 			Button button = new Button();
 			button.setText("Change");
 			button.setOnAction(e -> {
@@ -130,8 +131,8 @@ public class SettingsScreenController implements ScreenController {
 	 */
 	private int showBooleanSettings(int row) {
 		for (String key : settings.getBooleanSettings()) {
-			Label label = new Label(key);
-			label.setTooltip(new Tooltip(settings.getDescription(key)));
+			Label label = new Label(settings.getDescription(key));
+			label.setTooltip(new Tooltip(key));
 			Button button = new Button();
 			if (settings.getBoolean(key)) {
 				button.setText("Disable");				
@@ -164,8 +165,8 @@ public class SettingsScreenController implements ScreenController {
 	 */
 	private int showIntegerSettings(int row) {
 		for (String key : settings.getIntegerSettings()) {
-			Label label = new Label(key);
-			label.setTooltip(new Tooltip(settings.getDescription(key)));
+			Label label = new Label(settings.getDescription(key));
+			label.setTooltip(new Tooltip(key));
 			TextField textField = new TextField();
 			textField.setText(String.valueOf(settings.getInteger(key)));
 			textField.setMaxWidth(200);
@@ -190,8 +191,8 @@ public class SettingsScreenController implements ScreenController {
 	 */
 	private int showDoubleSettings(int row) {
 		for (String key : settings.getDoubleSettings()) {
-			Label label = new Label(key);
-			label.setTooltip(new Tooltip(settings.getDescription(key)));
+			Label label = new Label(settings.getDescription(key));
+			label.setTooltip(new Tooltip(key));
 			TextField textField = new TextField();
 			textField.setText(String.valueOf(settings.getDouble(key)));
 			textField.setMaxWidth(200);
