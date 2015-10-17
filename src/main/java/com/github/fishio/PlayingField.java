@@ -94,15 +94,15 @@ public abstract class PlayingField {
 	 */
 	public void checkPlayerCollisions() {
 		//Iterate over the players
-		for (PlayerFish player : getPlayers()) {
+		getPlayers().parallelStream().forEach(player -> {
 			//Iterate over the collidables
-			for (ICollidable c : collidables) {
-				if (player != c && player.doesCollides(c)) {
-					player.onCollide(c);
-					c.onCollide(player);
-				}
-			}
-		}
+			collidables.parallelStream()
+			.filter(collidable -> player != collidable && player.doesCollides(collidable))
+			.forEach(collidable -> {
+				player.onCollide(collidable);
+				collidable.onCollide(player);
+			});
+		});
 	}
 
 	/**
