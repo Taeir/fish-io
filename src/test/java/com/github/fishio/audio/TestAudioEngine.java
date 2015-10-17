@@ -6,6 +6,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.nio.file.Path;
 
@@ -15,7 +18,6 @@ import javafx.collections.ObservableList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import com.github.fishio.gui.SlimGuiTest;
 
@@ -39,8 +41,8 @@ public class TestAudioEngine extends SlimGuiTest {
 		stopped = false;
 		list = FXCollections.observableArrayList();
 		
-		factory = Mockito.mock(IAudioFactory.class);
-		Mockito.when(factory.getAllMusic()).thenReturn(list);
+		factory = mock(IAudioFactory.class);
+		when(factory.getAllMusic()).thenReturn(list);
 		engine.setAudioFactory(factory);
 		
 		engine.getMuteStateProperty().set(AudioEngine.NO_MUTE);
@@ -208,7 +210,7 @@ public class TestAudioEngine extends SlimGuiTest {
 		engine.startBackgroundMusic();
 		
 		try {
-			Thread.sleep(1000L);
+			Thread.sleep(1500L);
 		} catch (InterruptedException ex) {
 			fail();
 		}
@@ -279,12 +281,12 @@ public class TestAudioEngine extends SlimGuiTest {
 	public void testPlayEffect() {
 		assertFalse(engine.playEffect("HELLO"));
 		
-		SoundEffect se = Mockito.mock(SoundEffect.class);
-		Mockito.when(factory.getSoundEffect("TEST_PLAY_EFFECT")).thenReturn(se);
+		SoundEffect se = mock(SoundEffect.class);
+		when(factory.getSoundEffect("TEST_PLAY_EFFECT")).thenReturn(se);
 		
 		assertTrue(engine.playEffect("TEST_PLAY_EFFECT"));
 		
-		Mockito.verify(se).play();
+		verify(se).play();
 	}
 
 	/**
@@ -294,7 +296,7 @@ public class TestAudioEngine extends SlimGuiTest {
 	public void testGetMusic() {
 		assertNull(engine.getMusic(5));
 		
-		Mockito.verify(factory).getMusic(5);
+		verify(factory).getMusic(5);
 	}
 
 	/**
@@ -304,7 +306,7 @@ public class TestAudioEngine extends SlimGuiTest {
 	public void testGetEffect() {
 		assertNull(engine.getEffect("HELLO"));
 		
-		Mockito.verify(factory).getSoundEffect("HELLO");
+		verify(factory).getSoundEffect("HELLO");
 	}
 
 	/**
