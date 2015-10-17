@@ -1,25 +1,44 @@
 package com.github.fishio.gui;
 
+import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import javafx.scene.canvas.Canvas;
+import javafx.scene.image.Image;
 
-import com.github.fishio.SinglePlayerPlayingField;
-import com.github.fishio.listeners.Listenable;
-import com.github.fishio.listeners.TestListenable;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import com.github.fishio.PlayingField;
 
 /**
- * Test for the {@link Renderer} class.<br>
- * <br>
- * Since {@link TestRenderer} has to extend {@link GuiTest}, it is
- * unable to also extend the interface test class {@link TestListenable},
- * so that is done here.
+ * Tests powermock requiring methods of {@link Renderer}.
  */
-public class TestRenderer2 extends TestListenable {
-
-	@Override
-	public Listenable getListenable() {
-		return new Renderer(mock(SinglePlayerPlayingField.class), new Canvas(), 60, 0);
+@PrepareForTest(Image.class)
+@RunWith(PowerMockRunner.class)
+public class TestRenderer2 {
+	/**
+	 * Test for {@link Renderer#setBackground(Image)} with error image.
+	 */
+	@Test
+	public void testSetBackgroundError() {
+		Renderer renderer = new Renderer(mock(PlayingField.class), new Canvas(), 60, 0);
+		
+		//Set a good image as the background.
+		Image goodImage = mock(Image.class);
+		renderer.setBackground(goodImage);
+		
+		//Try set a bad image as the background.
+		Image badImage = PowerMockito.mock(Image.class);
+		when(badImage.isError()).thenReturn(true);
+		renderer.setBackground(badImage);
+		
+		//The old image should still be in place.
+		assertSame(goodImage, renderer.getBackground());
 	}
-
 }
