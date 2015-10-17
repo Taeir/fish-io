@@ -460,11 +460,11 @@ public final class Preloader {
 			scene = SCREENS.get(filename);
 		}
 		
-		if (scene == null) {
+		if (scene == null || scene == EMPTY_SCENE) {
 			scene = loadScreen(filename);
 		}
 		
-		if (scene == null) {
+		if (scene == null || scene == EMPTY_SCENE) {
 			return null;
 		}
 		
