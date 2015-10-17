@@ -12,8 +12,8 @@ import com.github.fishio.behaviours.IMoveBehaviour;
 import javafx.scene.image.Image;
 
 /**
- * A PowerUp with the effect that it freezes all
- * current EnemyFishes in the PlayingField for 10 seconds. 
+ * A PowerUp with the effect that it freezes all current EnemyFishes in the
+ * PlayingField for 10 seconds.
  */
 public class FreezePowerUp extends PowerUpDuration {
 
@@ -24,21 +24,21 @@ public class FreezePowerUp extends PowerUpDuration {
 	 */
 	private static final int DURATION = 10;
 	
-	private HashMap<EnemyFish, IMoveBehaviour> oldBehaviours = new HashMap<>();;
+	private HashMap<EnemyFish, IMoveBehaviour> oldBehaviours = new HashMap<>();
 	
 	/**
 	 * Creates a new PowerUp of the Freeze type.
 	 * 
-	 * @param ba
+	 * @param collisionMask
 	 * 		The CollisonMask of the PowerUp.
-	 * @param pfield
+	 * @param playingField
 	 * 		The PlayingField in which this PowerUp is located.
 	 * @param sprite
 	 * 		The sprite of this PowerUp
 	 */
 
-	public FreezePowerUp(CollisionMask ba, PlayingField pfield, Image sprite) {
-		super(ba, pfield, sprite);
+	public FreezePowerUp(CollisionMask collisionMask, PlayingField playingField, Image sprite) {
+		super(collisionMask, playingField, sprite);
 	}
 
 	@Override

@@ -7,8 +7,8 @@ import com.github.fishio.PlayingField;
 import javafx.scene.image.Image;
 
 /**
- * A PowerUp with the effect that it instantly increases
- * the PlayerFish' life (if it isn't maxed out already).
+ * A PowerUp with the effect that it instantly increases the PlayerFish' life
+ * (if it isn't maxed out already).
  */
 public class ExtraLifePowerUp extends PowerUp {
 
@@ -17,16 +17,16 @@ public class ExtraLifePowerUp extends PowerUp {
 	/**
 	 * Creates a new PowerUp of the Extra Life type.
 	 * 
-	 * @param ba
-	 *            The CollisonMask of the PowerUp.
-	 * @param pfield
-	 *            The PlayingField in which this PowerUp is located.
+	 * @param collisionMask
+	 *            the CollisonMask of the PowerUp.
+	 * @param playingField
+	 *            the PlayingField in which this PowerUp is located.
 	 * @param sprite
-	 *            The sprite of this PowerUp.
+	 *            the sprite of this PowerUp.
 	 */
 
-	public ExtraLifePowerUp(CollisionMask ba, PlayingField pfield, Image sprite) {
-		super(ba, pfield, sprite);
+	public ExtraLifePowerUp(CollisionMask collisionMask, PlayingField playingField, Image sprite) {
+		super(collisionMask, playingField, sprite);
 	}
 
 	@Override

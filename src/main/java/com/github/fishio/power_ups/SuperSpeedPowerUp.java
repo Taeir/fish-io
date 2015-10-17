@@ -24,16 +24,15 @@ public class SuperSpeedPowerUp extends PowerUpDuration {
 	/**
 	 * Creates a new PowerUp of the SuperSpeed type.
 	 * 
-	 * @param ba
+	 * @param collisionMask
 	 *            The CollisonMask of the PowerUp.
-	 * @param pfield
+	 * @param playingField
 	 *            The PlayingField in which this PowerUp is located.
 	 * @param sprite
 	 *            The sprite of this PowerUp.
 	 */
-	public SuperSpeedPowerUp(CollisionMask ba, PlayingField pfield, Image sprite) {
-
-		super(ba, pfield, sprite);
+	public SuperSpeedPowerUp(CollisionMask collisionMask, PlayingField playingField, Image sprite) {
+		super(collisionMask, playingField, sprite);
 	}
 
 	@Override
@@ -42,11 +41,9 @@ public class SuperSpeedPowerUp extends PowerUpDuration {
 	}
 
 	/** 
-	 * Multiplied the acceleration and the maxSpeed of the
-	 * given PlayerFish by a certain factor.
-	 * 
-	 * @param pf
-	 * 		The PlayerFish this PowerUp collides with.
+	 * Starts the effect of this powerup.<br>
+	 * This powerup multiplies the acceleration and the maxSpeed of the
+	 * target player fish with a certain factor.
 	 */
 	@Override
 	public void startEffect() {
@@ -63,8 +60,8 @@ public class SuperSpeedPowerUp extends PowerUpDuration {
 	}
 
 	/** 
-	 * Restores the acceleration and the MaxSpeed of
-	 * the PlayerFish we just drugged.
+	 * Restores the acceleration and the MaxSpeed of the PlayerFish we just
+	 * drugged.
 	 */
 	@Override
 	public void endEffect() {

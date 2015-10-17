@@ -213,8 +213,8 @@ public class SinglePlayerController implements ScreenController {
 	 * Shows a fade-in and fade-out of a pop-up image when an achievement is
 	 * obtained.
 	 * 
-	 * @param imageView
-	 * 		the imageView to show.
+	 * @param image
+	 * 		the image to show.
 	 * @param description 
 	 * 		the description of the popup
 	 */
