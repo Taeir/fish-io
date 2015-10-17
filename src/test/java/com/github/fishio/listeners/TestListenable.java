@@ -109,9 +109,10 @@ public abstract class TestListenable {
 		
 		//Call pretick, no exception should occur.
 		l.callPreTick("PRE");
+		l.callPreTick(null);
 		
-		//Ensure that preTick was called once.
-		verify(tl, times(1)).preTick();
+		//Ensure that preTick was called twice.
+		verify(tl, times(2)).preTick();
 		
 		//Ensure that postTick was not called.
 		verify(tl, times(0)).postTick();
@@ -153,11 +154,12 @@ public abstract class TestListenable {
 		
 		//Call postTick
 		l.callPostTick("POST");
+		l.callPostTick(null);
 		
 		//Ensure that preTick was not called
 		verify(tl, times(0)).preTick();
 		
-		//Ensure that postTick was called once.
-		verify(tl, times(1)).postTick();
+		//Ensure that postTick was called twice.
+		verify(tl, times(2)).postTick();
 	}
 }
