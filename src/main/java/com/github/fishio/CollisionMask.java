@@ -10,6 +10,7 @@ import com.github.fishio.settings.Settings;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
+import javafx.scene.shape.Rectangle;
 
 /**
  * Class for checking collisions of sprites.
@@ -27,6 +28,8 @@ public class CollisionMask implements ICollisionArea, Serializable {
 	private double alphaRatio;
 
 	private boolean[][] data;
+	
+	private Rectangle box;
 
 	/**
 	 * Constructor for a CollisionMask.
@@ -95,19 +98,23 @@ public class CollisionMask implements ICollisionArea, Serializable {
 			}
 		}
 
-		return (double) res / (data.length * data[0].length);
+		return ((double) res) / (data.length * data[0].length);
 	}
-
+	
 	@Override
-	public Vec2d getBottomLeft() {
-		Vec2d d = getTRBLCornerOffsets();
-		return new Vec2d(center.x - d.x, center.y + d.y);
-	}
-
-	@Override
-	public Vec2d getBottomRight() {
-		Vec2d d = getTLBRCornerOffsets();
-		return new Vec2d(center.x + d.x, center.y - d.y);
+	public Rectangle getBox() {
+		//Don't recreate the box every time, simply update it.
+		if (box == null) {
+			box = new Rectangle();
+		}
+		
+		box.setX(getCenterX() - 0.5 * getWidth());
+		box.setY(getCenterY() - 0.5 * getHeight());
+		box.setWidth(getWidth());
+		box.setHeight(getHeight());
+		box.setRotate(getRotation());
+		
+		return box;
 	}
 
 	@Override
@@ -119,10 +126,45 @@ public class CollisionMask implements ICollisionArea, Serializable {
 	public double getCenterY() {
 		return center.y;
 	}
+	
+	@Override
+	public double getWidth() {
+		return width;
+	}
 
 	@Override
 	public double getHeight() {
 		return height;
+	}
+	
+	@Override
+	public double getSize() {
+		return (width * height) * alphaRatio;
+	}
+	
+	@Override
+	public void setSize(double size) {
+		double r = width / height;
+		height = Math.sqrt(size / (alphaRatio * r));
+		width = height * r;
+	}
+	
+	@Override
+	public void increaseSize(double delta) {
+		double r = width / height;
+		height = Math.sqrt((getSize() + delta) / (alphaRatio * r));
+		width = height * r;
+	}
+	
+	@Override
+	public double getRotation() {
+		return rotation;
+	}
+	
+	@Override
+	public double setRotation(double angle) {
+		rotation = angle % 360;
+		return rotation;
 	}
 
 	/**
@@ -169,32 +211,7 @@ public class CollisionMask implements ICollisionArea, Serializable {
 		}
 		return mask;
 	}
-
-	@Override
-	public double getRotation() {
-		return rotation;
-	}
-
-	@Override
-	public double getSize() {
-		return (width * height) * alphaRatio;
-	}
-
-	/**
-	 * @return The offsets to the top left and bottom right corner as seen from
-	 *         the center
-	 */
-	private Vec2d getTLBRCornerOffsets() {
-		
-		double tempX = 0.5 * width;
-		double tempY = 0.5 * height;
-
-		double a = Math.toRadians(rotation % 180);
-		double rx = tempX * Math.cos(a) + tempY * Math.sin(a);
-		double ry = tempX * Math.sin(a) - tempY * Math.cos(a);
-		return new Vec2d(rx, ry);
-	}
-
+	
 	@Override
 	public Vec2d getTopLeft() {
 		Vec2d d = getTLBRCornerOffsets();
@@ -207,9 +224,37 @@ public class CollisionMask implements ICollisionArea, Serializable {
 		return new Vec2d(center.x + d.x, center.y - d.y);
 	}
 
+	@Override
+	public Vec2d getBottomLeft() {
+		Vec2d d = getTRBLCornerOffsets();
+		return new Vec2d(center.x - d.x, center.y + d.y);
+	}
+
+	@Override
+	public Vec2d getBottomRight() {
+		Vec2d d = getTLBRCornerOffsets();
+		return new Vec2d(center.x + d.x, center.y - d.y);
+	}
+
 	/**
-	 * @return The offsets to the top right and bottom left corner as seen from
-	 *         the center
+	 * @return
+	 * 		the offsets to the top left and bottom right corner as seen
+	 * 		from the center.
+	 */
+	private Vec2d getTLBRCornerOffsets() {
+		double tempX = 0.5 * width;
+		double tempY = 0.5 * height;
+
+		double a = Math.toRadians(rotation % 180);
+		double rx = tempX * Math.cos(a) + tempY * Math.sin(a);
+		double ry = tempX * Math.sin(a) - tempY * Math.cos(a);
+		return new Vec2d(rx, ry);
+	}
+
+	/**
+	 * @return
+	 * 		the offsets to the top right and bottom left corner as seen
+	 * 		from the center
 	 */
 	private Vec2d getTRBLCornerOffsets() {
 		double tempX = 0.5 * width;
@@ -221,25 +266,13 @@ public class CollisionMask implements ICollisionArea, Serializable {
 		return new Vec2d(rx, ry);
 	}
 
-	@Override
-	public double getWidth() {
-		return width;
-	}
-
-	@Override
-	public void increaseSize(double delta) {
-		double r = width / height;
-		height = Math.sqrt((getSize() + delta) / (alphaRatio * r));
-		width = height * r;
-	}
-
 	/**
 	 * Performs a few checks to find out whether the CollisionMask has any
 	 * overlap with an ICollisionArea object.
 	 * 
 	 * @param other
 	 *            the ICollisionArea to check with.
-	 * @return true if this bounding box collides with the given ICollisionArea,
+	 * @return true if this collision mask collides with the given ICollisionArea,
 	 *         false if not.
 	 * @see <a href=
 	 *      "http://forum.codecall.net/topic/65950-pixel-perfect-collision-detection-use-for-your-java-games/">
@@ -268,19 +301,6 @@ public class CollisionMask implements ICollisionArea, Serializable {
 	public void move(Vec2d speedVector) {
 		speedVector.y *= -1;
 		center.add(speedVector);
-	}
-
-	@Override
-	public double setRotation(double angle) {
-		rotation = angle % 360;
-		return rotation;
-	}
-	
-	@Override
-	public void setSize(double size) {
-		double r = width / height;
-		height = Math.sqrt(size / (alphaRatio * r));
-		width = height * r;
 	}
 
 	@Override
