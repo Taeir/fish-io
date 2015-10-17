@@ -120,15 +120,16 @@ public class TxtFileHandler implements IHandler, Closeable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result;
+		
 		if (bufferedWriter != null) {
-			result = result + bufferedWriter.hashCode();
-		} 		
-		if (format == null) {
-			return result;
-		} else {
-			return result + format.hashCode();
+			result = prime * result + bufferedWriter.hashCode();
 		}
+		
+		if (format != null) {
+			result = prime * result + format.hashCode();
+		}
+		
+		return result;
 	}
 
 	@Override
@@ -142,8 +143,8 @@ public class TxtFileHandler implements IHandler, Closeable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		TxtFileHandler other = (TxtFileHandler) obj;
 		
+		TxtFileHandler other = (TxtFileHandler) obj;
 		if (format == null) {
 			if (other.format != null) {
 				return false;
@@ -151,6 +152,7 @@ public class TxtFileHandler implements IHandler, Closeable {
 		} else if (!format.equals(other.format)) {
 			return false;
 		}
+		
 		return true;
 	}
 
