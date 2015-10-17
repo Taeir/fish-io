@@ -1,9 +1,13 @@
-package com.github.fishio;
+package com.github.fishio.factories;
 
 import java.util.Random;
 
 import javafx.scene.image.Image;
 
+import com.github.fishio.CollisionMask;
+import com.github.fishio.PlayingField;
+import com.github.fishio.Preloader;
+import com.github.fishio.Vec2d;
 import com.github.fishio.listeners.TickListener;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;

@@ -1,8 +1,14 @@
-package com.github.fishio;
+package com.github.fishio.factories;
 
 import java.util.Collection;
 import java.util.Random;
 
+import com.github.fishio.CollisionMask;
+import com.github.fishio.EnemyFish;
+import com.github.fishio.Entity;
+import com.github.fishio.ICollisionArea;
+import com.github.fishio.Preloader;
+import com.github.fishio.Vec2d;
 import com.github.fishio.settings.Settings;
 
 import javafx.scene.image.Image;
