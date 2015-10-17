@@ -322,6 +322,7 @@ public class CollisionMask implements ICollisionArea, Serializable {
 		out.writeDouble(this.height);
 		out.writeDouble(this.width);
 		out.writeDouble(this.rotation);
+		out.writeDouble(this.alphaRatio);
 	}
 	
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
@@ -329,5 +330,6 @@ public class CollisionMask implements ICollisionArea, Serializable {
 		this.height = in.readDouble();
 		this.width = in.readDouble();
 		this.rotation = in.readDouble();
+		this.alphaRatio = in.readDouble();
 	}
 }
