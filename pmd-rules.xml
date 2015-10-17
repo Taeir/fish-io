@@ -22,11 +22,6 @@
     <rule ref="rulesets/java/codesize.xml">
         <exclude name="TooManyMethods" />
     </rule>
-    <rule ref="rulesets/java/codesize.xml/TooManyMethods">
-        <properties>
-            <property name="maxmethods" value="15" />
-        </properties>
-    </rule>
     
     <rule ref="rulesets/java/braces.xml"/>
     <rule ref="rulesets/java/clone.xml"/>
