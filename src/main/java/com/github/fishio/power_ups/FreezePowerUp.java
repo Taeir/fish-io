@@ -25,7 +25,7 @@ public class FreezePowerUp extends PowerUpDuration {
 	 */
 	private static final int DURATION = 10;
 	
-	private HashMap<EnemyFish, IMoveBehaviour> oldBehaviours = new HashMap<>();
+	private transient HashMap<EnemyFish, IMoveBehaviour> oldBehaviours = new HashMap<>();
 	
 	/**
 	 * Creates a new PowerUp of the Freeze type.

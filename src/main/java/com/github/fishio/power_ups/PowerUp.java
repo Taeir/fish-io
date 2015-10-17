@@ -22,10 +22,10 @@ public abstract class PowerUp extends Entity implements IEatable {
 	
 	private static final double DEFAULT_SPEED = 2;
 	
-	protected final Log logger = Log.getLogger();
+	protected final transient Log logger = Log.getLogger();
 
-	private PlayingField playingField;
-	private Image sprite;
+	private transient PlayingField playingField;
+	private transient Image sprite;
 	
 	/**
 	 * Creates a new PowerUp.

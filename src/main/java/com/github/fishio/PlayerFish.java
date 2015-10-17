@@ -23,7 +23,7 @@ public class PlayerFish extends Entity implements IEatable, Subject {
 	public static final String SPRITE_LOCATION = "sprites/fish/playerFish.png";
 	public static final double FISH_ACCELERATION = 0.1;
 	
-	private Image sprite;
+	private transient Image sprite;
 
 	private SimpleIntegerProperty score = new SimpleIntegerProperty(0);	
 	private SimpleIntegerProperty lives = new SimpleIntegerProperty(settings.getInteger("START_LIVES"));
