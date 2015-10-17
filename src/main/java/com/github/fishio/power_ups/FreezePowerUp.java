@@ -1,10 +1,10 @@
 package com.github.fishio.power_ups;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import com.github.fishio.CollisionMask;
 import com.github.fishio.EnemyFish;
-import com.github.fishio.Entity;
 import com.github.fishio.PlayingField;
 import com.github.fishio.behaviours.FrozenBehaviour;
 import com.github.fishio.behaviours.IMoveBehaviour;
@@ -12,11 +12,12 @@ import com.github.fishio.behaviours.IMoveBehaviour;
 import javafx.scene.image.Image;
 
 /**
- * A PowerUp with the effect that it freezes all
- * current EnemyFishes in the PlayingField for 10 seconds. 
+ * A PowerUp with the effect that it freezes all current EnemyFishes in the
+ * PlayingField for 10 seconds.
  */
 public class FreezePowerUp extends PowerUpDuration {
 
+	private static final long serialVersionUID = 3059292845171507960L;
 	private static final String NAME = "Freeze";
 	
 	/**
@@ -24,21 +25,21 @@ public class FreezePowerUp extends PowerUpDuration {
 	 */
 	private static final int DURATION = 10;
 	
-	private HashMap<EnemyFish, IMoveBehaviour> oldBehaviours = new HashMap<>();;
+	private HashMap<EnemyFish, IMoveBehaviour> oldBehaviours = new HashMap<>();
 	
 	/**
 	 * Creates a new PowerUp of the Freeze type.
 	 * 
-	 * @param ba
+	 * @param collisionMask
 	 * 		The CollisonMask of the PowerUp.
-	 * @param pfield
+	 * @param playingField
 	 * 		The PlayingField in which this PowerUp is located.
 	 * @param sprite
 	 * 		The sprite of this PowerUp
 	 */
 
-	public FreezePowerUp(CollisionMask ba, PlayingField pfield, Image sprite) {
-		super(ba, pfield, sprite);
+	public FreezePowerUp(CollisionMask collisionMask, PlayingField playingField, Image sprite) {
+		super(collisionMask, playingField, sprite);
 	}
 
 	@Override
@@ -52,14 +53,13 @@ public class FreezePowerUp extends PowerUpDuration {
 	 */
 	@Override
 	public void startEffect() {
-		
-		for (Entity e : getPField().getEntitiesList()) {
-			if (e instanceof EnemyFish) {
+		getPlayingField().getEntities().parallelStream()
+			.filter(e -> e instanceof EnemyFish)
+			.forEach((e) -> {
 				EnemyFish fish = (EnemyFish) e;
 				oldBehaviours.put(fish, fish.getBehaviour());
 				fish.setBehaviour(new FrozenBehaviour());
-			}
-		}
+			});
 	}
 
 	/** 
@@ -67,12 +67,10 @@ public class FreezePowerUp extends PowerUpDuration {
 	 */
 	@Override
 	public void endEffect() {
-		for (Entity e : oldBehaviours.keySet()) {
-			if (e instanceof EnemyFish) {
-				EnemyFish fish = (EnemyFish) e;
-				fish.setBehaviour(oldBehaviours.get(fish));
-			}
+		for (Entry<EnemyFish, IMoveBehaviour> entry : oldBehaviours.entrySet()) {
+			entry.getKey().setBehaviour(entry.getValue());
 		}
+
 		oldBehaviours.clear();
 	}
 

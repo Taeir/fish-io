@@ -1,18 +1,17 @@
 package com.github.fishio.logging;
 
 /**
- * Handler interface.
- * This interface is for handlers that interact with the log class.
- * 
+ * Handler interface. Used for handlers that interact with the log class.
  */
 public interface IHandler {
 	
 	/**
 	 * Outputs the log message.
+	 * 
 	 * @param logLvl
-	 * 		The log level of the log.
+	 * 		the log level of the log.
 	 * @param logMessage
-	 * 		The log message of the log.
+	 * 		the log message of the log.
 	 */
 	void output(LogLevel logLvl, String logMessage);
 	
@@ -28,8 +27,9 @@ public interface IHandler {
 	
 	/**
 	 * Set the format that the handler should use.
+	 * 
 	 * @param format
-	 * 		The formater that should be used.
+	 * 		the formatter that should be used.
 	 */
 	void setFormat(IFormatter format);
 	
@@ -43,17 +43,13 @@ public interface IHandler {
 	/**
 	 * Equals method for IHandlers. 
 	 * Handlers that are equal must be the same kind of IHandlers that have the same formatting.
+	 * 
 	 * @param that
 	 * 		The other object.
+	 * 
 	 * @return
-	 * 		Whether handlers are equal.
+	 * 		whether handlers are equal.
 	 */
+	@Override
 	boolean equals(Object that);
-	
-	/**
-	 * hashCode method for IHandlers.
-	 * @return
-	 * 		HashCode of handler.
-	 */
-	int hashCode();
 }

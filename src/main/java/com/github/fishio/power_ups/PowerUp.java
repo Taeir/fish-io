@@ -15,32 +15,32 @@ import javafx.scene.image.Image;
 
 /**
  * A PowerUp is an entity that, when colliding with a player fish,
- * executes a certain (positive) effect. 
+ * executes a certain (positive) effect.
  */
 public abstract class PowerUp extends Entity implements IEatable {
-
-	private PlayingField playingField;
-	
-	private final Log logger = Log.getLogger();
-	
-	private Image sprite;
+	private static final long serialVersionUID = -3106185831514973543L;
 	
 	private static final double DEFAULT_SPEED = 2;
+	
+	protected final Log logger = Log.getLogger();
+
+	private PlayingField playingField;
+	private Image sprite;
 	
 	/**
 	 * Creates a new PowerUp.
 	 * 
-	 * @param ba
+	 * @param collisionMask
 	 *            The CollisionMask of the Power-Up
-	 * @param pfield
+	 * @param playingField
 	 *            The PlayingField this PowerUp is located in
 	 * @param image
 	 *            The sprite of this PowerUp
 	 */
-	public PowerUp(CollisionMask ba, PlayingField pfield, Image image) {
-		super(ba, new VerticalBehaviour(DEFAULT_SPEED));
+	public PowerUp(CollisionMask collisionMask, PlayingField playingField, Image image) {
+		super(collisionMask, new VerticalBehaviour(DEFAULT_SPEED));
 		
-		this.playingField = pfield;
+		this.playingField = playingField;
 		this.sprite = image;
 	}
 	
@@ -48,7 +48,7 @@ public abstract class PowerUp extends Entity implements IEatable {
 	 * @return
 	 * 		The PlayingField this PowerUp is located in.
 	 */
-	public PlayingField getPField() {
+	public PlayingField getPlayingField() {
 		return playingField;
 	}
 	
@@ -56,14 +56,14 @@ public abstract class PowerUp extends Entity implements IEatable {
 	 * Executes the effect the power-up should do
 	 * when a collision happens with a PlayerFish.
 	 * 
-	 * @param pfish
+	 * @param playerFish
 	 * 		The PlayerFish this PowerUp collided with
 	 */
-	public abstract void executeEffect(PlayerFish pfish);
+	public abstract void executeEffect(PlayerFish playerFish);
 	
 	/**
 	 * @return
-	 * 		A name for this PowerUp.
+	 * 		The name of this PowerUp.
 	 */
 	public abstract String getName();
 	
