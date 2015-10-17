@@ -211,6 +211,6 @@ public abstract class Entity implements ICollidable, IDrawable, Subject, Seriali
 		this.boundingArea = (CollisionMask) in.readObject();
 		this.behaviour = (IMoveBehaviour) in.readObject();
 		
-		this.observers = new ArrayList<AchievementObserver>();
+		this.observers = new ArrayList<AchievementObserver>(0);
 	}
 }
