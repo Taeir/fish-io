@@ -10,11 +10,11 @@ import java.io.IOException;
  * Log handler that outputs in the a txt file.
  */
 public class TxtFileHandler implements IHandler, Closeable {
-
+	private static final int FLUSH_NUMBER = 10;
+	
 	private IFormatter format = new DefaultFormat();
 	private BufferedWriter bufferedWriter;
 	private int flushCounter = 0;
-	private final int flushNumber = 10;
 	
 	/**
 	 * Create ConsoleHandler with default formatter.
@@ -26,7 +26,7 @@ public class TxtFileHandler implements IHandler, Closeable {
 			// If file doesn't exists, then create it
 			if (!file.exists()) {
 				if (!file.getParentFile().exists()) {
-				file.getAbsoluteFile().getParentFile().mkdirs();
+					file.getAbsoluteFile().getParentFile().mkdirs();
 				}
 				file.createNewFile();
 			}
@@ -51,7 +51,7 @@ public class TxtFileHandler implements IHandler, Closeable {
 			if (!file.exists()) {
 				if (!file.getParentFile().exists()) {
 					file.getAbsoluteFile().getParentFile().mkdirs();
-					}
+				}
 				file.createNewFile();
 			}
 			// Save BufferedWriter
@@ -80,7 +80,7 @@ public class TxtFileHandler implements IHandler, Closeable {
 			
 			// Flush every now and then to ensure 
 			flushCounter++;
-			if (flushCounter >= flushNumber) {
+			if (flushCounter >= FLUSH_NUMBER) {
 				bufferedWriter.flush();
 			}
 		} catch (IOException e) {
