@@ -226,6 +226,7 @@ public final class Preloader {
 				controller.init(scene);
 			} catch (Exception ex) {
 				logger.log(LogLevel.ERROR, "Error while initializing controller for " + filename);
+				logger.log(LogLevel.DEBUG, ex);
 			}
 			
 			//Add the scene
@@ -236,6 +237,7 @@ public final class Preloader {
 			return scene;
 		} catch (IOException e) {
 			logger.log(LogLevel.ERROR, "Error loading screen " + filename);
+			logger.log(LogLevel.DEBUG, e);
 			return null;
 		}
 	}
