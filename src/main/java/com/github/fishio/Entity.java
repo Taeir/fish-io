@@ -24,19 +24,18 @@ import javafx.scene.paint.Color;
  * Represents an entity in the game.
  */
 public abstract class Entity implements ICollidable, IDrawable, Subject, Serializable {
-	
 	private static final long serialVersionUID = 650039406095374770L;
+	
 	protected static Log logger = Log.getLogger();
 	protected static Settings settings = Settings.getInstance();
 	
 	private static AtomicInteger entityIdCounter = new AtomicInteger(0);
+	
 	private List<AchievementObserver> observers = new ArrayList<AchievementObserver>();
 	
-	private CollisionMask boundingArea;
-	private SimpleBooleanProperty deathProperty = new SimpleBooleanProperty();
-	
 	private int entityId;
-	
+	private SimpleBooleanProperty deathProperty = new SimpleBooleanProperty();
+	private CollisionMask boundingArea;
 	private IMoveBehaviour behaviour;
 	
 	/**
@@ -49,9 +48,9 @@ public abstract class Entity implements ICollidable, IDrawable, Subject, Seriali
 	 */
 	public Entity(CollisionMask boundingArea, IMoveBehaviour behaviour) {
 		this.boundingArea = boundingArea;
-		this.entityId = getFreeEntityId();
-		
 		this.behaviour = behaviour;
+		
+		this.entityId = getFreeEntityId();
 	}
 
 	/**
@@ -91,7 +90,7 @@ public abstract class Entity implements ICollidable, IDrawable, Subject, Seriali
 	}
 	
 	/**
-	 * Marks this Entity as dead.
+	 * Kills this Entity.
 	 */
 	public void kill() {
 		//We cannot die twice.
@@ -109,20 +108,21 @@ public abstract class Entity implements ICollidable, IDrawable, Subject, Seriali
 	}
 	
 	/**
-	 * Changes the behavior of this entity.
-	 * 
-	 * @param behaviour
-	 *            The behavior this entity should adopt
-	 */
-	public void setBehaviour(IMoveBehaviour behaviour) {
-		this.behaviour = behaviour;
-	}
-	
-	/**
-	 * @return The current behaviour of this entity.
+	 * @return
+	 * 		the current behaviour of this entity.
 	 */
 	public IMoveBehaviour getBehaviour() {
 		return behaviour;
+	}
+	
+	/**
+	 * Changes the behaviour of this entity.
+	 * 
+	 * @param behaviour
+	 * 		the behaviour this entity should adopt
+	 */
+	public void setBehaviour(IMoveBehaviour behaviour) {
+		this.behaviour = behaviour;
 	}
 	
 	@Override
@@ -146,6 +146,9 @@ public abstract class Entity implements ICollidable, IDrawable, Subject, Seriali
 		if (isDead()) {
 			return;
 		}
+		
+		//Normally this method will be overridden by subclasses to render sprites.
+		//So we simply draw a red box here.
 		
 		//No sprite rendering
 		gc.setFill(Color.RED);
@@ -173,7 +176,9 @@ public abstract class Entity implements ICollidable, IDrawable, Subject, Seriali
 	public abstract boolean canMoveThroughWall();
 
 	/**
-	 * What happens when the entity hits a wall, by default it kills the entity.
+	 * Called when an entity hits a wall.
+	 * 
+	 * If not overrideen, this method will kill the entity.
 	 */
 	public void hitWall() {
 		kill();
