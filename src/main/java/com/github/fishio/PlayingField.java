@@ -180,15 +180,15 @@ public abstract class PlayingField {
 			IMoveBehaviour b = e.getBehaviour();
 			b.preMove();
 			
-			ICollisionArea box = e.getBoundingArea();
-			if (hitsWall(e, box)) {
+			CollisionMask mask = e.getBoundingArea();
+			if (hitsWall(e, mask)) {
 				e.hitWall();
 			}
 
-			box.move(b.getSpeedVector());
+			mask.move(b.getSpeedVector());
 
 			if (!e.canMoveThroughWall()) {
-				moveWithinScreen(box);
+				moveWithinScreen(mask);
 			}
 		}
 	}

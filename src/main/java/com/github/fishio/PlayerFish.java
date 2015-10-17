@@ -21,7 +21,6 @@ public class PlayerFish extends Entity implements IEatable, Subject {
 	private static final long serialVersionUID = 4226766216723804140L;
 	
 	public static final String SPRITE_LOCATION = "sprites/fish/playerFish.png";
-
 	public static final double FISH_ACCELERATION = 0.1;
 	
 	private Image sprite;
