@@ -17,6 +17,16 @@ public interface IHandler {
 	void output(LogLevel logLvl, String logMessage);
 	
 	/**
+	 * Outputs the exception.
+	 * 
+	 * @param logLvl
+	 * 		the log level of the log.
+	 * @param exception
+	 * 		the exception to log.
+	 */
+	void output(LogLevel logLvl, Exception exception);
+	
+	/**
 	 * Set the format that the handler should use.
 	 * @param format
 	 * 		The formater that should be used.
