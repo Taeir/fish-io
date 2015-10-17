@@ -2,8 +2,6 @@ package com.github.fishio;
 
 import java.util.Random;
 
-import javafx.scene.image.Image;
-
 import com.github.fishio.listeners.TickListener;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
@@ -85,11 +83,9 @@ public class PowerUpSpawner implements TickListener {
 		int powerUpNumber = rand.nextInt(POWERUP_COUNT);
 		
 		String spritePath = "sprites/powerup/pu" + powerUpNumber + ".png";
-		Image sprite = Preloader.getImageOrLoad(spritePath);
+		Sprite sprite = SpriteStore.getSpriteOrLoad(spritePath);
 		
-		CollisionMask cm = new CollisionMask(new Vec2d(x, y), WIDTH, HEIGHT, 
-				Preloader.getAlphaDataOrLoad(spritePath),
-				Preloader.getSpriteAlphaRatioOrLoad(spritePath));
+		CollisionMask cm = new CollisionMask(new Vec2d(x, y), WIDTH, HEIGHT, sprite);
 		
 		//Choosing a random PowerUp.
 		switch (powerUpNumber) {

@@ -5,9 +5,6 @@ import java.util.Random;
 
 import com.github.fishio.settings.Settings;
 
-import javafx.scene.image.Image;
-
-
 /**
  * The EnemyFishFactory is an utility class for creating EnemyFish.
  */
@@ -90,9 +87,7 @@ public final class EnemyFishFactory {
 		//randomize fish properties 
 		int size = random.nextInt(maxSize - minSize + 1) + minSize;
 		String spriteString = getRandomSprite();
-		Image sprite = Preloader.getImageOrLoad(spriteString);
-		boolean[][] data = Preloader.getAlphaDataOrLoad(spriteString);
-		double relSize = Preloader.getSpriteAlphaRatioOrLoad(spriteString);
+		Sprite sprite = SpriteStore.getSpriteOrLoad(spriteString);
 		//TODO use setSize() instead of width/height calculations
 		double ratio = sprite.getWidth() / sprite.getHeight();
 		double width = Math.sqrt(size * ratio);
@@ -127,7 +122,7 @@ public final class EnemyFishFactory {
 		}
 
 		EnemyFish eFish =
-				new EnemyFish(new CollisionMask(position, width, height, data, relSize), spriteString, vx, vy);
+				new EnemyFish(new CollisionMask(position, width, height, sprite), spriteString, vx, vy);
 		
 		//TODO Check for decent properties
 		//eFish.checkProperties()

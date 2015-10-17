@@ -293,6 +293,6 @@ public class PlayerFish extends Entity implements IEatable, Subject {
 		this.invincible = in.readLong();
 		
 		//Load the sprite
-		this.sprite = Preloader.getImageOrLoad(SPRITE_LOCATION);
+		this.sprite = SpriteStore.getSpriteOrLoad(SPRITE_LOCATION);
 	}
 }
