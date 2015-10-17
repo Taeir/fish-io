@@ -4,7 +4,6 @@ import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import javafx.scene.canvas.Canvas;
 import javafx.scene.image.Image;
 
 import org.junit.Test;
@@ -27,7 +26,7 @@ public class TestRenderer2 {
 	 */
 	@Test
 	public void testSetBackgroundError() {
-		Renderer renderer = new Renderer(mock(PlayingField.class), new Canvas(), 60, 0);
+		Renderer renderer = new Renderer(mock(PlayingField.class), null, 60, 0);
 		
 		//Set a good image as the background.
 		Image goodImage = mock(Image.class);
