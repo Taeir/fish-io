@@ -57,20 +57,17 @@ public final class Preloader {
 	 * Preload all the screens.
 	 */
 	public static void preloadScreens() {
-		//Create a new thread to load the screens.
-		Thread thread = new Thread(() -> {
-			loadScreen("mainMenu");
-			loadScreen("singlePlayer");
-			loadScreen("helpScreen");
-			loadScreen("achievementScreen");
-			loadScreen("settingsScreen");
-			loadScreen("multiplayerScreen");
-			loadScreen("multiplayerGameScreen");
-			
-			//We don't load the splash screen, because it is shown immediately.
-		});
+		Log.getLogger().log(LogLevel.DEBUG, "[Preloader] Preloading screens...");
 		
-		thread.start();
+		//Order matters here. We first load the mainMenu, since that screen will be shown directly after
+		//the spash screen.
+		MultiThreadedUtility.submitTask(() -> loadScreen("mainMenu"), false);
+		MultiThreadedUtility.submitTask(() -> loadScreen("singlePlayer"), false);
+		MultiThreadedUtility.submitTask(() -> loadScreen("helpScreen"), false);
+		MultiThreadedUtility.submitTask(() -> loadScreen("achievementScreen"), false);
+		MultiThreadedUtility.submitTask(() -> loadScreen("settingsScreen"), false);
+		MultiThreadedUtility.submitTask(() -> loadScreen("multiplayerScreen"), false);
+		MultiThreadedUtility.submitTask(() -> loadScreen("multiplayerGameScreen"), false);
 	}
 	
 	/**
@@ -273,7 +270,6 @@ public final class Preloader {
 	 * 		the scene that has been loaded.
 	 */
 	public static Scene loadScreen(String filename) {
-		
 		Scene oldScene;
 		
 		sync:
@@ -333,18 +329,17 @@ public final class Preloader {
 			try {
 				controller.init(scene);
 			} catch (Exception ex) {
-				logger.log(LogLevel.ERROR, "Error while initializing controller for " 
-						+ filename + " Exeception: " + ex.getMessage());
+				logger.log(LogLevel.ERROR, "Error while initializing controller for " + filename);
 			}
 			
+			//Add the scene
 			synchronized (SCREENS) {
 				SCREENS.put(filename, scene);
 			}
 			
 			return scene;
 		} catch (IOException e) {
-			logger.log(LogLevel.ERROR, "Error loading screen: " 
-					+ " Exeception: " + e.getMessage());
+			logger.log(LogLevel.ERROR, "Error loading screen " + filename);
 			return null;
 		}
 	}
