@@ -1,4 +1,4 @@
-package com.github.fishio;
+package com.github.fishio.factories;
 
 import java.util.Random;
 
@@ -14,7 +14,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.github.fishio.factories.PowerUpSpawner;
+import com.github.fishio.ICollisionArea;
+import com.github.fishio.PlayingField;
+import com.github.fishio.SinglePlayerPlayingField;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.gui.SlimGuiTest;
 import com.github.fishio.power_ups.PowerUp;
