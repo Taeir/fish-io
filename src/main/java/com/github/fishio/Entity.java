@@ -23,7 +23,7 @@ import javafx.scene.paint.Color;
 /**
  * Represents an entity in the game.
  */
-public abstract class Entity implements ICollidable, IPositional, IDrawable, Subject, Serializable {
+public abstract class Entity implements ICollidable, IDrawable, Subject, Serializable {
 	
 	private static final long serialVersionUID = 650039406095374770L;
 	protected static Log logger = Log.getLogger();
@@ -149,7 +149,9 @@ public abstract class Entity implements ICollidable, IPositional, IDrawable, Sub
 		
 		//No sprite rendering
 		gc.setFill(Color.RED);
-		gc.fillRect(getX(), getY(), getWidth(), getHeight());
+		
+		CollisionMask cm = getBoundingArea();
+		gc.fillRect(cm.getMinX(), cm.getMinY(), cm.getWidth(), cm.getHeight());
 	}
 	
 	@Override

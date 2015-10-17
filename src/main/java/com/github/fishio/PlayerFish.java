@@ -17,7 +17,7 @@ import javafx.scene.image.Image;
  * Represents a fish that the user can control using
  * the keyboard.
  */
-public class PlayerFish extends Entity implements IEatable, IPositional, Subject {
+public class PlayerFish extends Entity implements IEatable, Subject {
 	private static final long serialVersionUID = 4226766216723804140L;
 	
 	public static final String SPRITE_LOCATION = "sprites/fish/playerFish.png";
