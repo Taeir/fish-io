@@ -12,6 +12,8 @@ import javafx.scene.image.Image;
  */
 public abstract class PowerUpDuration extends PowerUp implements TickListener {
 
+	private static final long serialVersionUID = -2022734544439997835L;
+	
 	private final int timeSeconds;
 	private final int timeTicks;
 	
@@ -79,16 +81,10 @@ public abstract class PowerUpDuration extends PowerUp implements TickListener {
 	public abstract void endEffect();
 
 	@Override
-	public void preTick() {
-		
-		if (!active) {
-			return;
-		}
-	}
+	public void preTick() { }
 	
 	@Override
 	public void postTick() {
-		
 		if (!active) {
 			return;
 		}
@@ -96,7 +92,7 @@ public abstract class PowerUpDuration extends PowerUp implements TickListener {
 		tickCounter++;
 		
 		if (tickCounter >= timeTicks) {
-			getPField().getGameThread().unregisterListener(this);
+			getPlayingField().getGameThread().unregisterListener(this);
 			endEffect();
 			active = false;
 			return;

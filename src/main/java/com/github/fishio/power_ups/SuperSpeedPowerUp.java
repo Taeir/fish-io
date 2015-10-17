@@ -14,7 +14,8 @@ import javafx.scene.image.Image;
  * of the PlayerFish.
  */
 public class SuperSpeedPowerUp extends PowerUpDuration {
-
+	private static final long serialVersionUID = 4276253571924605677L;
+	
 	private static final int DURATION = 10;
 	public static final double ACCELERATION_FACTOR = 2.5;
 	public static final double MAX_SPEED_FACTOR = 3;
@@ -53,6 +54,7 @@ public class SuperSpeedPowerUp extends PowerUpDuration {
 		if (!(behaviour instanceof KeyListenerBehaviour)) {
 			return;
 		}
+		
 		KeyListenerBehaviour keyBehaviour = (KeyListenerBehaviour) behaviour;
 		
 		keyBehaviour.setAcceleration(keyBehaviour.getAcceleration() * ACCELERATION_FACTOR);
@@ -71,6 +73,7 @@ public class SuperSpeedPowerUp extends PowerUpDuration {
 		if (!(behaviour instanceof KeyListenerBehaviour)) {
 			return;
 		}
+		
 		KeyListenerBehaviour keyBehaviour = (KeyListenerBehaviour) behaviour;
 		
 		keyBehaviour.setAcceleration(keyBehaviour.getAcceleration() / ACCELERATION_FACTOR);

@@ -11,7 +11,7 @@ import javafx.scene.image.Image;
  * (if it isn't maxed out already).
  */
 public class ExtraLifePowerUp extends PowerUp {
-
+	private static final long serialVersionUID = 1852576909309826717L;
 	private static final String NAME = "Extra Life";
 	
 	/**

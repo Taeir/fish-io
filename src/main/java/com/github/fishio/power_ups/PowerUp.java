@@ -18,14 +18,14 @@ import javafx.scene.image.Image;
  * executes a certain (positive) effect.
  */
 public abstract class PowerUp extends Entity implements IEatable {
-
-	private PlayingField playingField;
-	
-	private final Log logger = Log.getLogger();
-	
-	private Image sprite;
+	private static final long serialVersionUID = -3106185831514973543L;
 	
 	private static final double DEFAULT_SPEED = 2;
+	
+	protected final Log logger = Log.getLogger();
+
+	private PlayingField playingField;
+	private Image sprite;
 	
 	/**
 	 * Creates a new PowerUp.
