@@ -52,8 +52,9 @@ public abstract class MultiplayerPlayingField extends PlayingField {
 		//This is to prevent client side problems
 		if (getEntities().contains(player)) {
 			remove(player);
-			add(player);
 		}
+		
+		add(player);
 	}
 	
 	/**
