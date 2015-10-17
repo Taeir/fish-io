@@ -123,11 +123,6 @@ public abstract class PlayingField {
 			//Remove from other lists.
 			remove(e);
 			
-			//Decrease enemy count.
-			if (e instanceof EnemyFish) {
-				enemyCount--;
-			}
-			
 			//Log action.
 			logger.log(LogLevel.DEBUG, "Removed entity. Enemycount: " + enemyCount + ".");
 		}
@@ -311,40 +306,46 @@ public abstract class PlayingField {
 	/**
 	 * Adds the given object to this Playing Field.
 	 * 
-	 * @param o
+	 * @param obj
 	 * 		the object to add.
 	 */
-	public void add(Object o) {
-		if (o instanceof IDrawable) {
-			drawables.addFirst((IDrawable) o);
+	public void add(Object obj) {
+		if (obj instanceof IDrawable) {
+			drawables.addFirst((IDrawable) obj);
 		}
 
-		if (o instanceof Entity) {
-			entities.add((Entity) o);
+		if (obj instanceof Entity) {
+			entities.add((Entity) obj);
 		}
 
-		if (o instanceof ICollidable) {
-			collidables.add((ICollidable) o);
+		if (obj instanceof ICollidable) {
+			collidables.add((ICollidable) obj);
 		}
 	}
 
 	/**
 	 * Removes the given object from this playing field.
 	 * 
-	 * @param o
+	 * @param obj
 	 * 		the object to remove.
 	 */
-	public void remove(Object o) {
-		if (o instanceof IDrawable) {
-			drawables.remove(o);
+	public void remove(Object obj) {
+		boolean removed = false;
+		if (obj instanceof IDrawable) {
+			removed |= drawables.remove(obj);
 		}
 
-		if (o instanceof Entity) {
-			entities.remove(o);
+		if (obj instanceof Entity) {
+			removed |= entities.remove(obj);
 		}
 		
-		if (o instanceof ICollidable) {
-			collidables.remove(o);
+		if (obj instanceof ICollidable) {
+			removed |= collidables.remove(obj);
+		}
+		
+		if (removed && obj instanceof EnemyFish) {
+			//Decrease enemy count.
+			enemyCount--;
 		}
 	}
 
