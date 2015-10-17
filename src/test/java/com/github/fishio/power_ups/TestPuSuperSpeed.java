@@ -2,14 +2,16 @@ package com.github.fishio.power_ups;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
+
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
@@ -34,17 +36,18 @@ public class TestPuSuperSpeed extends TestDurationPowerUp {
 	 */
 	@Before
 	public void setUp() {
-		this.pf = Mockito.mock(SinglePlayerPlayingField.class);
-		GameThread gt = Mockito.spy(new GameThread(pf));
+		this.pf = mock(SinglePlayerPlayingField.class);
+		GameThread gt = spy(new GameThread(pf));
 		when(pf.getGameThread()).thenReturn(gt);
-		this.pu = Mockito.spy(new SuperSpeedPowerUp(null, pf, Mockito.mock(Image.class)));
+		
+		this.pu = spy(new SuperSpeedPowerUp(null, pf, mock(Image.class)));
 		
 		//To prevent NullPointerExceptions, mocking the target of the PowerUp.
-		PlayerFish fish = Mockito.mock(PlayerFish.class);
+		PlayerFish fish = mock(PlayerFish.class);
 		this.pu.setTarget(fish);
 		
-		KeyListenerBehaviour klb = Mockito.spy(new KeyListenerBehaviour(
-				Mockito.mock(Scene.class), KeyCode.A, KeyCode.A, KeyCode.A, KeyCode.A, 5.0, 7.0));
+		KeyListenerBehaviour klb = spy(new KeyListenerBehaviour(
+				mock(Scene.class), KeyCode.A, KeyCode.A, KeyCode.A, KeyCode.A, 5.0, 7.0));
 		when(fish.getBehaviour()).thenReturn(klb);
 	}
 	
@@ -68,10 +71,8 @@ public class TestPuSuperSpeed extends TestDurationPowerUp {
 		
 		pu.startEffect();
 		
-		assertEquals(oldAcceleration *  SuperSpeedPowerUp.ACCELERATION_FACTOR, 
-				klb.getAcceleration(), DELTA);
-		assertEquals(oldMaxSpeed * SuperSpeedPowerUp.MAX_SPEED_FACTOR, 
-				klb.getMaxSpeed(), DELTA);
+		assertEquals(oldAcceleration *  SuperSpeedPowerUp.ACCELERATION_FACTOR, klb.getAcceleration(), DELTA);
+		assertEquals(oldMaxSpeed * SuperSpeedPowerUp.MAX_SPEED_FACTOR, klb.getMaxSpeed(), DELTA);
 	}
 
 	@Override
