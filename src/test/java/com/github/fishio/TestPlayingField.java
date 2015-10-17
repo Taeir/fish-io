@@ -38,6 +38,12 @@ public abstract class TestPlayingField extends SlimGuiTest {
 	 */
 	public abstract int getDefaultAmount();
 	
+	/**
+	 * @return
+	 * 		the amount of entities that is in the field initially.
+	 */
+	public abstract int getInitialAmount();
+	
 	private PlayingField field;
 	private Canvas canvas;
 	
@@ -233,8 +239,8 @@ public abstract class TestPlayingField extends SlimGuiTest {
 		
 		field.clearEnemies();
 		
-		assertEquals(getDefaultAmount() + 10, field.getEntities().size());
-		assertEquals(getDefaultAmount() + 10, field.getDrawables().size());
+		assertEquals(getInitialAmount() + 10, field.getEntities().size());
+		assertEquals(getInitialAmount() + 10, field.getDrawables().size());
 	}
 	
 	/**
@@ -279,7 +285,7 @@ public abstract class TestPlayingField extends SlimGuiTest {
 		
 		field.cleanupDead();
 		
-		assertEquals(getDefaultAmount() + 1, field.getEntities().size());
+		assertEquals(getInitialAmount() + 1, field.getEntities().size());
 		assertTrue(field.getEntities().contains(e2));
 		assertFalse(field.getEntities().contains(e1));
 	}
