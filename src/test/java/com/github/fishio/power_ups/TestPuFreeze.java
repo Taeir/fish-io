@@ -2,10 +2,7 @@ package com.github.fishio.power_ups;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 
 import javafx.scene.image.Image;
 
