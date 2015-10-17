@@ -15,18 +15,12 @@ import javafx.scene.image.Image;
 
 
 /**
- * The EnemyFishFactory is an utility class for creating EnemyFish.
+ * An EnemyFishFactory has the ability to create different EnemyFishes.
  */
-public final class EnemyFishFactory {
+public class EnemyFishFactory {
 
 	private static Random random = new Random();
 	private static Settings settings = Settings.getInstance();
-	/**
-	 * Private constructor to prevent initiation.
-	 */
-	private EnemyFishFactory() {
-		//to prevent initiation
-	}
 	
 	/**
 	 * Creates a random EnemyFish. This fish will get a sprite and always spawn
@@ -39,7 +33,7 @@ public final class EnemyFishFactory {
 	 * @return
 	 * 		a randomized EnemyFish.
 	 */
-	public static EnemyFish randomizedFish(ICollisionArea ca) {
+	public EnemyFish randomizedFish(ICollisionArea ca) {
 		int minSize = (int) (ca.getSize() * 0.2);
 		int maxSize = (int) (ca.getSize() * 4.5);
 		
@@ -57,7 +51,7 @@ public final class EnemyFishFactory {
 	 * @return
 	 * 		a randomized EnemyFish.
 	 */
-	public static EnemyFish randomizedFish(Collection<? extends Entity> sizes) {
+	public EnemyFish randomizedFish(Collection<? extends Entity> sizes) {
 		if (sizes.isEmpty()) {
 			return randomizedFish(500, 1000);
 		}
@@ -92,7 +86,7 @@ public final class EnemyFishFactory {
 	 * @return
 	 * 		a random Enemyfish
 	 */
-	public static EnemyFish randomizedFish(int minSize, int maxSize) {
+	public EnemyFish randomizedFish(int minSize, int maxSize) {
 		//randomize fish properties 
 		int size = random.nextInt(maxSize - minSize + 1) + minSize;
 		String spriteString = getRandomSprite();
@@ -144,7 +138,7 @@ public final class EnemyFishFactory {
 	 * @return
 	 * 		a random fish sprite.
 	 */
-	private static String getRandomSprite() {
+	private String getRandomSprite() {
 		final int i = random.nextInt(28);
 		return "sprites/fish/fish" + i + ".png";
 	}
@@ -156,7 +150,7 @@ public final class EnemyFishFactory {
 	 * 			a random speed between 1 and MAX_EFISH_SPEED or between -1 and
 	 * 			-MAX_FISH_SPEED
 	 */
-	public static double randomSpeed() {
+	public double randomSpeed() {
 		double speed = (Math.random() * 2 - 1) * settings.getDouble("MAX_EFISH_SPEED");
 
 		// Check if speed is not too slow

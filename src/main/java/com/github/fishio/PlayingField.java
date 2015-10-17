@@ -33,6 +33,7 @@ public abstract class PlayingField {
 
 	private int enemyCount;
 	public static final int MAX_ENEMY_COUNT = 10;
+	private EnemyFishFactory factory = new EnemyFishFactory();
 
 	/**
 	 * Creates the playing field with a set framerate and canvas.
@@ -142,7 +143,7 @@ public abstract class PlayingField {
 		//add enemy entities
 		while (enemyCount < MAX_ENEMY_COUNT) {
 			//TODO add scalible enemyFish
-			EnemyFish eFish = EnemyFishFactory.randomizedFish(getPlayers());
+			EnemyFish eFish = factory.randomizedFish(getPlayers());
 			add(eFish);
 			
 			enemyCount++;
