@@ -438,4 +438,19 @@ public abstract class PlayingField {
 		return false;
 	}
 	
+	/**
+	 * @return
+	 * 		The factory that creates enemy fishes.
+	 */
+	public EnemyFishFactory getFactory() {
+		return factory;
+	}
+	
+	/**
+	 * @param factory
+	 * 		Sets the factory that creates enemy fishes.
+	 */
+	public void setFactory(EnemyFishFactory factory) {
+		this.factory = factory;
+	}
 }
