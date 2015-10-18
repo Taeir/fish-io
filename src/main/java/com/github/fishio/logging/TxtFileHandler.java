@@ -87,6 +87,29 @@ public class TxtFileHandler implements IHandler, Closeable {
 			e.printStackTrace();
 		}
 	}
+	
+	@Override
+	public void output(LogLevel logLvl, Exception exception) {
+		try {
+			bufferedWriter.write(format.formatOutput(logLvl,
+					"Exception" + exception.getClass().getName() + ": " + exception.getMessage()));
+			bufferedWriter.newLine();
+			
+			// Write the exception
+			for (StackTraceElement ste : exception.getStackTrace()) {
+				bufferedWriter.write("    " + ste.toString());
+				bufferedWriter.newLine();
+			}
+			
+			// Flush every now and then to ensure 
+			flushCounter++;
+			if (flushCounter >= FLUSH_NUMBER) {
+				bufferedWriter.flush();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public void setFormat(IFormatter formatter) {

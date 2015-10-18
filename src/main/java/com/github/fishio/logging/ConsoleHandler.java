@@ -25,6 +25,13 @@ public class ConsoleHandler implements IHandler {
 	public void output(LogLevel logLvl, String logMessage) {
 		System.out.println(format.formatOutput(logLvl, logMessage));
 	}
+	
+	@Override
+	public void output(LogLevel logLvl, Exception exception) {
+		System.out.println(format.formatOutput(logLvl,
+				"Exception" + exception.getClass().getName() + ": " + exception.getMessage()));
+		exception.printStackTrace();
+	}
 
 	@Override
 	public void setFormat(IFormatter formatter) {

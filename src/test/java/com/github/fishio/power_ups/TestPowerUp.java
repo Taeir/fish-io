@@ -40,7 +40,7 @@ public abstract class TestPowerUp {
 	public void testGetPField() {
 		PowerUp pu = getPowerUp();
 		
-		assertSame(getPlayingField(), pu.getPField());
+		assertSame(getPlayingField(), pu.getPlayingField());
 	}
 	
 	/**

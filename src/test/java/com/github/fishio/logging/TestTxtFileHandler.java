@@ -68,8 +68,7 @@ public class TestTxtFileHandler extends TestIHandler {
 		try {
 			bw2 = new BufferedWriter(new FileWriter(new File(folder.getRoot(), filename)));
 		} catch (IOException e) {
-			e.printStackTrace();
-			fail(e.getMessage());
+			fail("Exception while trying to write to file.");
 		}
 		handler.setBufferedWriter(bw2);
 		assertEquals(bw2, handler.getBufferedWriter());

@@ -94,15 +94,15 @@ public abstract class PlayingField {
 	 */
 	public void checkPlayerCollisions() {
 		//Iterate over the players
-		for (PlayerFish player : getPlayers()) {
+		getPlayers().parallelStream().forEach(player -> {
 			//Iterate over the collidables
-			for (ICollidable c : collidables) {
-				if (player != c && player.doesCollides(c)) {
-					player.onCollide(c);
-					c.onCollide(player);
-				}
-			}
-		}
+			collidables.parallelStream()
+			.filter(collidable -> player != collidable && player.doesCollides(collidable))
+			.forEach(collidable -> {
+				player.onCollide(collidable);
+				collidable.onCollide(player);
+			});
+		});
 	}
 
 	/**
@@ -122,11 +122,6 @@ public abstract class PlayingField {
 			
 			//Remove from other lists.
 			remove(e);
-			
-			//Decrease enemy count.
-			if (e instanceof EnemyFish) {
-				enemyCount--;
-			}
 			
 			//Log action.
 			logger.log(LogLevel.DEBUG, "Removed entity. Enemycount: " + enemyCount + ".");
@@ -180,15 +175,15 @@ public abstract class PlayingField {
 			IMoveBehaviour b = e.getBehaviour();
 			b.preMove();
 			
-			ICollisionArea box = e.getBoundingArea();
-			if (hitsWall(e, box)) {
+			CollisionMask mask = e.getBoundingArea();
+			if (hitsWall(e, mask)) {
 				e.hitWall();
 			}
 
-			box.move(b.getSpeedVector());
+			mask.move(b.getSpeedVector());
 
 			if (!e.canMoveThroughWall()) {
-				moveWithinScreen(box);
+				moveWithinScreen(mask);
 			}
 		}
 	}
@@ -311,40 +306,46 @@ public abstract class PlayingField {
 	/**
 	 * Adds the given object to this Playing Field.
 	 * 
-	 * @param o
+	 * @param obj
 	 * 		the object to add.
 	 */
-	public void add(Object o) {
-		if (o instanceof IDrawable) {
-			drawables.addFirst((IDrawable) o);
+	public void add(Object obj) {
+		if (obj instanceof IDrawable) {
+			drawables.addFirst((IDrawable) obj);
 		}
 
-		if (o instanceof Entity) {
-			entities.add((Entity) o);
+		if (obj instanceof Entity) {
+			entities.add((Entity) obj);
 		}
 
-		if (o instanceof ICollidable) {
-			collidables.add((ICollidable) o);
+		if (obj instanceof ICollidable) {
+			collidables.add((ICollidable) obj);
 		}
 	}
 
 	/**
 	 * Removes the given object from this playing field.
 	 * 
-	 * @param o
+	 * @param obj
 	 * 		the object to remove.
 	 */
-	public void remove(Object o) {
-		if (o instanceof IDrawable) {
-			drawables.remove(o);
+	public void remove(Object obj) {
+		boolean removed = false;
+		if (obj instanceof IDrawable) {
+			removed |= drawables.remove(obj);
 		}
 
-		if (o instanceof Entity) {
-			entities.remove(o);
+		if (obj instanceof Entity) {
+			removed |= entities.remove(obj);
 		}
 		
-		if (o instanceof ICollidable) {
-			collidables.remove(o);
+		if (obj instanceof ICollidable) {
+			removed |= collidables.remove(obj);
+		}
+		
+		if (removed && obj instanceof EnemyFish) {
+			//Decrease enemy count.
+			enemyCount--;
 		}
 	}
 
