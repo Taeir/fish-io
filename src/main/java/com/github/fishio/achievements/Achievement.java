@@ -87,11 +87,7 @@ public abstract class Achievement {
 	
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		
-		result = prime * result;
-		return result + achievement.hashCode();
+		return achievement.hashCode() * 31 + getLevel();
 	}
 
 	@Override

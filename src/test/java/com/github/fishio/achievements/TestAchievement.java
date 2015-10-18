@@ -113,6 +113,17 @@ public abstract class TestAchievement {
 	 */
 	@Test
 	public void testEqualsDifferentAchievement() {
+		//These are different classes.
 		assertNotEquals(newAchievement(), newAchievement());
+	}
+	
+	/**
+	 * Test for the hashCode method.
+	 */
+	@Test
+	public void testHashCode() {
+		Achievement a = newAchievement("a", 1);
+		
+		assertEquals("a".hashCode() * 31 + 1, a.hashCode());
 	}
 }
