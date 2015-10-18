@@ -13,8 +13,6 @@ import javafx.scene.canvas.Canvas;
 public class MenuField extends PlayingField {
 	private GameThread gameThread;
 	
-	private EnemyFishFactory factory = new EnemyFishFactory();
-	
 	/**
 	 * Constructor for the menuField.
 	 * @param fps
@@ -41,7 +39,7 @@ public class MenuField extends PlayingField {
 
 		//add enemy entities
 		while (getEntities().size()  < 5) {
-			EnemyFish eFish = factory.randomizedFish(new BoundingBox(null, 60, 60));
+			EnemyFish eFish = getFactory().randomizedFish(new BoundingBox(null, 60, 60));
 			add(eFish);
 		}
 	}
