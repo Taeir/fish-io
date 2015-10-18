@@ -35,7 +35,7 @@ public class TestFrozenBehaviour {
 	 * Tests the preMove method.
 	 */
 	@Test
-	public void preMove() {
+	public void testPreMove() {
 		behaviour.preMove();
 		
 		// The speedVector should not have changed as a result of calling the preMove method.
