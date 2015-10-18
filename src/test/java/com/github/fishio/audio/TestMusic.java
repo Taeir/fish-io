@@ -5,12 +5,13 @@ package com.github.fishio.audio;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import java.nio.file.Path;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import com.github.fishio.gui.SlimGuiTest;
 
@@ -167,7 +168,7 @@ public class TestMusic extends SlimGuiTest {
 		}
 		
 		Music music = getTestMusic();
-		Runnable r = Mockito.mock(Runnable.class);
+		Runnable r = mock(Runnable.class);
 		
 		Runnable old = music.getPlayer().getOnStopped();
 		music.getPlayer().setOnStopped(() -> {
@@ -183,6 +184,6 @@ public class TestMusic extends SlimGuiTest {
 		waitForStop(7500L);
 		
 		//Our runnable should have been called once.
-		Mockito.verify(r).run();
+		verify(r).run();
 	}
 }

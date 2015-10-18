@@ -3,6 +3,8 @@ package com.github.fishio.multiplayer.server;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -11,7 +13,6 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import com.github.fishio.Entity;
 import com.github.fishio.PlayingField;
@@ -29,14 +30,14 @@ public class TestFishServerEntitiesMessage {
 	 */
 	@Before
 	public void setUp() {
-		pf = Mockito.mock(PlayingField.class);
+		pf = mock(PlayingField.class);
 		
-		Entity entity = Mockito.mock(Entity.class);
-		Mockito.when(entity.getEntityId()).thenReturn(10);
+		Entity entity = mock(Entity.class);
+		when(entity.getEntityId()).thenReturn(10);
 		
 		queue = new LinkedList<Entity>();
 		queue.add(entity);
-		Mockito.when(pf.getEntities()).thenReturn(queue);
+		when(pf.getEntities()).thenReturn(queue);
 	}
 
 	/**

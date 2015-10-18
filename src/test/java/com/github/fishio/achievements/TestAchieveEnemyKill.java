@@ -3,6 +3,7 @@ package com.github.fishio.achievements;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
 import javafx.beans.property.SimpleObjectProperty;
 
 import org.junit.Before;
@@ -12,9 +13,7 @@ import com.github.fishio.PlayerFish;
 import com.github.fishio.SinglePlayerPlayingField;
 
 /**
- * This class tests the player Death achievement part of the ({@link Achieve}
- * class.
- *
+ * This class tests the Enemy Kill achievement.
  */
 public class TestAchieveEnemyKill {
 	

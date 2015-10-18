@@ -4,11 +4,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
 
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import com.github.fishio.SinglePlayerPlayingField;
 import com.github.fishio.listeners.Listenable;
@@ -28,7 +28,7 @@ public class TestGameThread extends TestListenable {
 	 */
 	@BeforeClass
 	public static void setUpClass() {
-		sppf = Mockito.mock(SinglePlayerPlayingField.class);
+		sppf = mock(SinglePlayerPlayingField.class);
 		gameThread = new GameThread(sppf);
 	}
 	

@@ -1,17 +1,17 @@
 package com.github.fishio.power_ups;
 
-import org.junit.Test;
-import org.mockito.Mockito;
-
-import static org.mockito.Mockito.never;
-
-import com.github.fishio.PlayerFish;
-import com.github.fishio.game.GameThread;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+
+import org.junit.Test;
+
+import com.github.fishio.PlayerFish;
+import com.github.fishio.game.GameThread;
 
 /**
  * Tests the DurationPowerUp class.
@@ -35,11 +35,11 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 		
 		assertFalse(pu.isActive());
 		
-		PlayerFish pf = Mockito.mock(PlayerFish.class);
+		PlayerFish pf = mock(PlayerFish.class);
 		pu.executeEffect(pf);
 		
 		assertTrue(pu.isActive());
-		Mockito.verify(pu).startEffect();
+		verify(pu).startEffect();
 	}
 	
 	/**
@@ -125,7 +125,7 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 		pu.postTick();
 		
 		assertEquals(0, pu.getTickCounter());
-		Mockito.verify(pu, never()).endEffect();
+		verify(pu, never()).endEffect();
 		assertFalse(pu.isActive());
 	}
 	
@@ -143,12 +143,12 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 		pu.postTick();
 		
 		assertEquals(pu.getTimeTicks(), pu.getTickCounter());
-		Mockito.verify(pu).endEffect();
+		verify(pu).endEffect();
 		assertFalse(pu.isActive());
 		
 		//Making sure the PowerUp is no longer ticking in the PlayingField.
 		GameThread gameThread = getPlayingField().getGameThread();
-		Mockito.verify(gameThread).unregisterListener(pu);
+		verify(gameThread).unregisterListener(pu);
 	}
 	
 	/**
@@ -165,12 +165,12 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 		pu.postTick();
 		
 		assertEquals(pu.getTimeTicks() - 1, pu.getTickCounter());
-		Mockito.verify(pu, never()).endEffect();
+		verify(pu, never()).endEffect();
 		assertTrue(pu.isActive());
 		
 		//Making sure the PowerUp is still longer ticking in the PlayingField.
 		GameThread gameThread = getPlayingField().getGameThread();
-		Mockito.verify(gameThread, never()).unregisterListener(pu);
+		verify(gameThread, never()).unregisterListener(pu);
 	}
 	
 	/**
@@ -180,7 +180,7 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	public void testGetTarget() {
 		PowerUpDuration pu = getDurationPowerUp();
 		
-		PlayerFish pf = Mockito.mock(PlayerFish.class);
+		PlayerFish pf = mock(PlayerFish.class);
 		
 		pu.executeEffect(pf);
 		
@@ -194,9 +194,9 @@ public abstract class TestDurationPowerUp extends TestPowerUp {
 	public void testGetSetTarget() {
 		PowerUpDuration pu = getDurationPowerUp();
 		
-		PlayerFish pf = Mockito.mock(PlayerFish.class);
+		PlayerFish pf = mock(PlayerFish.class);
 		
-		pu.executeEffect(Mockito.mock(PlayerFish.class));
+		pu.executeEffect(mock(PlayerFish.class));
 		pu.setTarget(pf);
 		
 		assertSame(pf, pu.getTarget());

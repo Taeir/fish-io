@@ -3,6 +3,7 @@ package com.github.fishio.behaviours;
 import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -10,7 +11,6 @@ import java.util.Collection;
 import org.junit.Test;
 import org.junit.runners.Parameterized.Parameters;
 import org.junit.runners.Parameterized;
-import org.mockito.Mockito;
 
 import com.github.fishio.Vec2d;
 
@@ -39,11 +39,10 @@ public class TestKeyListenerBehaviourAdjustSpeedY {
 	 * 		The expected vertical speed of the PlayerFish once adjustYSpeed()
 	 * 		is called.
 	 */
-	public TestKeyListenerBehaviourAdjustSpeedY(boolean upPressed, boolean downPressed, 
-			double speedY, double expectedSpeedY) {
+	public TestKeyListenerBehaviourAdjustSpeedY(boolean upPressed, boolean downPressed, double speedY,
+			double expectedSpeedY) {
 		
-		behaviour = new KeyListenerBehaviour(Mockito.mock(Scene.class), 
-				null, null, null, null, acceleration, 4);
+		behaviour = new KeyListenerBehaviour(mock(Scene.class), null, null, null, null, acceleration, 4);
 		
 		behaviour.setUpPressed(upPressed);
 		behaviour.setDownPressed(downPressed);
@@ -60,16 +59,16 @@ public class TestKeyListenerBehaviourAdjustSpeedY {
 	@Parameters
 	public static Collection<Object[]> data() {
 		return Arrays.asList(new Object[][] {
-			{false, false, 0.0, 0.0},
-			{false, false, 1.0, 1.0 - acceleration},
-			{false, false, -1.0, acceleration - 1.0},
-			{true, false, 1.0, 1.0 + acceleration},
-			{true, false, -1.0, -1.0 + 2 * acceleration},
-			{false, true, -1.0, -1.0 - acceleration},
-			{false, true, 1.0, 1.0 - 2 * acceleration},
-			{true, true, 0.0, 0.0},
-			{true, true, 1.0, 1.0 - acceleration},
-			{true, true, -1.0, acceleration - 1.0}
+			{false,	false,	0.0,	0.0},
+			{false,	false,	1.0,	1.0	- acceleration},
+			{false,	false,	-1.0,	acceleration - 1.0},
+			{true,	false,	1.0,	1.0 + acceleration},
+			{true,	false,	-1.0,	-1.0 + 2	*	acceleration},
+			{false,	true,	-1.0,	-1.0 - acceleration},
+			{false,	true,	1.0,	1.0 - 2	* acceleration},
+			{true,	true,	0.0,	0.0},
+			{true,	true,	1.0,	1.0 - acceleration},
+			{true,	true,	-1.0,	acceleration - 1.0}
 		});
 	}
 	

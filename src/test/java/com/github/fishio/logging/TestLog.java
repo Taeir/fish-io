@@ -2,13 +2,14 @@ package com.github.fishio.logging;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 /**
  * Testing class for the Log class.
@@ -26,8 +27,8 @@ public class TestLog {
 	 */
 	@Before
 	public void init() {
-		mockedHandler1 = Mockito.mock(ConsoleHandler.class);
-		mockedHandler2 = Mockito.mock(ConsoleHandler.class);
+		mockedHandler1 = mock(ConsoleHandler.class);
+		mockedHandler2 = mock(ConsoleHandler.class);
 		log = Log.getLogger();
 		//Clean up logger.
 		log.removeAllHandlers();
@@ -132,7 +133,7 @@ public class TestLog {
 		//Attach handler
 		log.addHandler(mockedHandler1);
 		log.log(LogLevel.ERROR, test);
-		Mockito.verify(mockedHandler1).output(LogLevel.ERROR, test);
+		verify(mockedHandler1).output(LogLevel.ERROR, test);
 	}
 	
 	/**
@@ -144,7 +145,7 @@ public class TestLog {
 		log.addHandler(mockedHandler1);
 		log.log(LogLevel.ERROR, test);
 		log.log(LogLevel.ERROR, test);
-		Mockito.verify(mockedHandler1, times(2)).output(LogLevel.ERROR, test);
+		verify(mockedHandler1, times(2)).output(LogLevel.ERROR, test);
 	}
 	
 	/**
@@ -156,8 +157,8 @@ public class TestLog {
 		log.addHandler(mockedHandler1);
 		log.addHandler(mockedHandler2);
 		log.log(LogLevel.ERROR, test);
-		Mockito.verify(mockedHandler1).output(LogLevel.ERROR, test);
-		Mockito.verify(mockedHandler2).output(LogLevel.ERROR, test);
+		verify(mockedHandler1).output(LogLevel.ERROR, test);
+		verify(mockedHandler2).output(LogLevel.ERROR, test);
 	}
 	
 	/**
@@ -172,8 +173,8 @@ public class TestLog {
 		
 		log.log(LogLevel.DEBUG, test);
 		log.log(LogLevel.DEBUG, test);
-		Mockito.verify(mockedHandler1, never()).output(LogLevel.ERROR, test);
-		Mockito.verify(mockedHandler2, never()).output(LogLevel.ERROR, test);
+		verify(mockedHandler1, never()).output(LogLevel.ERROR, test);
+		verify(mockedHandler2, never()).output(LogLevel.ERROR, test);
 	}
 	
 	/**
@@ -187,8 +188,8 @@ public class TestLog {
 		
 		log.log(LogLevel.ERROR, test);
 		log.log(LogLevel.ERROR, test);
-		Mockito.verify(mockedHandler1, times(2)).output(LogLevel.ERROR, test);
-		Mockito.verify(mockedHandler2, times(2)).output(LogLevel.ERROR, test);
+		verify(mockedHandler1, times(2)).output(LogLevel.ERROR, test);
+		verify(mockedHandler2, times(2)).output(LogLevel.ERROR, test);
 	}
 	
 }
