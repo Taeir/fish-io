@@ -103,7 +103,7 @@ public class TxtFileHandler implements IHandler, Closeable {
 			
 			// Flush every now and then to ensure 
 			flushCounter++;
-			if (flushCounter >= flushNumber) {
+			if (flushCounter >= FLUSH_NUMBER) {
 				bufferedWriter.flush();
 			}
 		} catch (IOException e) {
