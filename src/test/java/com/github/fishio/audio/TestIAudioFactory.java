@@ -5,10 +5,10 @@ package com.github.fishio.audio;
 
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 /**
  * Abstract test class for {@link IAudioFactory}.
@@ -39,8 +39,8 @@ public abstract class TestIAudioFactory {
 		factory = createAudioFactory();
 		
 		//Create new mocks
-		mockedMusicSound = Mockito.mock(Music.class);
-		mockedSoundEffectSound = Mockito.mock(SoundEffect.class);
+		mockedMusicSound = mock(Music.class);
+		mockedSoundEffectSound = mock(SoundEffect.class);
 		
 		//Add new mocks
 		factory.getAllMusic().add(mockedMusicSound);

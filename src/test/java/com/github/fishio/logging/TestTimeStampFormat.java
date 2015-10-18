@@ -48,11 +48,9 @@ public class TestTimeStampFormat {
 		Date test = new Date();
 		try {
 			// Parse date returned from getTimeStamp method
-			test = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
-				.parse(timeStampFormat.getTimeStamp());
+			test = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(timeStampFormat.getTimeStamp());
 		} catch (ParseException e) {
-			e.printStackTrace();
-			fail();
+			fail(e.getMessage());
 		}
 		
 		// Date after test

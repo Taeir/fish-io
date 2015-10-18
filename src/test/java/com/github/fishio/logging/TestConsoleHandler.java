@@ -1,17 +1,17 @@
 package com.github.fishio.logging;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Test class for ConsoleHandler.
- *
  */
 public class TestConsoleHandler extends TestIHandler {
 
@@ -41,12 +41,12 @@ public class TestConsoleHandler extends TestIHandler {
 	 */
 	@Test
 	public void testOutput() {
-		IFormatter formatter = Mockito.mock(DefaultFormat.class);
+		IFormatter formatter = mock(DefaultFormat.class);
 		when(formatter.formatOutput(LogLevel.ERROR, "Test")).thenReturn("Test Output");
 		
 		handler.setFormat(formatter);
 		handler.output(LogLevel.ERROR, "Test");
-		Mockito.verify(formatter).formatOutput(LogLevel.ERROR, "Test");
+		verify(formatter).formatOutput(LogLevel.ERROR, "Test");
 	}
 
 	/**
@@ -109,8 +109,6 @@ public class TestConsoleHandler extends TestIHandler {
 		handler.setFormat(null);
 		assertEquals(handler, ch2);
 	}
-	
-	
 	
 	/**
 	 * Test equals with different formatter in second object.

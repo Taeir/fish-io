@@ -7,7 +7,6 @@ import org.junit.Test;
 
 /**
  * This test class tests the Achievement class.
- *
  */
 public abstract class TestAchievement {
 	

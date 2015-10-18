@@ -1,6 +1,7 @@
 package com.github.fishio.audio;
 
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -9,7 +10,6 @@ import javafx.scene.media.AudioClip;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -43,7 +43,7 @@ public class TestSoundEffect {
 	public void testPlay() {
 		soundEffect.play();
 		
-		Mockito.verify(clip).play();
+		verify(clip).play();
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class TestSoundEffect {
 		soundEffect.play();
 		soundEffect.stop();
 		
-		Mockito.verify(clip).stop();
+		verify(clip).stop();
 	}
 
 }
