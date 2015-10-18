@@ -101,7 +101,7 @@ public class TestTxtFileHandler extends TestIHandler {
 	public void testHashcodeBothNull() {
 		handler.setFormat(null);
 		handler.setBufferedWriter(null);
-		assertEquals(31, handler.hashCode());
+		assertEquals(1, handler.hashCode());
 	}
 	
 	/**
