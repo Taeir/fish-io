@@ -1,6 +1,7 @@
 package com.github.fishio.behaviours;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -81,6 +82,28 @@ public class TestKeyListenerBehaviour {
 		behaviour.setMaxSpeed(3.0);
 		
 		assertEquals(3.0, behaviour.getMaxSpeed(), 0.0D);
+	}
+	
+	/**
+	 * Test for {@link KeyListenerBehaviour#updateTo(IMoveBehaviour)}.
+	 */
+	@Test
+	public void testUpdateTo() {
+		behaviour.updateTo(new KeyListenerBehaviour(0.2, 3.0));
+		
+		assertEquals(0.2D, behaviour.getAcceleration(), 0.0D);
+		
+		//Max speed should not have changed
+		assertEquals(4.0D, behaviour.getMaxSpeed(), 0.0D);
+	}
+	
+	/**
+	 * Test for {@link KeyListenerBehaviour#updateTo(IMoveBehaviour)}, when
+	 * updating with an incompatible type.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testUpdateTo2() {
+		behaviour.updateTo(mock(IMoveBehaviour.class));
 	}
 	
 }
