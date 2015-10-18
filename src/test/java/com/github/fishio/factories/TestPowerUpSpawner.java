@@ -1,11 +1,6 @@
 package com.github.fishio.factories;
 
-import java.util.Random;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.times;
@@ -14,16 +9,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.github.fishio.ICollisionArea;
 import com.github.fishio.PlayingField;
 import com.github.fishio.SinglePlayerPlayingField;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.gui.SlimGuiTest;
 import com.github.fishio.power_ups.PowerUp;
-import com.github.fishio.power_ups.ExtraLifePowerUp;
-import com.github.fishio.power_ups.FreezePowerUp;
-import com.github.fishio.power_ups.SuperSpeedPowerUp;
-import com.github.fishio.settings.Settings;
 
 /**
  * Tests the PowerUpSpawer class.
@@ -33,8 +23,6 @@ public class TestPowerUpSpawner extends SlimGuiTest {
 	private PowerUpSpawner pus;
 	
 	private PlayingField pf;
-	
-	private Random rand;
 	
 	/**
 	 * Sets the PowerUpSpawner attribute in this class
