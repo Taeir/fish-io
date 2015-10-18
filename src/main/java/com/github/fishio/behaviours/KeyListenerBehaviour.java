@@ -1,8 +1,5 @@
 package com.github.fishio.behaviours;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import com.github.fishio.PlayerFish;
@@ -26,14 +23,14 @@ public class KeyListenerBehaviour implements IMoveBehaviour, Serializable {
 	private double maxSpeed;
 	private double acceleration;
 	
-	private boolean upPressed;
-	private boolean downPressed;
-	private boolean leftPressed;
-	private boolean rightPressed;
+	private transient boolean upPressed;
+	private transient boolean downPressed;
+	private transient boolean leftPressed;
+	private transient boolean rightPressed;
 	
-	private Scene scene;
-	private EventHandler<? super KeyEvent> pressHandler;
-	private EventHandler<? super KeyEvent> releaseHandler;
+	private transient Scene scene;
+	private transient EventHandler<? super KeyEvent> pressHandler;
+	private transient EventHandler<? super KeyEvent> releaseHandler;
 	
 	/**
 	 * Creates a new KeyListenerBehaviour.
@@ -322,19 +319,5 @@ public class KeyListenerBehaviour implements IMoveBehaviour, Serializable {
 		this.vx = other.vx;
 		this.vy = other.vy;
 		this.acceleration = other.acceleration;
-	}
-	
-	private void writeObject(ObjectOutputStream out) throws IOException {
-		out.writeDouble(vx);
-		out.writeDouble(vy);
-		out.writeDouble(acceleration);
-		out.writeDouble(maxSpeed);
-	}
-	
-	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-		this.vx = in.readDouble();
-		this.vy = in.readDouble();
-		this.acceleration = in.readDouble();
-		this.maxSpeed = in.readDouble();
 	}
 }

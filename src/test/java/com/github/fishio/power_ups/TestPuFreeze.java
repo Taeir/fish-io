@@ -2,8 +2,7 @@ package com.github.fishio.power_ups;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 import javafx.scene.image.Image;
 
@@ -38,7 +37,9 @@ public class TestPuFreeze extends TestDurationPowerUp {
 	public void setUp() {
 		this.pf = Mockito.mock(SinglePlayerPlayingField.class);
 		GameThread gt = Mockito.spy(new GameThread(pf));
+		LinkedList<Entity> entities = new LinkedList<Entity>();
 		when(pf.getGameThread()).thenReturn(gt);
+		when(pf.getEntities()).thenReturn(entities);
 		this.pu = Mockito.spy(new FreezePowerUp(null, pf, Mockito.mock(Image.class)));
 		
 		//To prevent nullPointerException, mock the target of the PowerUp.
@@ -58,14 +59,14 @@ public class TestPuFreeze extends TestDurationPowerUp {
 	@Override
 	public void testStartEffect() {
 		//Creating our own list of entities for in the PlayingField.
-		List<Entity> entities = new ArrayList<Entity>();
+		LinkedList<Entity> entities = new LinkedList<Entity>();
 		entities.add(Mockito.mock(EnemyFish.class));
 		entities.add(Mockito.mock(PlayerFish.class));
 		entities.add(Mockito.mock(FreezePowerUp.class));
 		entities.add(Mockito.mock(EnemyFish.class));
 		
 		//Making the PlayingField return our own entities.
-		when(pf.getEntitiesList()).thenReturn(entities);
+		when(pf.getEntities()).thenReturn(entities);
 		
 		//Invoking the startEffect method
 		pu.startEffect();
@@ -87,7 +88,7 @@ public class TestPuFreeze extends TestDurationPowerUp {
 	@Override
 	public void testEndEffect() {
 		//Creating our own list of entities for in the PlayingField.
-		List<Entity> entities = new ArrayList<Entity>();
+		LinkedList<Entity> entities = new LinkedList<Entity>();
 		entities.add(Mockito.mock(EnemyFish.class));
 		entities.add(Mockito.mock(PlayerFish.class));
 		entities.add(Mockito.mock(FreezePowerUp.class));
@@ -95,6 +96,7 @@ public class TestPuFreeze extends TestDurationPowerUp {
 		
 		//Making the PlayingField return our own entities.
 		when(pf.getEntitiesList()).thenReturn(entities);
+		when(pf.getEntities()).thenReturn(entities);
 		
 		//Invoking the startEffect method and then the endEffect
 		pu.startEffect();
