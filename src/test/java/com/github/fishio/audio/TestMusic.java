@@ -63,15 +63,15 @@ public class TestMusic extends SlimGuiTest {
 	 */
 	private void waitForPlaying(long time) {
 		long left = time;
-		long interval = (long) Math.ceil(time / 100D);
-		while (!playing && left > 0) {
-			try {
-				synchronized (this) {
+		long interval = (long) Math.ceil(time / 50D);
+		synchronized (this) {
+			while (!playing && left > 0) {
+				try {
 					wait(interval);
-				}
-			} catch (InterruptedException ex) { }
-			
-			left -= interval;
+				} catch (InterruptedException ex) { }
+				
+				left -= interval;
+			}
 		}
 	}
 
@@ -83,15 +83,15 @@ public class TestMusic extends SlimGuiTest {
 	 */
 	private void waitForStop(long time) {
 		long left = time;
-		long interval = (long) Math.ceil(time / 100D);
-		while (!stopped && left > 0) {
-			try {
-				synchronized (this) {
+		long interval = (long) Math.ceil(time / 50D);
+		synchronized (this) {
+			while (!stopped && left > 0) {
+				try {
 					wait(interval);
-				}
-			} catch (InterruptedException ex) { }
-			
-			left -= interval;
+				} catch (InterruptedException ex) { }
+				
+				left -= interval;
+			}
 		}
 	}
 	
@@ -106,7 +106,7 @@ public class TestMusic extends SlimGuiTest {
 		Music music = getTestMusic();
 		
 		music.play();
-		waitForPlaying(5000L);
+		waitForPlaying(7500L);
 		
 		assertTrue(playing);
 	}
@@ -133,7 +133,7 @@ public class TestMusic extends SlimGuiTest {
 		});
 		
 		music.play();
-		waitForPlaying(5000L);
+		waitForPlaying(7500L);
 		
 		assertTrue(this.state);
 	}
@@ -150,9 +150,9 @@ public class TestMusic extends SlimGuiTest {
 		Music music = getTestMusic();
 		
 		music.play();
-		waitForPlaying(5000L);
+		waitForPlaying(7500L);
 		music.stop();
-		waitForStop(5000L);
+		waitForStop(7500L);
 		
 		assertFalse(music.isPlaying());
 	}
@@ -178,9 +178,9 @@ public class TestMusic extends SlimGuiTest {
 		
 		//Start and stop music.
 		music.play();
-		waitForPlaying(5000L);
+		waitForPlaying(7500L);
 		music.stop();
-		waitForStop(5000L);
+		waitForStop(7500L);
 		
 		//Our runnable should have been called once.
 		Mockito.verify(r).run();

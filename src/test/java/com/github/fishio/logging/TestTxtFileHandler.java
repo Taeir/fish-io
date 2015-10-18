@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
 /**
@@ -65,10 +66,9 @@ public class TestTxtFileHandler extends TestIHandler {
 	public void testSetGetBW() {
 		BufferedWriter bw2 = null;
 		try {
-			bw2 = new BufferedWriter(new FileWriter(
-					new File(folder.getRoot(), filename)));
+			bw2 = new BufferedWriter(new FileWriter(new File(folder.getRoot(), filename)));
 		} catch (IOException e) {
-			e.printStackTrace();
+			fail("Exception while trying to write to file.");
 		}
 		handler.setBufferedWriter(bw2);
 		assertEquals(bw2, handler.getBufferedWriter());
@@ -101,7 +101,7 @@ public class TestTxtFileHandler extends TestIHandler {
 	public void testHashcodeBothNull() {
 		handler.setFormat(null);
 		handler.setBufferedWriter(null);
-		assertEquals(31, handler.hashCode());
+		assertEquals(1, handler.hashCode());
 	}
 	
 	/**

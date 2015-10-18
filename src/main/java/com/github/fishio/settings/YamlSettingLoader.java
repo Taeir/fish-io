@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import com.esotericsoftware.yamlbeans.YamlReader;
 import com.github.fishio.logging.Log;
@@ -89,9 +90,9 @@ public class YamlSettingLoader implements ISettingLoader {
 	 */
 	private void loadDoubleSettings(YamlReader reader) throws IOException {
 		HashMap<String, String> map = (HashMap<String, String>) reader.read();
-	    for (String key : map.keySet()) {
-	    	double value = Double.valueOf(map.get(key));
-	    	doubleSettings.put(key, new SimpleDoubleProperty(value));
+	    for (Entry<String, String> entry : map.entrySet()) {
+	    	double value = Double.parseDouble(entry.getValue());
+	    	doubleSettings.put(entry.getKey(), new SimpleDoubleProperty(value));
 	    }
 	}
 	
@@ -104,9 +105,9 @@ public class YamlSettingLoader implements ISettingLoader {
 	 */
 	private void loadIntegerSettings(YamlReader reader) throws IOException {
 		HashMap<String, String> map = (HashMap<String, String>) reader.read();
-	    for (String key : map.keySet()) {
-	    	int value = Integer.valueOf(map.get(key));
-	    	integerSettings.put(key, new SimpleIntegerProperty(value));
+	    for (Entry<String, String> entry : map.entrySet()) {
+	    	int value = Integer.parseInt(entry.getValue());
+	    	integerSettings.put(entry.getKey(), new SimpleIntegerProperty(value));
 	    }
 	}
 	
@@ -119,9 +120,9 @@ public class YamlSettingLoader implements ISettingLoader {
 	 */
 	private void loadBooleanSettings(YamlReader reader) throws IOException {
 		HashMap<String, String> map = (HashMap<String, String>) reader.read();
-	    for (String key : map.keySet()) {
-	    	boolean value = Boolean.valueOf(map.get(key));
-	    	booleanSettings.put(key, new SimpleBooleanProperty(value));
+	    for (Entry<String, String> entry : map.entrySet()) {
+	    	boolean value = Boolean.parseBoolean(entry.getValue());
+	    	booleanSettings.put(entry.getKey(), new SimpleBooleanProperty(value));
 	    }
 	}
 	
@@ -134,9 +135,9 @@ public class YamlSettingLoader implements ISettingLoader {
 	 */
 	private void loadKeyCodeSettings(YamlReader reader) throws IOException {
 		HashMap<String, String> map = (HashMap<String, String>) reader.read();
-	    for (String key : map.keySet()) {
-	    	KeyCode value = KeyCode.getKeyCode(map.get(key));
-	    	keyCodeSettings.put(key, value);
+	    for (Entry<String, String> entry : map.entrySet()) {
+	    	KeyCode value = KeyCode.getKeyCode(entry.getValue());
+	    	keyCodeSettings.put(entry.getKey(), value);
 	    }
 	}
 	
@@ -149,9 +150,9 @@ public class YamlSettingLoader implements ISettingLoader {
 	 */
 	private void loadSliderSettings(YamlReader reader) throws IOException {	    
 		HashMap<String, String> map = (HashMap<String, String>) reader.read();
-	    for (String key : map.keySet()) {
-	    	double value = Double.valueOf(map.get(key));
-	    	sliderSettings.put(key, new SimpleDoubleProperty(value));
+	    for (Entry<String, String> entry : map.entrySet()) {
+	    	double value = Double.parseDouble(entry.getValue());
+	    	sliderSettings.put(entry.getKey(), new SimpleDoubleProperty(value));
 	    }		
 	}
 

@@ -173,22 +173,18 @@ public interface ICollisionArea {
 		Vec2d sv = m.getSpeedVector();
 		if (sv.x == 0) {
 			if (sv.y > 0) {
-				//Set rotation to 90 (UP)
-				return setRotation(90);
+				return setRotation(90); //UP
 			} else if (sv.y < 0) {
-				//Set rotation to 270 (DOWN)
-				return setRotation(270);
+				return setRotation(270); //DOWN
 			} else {
 				//not moving, so not updating rotation.
 				return getRotation();
 			}
 		} else if (sv.y == 0) {
 			if (sv.x >= 0) {
-				//Set rotation to 0 (RIGHT)
-				return setRotation(0);
+				return setRotation(0); //RIGHT
 			} else {
-				//Set rotation to 180 (LEFT)
-				return setRotation(180);
+				return setRotation(180); //LEFT
 			}
 		} else {
 			if (sv.x < 0) {

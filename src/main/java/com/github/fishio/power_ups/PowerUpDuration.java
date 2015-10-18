@@ -8,10 +8,12 @@ import com.github.fishio.listeners.TickListener;
 import javafx.scene.image.Image;
 
 /**
- * A PowerUp where the effect takes time.
+ * A PowerUp where the effect is applied for a certain duration.
  */
 public abstract class PowerUpDuration extends PowerUp implements TickListener {
 
+	private static final long serialVersionUID = -2022734544439997835L;
+	
 	private final int timeSeconds;
 	private final int timeTicks;
 	
@@ -23,31 +25,31 @@ public abstract class PowerUpDuration extends PowerUp implements TickListener {
 	/**
 	 * Creates a new DurationPowerUp.
 	 * 
-	 * @param ba
+	 * @param collisionMask
 	 *            The CollisionMask of the Power-Up
-	 * @param pfield
+	 * @param playingField
 	 *            The PlayingField this PowerUp is located in
 	 * @param sprite
 	 *            The sprite of this PowerUp
 	 */
 
-	public PowerUpDuration(CollisionMask ba, PlayingField pfield, Image sprite) {
-		super(ba, pfield, sprite);
+	public PowerUpDuration(CollisionMask collisionMask, PlayingField playingField, Image sprite) {
+		super(collisionMask, playingField, sprite);
 		
 		this.timeSeconds = getDuration();
-		this.timeTicks = timeSeconds * pfield.getFPS();
+		this.timeTicks = timeSeconds * playingField.getFPS();
 		this.tickCounter = 0;
 		
-		pfield.getGameThread().registerListener(this);
+		playingField.getGameThread().registerListener(this);
 	}
 	
 	@Override
-	public void executeEffect(PlayerFish pf) {
+	public void executeEffect(PlayerFish playerFish) {
 		//This PowerUp is now active
 		this.active = true;
 		
 		//The target PlayerFish is the one we collided with
-		this.target = pf;
+		this.target = playerFish;
 		
 		//Begin the startEffect
 		startEffect();
@@ -79,16 +81,10 @@ public abstract class PowerUpDuration extends PowerUp implements TickListener {
 	public abstract void endEffect();
 
 	@Override
-	public void preTick() {
-		
-		if (!active) {
-			return;
-		}
-	}
+	public void preTick() { }
 	
 	@Override
 	public void postTick() {
-		
 		if (!active) {
 			return;
 		}
@@ -96,7 +92,7 @@ public abstract class PowerUpDuration extends PowerUp implements TickListener {
 		tickCounter++;
 		
 		if (tickCounter >= timeTicks) {
-			getPField().getGameThread().unregisterListener(this);
+			getPlayingField().getGameThread().unregisterListener(this);
 			endEffect();
 			active = false;
 			return;

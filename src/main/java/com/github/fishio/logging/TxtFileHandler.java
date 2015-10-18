@@ -10,11 +10,11 @@ import java.io.IOException;
  * Log handler that outputs in the a txt file.
  */
 public class TxtFileHandler implements IHandler, Closeable {
-
+	private static final int FLUSH_NUMBER = 10;
+	
 	private IFormatter format = new DefaultFormat();
 	private BufferedWriter bufferedWriter;
 	private int flushCounter = 0;
-	private final int flushNumber = 10;
 	
 	/**
 	 * Create ConsoleHandler with default formatter.
@@ -26,7 +26,7 @@ public class TxtFileHandler implements IHandler, Closeable {
 			// If file doesn't exists, then create it
 			if (!file.exists()) {
 				if (!file.getParentFile().exists()) {
-				file.getAbsoluteFile().getParentFile().mkdirs();
+					file.getAbsoluteFile().getParentFile().mkdirs();
 				}
 				file.createNewFile();
 			}
@@ -51,7 +51,7 @@ public class TxtFileHandler implements IHandler, Closeable {
 			if (!file.exists()) {
 				if (!file.getParentFile().exists()) {
 					file.getAbsoluteFile().getParentFile().mkdirs();
-					}
+				}
 				file.createNewFile();
 			}
 			// Save BufferedWriter
@@ -77,6 +77,29 @@ public class TxtFileHandler implements IHandler, Closeable {
 		try {
 			bufferedWriter.write(format.formatOutput(logLvl, logMessage));
 			bufferedWriter.newLine();
+			
+			// Flush every now and then to ensure 
+			flushCounter++;
+			if (flushCounter >= FLUSH_NUMBER) {
+				bufferedWriter.flush();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void output(LogLevel logLvl, Exception exception) {
+		try {
+			bufferedWriter.write(format.formatOutput(logLvl,
+					"Exception" + exception.getClass().getName() + ": " + exception.getMessage()));
+			bufferedWriter.newLine();
+			
+			// Write the exception
+			for (StackTraceElement ste : exception.getStackTrace()) {
+				bufferedWriter.write("    " + ste.toString());
+				bufferedWriter.newLine();
+			}
 			
 			// Flush every now and then to ensure 
 			flushCounter++;
@@ -120,15 +143,16 @@ public class TxtFileHandler implements IHandler, Closeable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result;
+		
 		if (bufferedWriter != null) {
-			result = result + bufferedWriter.hashCode();
-		} 		
-		if (format == null) {
-			return result;
-		} else {
-			return result + format.hashCode();
+			result = prime * result + bufferedWriter.hashCode();
 		}
+		
+		if (format != null) {
+			result = prime * result + format.hashCode();
+		}
+		
+		return result;
 	}
 
 	@Override
@@ -142,8 +166,8 @@ public class TxtFileHandler implements IHandler, Closeable {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		TxtFileHandler other = (TxtFileHandler) obj;
 		
+		TxtFileHandler other = (TxtFileHandler) obj;
 		if (format == null) {
 			if (other.format != null) {
 				return false;
@@ -151,6 +175,7 @@ public class TxtFileHandler implements IHandler, Closeable {
 		} else if (!format.equals(other.format)) {
 			return false;
 		}
+		
 		return true;
 	}
 

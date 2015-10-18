@@ -95,4 +95,28 @@ public final class Log {
 		}
 	}
 	
+	/**
+	 * Log this exception.
+	 * Checks whether the log level is set low enough for the message to pass.
+	 * 
+	 * @param logLvl
+	 * 		The log level of the log.
+	 * @param exception
+	 * 		the exception to log.
+	 */
+	public void log(LogLevel logLvl, Exception exception) {
+		// If handler is not set the application will not log.
+		if (handlers.size() == 0) {
+			return;
+		}
+		
+		// Check log level
+		if (logLvl.ordinal() <= logLevel.ordinal()) {
+			// Activate all attached handlers
+			for (IHandler handler : handlers) {
+				handler.output(logLvl, exception);
+			}
+		}
+	}
+	
 }

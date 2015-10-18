@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 /**
  * Main application class.
  */
-public class FishIO extends Application {
+public final class FishIO extends Application {
 	private Stage primaryStage;
 	private static FishIO instance;
 	
@@ -147,7 +147,7 @@ public class FishIO extends Application {
 	/**
 	 * Set up new logger.
 	 */
-	protected final void initiateLogger() {
+	protected void initiateLogger() {
 		//Remove any Handlers if, for GUI tests.
 		log.removeAllHandlers();
 		
