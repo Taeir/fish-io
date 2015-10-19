@@ -1,5 +1,6 @@
 package com.github.fishio.power_ups;
 
+import com.github.fishio.BoundingBox;
 import com.github.fishio.CollisionMask;
 import com.github.fishio.Entity;
 import com.github.fishio.ICollidable;
@@ -92,8 +93,8 @@ public abstract class PowerUp extends Entity implements IEatable {
 	}
 	
 	@Override
-	public void render(GraphicsContext gc) {
-		drawRotatedImage(gc, sprite, getBoundingArea());
+	public void render(GraphicsContext gc, BoundingBox view) {
+		drawRotatedImage(gc, sprite, getBoundingArea(), view);
 	}
 	
 	@Override

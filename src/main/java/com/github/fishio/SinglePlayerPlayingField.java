@@ -14,9 +14,6 @@ import javafx.scene.canvas.Canvas;
  */
 
 public class SinglePlayerPlayingField extends PlayingField {
-
-	public static final int START_X = 640;
-	public static final int START_Y = 335;
 	
 	private final SimpleObjectProperty<PlayerFish> player = new SimpleObjectProperty<PlayerFish>();
 	private final ArrayList<PlayerFish> players = new ArrayList<PlayerFish>(1);
@@ -34,8 +31,8 @@ public class SinglePlayerPlayingField extends PlayingField {
 	 * @param scene
 	 *            the scene to use (for registering keylisteners)
 	 */
-	public SinglePlayerPlayingField(int fps, Canvas canvas, Scene scene) {
-		super(fps, canvas, 50);
+	public SinglePlayerPlayingField(int fps, Canvas canvas, Scene scene, int width, int height) {
+		super(fps, canvas, 50, width, height);
 		
 		this.scene = scene;
 		
@@ -47,6 +44,8 @@ public class SinglePlayerPlayingField extends PlayingField {
 		
 		//Adding the playerFish
 		addPlayerFish();
+		Vec2d move = new Vec2d(width / 2D, height / 2D);
+		getPlayer().getBoundingArea().move(move);
 	}
 	
 	/**
@@ -86,7 +85,7 @@ public class SinglePlayerPlayingField extends PlayingField {
 	 * @return the starting collision mask of a playerfish.
 	 */
 	public CollisionMask getStartCollisionMask() {
-		return new CollisionMask(new Vec2d(START_X, START_Y), 60, 30, 
+		return new CollisionMask(new Vec2d(0, 0), 60, 30, 
 				Preloader.getAlphaDataOrLoad("sprites/fish/playerFish.png"),
 				Preloader.getSpriteAlphaRatioOrLoad("sprites/fish/playerFish.png"));
 	}
@@ -129,5 +128,11 @@ public class SinglePlayerPlayingField extends PlayingField {
 	@Override
 	public ArrayList<PlayerFish> getPlayers() {
 		return players;
+	}
+
+	@Override
+	public void centerScreen() {
+		ICollisionArea ba = player.get().getBoundingArea();
+		getRenderer().setCenter(new Vec2d(ba.getCenterX(), ba.getCenterY()));
 	}
 }

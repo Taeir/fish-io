@@ -10,6 +10,7 @@ import javafx.scene.canvas.Canvas;
 
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
+import com.github.fishio.Vec2d;
 
 /**
  * PlayingField for a multiplayer game.
@@ -27,8 +28,8 @@ public abstract class MultiplayerPlayingField extends PlayingField {
 	 * @param canvas
 	 * 		the canvas to render on.
 	 */
-	public MultiplayerPlayingField(int fps, Canvas canvas) {
-		super(fps, canvas, 50);
+	public MultiplayerPlayingField(int fps, Canvas canvas, int width, int height) {
+		super(fps, canvas, 50, width, height);
 	}
 	
 	/**
@@ -85,5 +86,10 @@ public abstract class MultiplayerPlayingField extends PlayingField {
 		if (o instanceof PlayerFish) {
 			players.remove(o);
 		}
+	}
+	
+	@Override
+	public void centerScreen() {
+		getRenderer().setCenter(new Vec2d(640, 360));
 	}
 }

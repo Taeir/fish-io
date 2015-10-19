@@ -248,4 +248,20 @@ public class BoundingBox implements ICollisionArea, Serializable {
 		this.height = box.height;
 		this.rotation = box.rotation;
 	}
+
+	public void setHeight(double newValue) {
+		height = newValue;
+	}
+	
+	public void setWidth(double newValue) {
+		width = newValue;
+	}
+	
+	public Vec2d getCenter() {
+		return center;
+	}
+
+	public void moveTo(Vec2d center) {
+		this.center = center;
+	}
 }

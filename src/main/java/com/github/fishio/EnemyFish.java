@@ -48,21 +48,17 @@ public class EnemyFish extends Entity implements IEatable {
 	}
 
 	@Override
-	public void render(GraphicsContext gc) {
-		//Don't render if dead.
-		if (isDead()) {
-			return;
-		}
+	public void render(GraphicsContext gc, BoundingBox view) {
 		
 		//TODO Move this to game thread.
 		getBoundingArea().setRotation(getBehaviour());	//update rotation
 		
 		//Only render if we have a sprite.
 		if (sprite != null) {
-			drawRotatedImage(gc, sprite, getBoundingArea());
+			drawRotatedImage(gc, sprite, getBoundingArea(), view);
 		} else {
 			//Call the render of the super (entity), which simply renders a red box.
-			super.render(gc);
+			super.render(gc, view);
 		}
 	}
 

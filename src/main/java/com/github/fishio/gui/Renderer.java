@@ -3,18 +3,23 @@ package com.github.fishio.gui;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import com.github.fishio.BoundingBox;
 import com.github.fishio.FishIO;
 import com.github.fishio.IDrawable;
 import com.github.fishio.PlayingField;
+import com.github.fishio.Vec2d;
 import com.github.fishio.listeners.Listenable;
 import com.github.fishio.listeners.TickListener;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.settings.Settings;
+import com.sun.javafx.stage.WindowEventDispatcher;
+
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
@@ -30,8 +35,7 @@ import javafx.util.Duration;
  */
 public class Renderer implements Listenable {
 	private Settings settings = Settings.getInstance();
-	private SimpleDoubleProperty width = new SimpleDoubleProperty();
-	private SimpleDoubleProperty height = new SimpleDoubleProperty();
+	private BoundingBox view = new BoundingBox(new Vec2d(0, 0), 0, 0);
 	
 	private ConcurrentLinkedQueue<TickListener> listeners = new ConcurrentLinkedQueue<>();
 	private Canvas canvas;
@@ -40,6 +44,7 @@ public class Renderer implements Listenable {
 	private PlayingField playingField;
 	private Image background;
 	private int yBorder;
+	private Vec2d insets;
 	
 	/**
 	 * Create a new Renderer for the given PlayingField.
@@ -59,11 +64,6 @@ public class Renderer implements Listenable {
 		} else {
 			this.canvas = canvas;
 		}
-		
-		this.width.set(this.canvas.getWidth());
-		this.height.set(this.canvas.getHeight());
-		this.canvas.widthProperty().bind(this.width);
-		this.canvas.heightProperty().bind(this.height);
 		
 		this.yBorder = yBorder;
 		this.fps.set(fps);
@@ -134,17 +134,17 @@ public class Renderer implements Listenable {
 		}
 
 		//Clear screen
-		gc.clearRect(0, 0, width.doubleValue(), height.doubleValue());
+		gc.clearRect(0, 0, view.getWidth(), view.getHeight());
 
 		//draw background image
 		if (background != null) {
-			gc.drawImage(background, 0, 0, width.doubleValue(), height.doubleValue());
+			gc.drawImage(background, -view.getCenterX(), -view.getCenterY() , playingField.getWidth(), playingField.getHeight());
 		}
 
 		//Render all drawables, in reverse order
 		Iterator<IDrawable> it = playingField.getDrawables().descendingIterator();
 		while (it.hasNext()) {
-			it.next().render(gc);
+			it.next().render(gc, view);
 		}
 		
 		//Render all death animations
@@ -232,25 +232,41 @@ public class Renderer implements Listenable {
 	 */
 	public void startRendering() {
 		FishIO instance = FishIO.getInstance();
-		double h = 0;
+		insets = new Vec2d(0, 0);
 		if (instance != null) { 
 			Stage primaryStage = instance.getPrimaryStage();
 			Scene scene = primaryStage.getScene();
-			 h = Bindings.createObjectBinding(() -> 
-		        new Insets(scene.getY(), 
-		                primaryStage.getWidth() - scene.getWidth() - scene.getX(), 
-		                primaryStage.getHeight() - scene.getHeight() - scene.getY(), 
-		                scene.getX()),
-		                scene.xProperty(),
-		                scene.yProperty(),
-		                scene.widthProperty(),
-		                scene.heightProperty(),
-		                primaryStage.widthProperty(),
-		                primaryStage.heightProperty()
-		            ).get().getTop();
+			Insets temp = Bindings.createObjectBinding(() -> 
+	        		new Insets(scene.getY(), 
+	                primaryStage.getWidth() - scene.getWidth() - scene.getX(), 
+	                primaryStage.getHeight() - scene.getHeight() - scene.getY(), 
+	                scene.getX()),
+	                scene.xProperty(),
+	                scene.yProperty(),
+	                scene.widthProperty(),
+	                scene.heightProperty(),
+	                primaryStage.widthProperty(),
+	                primaryStage.heightProperty()
+	            ).get();
+			insets.setY(temp.getTop());
+			insets.setX(temp.getLeft());
 			}
-		width.bind(settings.getDoubleProperty("SCREEN_WIDTH"));
-		height.bind(settings.getDoubleProperty("SCREEN_HEIGHT").subtract(h + yBorder)); 
+		
+		DoubleBinding heightProperty = settings.getDoubleProperty("SCREEN_HEIGHT").subtract(insets.y + yBorder);
+		DoubleBinding widthProperty = settings.getDoubleProperty("SCREEN_WIDTH").subtract(insets.x);		
+		
+		canvas.heightProperty().bind(heightProperty);
+		canvas.widthProperty().bind(widthProperty);
+		widthProperty.addListener((o, oldVal, newVal) -> {
+			view.setHeight(heightProperty.doubleValue());
+		});
+		heightProperty.addListener((o, oldVal, newVal) -> {
+			view.setWidth(widthProperty.doubleValue());
+		});
+		
+		view.setHeight(heightProperty.doubleValue());
+		view.setWidth(widthProperty.doubleValue());
+		
 		
 		renderThread.play();
 		Log.getLogger().log(LogLevel.TRACE, "[Renderer] Starting Renderer...");
@@ -271,5 +287,11 @@ public class Renderer implements Listenable {
 	 */
 	public boolean isRendering() {
 		return renderThread.getStatus() == Status.RUNNING;
+	}
+	
+	public void setCenter(Vec2d center) {
+		center.add(new Vec2d(view.getWidth() / -2, view.getHeight() / -2));
+		//TODO restrict the view to the borders
+		view.moveTo(center);
 	}
 }

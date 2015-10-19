@@ -21,6 +21,7 @@ import com.github.fishio.multiplayer.MultiplayerPlayingField;
 public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 	private static final long SPAWN_INVINCIBILITY = 6_000L;
 	private ServerGameThread gameThread;
+	private double startX, startY;
 	
 	/**
 	 * Creates a new MultiplayerServerPlayingField.
@@ -30,9 +31,10 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 	 * @param canvas
 	 * 		the canvas to render on.
 	 */
-	public MultiplayerServerPlayingField(int fps, Canvas canvas) {
-		super(fps, canvas);
-		
+	public MultiplayerServerPlayingField(int fps, Canvas canvas, int width, int height) {
+		super(fps, canvas, width, height);
+		startX = width / 2D;
+		startY = height / 2D;
 		this.gameThread = new ServerGameThread(this);
 	}
 
@@ -82,7 +84,7 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 	public PlayerFish createClientPlayer() {
 		Image sprite = Preloader.getImageOrLoad(PlayerFish.SPRITE_LOCATION);
 		CollisionMask cm = new CollisionMask(
-				new Vec2d(SinglePlayerPlayingField.START_X, SinglePlayerPlayingField.START_Y), 60, 30, 
+				new Vec2d(startX, startY), 60, 30, 
 				Preloader.getAlphaDataOrLoad(PlayerFish.SPRITE_LOCATION),
 				Preloader.getSpriteAlphaRatioOrLoad(PlayerFish.SPRITE_LOCATION));
 		PlayerFish tbr = new PlayerFish(cm, sprite);
@@ -101,7 +103,7 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 	public void respawnOwnPlayer() {
 		Image sprite = Preloader.getImageOrLoad(PlayerFish.SPRITE_LOCATION);
 		CollisionMask cm = new CollisionMask(
-				new Vec2d(SinglePlayerPlayingField.START_X, SinglePlayerPlayingField.START_Y), 60, 30, 
+				new Vec2d(startX, startY), 60, 30, 
 				Preloader.getAlphaDataOrLoad(PlayerFish.SPRITE_LOCATION),
 				Preloader.getSpriteAlphaRatioOrLoad(PlayerFish.SPRITE_LOCATION));
 		PlayerFish nplayer = new PlayerFish(cm, Preloader.loadScreen("multiplayerGameScreen"), sprite);

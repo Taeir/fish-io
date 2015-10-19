@@ -31,6 +31,9 @@ public abstract class PlayingField {
 	private ConcurrentLinkedQueue<ICollidable> collidables = new ConcurrentLinkedQueue<>();
 
 	private int enemyCount;
+	private int width;
+	private int height;
+	
 	public static final int MAX_ENEMY_COUNT = 10;
 
 	/**
@@ -43,9 +46,11 @@ public abstract class PlayingField {
 	 * @param yBorder
 	 * 			  the vertical border to be applied.
 	 */
-	public PlayingField(int fps, Canvas canvas, int yBorder) {
+	public PlayingField(int fps, Canvas canvas, int yBorder, int width, int height) {
 		//count enemies
 		enemyCount = 0;
+		this.height = height;
+		this.width = width;
 		
 		renderer = new Renderer(this, canvas, fps, yBorder);
 		logger.log(LogLevel.INFO, "Created Renderer");
@@ -76,8 +81,8 @@ public abstract class PlayingField {
 	 * 
 	 * @return the width of the field.
 	 */
-	public double getWidth() {
-		return renderer.getCanvas().getWidth();
+	public int getWidth() {
+		return width;
 	}
 
 	/**
@@ -85,8 +90,8 @@ public abstract class PlayingField {
 	 * 
 	 * @return the height of the field.
 	 */
-	public double getHeight() {
-		return renderer.getCanvas().getHeight();
+	public int getHeight() {
+		return height;
 	}
 
 	/**
@@ -186,7 +191,10 @@ public abstract class PlayingField {
 				moveWithinScreen(mask);
 			}
 		}
+		centerScreen();
 	}
+
+	public abstract void centerScreen();
 
 	/**
 	 * Check if a the given IMovable hits a wall or not.
