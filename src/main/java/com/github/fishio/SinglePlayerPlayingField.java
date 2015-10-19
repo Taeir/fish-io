@@ -2,6 +2,7 @@ package com.github.fishio;
 
 import java.util.ArrayList;
 
+import com.github.fishio.factories.PowerUpSpawner;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.logging.LogLevel;
 

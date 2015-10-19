@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javafx.scene.canvas.Canvas;
 
 import com.github.fishio.behaviours.IMoveBehaviour;
+import com.github.fishio.factories.EnemyFishFactory;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.gui.Renderer;
 import com.github.fishio.logging.Log;
@@ -35,6 +36,7 @@ public abstract class PlayingField {
 	private int height;
 	
 	public static final int MAX_ENEMY_COUNT = 10;
+	private EnemyFishFactory factory = new EnemyFishFactory();
 
 	/**
 	 * Creates the playing field with a set framerate and canvas.
@@ -144,7 +146,7 @@ public abstract class PlayingField {
 
 		//add enemy entities
 		while (enemyCount < MAX_ENEMY_COUNT) {
-			EnemyFish eFish = EnemyFishFactory.randomizedFish(getPlayers(), width, height);
+			EnemyFish eFish = factory.randomizedFish(getPlayers(), width, height);
 			add(eFish);
 			
 			enemyCount++;
@@ -452,4 +454,19 @@ public abstract class PlayingField {
 		return false;
 	}
 	
+	/**
+	 * @return
+	 * 		The factory that creates enemy fishes.
+	 */
+	public EnemyFishFactory getFactory() {
+		return factory;
+	}
+	
+	/**
+	 * @param factory
+	 * 		Sets the factory that creates enemy fishes.
+	 */
+	public void setFactory(EnemyFishFactory factory) {
+		this.factory = factory;
+	}
 }

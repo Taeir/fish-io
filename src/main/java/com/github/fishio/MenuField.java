@@ -2,6 +2,7 @@ package com.github.fishio;
 
 import java.util.ArrayList;
 
+import com.github.fishio.factories.EnemyFishFactory;
 import com.github.fishio.game.GameThread;
 
 import javafx.scene.canvas.Canvas;
@@ -37,7 +38,7 @@ public class MenuField extends PlayingField {
 	public void addEntities() {
 		//add enemy entities
 		while (getEntities().size()  < 5) {
-			EnemyFish eFish = EnemyFishFactory.randomizedFish(new BoundingBox(null, 60, 60),
+			EnemyFish eFish = getFactory().randomizedFish(new BoundingBox(null, 60, 60),
 					getWidth(), getHeight());
 			add(eFish);
 		}
