@@ -48,8 +48,6 @@ public class SinglePlayerPlayingField extends PlayingField {
 		
 		//Adding the playerFish
 		addPlayerFish();
-		Vec2d move = new Vec2d(width / 2D, height / 2D);
-		getPlayer().getBoundingArea().move(move);
 	}
 	
 	/**
@@ -89,7 +87,7 @@ public class SinglePlayerPlayingField extends PlayingField {
 	 * @return the starting collision mask of a playerfish.
 	 */
 	public CollisionMask getStartCollisionMask() {
-		return new CollisionMask(new Vec2d(0, 0), 60, 30, 
+		return new CollisionMask(new Vec2d(getWidth() / 2D, getHeight() / 2D), 60, 30, 
 				Preloader.getAlphaDataOrLoad("sprites/fish/playerFish.png"),
 				Preloader.getSpriteAlphaRatioOrLoad("sprites/fish/playerFish.png"));
 	}
