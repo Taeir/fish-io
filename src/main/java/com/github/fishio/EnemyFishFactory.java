@@ -103,7 +103,8 @@ public final class EnemyFishFactory {
 		//pick a side
 		switch (random.nextInt(4)) {
 		case 0: 	// left
-			position = new Vec2d(-width, Math.random() * settings.getDouble("SCREEN_HEIGHT"));
+			//TODO playingfield.getWidth()
+			position = new Vec2d(-width, Math.random() * settings.getDouble("SCREEN_HEIGHT")); 
 			vx = Math.abs(randomSpeed());
 			vy = randomSpeed();
 			break;

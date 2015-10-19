@@ -163,7 +163,7 @@ public class PlayerFish extends Entity implements IEatable, Subject {
 	}
 
 	@Override
-	public void render(GraphicsContext gc, BoundingBox view) {
+	public void render(GraphicsContext gc) {
 		//Don't render if dead.
 		if (isDead()) {
 			return;
@@ -174,10 +174,10 @@ public class PlayerFish extends Entity implements IEatable, Subject {
 		
 		//Only render if the fish has a sprite
 		if (sprite != null) {
-			drawRotatedImage(gc, sprite, getBoundingArea(), view);
+			drawRotatedImage(gc, sprite, getBoundingArea());
 		} else {
 			//Call the render method of entity, which simply renders a red box.
-			super.render(gc, view);
+			super.render(gc);
 		}
 	}
 	

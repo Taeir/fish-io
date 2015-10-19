@@ -141,9 +141,9 @@ public abstract class Entity implements ICollidable, IDrawable, Subject, Seriali
 	}
 	
 	@Override
-	public void render(GraphicsContext gc, BoundingBox view) {
-		//Don't render if dead or outside view.
-		if (isDead() || !getBoundingArea().boxIntersects(view)) {
+	public void render(GraphicsContext gc) {
+		//Don't render if dead.
+		if (isDead()) {
 			return;
 		}
 		

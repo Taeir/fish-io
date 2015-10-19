@@ -27,10 +27,8 @@ public interface IDrawable {
 	 * 
 	 * @param gc
 	 * 		the {@link GraphicsContext} to render on.
-	 * @param view 
-	 * 		the view the element is rendered in.
 	 */
-	void render(GraphicsContext gc, BoundingBox view);
+	void render(GraphicsContext gc);
 
 	/**
 	 * Draw a rotated image on the given {@link GraphicsContext}.
@@ -41,12 +39,11 @@ public interface IDrawable {
 	 * 		The image to draw.
 	 * @param collisionArea
 	 * 		The CollisionArea of the sprite
-	 * 
 	 */
-	default void drawRotatedImage(GraphicsContext gc, Image image, ICollisionArea collisionArea, BoundingBox view) {
+	default void drawRotatedImage(GraphicsContext gc, Image image, ICollisionArea collisionArea) {
 		double angle = collisionArea.getRotation();
-		double cx = collisionArea.getCenterX() - view.getCenterX();
-		double cy = collisionArea.getCenterY() - view.getCenterY();
+		double cx = collisionArea.getCenterX();
+		double cy = collisionArea.getCenterY();
 		double width = collisionArea.getWidth();
 		double height = collisionArea.getHeight();
 		if (collisionArea.isReversed()) {
@@ -57,13 +54,13 @@ public interface IDrawable {
 
 		gc.save();
 		Rotate r = new Rotate(360 - angle, cx, cy);
-		gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
+		gc.transform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
 
 		gc.drawImage(image, cx - 0.5 * width, cy - 0.5 * height, width, height);
 		gc.restore();
 
 		if (Settings.getInstance().getBoolean("DEBUG_DRAW")) {
-			debugDraw(gc, collisionArea, view);
+			debugDraw(gc, collisionArea);
 		}
 	}
 
@@ -76,25 +73,22 @@ public interface IDrawable {
 	 * @param collisionArea
 	 * 		the collision area to render.
 	 */
-	default void debugDraw(GraphicsContext gc, ICollisionArea collisionArea, BoundingBox view) {
+	default void debugDraw(GraphicsContext gc, ICollisionArea collisionArea) {
 		double angle = collisionArea.getRotation();
-		double cx = collisionArea.getCenterX() - view.getCenterX();
-		double cy = collisionArea.getCenterY() - view.getCenterY();
+		double cx = collisionArea.getCenterX();
+		double cy = collisionArea.getCenterY();
 		double height = collisionArea.getHeight();
 		
 		gc.setFill(Color.RED);
 		
 		gc.fillText("angle: " + angle, cx, cy - (0.5 * height + 10)); //Angle display
 		gc.fillText("size: " + collisionArea.getSize(),	cx, cy - (0.5 * height + 25)); //Size display
-
-		double dx = view.getCenterX();
-		double dy = view.getCenterY();
 		
 		if (collisionArea instanceof CollisionMask) {
 			gc.setFill(Color.FUCHSIA);
 			HashSet<Vec2d> mask = ((CollisionMask) collisionArea).getMask();
 			for (Vec2d v : mask) {
-				gc.fillOval(v.x - dx, v.y - dy, 1, 1);
+				gc.fillOval(v.x, v.y, 1, 1);
 			}
 		}
 
@@ -108,9 +102,9 @@ public interface IDrawable {
 		Vec2d br = collisionArea.getBottomRight();
 
 		gc.setFill(Color.RED);	
-		gc.fillOval(tl.x - dx, tl.y - dy, 2, 2);
-		gc.fillOval(tr.x - dx, tr.y - dy, 2, 2);
-		gc.fillOval(bl.x - dx, bl.y - dy, 2, 2);
-		gc.fillOval(br.x - dx, br.y - dy, 2, 2);
+		gc.fillOval(tl.x, tl.y, 2, 2);
+		gc.fillOval(tr.x, tr.y, 2, 2);
+		gc.fillOval(bl.x, bl.y, 2, 2);
+		gc.fillOval(br.x, br.y, 2, 2);
 	}
 }

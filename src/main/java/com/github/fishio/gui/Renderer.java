@@ -13,14 +13,12 @@ import com.github.fishio.listeners.TickListener;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.settings.Settings;
-import com.sun.javafx.stage.WindowEventDispatcher;
 
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -135,16 +133,19 @@ public class Renderer implements Listenable {
 
 		//Clear screen
 		gc.clearRect(0, 0, view.getWidth(), view.getHeight());
+		gc.save();
 
+		gc.translate(-view.getMinX(), -view.getMinY());
 		//draw background image
 		if (background != null) {
-			gc.drawImage(background, -view.getCenterX(), -view.getCenterY() , playingField.getWidth(), playingField.getHeight());
+			gc.drawImage(background, 0, 0,
+					playingField.getWidth(), playingField.getHeight());
 		}
 
 		//Render all drawables, in reverse order
 		Iterator<IDrawable> it = playingField.getDrawables().descendingIterator();
 		while (it.hasNext()) {
-			it.next().render(gc, view);
+			it.next().render(gc);
 		}
 		
 		//Render all death animations
@@ -152,6 +153,8 @@ public class Renderer implements Listenable {
 		while ((drawable = playingField.getDeadDrawables().pollLast()) != null) {
 			drawable.drawDeath(gc);
 		}
+		gc.restore();
+		
 	}
 	
 	/**
@@ -289,8 +292,13 @@ public class Renderer implements Listenable {
 		return renderThread.getStatus() == Status.RUNNING;
 	}
 	
+	/**
+	 * Set the center of the viewport.
+	 * This center will be limited to the sizes of the playingfield.
+	 * @param center
+	 * 		The new center for the viewport.
+	 */
 	public void setCenter(Vec2d center) {
-		center.add(new Vec2d(view.getWidth() / -2, view.getHeight() / -2));
 		//TODO restrict the view to the borders
 		view.moveTo(center);
 	}

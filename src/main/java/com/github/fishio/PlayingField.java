@@ -45,6 +45,10 @@ public abstract class PlayingField {
 	 *            the canvas to use, can be <code>null</code> to create one.
 	 * @param yBorder
 	 * 			  the vertical border to be applied.
+	 * @param width
+	 * 		the width of the playing field
+	 * @param height
+	 * 		the height of the playing field
 	 */
 	public PlayingField(int fps, Canvas canvas, int yBorder, int width, int height) {
 		//count enemies
@@ -140,7 +144,6 @@ public abstract class PlayingField {
 
 		//add enemy entities
 		while (enemyCount < MAX_ENEMY_COUNT) {
-			//TODO add scalible enemyFish
 			EnemyFish eFish = EnemyFishFactory.randomizedFish(getPlayers());
 			add(eFish);
 			

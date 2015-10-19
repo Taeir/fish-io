@@ -25,11 +25,15 @@ public class SinglePlayerPlayingField extends PlayingField {
 	 * Creates the playing field for a single player.
 	 * 
 	 * @param fps
-	 *            the (target) framerate.
+	 *      the (target) framerate.
 	 * @param canvas
-	 *            the canvas to use, can be <code>null</code> to create one.
+	 *      the canvas to use, can be <code>null</code> to create one.
 	 * @param scene
-	 *            the scene to use (for registering keylisteners)
+	 *      the scene to use (for registering keylisteners)
+	 * @param width
+	 * 		the width of the playing field
+	 * @param height
+	 * 		the height of the playing field
 	 */
 	public SinglePlayerPlayingField(int fps, Canvas canvas, Scene scene, int width, int height) {
 		super(fps, canvas, 50, width, height);
