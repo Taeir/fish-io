@@ -47,7 +47,7 @@ public abstract class TestPlayingField extends SlimGuiTest {
 	 */
 	@Before
 	public void setUp() {
-		this.canvas = Mockito.spy(new Canvas(1280, 670));
+		this.canvas = Mockito.spy(new Canvas(1280, 720));
 		this.field = getPlayingField(60, canvas);
 	}
 	
@@ -94,7 +94,7 @@ public abstract class TestPlayingField extends SlimGuiTest {
 	 */
 	@Test
 	public void testGetHeight() {
-		assertEquals(670.0, field.getHeight(), 0.0D);
+		assertEquals(720, field.getHeight(), 0.0D);
 	}
 	
 	/**

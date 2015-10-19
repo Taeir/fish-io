@@ -95,7 +95,11 @@ public abstract class MultiplayerPlayingField extends PlayingField {
 	
 	@Override
 	public void centerScreen() {
-		ICollisionArea ca = getOwnPlayer().getBoundingArea();
+		PlayerFish p = getOwnPlayer();
+		if (p == null) {
+			return;
+		}
+		ICollisionArea ca = p.getBoundingArea();
 		getRenderer().setCenter(new Vec2d(ca.getCenterX(), ca.getCenterY()));		
 	}
 }
