@@ -130,11 +130,14 @@ public class Renderer implements Listenable {
 		if (gc == null) {
 			return;
 		}
-
 		//Clear screen
 		gc.clearRect(0, 0, view.getWidth(), view.getHeight());
 		gc.save();
-
+		
+		// scale the screen when the view is bigger than the playing field
+		gc.scale(Math.max(1, view.getWidth() / playingField.getWidth()), 
+				 Math.max(1, view.getHeight() / playingField.getHeight()));
+		
 		gc.translate(-view.getMinX(), -view.getMinY());
 		//draw background image
 		if (background != null) {
@@ -154,7 +157,6 @@ public class Renderer implements Listenable {
 			drawable.drawDeath(gc);
 		}
 		gc.restore();
-		
 	}
 	
 	/**
