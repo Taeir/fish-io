@@ -35,10 +35,10 @@ public class MenuField extends PlayingField {
 	
 	@Override
 	public void addEntities() {
-
 		//add enemy entities
 		while (getEntities().size()  < 5) {
-			EnemyFish eFish = EnemyFishFactory.randomizedFish(new BoundingBox(null, 60, 60));
+			EnemyFish eFish = EnemyFishFactory.randomizedFish(new BoundingBox(null, 60, 60),
+					getWidth(), getHeight());
 			add(eFish);
 		}
 	}

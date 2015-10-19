@@ -144,7 +144,7 @@ public abstract class PlayingField {
 
 		//add enemy entities
 		while (enemyCount < MAX_ENEMY_COUNT) {
-			EnemyFish eFish = EnemyFishFactory.randomizedFish(getPlayers());
+			EnemyFish eFish = EnemyFishFactory.randomizedFish(getPlayers(), width, height);
 			add(eFish);
 			
 			enemyCount++;
