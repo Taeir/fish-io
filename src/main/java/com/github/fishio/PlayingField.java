@@ -197,6 +197,10 @@ public abstract class PlayingField {
 		centerScreen();
 	}
 
+	/**
+	 * Center the screen at the correct location.
+	 * This location should be the player, but can be something different.
+	 */
 	public abstract void centerScreen();
 
 	/**

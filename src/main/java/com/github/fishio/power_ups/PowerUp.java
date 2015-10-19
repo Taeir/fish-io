@@ -1,6 +1,5 @@
 package com.github.fishio.power_ups;
 
-import com.github.fishio.BoundingBox;
 import com.github.fishio.CollisionMask;
 import com.github.fishio.Entity;
 import com.github.fishio.ICollidable;

@@ -9,7 +9,6 @@ import com.github.fishio.CollisionMask;
 import com.github.fishio.Entity;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.Preloader;
-import com.github.fishio.SinglePlayerPlayingField;
 import com.github.fishio.Vec2d;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.logging.LogLevel;
@@ -30,6 +29,10 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 	 * 		the fps of the renderer of this PlayingField.
 	 * @param canvas
 	 * 		the canvas to render on.
+	 * @param width
+	 * 		the width of the playing field
+	 * @param height
+	 * 		the height of the playing field
 	 */
 	public MultiplayerServerPlayingField(int fps, Canvas canvas, int width, int height) {
 		super(fps, canvas, width, height);

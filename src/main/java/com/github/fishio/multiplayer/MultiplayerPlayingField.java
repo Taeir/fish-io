@@ -27,6 +27,10 @@ public abstract class MultiplayerPlayingField extends PlayingField {
 	 * 		the fps of the renderer of this PlayingField.
 	 * @param canvas
 	 * 		the canvas to render on.
+	 * @param width
+	 * 		the width of the playing field
+	 * @param height
+	 * 		the height of the playing field
 	 */
 	public MultiplayerPlayingField(int fps, Canvas canvas, int width, int height) {
 		super(fps, canvas, 50, width, height);
