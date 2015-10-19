@@ -8,6 +8,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.canvas.Canvas;
 
+import com.github.fishio.ICollisionArea;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
 import com.github.fishio.Vec2d;
@@ -94,6 +95,7 @@ public abstract class MultiplayerPlayingField extends PlayingField {
 	
 	@Override
 	public void centerScreen() {
-		getRenderer().setCenter(new Vec2d(640, 360));
+		ICollisionArea ca = getOwnPlayer().getBoundingArea();
+		getRenderer().setCenter(new Vec2d(ca.getCenterX(), ca.getCenterY()));		
 	}
 }

@@ -299,7 +299,11 @@ public class Renderer implements Listenable {
 	 * 		The new center for the viewport.
 	 */
 	public void setCenter(Vec2d center) {
-		//TODO restrict the view to the borders
+		//restrict the view to the borders
+		double hw = view.getWidth() / 2D;
+		double hh = view.getHeight() / 2D;
+		center.setX(Math.max(hw, Math.min(center.x, playingField.getWidth() - hw)));
+		center.setY(Math.max(hh, Math.min(center.y, playingField.getHeight() - hh)));
 		view.moveTo(center);
 	}
 }
