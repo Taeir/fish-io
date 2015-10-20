@@ -1,17 +1,15 @@
-/**
- * 
- */
 package com.github.fishio.audio;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import java.nio.file.Path;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import com.github.fishio.gui.SlimGuiTest;
 
@@ -64,15 +62,15 @@ public class TestMusic extends SlimGuiTest {
 	 */
 	private void waitForPlaying(long time) {
 		long left = time;
-		long interval = (long) Math.ceil(time / 100D);
-		while (!playing && left > 0) {
-			try {
-				synchronized (this) {
+		long interval = (long) Math.ceil(time / 50D);
+		synchronized (this) {
+			while (!playing && left > 0) {
+				try {
 					wait(interval);
-				}
-			} catch (InterruptedException ex) { }
-			
-			left -= interval;
+				} catch (InterruptedException ex) { }
+				
+				left -= interval;
+			}
 		}
 	}
 
@@ -84,15 +82,15 @@ public class TestMusic extends SlimGuiTest {
 	 */
 	private void waitForStop(long time) {
 		long left = time;
-		long interval = (long) Math.ceil(time / 100D);
-		while (!stopped && left > 0) {
-			try {
-				synchronized (this) {
+		long interval = (long) Math.ceil(time / 50D);
+		synchronized (this) {
+			while (!stopped && left > 0) {
+				try {
 					wait(interval);
-				}
-			} catch (InterruptedException ex) { }
-			
-			left -= interval;
+				} catch (InterruptedException ex) { }
+				
+				left -= interval;
+			}
 		}
 	}
 	
@@ -107,7 +105,7 @@ public class TestMusic extends SlimGuiTest {
 		Music music = getTestMusic();
 		
 		music.play();
-		waitForPlaying(5000L);
+		waitForPlaying(7500L);
 		
 		assertTrue(playing);
 	}
@@ -134,7 +132,7 @@ public class TestMusic extends SlimGuiTest {
 		});
 		
 		music.play();
-		waitForPlaying(5000L);
+		waitForPlaying(7500L);
 		
 		assertTrue(this.state);
 	}
@@ -151,9 +149,9 @@ public class TestMusic extends SlimGuiTest {
 		Music music = getTestMusic();
 		
 		music.play();
-		waitForPlaying(5000L);
+		waitForPlaying(7500L);
 		music.stop();
-		waitForStop(5000L);
+		waitForStop(7500L);
 		
 		assertFalse(music.isPlaying());
 	}
@@ -168,7 +166,7 @@ public class TestMusic extends SlimGuiTest {
 		}
 		
 		Music music = getTestMusic();
-		Runnable r = Mockito.mock(Runnable.class);
+		Runnable r = mock(Runnable.class);
 		
 		Runnable old = music.getPlayer().getOnStopped();
 		music.getPlayer().setOnStopped(() -> {
@@ -187,11 +185,11 @@ public class TestMusic extends SlimGuiTest {
 		
 		//Start and stop music.
 		music.play();
-		waitForPlaying(5000L);
+		waitForPlaying(7500L);
 		music.stop();
-		waitForStop(5000L);
+		waitForStop(7500L);
 		
 		//Our runnable should have been called once.
-		Mockito.verify(r, atLeastOnce()).run();
+		verify(r, atLeastOnce()).run();
 	}
 }

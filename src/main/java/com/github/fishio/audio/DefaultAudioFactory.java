@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import com.github.fishio.MultiThreadedUtility;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
@@ -40,7 +41,7 @@ public class DefaultAudioFactory implements IAudioFactory {
 	 * Starts a new thread to load music.
 	 */
 	protected void startLoadingMusic() {
-		new Thread(() -> {
+		MultiThreadedUtility.submitTask(() -> {
 			try {
 				int i = 0;
 				
@@ -61,14 +62,14 @@ public class DefaultAudioFactory implements IAudioFactory {
 			} finally {
 				musicLoaded = true;
 			}
-		}).start();
+		}, false);
 	}
 	
 	/**
 	 * Starts a new thread to load sound effects.
 	 */
 	protected void startLoadingSoundEffects() {
-		new Thread(() -> {
+		MultiThreadedUtility.submitTask(() -> {
 			try {
 				int i = 0;
 				
@@ -92,7 +93,7 @@ public class DefaultAudioFactory implements IAudioFactory {
 			} finally {
 				this.soundEffectsLoaded = true;
 			}
-		}).start();
+		}, false);
 	}
 	
 	@Override

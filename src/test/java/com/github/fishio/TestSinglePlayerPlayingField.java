@@ -2,9 +2,13 @@ package com.github.fishio;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import com.github.fishio.behaviours.VerticalBehaviour;
 
@@ -18,7 +22,7 @@ public class TestSinglePlayerPlayingField extends TestPlayingField {
 
 	@Override
 	public PlayingField getPlayingField(int fps, Canvas canvas) {
-		return new SinglePlayerPlayingField(fps, canvas, Mockito.mock(Scene.class));
+		return new SinglePlayerPlayingField(fps, canvas, mock(Scene.class));
 	}
 	
 	@Override
@@ -74,28 +78,28 @@ public class TestSinglePlayerPlayingField extends TestPlayingField {
 	public void testCheckPlayerCollisions1() {
 		Entity[] entities = new Entity[3];
 		for (int i = 0; i < 3; i++) {
-			entities[i] = Mockito.mock(Entity.class);
+			entities[i] = mock(Entity.class);
 			getField().add(entities[i]);
 		}
 		
 		//Replacing the current PlayerFish with our own mocked PlayerFish.
 		getField().getPlayers().clear();
-		PlayerFish pf = Mockito.mock(PlayerFish.class);
+		PlayerFish pf = mock(PlayerFish.class);
 		getField().getPlayers().add(pf);
 		
-		Mockito.when(pf.doesCollides(entities[0])).thenReturn(true);
-		Mockito.when(pf.doesCollides(entities[1])).thenReturn(true);
-		Mockito.when(pf.doesCollides(entities[2])).thenReturn(false);
+		when(pf.doesCollides(entities[0])).thenReturn(true);
+		when(pf.doesCollides(entities[1])).thenReturn(true);
+		when(pf.doesCollides(entities[2])).thenReturn(false);
 		
 		getField().checkPlayerCollisions();
 		
-		Mockito.verify(entities[0]).onCollide(pf);
-		Mockito.verify(entities[1]).onCollide(pf);
-		Mockito.verify(entities[2], Mockito.never()).onCollide(pf);
-		Mockito.verify(pf).onCollide(entities[0]);
-		Mockito.verify(pf).onCollide(entities[1]);
-		Mockito.verify(pf, Mockito.never()).onCollide(entities[2]);
-		Mockito.verify(entities[0], Mockito.never()).onCollide(entities[1]);
+		verify(entities[0]).onCollide(pf);
+		verify(entities[1]).onCollide(pf);
+		verify(entities[2], never()).onCollide(pf);
+		verify(pf).onCollide(entities[0]);
+		verify(pf).onCollide(entities[1]);
+		verify(pf, never()).onCollide(entities[2]);
+		verify(entities[0], never()).onCollide(entities[1]);
 	}
 	
 	/**
@@ -103,17 +107,17 @@ public class TestSinglePlayerPlayingField extends TestPlayingField {
 	 */
 	@Test
 	public void testMoveMovables() {
-		CollisionMask ca = Mockito.mock(CollisionMask.class);
+		CollisionMask ca = mock(CollisionMask.class);
 		Entity e = new EnemyFish(ca, null, 0, 0);
-		VerticalBehaviour b = Mockito.spy(new VerticalBehaviour(3));
+		VerticalBehaviour b = spy(new VerticalBehaviour(3));
 		e.setBehaviour(b);
 		
 		getField().add(e);
 		
 		getField().moveMovables();
 		
-		Mockito.verify(b).preMove();
-		Mockito.verify(ca).move(new Vec2d(0, -3));
+		verify(b).preMove();
+		verify(ca).move(new Vec2d(0, -3));
 		
 	}
 

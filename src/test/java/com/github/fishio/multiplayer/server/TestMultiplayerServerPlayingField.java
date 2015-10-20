@@ -1,7 +1,10 @@
 package com.github.fishio.multiplayer.server;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import javafx.scene.canvas.Canvas;
 
@@ -28,30 +31,30 @@ public class TestMultiplayerServerPlayingField extends TestMultiplayerPlayingFie
 		MultiplayerServerPlayingField mspf = (MultiplayerServerPlayingField) getField();
 		
 		//Create a player to update
-		CollisionMask cm1 = Mockito.mock(CollisionMask.class);
-		IMoveBehaviour imb1 = Mockito.mock(IMoveBehaviour.class);
-		PlayerFish pf1 = Mockito.mock(PlayerFish.class);
-		Mockito.when(pf1.getEntityId()).thenReturn(10);
-		Mockito.when(pf1.getBoundingArea()).thenReturn(cm1);
-		Mockito.when(pf1.getBehaviour()).thenReturn(imb1);
+		CollisionMask cm1 = mock(CollisionMask.class);
+		IMoveBehaviour imb1 = mock(IMoveBehaviour.class);
+		PlayerFish pf1 = mock(PlayerFish.class);
+		when(pf1.getEntityId()).thenReturn(10);
+		when(pf1.getBoundingArea()).thenReturn(cm1);
+		when(pf1.getBehaviour()).thenReturn(imb1);
 		
 		//Add the player to the field
 		mspf.add(pf1);
 		
 		//Create a second player to update with
-		CollisionMask cm2 = Mockito.mock(CollisionMask.class);
-		IMoveBehaviour imb2 = Mockito.mock(IMoveBehaviour.class);
-		PlayerFish pf2 = Mockito.mock(PlayerFish.class);
-		Mockito.when(pf2.getEntityId()).thenReturn(10);
-		Mockito.when(pf2.getBoundingArea()).thenReturn(cm2);
-		Mockito.when(pf2.getBehaviour()).thenReturn(imb2);
+		CollisionMask cm2 = mock(CollisionMask.class);
+		IMoveBehaviour imb2 = mock(IMoveBehaviour.class);
+		PlayerFish pf2 = mock(PlayerFish.class);
+		when(pf2.getEntityId()).thenReturn(10);
+		when(pf2.getBoundingArea()).thenReturn(cm2);
+		when(pf2.getBehaviour()).thenReturn(imb2);
 		
 		//Call the update method
 		mspf.updatePlayer(pf2);
 		
 		//The collision mask and move behaviour of the first entity should have been updated
-		Mockito.verify(cm1).updateTo(cm2);
-		Mockito.verify(imb1).updateTo(imb2);
+		verify(cm1).updateTo(cm2);
+		verify(imb1).updateTo(imb2);
 	}
 
 }

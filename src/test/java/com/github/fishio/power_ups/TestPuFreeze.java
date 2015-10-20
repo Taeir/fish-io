@@ -1,17 +1,18 @@
 package com.github.fishio.power_ups;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 import javafx.scene.image.Image;
 
 import org.junit.Before;
-import org.mockito.Mockito;
-
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
 
 import com.github.fishio.EnemyFish;
 import com.github.fishio.Entity;
@@ -36,13 +37,15 @@ public class TestPuFreeze extends TestDurationPowerUp {
 	 */
 	@Before
 	public void setUp() {
-		this.pf = Mockito.mock(SinglePlayerPlayingField.class);
-		GameThread gt = Mockito.spy(new GameThread(pf));
+		this.pf = mock(SinglePlayerPlayingField.class);
+		GameThread gt = spy(new GameThread(pf));
+		LinkedList<Entity> entities = new LinkedList<Entity>();
 		when(pf.getGameThread()).thenReturn(gt);
-		this.pu = Mockito.spy(new FreezePowerUp(null, pf, Mockito.mock(Image.class)));
+		when(pf.getEntities()).thenReturn(entities);
+		this.pu = spy(new FreezePowerUp(null, pf, mock(Image.class)));
 		
 		//To prevent nullPointerException, mock the target of the PowerUp.
-		this.pu.setTarget(Mockito.mock(PlayerFish.class));
+		this.pu.setTarget(mock(PlayerFish.class));
 	}
 	
 	@Override
@@ -58,14 +61,14 @@ public class TestPuFreeze extends TestDurationPowerUp {
 	@Override
 	public void testStartEffect() {
 		//Creating our own list of entities for in the PlayingField.
-		List<Entity> entities = new ArrayList<Entity>();
-		entities.add(Mockito.mock(EnemyFish.class));
-		entities.add(Mockito.mock(PlayerFish.class));
-		entities.add(Mockito.mock(FreezePowerUp.class));
-		entities.add(Mockito.mock(EnemyFish.class));
+		LinkedList<Entity> entities = new LinkedList<Entity>();
+		entities.add(mock(EnemyFish.class));
+		entities.add(mock(PlayerFish.class));
+		entities.add(mock(FreezePowerUp.class));
+		entities.add(mock(EnemyFish.class));
 		
 		//Making the PlayingField return our own entities.
-		when(pf.getEntitiesList()).thenReturn(entities);
+		when(pf.getEntities()).thenReturn(entities);
 		
 		//Invoking the startEffect method
 		pu.startEffect();
@@ -74,8 +77,8 @@ public class TestPuFreeze extends TestDurationPowerUp {
 		EnemyFish ef2 = (EnemyFish) entities.get(3);
 		
 		//Making sure the EnemyFishes got frozen.
-		verify(ef1).setBehaviour(Mockito.any(FrozenBehaviour.class));
-		verify(ef2).setBehaviour(Mockito.any(FrozenBehaviour.class));
+		verify(ef1).setBehaviour(any(FrozenBehaviour.class));
+		verify(ef2).setBehaviour(any(FrozenBehaviour.class));
 	}
 
 	@Override
@@ -87,14 +90,15 @@ public class TestPuFreeze extends TestDurationPowerUp {
 	@Override
 	public void testEndEffect() {
 		//Creating our own list of entities for in the PlayingField.
-		List<Entity> entities = new ArrayList<Entity>();
-		entities.add(Mockito.mock(EnemyFish.class));
-		entities.add(Mockito.mock(PlayerFish.class));
-		entities.add(Mockito.mock(FreezePowerUp.class));
-		entities.add(Mockito.mock(EnemyFish.class));
+		LinkedList<Entity> entities = new LinkedList<Entity>();
+		entities.add(mock(EnemyFish.class));
+		entities.add(mock(PlayerFish.class));
+		entities.add(mock(FreezePowerUp.class));
+		entities.add(mock(EnemyFish.class));
 		
 		//Making the PlayingField return our own entities.
 		when(pf.getEntitiesList()).thenReturn(entities);
+		when(pf.getEntities()).thenReturn(entities);
 		
 		//Invoking the startEffect method and then the endEffect
 		pu.startEffect();
@@ -104,8 +108,8 @@ public class TestPuFreeze extends TestDurationPowerUp {
 		EnemyFish ef2 = (EnemyFish) entities.get(3);
 		
 		//Making sure the EnemyFishes got unfrozen (even though they weren't frozen in the first place).
-		verify(ef1, Mockito.atLeastOnce()).setBehaviour(Mockito.any(RandomBehaviour.class));
-		verify(ef2, Mockito.atLeastOnce()).setBehaviour(Mockito.any(RandomBehaviour.class));
+		verify(ef1, atLeastOnce()).setBehaviour(any(RandomBehaviour.class));
+		verify(ef2, atLeastOnce()).setBehaviour(any(RandomBehaviour.class));
 	}
 
 	@Override

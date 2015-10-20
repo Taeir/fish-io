@@ -1,26 +1,19 @@
-package com.github.fishio;
+package com.github.fishio.factories;
 
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import java.util.Random;
+import static org.mockito.Mockito.never;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.times;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.github.fishio.factories.PowerUpSpawner;
+import com.github.fishio.PlayingField;
+import com.github.fishio.SinglePlayerPlayingField;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.gui.SlimGuiTest;
-import com.github.fishio.power_ups.ExtraLifePowerUp;
-import com.github.fishio.power_ups.FreezePowerUp;
 import com.github.fishio.power_ups.PowerUp;
-import com.github.fishio.power_ups.SuperSpeedPowerUp;
-import com.github.fishio.settings.Settings;
 
 /**
  * Tests the PowerUpSpawer class.
@@ -37,7 +30,7 @@ public class TestPowerUpSpawner extends SlimGuiTest {
 	 */
 	@Before
 	public void setUp() {
-		this.pf = mock(SinglePlayerPlayingField.class);
+		this.pf = Mockito.mock(SinglePlayerPlayingField.class);
 		
 		GameThread gt = Mockito.spy(new GameThread(pf));
 		when(pf.getGameThread()).thenReturn(gt); //Preventing nullPointerExceptions from the gameThread
@@ -57,21 +50,21 @@ public class TestPowerUpSpawner extends SlimGuiTest {
 		//Making sure that no PowerUp is added after when the interval hasn't passed yet
 		for (int i = 0; i < intervalTicks - 1; i++) {
 			pus.postTick();
-			verify(pf, never()).add(anyObject());
+			Mockito.verify(pf, never()).add(anyObject());
 		}
 		
 		//Now that the interval has passed, a random PowerUp should have been added.
 		pus.postTick();
-		verify(pf).add(Mockito.any(PowerUp.class));
+		Mockito.verify(pf).add(Mockito.any(PowerUp.class));
 		
 		//Making sure that it resets after an interval has passed
 		for (int i = 0; i < intervalTicks - 1; i++) {
 			pus.postTick();
-			verify(pf).add(anyObject());
+			Mockito.verify(pf).add(anyObject());
 		}
 		
 		//Again a random powerUp should have been added
 		pus.postTick();
-		verify(pf, times(2)).add(Mockito.any(PowerUp.class));
+		Mockito.verify(pf, times(2)).add(Mockito.any(PowerUp.class));
 	}
 }

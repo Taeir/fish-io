@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
 
 import org.junit.After;
 import org.junit.Before;
@@ -186,7 +187,7 @@ public abstract class TestPlayingField extends SlimGuiTest {
 	@Test
 	public void testAdd() {
 		int amount = field.getEntities().size();
-		Entity e = Mockito.mock(Entity.class);
+		Entity e = mock(Entity.class);
 		
 		field.add(e);
 		
@@ -201,7 +202,7 @@ public abstract class TestPlayingField extends SlimGuiTest {
 	@Test
 	public void testRemove() {
 		int amount = field.getEntities().size();
-		Entity e = Mockito.mock(Entity.class);
+		Entity e = mock(Entity.class);
 		
 		field.add(e);
 		field.remove(e);
@@ -217,7 +218,7 @@ public abstract class TestPlayingField extends SlimGuiTest {
 	@Test
 	public void testClear() {
 		for (int i = 0; i < 10; i++) {
-			field.add(Mockito.mock(Entity.class));
+			field.add(mock(Entity.class));
 		}
 		
 		field.clear();
@@ -233,8 +234,8 @@ public abstract class TestPlayingField extends SlimGuiTest {
 	@Test
 	public void clearEnemies() {
 		for (int i = 0; i < 10; i++) {
-			field.add(Mockito.mock(Entity.class));
-			field.add(new PlayerFish(null, Mockito.mock(Scene.class), null));
+			field.add(mock(Entity.class));
+			field.add(new PlayerFish(null, mock(Scene.class), null));
 		}
 		
 		field.clearEnemies();
@@ -249,7 +250,7 @@ public abstract class TestPlayingField extends SlimGuiTest {
 	@Test
 	public void testGetDrawables() {
 		int amount = field.getEntities().size();
-		IDrawable d = Mockito.mock(Entity.class);
+		IDrawable d = mock(Entity.class);
 		field.add(d);
 		
 		assertTrue(field.getDrawables().contains(d));
@@ -263,7 +264,7 @@ public abstract class TestPlayingField extends SlimGuiTest {
 	public void testIsPlayerAlive() {
 		//Replacing the current PlayerFish with our own mocked PlayerFish.
 		field.getPlayers().clear();
-		PlayerFish pf = Mockito.mock(PlayerFish.class);
+		PlayerFish pf = mock(PlayerFish.class);
 		field.getPlayers().add(pf);
 		Mockito.when(pf.isDead()).thenReturn(true);
 		
@@ -275,8 +276,8 @@ public abstract class TestPlayingField extends SlimGuiTest {
 	 */
 	@Test
 	public void testCleanUpDead() {
-		Entity e1 = Mockito.mock(Entity.class);
-		Entity e2 = Mockito.mock(Entity.class);	
+		Entity e1 = mock(Entity.class);
+		Entity e2 = mock(Entity.class);	
 		
 		field.add(e1);
 		field.add(e2);

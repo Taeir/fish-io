@@ -31,7 +31,7 @@ public class FrozenBehaviour implements IMoveBehaviour, Serializable {
 			return false;
 		}
 		
-		return obj.getClass() == FrozenBehaviour.class;
+		return this.getClass() == obj.getClass();
 	}
 	
 	@Override

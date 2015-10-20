@@ -1,10 +1,13 @@
 package com.github.fishio.power_ups;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+
 import javafx.scene.image.Image;
 
 import org.junit.Before;
-import org.mockito.Mockito;
 
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
@@ -24,8 +27,8 @@ public class TestPuExtraLife extends TestPowerUp {
 	 */
 	@Before
 	public void setUp() {
-		this.pf = Mockito.mock(SinglePlayerPlayingField.class);
-		this.pu = Mockito.spy(new ExtraLifePowerUp(null, pf, Mockito.mock(Image.class)));
+		this.pf = mock(SinglePlayerPlayingField.class);
+		this.pu = spy(new ExtraLifePowerUp(null, pf, mock(Image.class)));
 	}
 	
 	@Override
@@ -40,12 +43,12 @@ public class TestPuExtraLife extends TestPowerUp {
 
 	@Override
 	public void testExecuteEffect() {
-		PlayerFish pf = Mockito.mock(PlayerFish.class);
+		PlayerFish pf = mock(PlayerFish.class);
 		
 		pu.executeEffect(pf);
 		
 		//A life should have been added to the PlayerFish.
-		Mockito.verify(pf).addLife();
+		verify(pf).addLife();
 	}
 
 	@Override

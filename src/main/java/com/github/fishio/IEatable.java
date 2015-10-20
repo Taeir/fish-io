@@ -1,29 +1,34 @@
 package com.github.fishio;
 
 /**
- * Interface for objects that can eat or can get eaten.
+ * Interface for objects that can eat or can be eaten.
  */
 public interface IEatable {
 
 	/**
-	 * checks of this object can be eaten by the other object.
+	 * Checks of this IEatable can be eaten by the given IEatable.
+	 * 
 	 * @param other
-	 * 		The object to check for
+	 * 		The IEatable to check for.
+	 * 
 	 * @return
-	 * 		True is this can be eaten by other, false otherwise
+	 * 		<code>true</code> is this IEatable can be eaten by the given IEatable,
+	 * 		<code>false</code> otherwise.
 	 */
 	boolean canBeEatenBy(IEatable other);
 	
 	/**
-	 * Method called when this is eaten.
+	 * Method called when this IEatable is eaten.
 	 */
 	void eat();
 	
 	/**
-	 * Eat the specified eatable.
-	 * Pre: other.canBeEatenBy(this) == true
+	 * Eats the given IEatable.<br>
+	 * <br>
+	 * Precondition: {@code other.canBeEatenBy(this) == true}
+	 * 
 	 * @param other
-	 * 		The eatable to eat.
+	 * 		the eatable to eat.
 	 */
 	default void eat(IEatable other) {
 		other.eat();
@@ -31,7 +36,7 @@ public interface IEatable {
 	
 	/**
 	 * @return
-	 * 		The size of this instance.
+	 * 		The size of this eatable.
 	 */
 	double getSize();
 }

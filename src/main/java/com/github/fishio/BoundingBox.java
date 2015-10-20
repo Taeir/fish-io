@@ -2,6 +2,8 @@ package com.github.fishio;
 
 import java.io.Serializable;
 
+import javafx.scene.shape.Rectangle;
+
 /**
  * Class to represent an (Axis Aligned) Bounding Box.
  */
@@ -13,6 +15,8 @@ public class BoundingBox implements ICollisionArea, Serializable {
 	private double height;
 	private double width;
 	private double rotation;
+	
+	private transient Rectangle box;
 
 	/**
 	 * Creates a new Bounding Box with the given coordinates.
@@ -51,6 +55,22 @@ public class BoundingBox implements ICollisionArea, Serializable {
 		this.width = width;
 		this.height = height;
 		this.rotation = 0;
+	}
+	
+	@Override
+	public Rectangle getBox() {
+		//Don't recreate the box every time, simply update it.
+		if (box == null) {
+			box = new Rectangle();
+		}
+		
+		box.setX(getCenterX() - 0.5 * getWidth());
+		box.setY(getCenterY() - 0.5 * getHeight());
+		box.setWidth(getWidth());
+		box.setHeight(getHeight());
+		box.setRotate(getRotation());
+		
+		return box;
 	}
 
 	/**

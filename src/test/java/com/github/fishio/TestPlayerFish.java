@@ -4,12 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import com.github.fishio.behaviours.FrozenBehaviour;
 import com.github.fishio.behaviours.IMoveBehaviour;
@@ -31,7 +33,7 @@ public class TestPlayerFish extends TestIEatable {
 	 */
 	@Before
 	public void setUp() {
-		pf = Mockito.spy(new PlayerFish(Mockito.mock(CollisionMask.class), Mockito.mock(Scene.class), null));
+		pf = spy(new PlayerFish(mock(CollisionMask.class), mock(Scene.class), null));
 		when(pf.getBoundingArea().getSize()).thenReturn(5.0);
 	}
 	
@@ -51,7 +53,7 @@ public class TestPlayerFish extends TestIEatable {
 	@Override
 	public void testEat() {
 		pf.eat();
-		Mockito.verify(pf).kill();
+		verify(pf).kill();
 	}
 	
 	/**
@@ -117,7 +119,7 @@ public class TestPlayerFish extends TestIEatable {
 	 * Test for larger enemy.
 	 */
 	public void testCanBeEatenByLargerEnemy() {
-		IEatable other = Mockito.mock(IEatable.class);
+		IEatable other = mock(IEatable.class);
 		when(other.getSize()).thenReturn(10.0);
 		assertTrue(pf.canBeEatenBy(other));
 	}
@@ -127,7 +129,7 @@ public class TestPlayerFish extends TestIEatable {
 	 * Test with enemy with same size.
 	 */
 	public void testCanBeEatenBySameEnemy() {
-		IEatable other = Mockito.mock(IEatable.class);
+		IEatable other = mock(IEatable.class);
 		when(other.getSize()).thenReturn(5.0);
 		assertFalse(pf.canBeEatenBy(other));
 	}
@@ -137,7 +139,7 @@ public class TestPlayerFish extends TestIEatable {
 	 * Test with a smaller enemy.
 	 */
 	public void testCanBeEatenBySmallerEnemy() {
-		IEatable other = Mockito.mock(IEatable.class);
+		IEatable other = mock(IEatable.class);
 		when(other.getSize()).thenReturn(4.0);
 		assertFalse(pf.canBeEatenBy(other));
 	}
@@ -147,7 +149,7 @@ public class TestPlayerFish extends TestIEatable {
 	 * Test for when the player fish is invincible
 	 */
 	public void testCanBeEatenByInvincible() {
-		IEatable other = Mockito.mock(IEatable.class);
+		IEatable other = mock(IEatable.class);
 		when(other.getSize()).thenReturn(4.0);
 		pf.setInvincible(-1);
 		assertFalse(pf.canBeEatenBy(other));
@@ -167,14 +169,13 @@ public class TestPlayerFish extends TestIEatable {
 	 */
 	@Test
 	public void testCollideWithOtherPlayerFish() {
-		PlayerFish pf2 = Mockito
-				.spy(new PlayerFish(Mockito.mock(CollisionMask.class), Mockito.mock(Scene.class), null));
+		PlayerFish pf2 = spy(new PlayerFish(mock(CollisionMask.class), mock(Scene.class), null));
 		when(pf2.getBoundingArea().getSize()).thenReturn(1000000.0);
 		pf.livesProperty().set(1);
 		pf.onCollide(pf2);
 	
 		assertTrue(pf.isDead());
-		Mockito.verify(pf2, never()).kill();
+		verify(pf2, never()).kill();
 	}
 	
 	/**
@@ -184,8 +185,7 @@ public class TestPlayerFish extends TestIEatable {
 	 */
 	@Test
 	public void testCollideWithLargerEnemyFish() {
-		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(CollisionMask.class), 
-				null, 0.0, 0.0));
+		EnemyFish ef = spy(new EnemyFish(mock(CollisionMask.class), null, 0.0, 0.0));
 		when(ef.getBoundingArea().getSize()).thenReturn(6.1);
 		
 		//Set the amount of lives to 1
@@ -200,7 +200,7 @@ public class TestPlayerFish extends TestIEatable {
 		//The player should be dead.
 		assertTrue(pf.isDead());
 		
-		Mockito.verify(ef, never()).kill();
+		verify(ef, never()).kill();
 	}
 	
 	/**
@@ -210,8 +210,7 @@ public class TestPlayerFish extends TestIEatable {
 	 */
 	@Test
 	public void testCollideWithLargerEnemyFish2() {
-		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(CollisionMask.class), 
-				null, 0.0, 0.0));
+		EnemyFish ef = spy(new EnemyFish(mock(CollisionMask.class), null, 0.0, 0.0));
 		when(ef.getBoundingArea().getSize()).thenReturn(6.1);
 		
 		//Set the amount of lives to 2.
@@ -225,7 +224,7 @@ public class TestPlayerFish extends TestIEatable {
 		
 		//The player should not be dead.
 		assertFalse(pf.isDead());
-		Mockito.verify(ef, never()).kill();
+		verify(ef, never()).kill();
 	}
 	
 	/**
@@ -234,30 +233,28 @@ public class TestPlayerFish extends TestIEatable {
 	 */
 	@Test
 	public void testCollideWithSmallerEnemyFish() {
-		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(CollisionMask.class), 
-				null, 0.0, 0.0));
+		EnemyFish ef = spy(new EnemyFish(mock(CollisionMask.class), null, 0.0, 0.0));
 		when(ef.getBoundingArea().getSize()).thenReturn(3.9);
 		ICollisionArea bb = pf.getBoundingArea();
 		
 		pf.onCollide(ef);
 		
-		Mockito.verify(ef).kill();
-		Mockito.verify(pf, never()).kill();
-		Mockito.verify(bb).increaseSize(pf.getGrowthSpeed() * 3.9 / 5.0);
+		verify(ef).kill();
+		verify(pf, never()).kill();
+		verify(bb).increaseSize(pf.getGrowthSpeed() * 3.9 / 5.0);
 	}
 	
 	/**
 	 */
 	@Test
 	public void testCollideWithSameSizeEnemyFish() {
-		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(CollisionMask.class), 
-				null, 0.0, 0.0));
+		EnemyFish ef = spy(new EnemyFish(mock(CollisionMask.class), null, 0.0, 0.0));
 		when(ef.getBoundingArea().getSize()).thenReturn(5.0);
 
 		pf.onCollide(ef);
 		
-		Mockito.verify(ef, never()).kill();
-		Mockito.verify(pf, never()).kill();
+		verify(ef, never()).kill();
+		verify(pf, never()).kill();
 	}
 	
 	/**
@@ -266,14 +263,13 @@ public class TestPlayerFish extends TestIEatable {
 	 */
 	@Test
 	public void testCollideWithDeadEnemyFish() {
-		EnemyFish ef = Mockito.spy(new EnemyFish(Mockito.mock(CollisionMask.class), 
-				null, 0.0, 0.0));
+		EnemyFish ef = spy(new EnemyFish(mock(CollisionMask.class), null, 0.0, 0.0));
 		when(ef.getBoundingArea().getSize()).thenReturn(5.1);
 		ef.kill();
 
 		pf.onCollide(ef);
 		
-		Mockito.verify(pf, never()).kill();
+		verify(pf, never()).kill();
 	}
 	
 	/**
