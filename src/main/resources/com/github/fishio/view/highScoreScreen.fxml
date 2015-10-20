@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane minHeight="480.0" minWidth="640.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.fishio.control.HighScoreController">
+   <children>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" spacing="20.0" StackPane.alignment="TOP_CENTER">
+         <children>
+            <Label text="High scores">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+            <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" hmax="0.0" prefWidth="590.0" style="-fx-background-color: transparent;">
+               <content>
+                  <GridPane fx:id="gridPane" hgap="5.0" maxWidth="-Infinity" prefWidth="590.0" vgap="5.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="457.0" minWidth="10.0" prefWidth="341.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="337.0" minWidth="10.0" prefWidth="249.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label alignment="CENTER" text="Player" textAlignment="CENTER">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets left="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="Score" GridPane.columnIndex="1">
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
+                           <GridPane.margin>
+                              <Insets left="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                     </children>
+                  </GridPane>
+               </content>
+               <VBox.margin>
+                  <Insets bottom="40.0" />
+               </VBox.margin>
+            </ScrollPane>
+            <Button fx:id="btnBackToMenu" mnemonicParsing="false" onAction="#backToMenu" text="Back to menu">
+               <VBox.margin>
+                  <Insets bottom="25.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+         <StackPane.margin>
+            <Insets bottom="40.0" top="40.0" />
+         </StackPane.margin>
+      </VBox>
+   </children>
+</StackPane>

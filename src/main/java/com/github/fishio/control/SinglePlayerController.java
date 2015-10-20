@@ -2,6 +2,7 @@ package com.github.fishio.control;
 
 import com.github.fishio.CollisionMask;
 import com.github.fishio.FishIO;
+import com.github.fishio.HighScore;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
 import com.github.fishio.Preloader;
@@ -26,8 +27,11 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -85,6 +89,8 @@ public class SinglePlayerController implements ScreenController {
 	private VBox achievePopup;
 	@FXML
 	private Label scoreField;
+	@FXML
+	private TextField scoreName;
 	@FXML
 	private Label livesField;
 	@FXML
@@ -323,8 +329,11 @@ public class SinglePlayerController implements ScreenController {
 		PlayerFish player = playingField.getPlayer();
 		if (player.getLives() > 0) {
 			btnDSRevive.setDisable(false);
+			scoreName.setVisible(false);
 		} else {
+			btnDSRestart.requestFocus();
 			btnDSRevive.setDisable(true);
+			scoreName.setVisible(true);
 		}
 	}
 
@@ -333,6 +342,10 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void backToMenu() {
+		if (playingField.getPlayer().livesProperty().intValue() <= 0) {
+			 saveScore();
+		}
+		
 		AudioEngine.getInstance().playButtonSound();
 		
 		playingField.stopGame();
@@ -376,6 +389,9 @@ public class SinglePlayerController implements ScreenController {
 	public void restartGame() {
 		AudioEngine.getInstance().playButtonSound();
 		
+		if (playingField.getPlayer().livesProperty().intValue() <= 0) {
+			saveScore();
+		}		
 		//Reset the pause button
 		getBtnPause().setText(PAUSE_TEXT);
 		getBtnPause().setDisable(false);
@@ -516,5 +532,14 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	public PlayingField getPlayingField() {
 		return playingField;
+	}
+	
+	private void saveScore() {
+		int score = playingField.getPlayer().scoreProperty().intValue();
+		
+		if (scoreName.getText().equals("")) {
+			HighScore.addScore(score, "The one that cannot be named");
+		}
+		HighScore.addScore(score, scoreName.getText());
 	}
 }

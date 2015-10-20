@@ -51,6 +51,7 @@ public final class Preloader {
 		//Order matters here. We first load the mainMenu, since that screen will be shown directly after
 		//the spash screen.
 		MultiThreadedUtility.submitTask(() -> loadScreen("mainMenu"), false);
+		MultiThreadedUtility.submitTask(() -> loadScreen("highScoreScreen"), false);
 		MultiThreadedUtility.submitTask(() -> loadScreen("singlePlayer"), false);
 		MultiThreadedUtility.submitTask(() -> loadScreen("helpScreen"), false);
 		MultiThreadedUtility.submitTask(() -> loadScreen("achievementScreen"), false);

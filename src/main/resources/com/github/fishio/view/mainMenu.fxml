@@ -20,16 +20,14 @@
                   <Image url="logo.png" />
                </image>
             </ImageView>
-            <FlowPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="144.0" prefWidth="250.0" vgap="10.0">
+            <FlowPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0" prefWidth="250.0" vgap="10.0">
                <children>
                   <Button fx:id="btnSingleplayer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#startSinglePlayer" prefWidth="120.0" text="Singleplayer" />
-                  <Button fx:id="btnMultiplayer"  maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#startMultiplayer" prefWidth="120.0" text="Multiplayer" />
-                  <Button fx:id="btnLoadLevel" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#loadLevel" prefWidth="120.0" text="Load level" />
-                  <Button fx:id="btnShowHighscores" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showHighScores" prefWidth="120.0" text="Highscores" />
+                  <Button fx:id="btnMultiplayer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#startMultiplayer" prefWidth="120.0" text="Multiplayer" />
+                  <Button fx:id="btnShowHighscores" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showHighScores" prefWidth="120.0" text="High scores" />
                   <Button fx:id="btnShowAchievements" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showAchievements" prefWidth="120.0" text="Achievements" />
-                  <Button fx:id="btnShowStatistics" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showStatistics" prefWidth="120.0" text="Statistics" />
-                  <Button fx:id="btnShowSettings" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showSettings" prefWidth="120.0" text="Settings" />
                   <Button fx:id="btnShowHelp" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showHelp" prefWidth="120.0" text="Help" />
+                  <Button fx:id="btnShowSettings" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showSettings" prefWidth="120.0" text="Settings" />
                </children>
                <VBox.margin>
                   <Insets bottom="10.0" top="10.0" />
