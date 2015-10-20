@@ -41,7 +41,7 @@ public final class FishIOClient implements Runnable {
 	
 	private FishIOClient() {
 		MultiplayerGameController controller = Preloader.getControllerOrLoad("multiplayerGameScreen");
-		playingField = new MultiplayerClientPlayingField(60, controller.getCanvas());
+		playingField = new MultiplayerClientPlayingField(60, controller.getCanvas(), 1280, 720);
 	}
 	
 	/**

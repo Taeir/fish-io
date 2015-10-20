@@ -27,9 +27,13 @@ public class MultiplayerClientPlayingField extends MultiplayerPlayingField {
 	 * 		the fps of the renderer of this PlayingField.
 	 * @param canvas
 	 * 		the canvas to render on.
+	 * @param width
+	 * 		the width of the playing field
+	 * @param height
+	 * 		the height of the playing field
 	 */
-	public MultiplayerClientPlayingField(int fps, Canvas canvas) {
-		super(fps, canvas);
+	public MultiplayerClientPlayingField(int fps, Canvas canvas, int width, int height) {
+		super(fps, canvas, width, height);
 		
 		this.gameThread = new GameThread(this);
 		logger.log(LogLevel.INFO, "Created GameThread");

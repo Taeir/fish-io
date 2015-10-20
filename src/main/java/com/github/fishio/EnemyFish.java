@@ -53,7 +53,7 @@ public class EnemyFish extends Entity implements IEatable {
 		if (isDead()) {
 			return;
 		}
-		
+				
 		//TODO Move this to game thread.
 		getBoundingArea().setRotation(getBehaviour());	//update rotation
 		

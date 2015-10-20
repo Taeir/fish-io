@@ -29,15 +29,19 @@ public class EnemyFishFactory {
 	 * @param ca
 	 * 		a Collision Area which decides the minimum and maximum size
 	 * 		of the fish being spawned.
+	 * @param w
+	 * 		the width of the playingfield outside which the fish is spawned
+	 * @param h
+	 * 		the height of the playingfield outside which the fish is spawned
 	 * 
 	 * @return
 	 * 		a randomized EnemyFish.
 	 */
-	public EnemyFish randomizedFish(ICollisionArea ca) {
+	public EnemyFish randomizedFish(ICollisionArea ca, int w , int h) {
 		int minSize = (int) (ca.getSize() * 0.2);
 		int maxSize = (int) (ca.getSize() * 4.5);
 		
-		return randomizedFish(minSize, maxSize);
+		return randomizedFish(minSize, maxSize, w , h);
 	}
 	
 	/**
@@ -47,13 +51,17 @@ public class EnemyFishFactory {
 	 * @param sizes
 	 * 		a collection of entities used for determining the size of the
 	 * 		fish being spawned.
+	 * @param w
+	 * 		the width of the playingfield outside which the fish is spawned
+	 * @param h
+	 * 		the height of the playingfield outside which the fish is spawned
 	 * 
 	 * @return
 	 * 		a randomized EnemyFish.
 	 */
-	public EnemyFish randomizedFish(Collection<? extends Entity> sizes) {
+	public EnemyFish randomizedFish(Collection<? extends Entity> sizes, int w, int h) {
 		if (sizes.isEmpty()) {
-			return randomizedFish(500, 1000);
+			return randomizedFish(500, 1000, w, h);
 		}
 		
 		int minSize = Integer.MAX_VALUE;
@@ -71,7 +79,7 @@ public class EnemyFishFactory {
 			}
 		}
 		
-		return randomizedFish(minSize, maxSize);
+		return randomizedFish(minSize, maxSize, w, h);
 	}
 
 	/**
@@ -82,11 +90,15 @@ public class EnemyFishFactory {
 	 * 		the minimum size of the fish
 	 * @param maxSize
 	 * 		the maximum size of the fish
+	 * @param w
+	 * 		the width of the playingfield outside which the fish is spawned
+	 * @param h
+	 * 		the height of the playingfield outside which the fish is spawned
 	 * 
 	 * @return
 	 * 		a random Enemyfish
 	 */
-	public EnemyFish randomizedFish(int minSize, int maxSize) {
+	public EnemyFish randomizedFish(int minSize, int maxSize, int w, int h) {
 		//randomize fish properties 
 		int size = random.nextInt(maxSize - minSize + 1) + minSize;
 		String spriteString = getRandomSprite();
@@ -103,24 +115,23 @@ public class EnemyFishFactory {
 		//pick a side
 		switch (random.nextInt(4)) {
 		case 0: 	// left
-			position = new Vec2d(-width, Math.random() * settings.getDouble("SCREEN_HEIGHT"));
+			position = new Vec2d(-width, Math.random() * h); 
 			vx = Math.abs(randomSpeed());
 			vy = randomSpeed();
 			break;
 		case 1: 	// top
-			position = new Vec2d(Math.random() * settings.getDouble("SCREEN_WIDTH"), -height);
+			position = new Vec2d(Math.random() * w, -height);
 			vx = randomSpeed();
 			vy = -Math.abs(randomSpeed());
 			break;
 		case 2: 	// right
-			position = new Vec2d(settings.getDouble("SCREEN_WIDTH") + width,
-					Math.random() * settings.getDouble("SCREEN_HEIGHT"));
+			position = new Vec2d(w + width,
+					Math.random() * h);
 			vx = -Math.abs(randomSpeed());
 			vy = randomSpeed();
 			break;
 		default: 	// bottom
-			position = new Vec2d(Math.random() * settings.getDouble("SCREEN_WIDTH"), 
-					settings.getDouble("SCREEN_HEIGHT") + height);
+			position = new Vec2d(Math.random() * w, h + height);
 			vx = randomSpeed();
 			vy = Math.abs(randomSpeed());
 			break;

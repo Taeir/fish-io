@@ -42,7 +42,7 @@ public class TestPowerUpSpawner extends SlimGuiTest {
 		GameThread gt = Mockito.spy(new GameThread(pf));
 		when(pf.getGameThread()).thenReturn(gt); //Preventing nullPointerExceptions from the gameThread
 		when(pf.getFPS()).thenReturn(60); //Making sure our PowerUpSpawner doesn't think the FPS is 0.
-		when(pf.getWidth()).thenReturn(100.0); //Same as above
+		when(pf.getWidth()).thenReturn(100); //Same as above
 		
 		this.pus = Mockito.spy(new PowerUpSpawner(pf));
 	}

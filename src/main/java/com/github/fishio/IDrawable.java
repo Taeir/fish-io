@@ -39,7 +39,6 @@ public interface IDrawable {
 	 * 		The image to draw.
 	 * @param collisionArea
 	 * 		The CollisionArea of the sprite
-	 * 
 	 */
 	default void drawRotatedImage(GraphicsContext gc, Image image, ICollisionArea collisionArea) {
 		double angle = collisionArea.getRotation();
@@ -55,7 +54,7 @@ public interface IDrawable {
 
 		gc.save();
 		Rotate r = new Rotate(360 - angle, cx, cy);
-		gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
+		gc.transform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
 
 		gc.drawImage(image, cx - 0.5 * width, cy - 0.5 * height, width, height);
 		gc.restore();
@@ -84,7 +83,7 @@ public interface IDrawable {
 		
 		gc.fillText("angle: " + angle, cx, cy - (0.5 * height + 10)); //Angle display
 		gc.fillText("size: " + collisionArea.getSize(),	cx, cy - (0.5 * height + 25)); //Size display
-
+		
 		if (collisionArea instanceof CollisionMask) {
 			gc.setFill(Color.FUCHSIA);
 			HashSet<Vec2d> mask = ((CollisionMask) collisionArea).getMask();
