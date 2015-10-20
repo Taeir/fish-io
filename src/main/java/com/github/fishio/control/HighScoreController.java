@@ -1,6 +1,7 @@
 package com.github.fishio.control;
 
-import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import com.github.fishio.HighScore;
 import com.github.fishio.Preloader;
@@ -9,11 +10,15 @@ import com.github.fishio.logging.LogLevel;
 import com.github.fishio.settings.Settings;
 
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 
 /**
  * Controller for the high scores screen.
@@ -23,7 +28,11 @@ public class HighScoreController implements ScreenController {
 	@FXML
 	private ScrollPane scrollPane;
 	@FXML
-	private GridPane gridPane;
+	private TableView<Entry<String, Integer>> table;
+	@FXML
+	private TableColumn<Entry<String, Integer>, String> playerColumn;
+	@FXML
+	private TableColumn<Entry<String, Integer>, Number> scoreColumn;
 	
 	@Override
 	public void init(Scene scene) {
@@ -31,22 +40,23 @@ public class HighScoreController implements ScreenController {
 		p.addListener((o, old, newVal) -> {
 			scrollPane.setPrefHeight(newVal.intValue() - 240);
 		});
-		scrollPane.setPrefHeight(p.intValue() - 240);
+		table.prefHeightProperty().bind(scrollPane.heightProperty().subtract(10));
+		scrollPane.setPrefHeight(p.intValue() - 240);		
+
+		scoreColumn.setSortType(TableColumn.SortType.DESCENDING);
+		table.getSortOrder().add(scoreColumn);
 	}
 
 	@Override
 	public void onSwitchTo() {
-		gridPane.getChildren().clear();
-		int row = 1;
-		HashMap<String, Integer> map = HighScore.getAll();
+		Set<Entry<String, Integer>> set = HighScore.getAll().entrySet();
 		
-		for (String key : map.keySet()) {
-			Label score = new Label(map.get(key).toString());
-			Label name = new Label(key);
-			gridPane.add(name, 0, row);
-			gridPane.add(score, 1, row);
-			row++;
-		}
+		playerColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getKey()));
+		scoreColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getValue()));
+			
+		ObservableList<Entry<String, Integer>> list = FXCollections.observableArrayList();
+		list.addAll(set);
+		table.setItems(list);
 	}
 	
 	/**
