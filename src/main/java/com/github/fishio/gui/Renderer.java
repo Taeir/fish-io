@@ -255,7 +255,7 @@ public class Renderer implements Listenable {
 	            ).get();
 			insets.setY(temp.getTop());
 			insets.setX(temp.getLeft());
-			}
+		}
 		
 		DoubleBinding heightProperty = settings.getDoubleProperty("SCREEN_HEIGHT").subtract(insets.y + yBorder);
 		DoubleBinding widthProperty = settings.getDoubleProperty("SCREEN_WIDTH").subtract(insets.x);		
