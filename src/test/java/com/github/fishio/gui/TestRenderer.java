@@ -22,15 +22,22 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.github.fishio.SinglePlayerPlayingField;
+import com.github.fishio.listeners.Listenable;
+import com.github.fishio.listeners.TestListenable;
 
 /**
  * Tests the {@link Renderer} class.
  */
-public class TestRenderer {
+public class TestRenderer extends TestListenable {
 
 	private SinglePlayerPlayingField sppf;
 	private Canvas canvas;
 	private Renderer renderer;
+	
+	@Override
+	public Listenable getListenable() {
+		return new Renderer(sppf, canvas, 60, 0);
+	}
 	
 	/**
 	 * Creates a new PlayingField, Canvas and Renderer before every test,
@@ -44,7 +51,7 @@ public class TestRenderer {
 		sppf = Mockito.mock(SinglePlayerPlayingField.class);
 		when(sppf.getDrawables()).thenReturn(new ConcurrentLinkedDeque<>());
 		when(sppf.getDeadDrawables()).thenReturn(new ConcurrentLinkedDeque<>());
-		
+
 		//Create a new Canvas and spy on it.
 		canvas = spy(new Canvas());
 		

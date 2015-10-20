@@ -10,22 +10,17 @@ import javafx.scene.canvas.Canvas;
 
 import com.github.fishio.CollisionMask;
 import com.github.fishio.PlayerFish;
-import com.github.fishio.TestPlayingField;
 import com.github.fishio.behaviours.IMoveBehaviour;
+import com.github.fishio.multiplayer.TestMultiplayerPlayingField;
 
 /**
  * Test class for the MultiplayerServerPlayingField.
  */
-public class TestMultiplayerServerPlayingField extends TestPlayingField {
+public class TestMultiplayerServerPlayingField extends TestMultiplayerPlayingField {
 	
 	@Override
 	public MultiplayerServerPlayingField getPlayingField(int fps, Canvas canvas) {
 		return new MultiplayerServerPlayingField(fps, canvas, 1280, 720);
-	}
-
-	@Override
-	public int getDefaultAmount() {
-		return 0;
 	}
 	
 	/**

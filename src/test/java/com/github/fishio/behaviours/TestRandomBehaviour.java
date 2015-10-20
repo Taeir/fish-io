@@ -1,6 +1,7 @@
 package com.github.fishio.behaviours;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -111,6 +112,26 @@ public class TestRandomBehaviour {
 		
 		assertEquals(-maxSpeed, behaviour.getSpeedVector().x, 0.0);
 		assertEquals(-maxSpeed, behaviour.getSpeedVector().y, 0.0);
+	}
+	
+	/**
+	 * Test for {@link RandomBehaviour#updateTo(IMoveBehaviour)}.
+	 */
+	@Test
+	public void testUpdateTo() {
+		behaviour.updateTo(new RandomBehaviour(2.0, 4.0, 0.2));
+		
+		assertEquals(2.0D, behaviour.getSpeedVector().x, 0D);
+		assertEquals(4.0D, behaviour.getSpeedVector().y, 0D);
+	}
+	
+	/**
+	 * Test for {@link RandomBehaviour#updateTo(IMoveBehaviour)}, when
+	 * updating with an incompatible type.
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void testUpdateTo2() {
+		behaviour.updateTo(mock(IMoveBehaviour.class));
 	}
 	
 }

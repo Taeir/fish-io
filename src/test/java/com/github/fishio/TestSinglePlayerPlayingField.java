@@ -30,6 +30,11 @@ public class TestSinglePlayerPlayingField extends TestPlayingField {
 		return 1;
 	}
 	
+	@Override
+	public int getInitialAmount() {
+		return 1;
+	}
+	
 	/**
 	 * Tests the isPlayerAlive method using one living PlayerFish.
 	 */
