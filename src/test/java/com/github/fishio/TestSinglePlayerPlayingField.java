@@ -22,7 +22,7 @@ public class TestSinglePlayerPlayingField extends TestPlayingField {
 
 	@Override
 	public PlayingField getPlayingField(int fps, Canvas canvas) {
-		return new SinglePlayerPlayingField(fps, canvas, mock(Scene.class));
+		return new SinglePlayerPlayingField(fps, canvas, mock(Scene.class), 1280, 720);
 	}
 	
 	@Override

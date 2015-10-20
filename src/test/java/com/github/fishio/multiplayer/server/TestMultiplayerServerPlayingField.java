@@ -20,7 +20,7 @@ public class TestMultiplayerServerPlayingField extends TestPlayingField {
 	
 	@Override
 	public MultiplayerServerPlayingField getPlayingField(int fps, Canvas canvas) {
-		return new MultiplayerServerPlayingField(fps, canvas);
+		return new MultiplayerServerPlayingField(fps, canvas, 1280, 720);
 	}
 
 	@Override

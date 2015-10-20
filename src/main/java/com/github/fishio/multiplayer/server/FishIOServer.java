@@ -40,7 +40,7 @@ public final class FishIOServer implements Runnable {
 	
 	private FishIOServer() {
 		MultiplayerGameController controller = Preloader.getControllerOrLoad("multiplayerGameScreen");
-		playingField = new MultiplayerServerPlayingField(60, controller.getCanvas());
+		playingField = new MultiplayerServerPlayingField(60, controller.getCanvas(), 1280 ,720);
 	}
 	
 	/**

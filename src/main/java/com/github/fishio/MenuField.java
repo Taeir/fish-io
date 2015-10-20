@@ -21,7 +21,7 @@ public class MenuField extends PlayingField {
 	 * 		the canvas to render on.
 	 */
 	public MenuField(int fps, Canvas canvas) {
-		super(fps, canvas, 0);
+		super(fps, canvas, 0, 1280, 720);
 		
 		this.gameThread = new GameThread(this);
 	}
@@ -36,10 +36,10 @@ public class MenuField extends PlayingField {
 	
 	@Override
 	public void addEntities() {
-
 		//add enemy entities
 		while (getEntities().size()  < 5) {
-			EnemyFish eFish = getFactory().randomizedFish(new BoundingBox(null, 60, 60));
+			EnemyFish eFish = getFactory().randomizedFish(new BoundingBox(null, 60, 60),
+					getWidth(), getHeight());
 			add(eFish);
 		}
 	}
@@ -47,6 +47,11 @@ public class MenuField extends PlayingField {
 	@Override
 	public GameThread getGameThread() {
 		return gameThread;
+	}
+
+	@Override
+	public void centerScreen() {
+		getRenderer().setCenter(new Vec2d(640, 360));
 	}
 
 }

@@ -32,6 +32,9 @@ public abstract class PlayingField {
 	private ConcurrentLinkedQueue<ICollidable> collidables = new ConcurrentLinkedQueue<>();
 
 	private int enemyCount;
+	private int width;
+	private int height;
+	
 	public static final int MAX_ENEMY_COUNT = 10;
 	private EnemyFishFactory factory = new EnemyFishFactory();
 
@@ -44,10 +47,16 @@ public abstract class PlayingField {
 	 *            the canvas to use, can be <code>null</code> to create one.
 	 * @param yBorder
 	 * 			  the vertical border to be applied.
+	 * @param width
+	 * 		the width of the playing field
+	 * @param height
+	 * 		the height of the playing field
 	 */
-	public PlayingField(int fps, Canvas canvas, int yBorder) {
+	public PlayingField(int fps, Canvas canvas, int yBorder, int width, int height) {
 		//count enemies
 		enemyCount = 0;
+		this.height = height;
+		this.width = width;
 		
 		renderer = new Renderer(this, canvas, fps, yBorder);
 		logger.log(LogLevel.INFO, "Created Renderer");
@@ -78,8 +87,8 @@ public abstract class PlayingField {
 	 * 
 	 * @return the width of the field.
 	 */
-	public double getWidth() {
-		return renderer.getCanvas().getWidth();
+	public int getWidth() {
+		return width;
 	}
 
 	/**
@@ -87,8 +96,8 @@ public abstract class PlayingField {
 	 * 
 	 * @return the height of the field.
 	 */
-	public double getHeight() {
-		return renderer.getCanvas().getHeight();
+	public int getHeight() {
+		return height;
 	}
 
 	/**
@@ -137,8 +146,7 @@ public abstract class PlayingField {
 
 		//add enemy entities
 		while (enemyCount < MAX_ENEMY_COUNT) {
-			//TODO add scalible enemyFish
-			EnemyFish eFish = factory.randomizedFish(getPlayers());
+			EnemyFish eFish = factory.randomizedFish(getPlayers(), width, height);
 			add(eFish);
 			
 			enemyCount++;
@@ -188,7 +196,14 @@ public abstract class PlayingField {
 				moveWithinScreen(mask);
 			}
 		}
+		centerScreen();
 	}
+
+	/**
+	 * Center the screen at the correct location.
+	 * This location should be the player, but can be something different.
+	 */
+	public abstract void centerScreen();
 
 	/**
 	 * Check if a the given IMovable hits a wall or not.

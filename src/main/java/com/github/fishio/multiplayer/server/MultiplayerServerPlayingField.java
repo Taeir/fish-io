@@ -9,7 +9,6 @@ import com.github.fishio.Entity;
 import com.github.fishio.Sprite;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.Preloader;
-import com.github.fishio.SinglePlayerPlayingField;
 import com.github.fishio.SpriteStore;
 import com.github.fishio.Vec2d;
 import com.github.fishio.game.GameThread;
@@ -22,6 +21,7 @@ import com.github.fishio.multiplayer.MultiplayerPlayingField;
 public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 	private static final long SPAWN_INVINCIBILITY = 6_000L;
 	private ServerGameThread gameThread;
+	private double startX, startY;
 	
 	/**
 	 * Creates a new MultiplayerServerPlayingField.
@@ -30,10 +30,15 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 	 * 		the fps of the renderer of this PlayingField.
 	 * @param canvas
 	 * 		the canvas to render on.
+	 * @param width
+	 * 		the width of the playing field
+	 * @param height
+	 * 		the height of the playing field
 	 */
-	public MultiplayerServerPlayingField(int fps, Canvas canvas) {
-		super(fps, canvas);
-		
+	public MultiplayerServerPlayingField(int fps, Canvas canvas, int width, int height) {
+		super(fps, canvas, width, height);
+		startX = width / 2D;
+		startY = height / 2D;
 		this.gameThread = new ServerGameThread(this);
 	}
 
@@ -82,9 +87,7 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 	 */
 	public PlayerFish createClientPlayer() {
 		Sprite sprite = SpriteStore.getSpriteOrLoad(PlayerFish.SPRITE_LOCATION);
-		CollisionMask cm = new CollisionMask(
-				new Vec2d(SinglePlayerPlayingField.START_X, SinglePlayerPlayingField.START_Y), 60, 30, sprite);
-		
+		CollisionMask cm = new CollisionMask(new Vec2d(startX, startY), 60, 30, sprite);
 		PlayerFish tbr = new PlayerFish(cm, sprite);
 		
 		//TODO #168 Make setting for this "spawn invincibility"
@@ -100,9 +103,8 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 	 */
 	public void respawnOwnPlayer() {
 		Sprite sprite = SpriteStore.getSpriteOrLoad(PlayerFish.SPRITE_LOCATION);
-		CollisionMask cm = new CollisionMask(
-				new Vec2d(SinglePlayerPlayingField.START_X, SinglePlayerPlayingField.START_Y), 60, 30, sprite);
-		
+		CollisionMask cm = new CollisionMask(new Vec2d(startX, startY), 60, 30, sprite);
+
 		PlayerFish nplayer = new PlayerFish(cm, Preloader.loadScreen("multiplayerGameScreen"), sprite);
 		
 		//TODO #168 Make setting for this "spawn invincibility"

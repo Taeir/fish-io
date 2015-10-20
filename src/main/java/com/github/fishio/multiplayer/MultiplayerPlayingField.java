@@ -8,8 +8,10 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.canvas.Canvas;
 
+import com.github.fishio.ICollisionArea;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.PlayingField;
+import com.github.fishio.Vec2d;
 
 /**
  * PlayingField for a multiplayer game.
@@ -26,9 +28,13 @@ public abstract class MultiplayerPlayingField extends PlayingField {
 	 * 		the fps of the renderer of this PlayingField.
 	 * @param canvas
 	 * 		the canvas to render on.
+	 * @param width
+	 * 		the width of the playing field
+	 * @param height
+	 * 		the height of the playing field
 	 */
-	public MultiplayerPlayingField(int fps, Canvas canvas) {
-		super(fps, canvas, 50);
+	public MultiplayerPlayingField(int fps, Canvas canvas, int width, int height) {
+		super(fps, canvas, 50, width, height);
 	}
 	
 	/**
@@ -85,5 +91,15 @@ public abstract class MultiplayerPlayingField extends PlayingField {
 		if (o instanceof PlayerFish) {
 			players.remove(o);
 		}
+	}
+	
+	@Override
+	public void centerScreen() {
+		PlayerFish p = getOwnPlayer();
+		if (p == null) {
+			return;
+		}
+		ICollisionArea ca = p.getBoundingArea();
+		getRenderer().setCenter(new Vec2d(ca.getCenterX(), ca.getCenterY()));		
 	}
 }
