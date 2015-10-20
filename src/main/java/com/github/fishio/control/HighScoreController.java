@@ -41,10 +41,7 @@ public class HighScoreController implements ScreenController {
 			scrollPane.setPrefHeight(newVal.intValue() - 240);
 		});
 		table.prefHeightProperty().bind(scrollPane.heightProperty().subtract(10));
-		scrollPane.setPrefHeight(p.intValue() - 240);		
-
-		scoreColumn.setSortType(TableColumn.SortType.DESCENDING);
-		table.getSortOrder().add(scoreColumn);
+		scrollPane.setPrefHeight(p.intValue() - 240);
 	}
 
 	@Override
@@ -56,7 +53,10 @@ public class HighScoreController implements ScreenController {
 			
 		ObservableList<Entry<String, Integer>> list = FXCollections.observableArrayList();
 		list.addAll(set);
-		table.setItems(list);
+		table.setItems(list);		
+
+		scoreColumn.setSortType(TableColumn.SortType.DESCENDING);
+		table.getSortOrder().add(scoreColumn);
 	}
 	
 	/**
