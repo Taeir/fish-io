@@ -4,9 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import com.github.fishio.EnemyFish;
 import com.github.fishio.PlayerFish;
@@ -55,11 +56,11 @@ public abstract class TestPowerUp {
 	public void testOnCollide() {
 		PowerUp pu = getPowerUp();
 		
-		PlayerFish pf = Mockito.mock(PlayerFish.class);
+		PlayerFish pf = mock(PlayerFish.class);
 		
 		pu.onCollide(pf);
 		
-		Mockito.verify(pu).executeEffect(pf);
+		verify(pu).executeEffect(pf);
 	}
 	
 	/**
@@ -138,7 +139,7 @@ public abstract class TestPowerUp {
 	 */
 	@Test
 	public void testCanBeEatenBy1() {
-		PlayerFish pf = Mockito.mock(PlayerFish.class);
+		PlayerFish pf = mock(PlayerFish.class);
 		
 		assertTrue(getPowerUp().canBeEatenBy(pf));
 	}
@@ -148,7 +149,7 @@ public abstract class TestPowerUp {
 	 */
 	@Test
 	public void testCanBeEatenBy2() {
-		EnemyFish ef = Mockito.mock(EnemyFish.class);
+		EnemyFish ef = mock(EnemyFish.class);
 		
 		assertFalse(getPowerUp().canBeEatenBy(ef));
 	}

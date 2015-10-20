@@ -10,15 +10,17 @@
 
     <rule ref="rulesets/java/basic.xml"/>
     <rule ref="rulesets/java/unusedcode.xml"/>
-    <rule ref="rulesets/java/imports.xml"/>
+    <rule ref="rulesets/java/imports.xml">
+        <exclude name="TooManyStaticImports"/>
+    </rule>
+    <rule ref="rulesets/java/imports.xml/TooManyStaticImports">
+        <properties>
+            <property name="maximumStaticImports" value="10" />
+        </properties>
+    </rule>
     <rule ref="rulesets/java/strings.xml"/>
     <rule ref="rulesets/java/codesize.xml">
         <exclude name="TooManyMethods" />
-    </rule>
-    <rule ref="rulesets/java/codesize.xml/TooManyMethods">
-        <properties>
-            <property name="maxmethods" value="15" />
-        </properties>
     </rule>
     
     <rule ref="rulesets/java/braces.xml"/>

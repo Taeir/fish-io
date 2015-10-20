@@ -31,7 +31,7 @@ public abstract class Entity implements ICollidable, IDrawable, Subject, Seriali
 	
 	private static AtomicInteger entityIdCounter = new AtomicInteger(0);
 	
-	private List<AchievementObserver> observers = new ArrayList<AchievementObserver>();
+	private transient List<AchievementObserver> observers = new ArrayList<AchievementObserver>();
 	
 	private int entityId;
 	private SimpleBooleanProperty deathProperty = new SimpleBooleanProperty();

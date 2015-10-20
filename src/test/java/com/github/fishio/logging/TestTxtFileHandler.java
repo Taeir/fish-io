@@ -1,5 +1,13 @@
 package com.github.fishio.logging;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -7,13 +15,6 @@ import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.when;
 
 /**
  * Test class for ConsoleHandler.
@@ -49,8 +50,7 @@ public class TestTxtFileHandler extends TestIHandler {
 	 */
 	@Test
 	public void testTxtFileHandlerCustom() {
-		TxtFileHandler handler2 = new TxtFileHandler(new TimeStampFormat(),
-				new File(folder.getRoot(), filename));
+		TxtFileHandler handler2 = new TxtFileHandler(new TimeStampFormat(), new File(folder.getRoot(), filename));
 		assertTrue(handler2.getFormat() instanceof TimeStampFormat);
 		try {
 			handler2.close();
@@ -79,18 +79,18 @@ public class TestTxtFileHandler extends TestIHandler {
 	 */
 	@Test
 	public void testOutput() {
-		IFormatter formatter = Mockito.mock(DefaultFormat.class);
+		IFormatter formatter = mock(DefaultFormat.class);
 		when(formatter.formatOutput(LogLevel.ERROR, filename)).thenReturn("Test Output");
-		BufferedWriter mockedBW = Mockito.mock(BufferedWriter.class);
+		BufferedWriter mockedBW = mock(BufferedWriter.class);
 		
 		handler.setFormat(formatter);
 		handler.setBufferedWriter(mockedBW);
 		handler.output(LogLevel.ERROR, filename);
-		Mockito.verify(formatter).formatOutput(LogLevel.ERROR, filename);
+		verify(formatter).formatOutput(LogLevel.ERROR, filename);
 		try {
-			Mockito.verify(mockedBW).write("Test Output");
+			verify(mockedBW).write("Test Output");
 		} catch (IOException e) {
-			e.printStackTrace();
+			//This is a verify interaction, not a real call, so no IOException will occur here.
 		}
 	}
 
@@ -101,7 +101,7 @@ public class TestTxtFileHandler extends TestIHandler {
 	public void testHashcodeBothNull() {
 		handler.setFormat(null);
 		handler.setBufferedWriter(null);
-		assertEquals(31, handler.hashCode());
+		assertEquals(1, handler.hashCode());
 	}
 	
 	/**
@@ -171,8 +171,7 @@ public class TestTxtFileHandler extends TestIHandler {
 	 */
 	@Test
 	public void testEqualsFormatNullBoth() {
-		TxtFileHandler handler2 = new TxtFileHandler(new TimeStampFormat(),
-				new File(folder.getRoot(), filename));
+		TxtFileHandler handler2 = new TxtFileHandler(new TimeStampFormat(), new File(folder.getRoot(), filename));
 		
 		handler.setFormat(null);
 		handler2.setFormat(null);

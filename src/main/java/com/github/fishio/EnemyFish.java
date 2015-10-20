@@ -19,7 +19,7 @@ public class EnemyFish extends Entity implements IEatable {
 	private static final long serialVersionUID = -3625685120024363192L;
 
 	private String spriteLocation;
-	private Image sprite;
+	private transient Image sprite;
 	
 	/**
 	 * Main constructor of the enemy fish.

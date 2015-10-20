@@ -1,10 +1,12 @@
 package com.github.fishio.behaviours;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import com.github.fishio.Vec2d;
 
@@ -22,8 +24,7 @@ public class TestKeyListenerBehaviour {
 	 */
 	@Before
 	public void setUp() {
-		
-		this.behaviour = Mockito.spy(new KeyListenerBehaviour(Mockito.mock(Scene.class), 
+		this.behaviour = spy(new KeyListenerBehaviour(mock(Scene.class), 
 				null, null, null, null, 0.1, 4));
 	}
 	
@@ -43,8 +44,8 @@ public class TestKeyListenerBehaviour {
 	public void testPreMove() {
 		behaviour.preMove();
 		
-		Mockito.verify(behaviour).adjustXSpeed();
-		Mockito.verify(behaviour).adjustYSpeed();
+		verify(behaviour).adjustXSpeed();
+		verify(behaviour).adjustYSpeed();
 	}
 	
 	/**
