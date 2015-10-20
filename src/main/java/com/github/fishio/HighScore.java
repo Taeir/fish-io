@@ -2,10 +2,12 @@ package com.github.fishio;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
 import com.esotericsoftware.yamlbeans.YamlReader;
+import com.esotericsoftware.yamlbeans.YamlWriter;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 
@@ -49,10 +51,17 @@ public final class HighScore {
 	}
 
 	/**
-	 * Save the highscores to 'highscores.yml'.
+	 * Save the high scores to 'highscores.yml'.
 	 */
 	private static void save() {
-		// TODO save		
+		try (FileWriter bw = new FileWriter(FILE)) {
+			YamlWriter yw = new YamlWriter(bw);			
+			yw.write(highscores);
+			yw.close();
+		} catch (IOException e) {
+			logger.log(LogLevel.ERROR, "Error writing file " + FILE.getAbsolutePath());
+			logger.log(LogLevel.DEBUG, e);
+		} 
 	}
 
 	/**
@@ -63,6 +72,7 @@ public final class HighScore {
 		try (FileReader fr = new FileReader(FILE)) {
 			YamlReader reader = new YamlReader(fr);
 			HashMap<String, String> temp = (HashMap<String, String>) reader.read();
+			reader.close();
 			if (temp == null) {
 				return;
 			}
