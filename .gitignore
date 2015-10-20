@@ -12,6 +12,7 @@ Thumbs.db
 /target
 # Ignore our logs
 logs/*.txt
-# Ignore the settings
+# Ignore the settings and high scores
 settings.yml
+highScores.yml
 /target/
