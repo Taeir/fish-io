@@ -536,10 +536,6 @@ public class SinglePlayerController implements ScreenController {
 	
 	private void saveScore() {
 		int score = playingField.getPlayer().scoreProperty().intValue();
-		
-		if (scoreName.getText().equals("")) {
-			HighScore.addScore(score, "The one that cannot be named");
-		}
 		HighScore.addScore(score, scoreName.getText());
 	}
 }

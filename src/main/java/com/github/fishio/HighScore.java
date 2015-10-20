@@ -20,6 +20,9 @@ public final class HighScore {
 	 * 		The name for the score
 	 */
 	public static void addScore(int score, String name) {
+		if (name.equals("")) {
+			return;
+		}
 		Integer temp = HIGHSCORES.get(name);
 		if (temp == null || temp.intValue() < score) {
 			HIGHSCORES.put(name, score);
