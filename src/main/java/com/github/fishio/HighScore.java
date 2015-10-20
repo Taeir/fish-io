@@ -16,7 +16,7 @@ import com.github.fishio.logging.LogLevel;
  */
 public final class HighScore {
 
-	private static final File FILE = new File("highScores.yml");
+	private static File scoreFile = new File("highScores.yml");
 	private static HashMap<String, Integer> highscores = new HashMap<>();
 	private static Log logger = Log.getLogger();
 
@@ -53,13 +53,13 @@ public final class HighScore {
 	/**
 	 * Save the high scores to 'highscores.yml'.
 	 */
-	private static void save() {
-		try (FileWriter bw = new FileWriter(FILE)) {
+	protected static void save() {
+		try (FileWriter bw = new FileWriter(scoreFile)) {
 			YamlWriter yw = new YamlWriter(bw);			
 			yw.write(highscores);
 			yw.close();
 		} catch (IOException e) {
-			logger.log(LogLevel.ERROR, "Error writing file " + FILE.getAbsolutePath());
+			logger.log(LogLevel.ERROR, "Error writing file " + scoreFile.getAbsolutePath());
 			logger.log(LogLevel.DEBUG, e);
 		} 
 	}
@@ -68,8 +68,8 @@ public final class HighScore {
 	 * load the highscores from 'highscores.yml'.
 	 */
 	@SuppressWarnings("unchecked")
-	private static void loadHighScores() {
-		try (FileReader fr = new FileReader(FILE)) {
+	protected static void loadHighScores() {
+		try (FileReader fr = new FileReader(scoreFile)) {
 			YamlReader reader = new YamlReader(fr);
 			HashMap<String, String> temp = (HashMap<String, String>) reader.read();
 			reader.close();
@@ -80,7 +80,7 @@ public final class HighScore {
 				highscores.put(key, Integer.valueOf(temp.get(key)));
 			}
 		} catch (Exception e) {
-			logger.log(LogLevel.ERROR, "Error loading file " + FILE.getAbsolutePath());
+			logger.log(LogLevel.ERROR, "Error loading file " + scoreFile.getAbsolutePath());
 			logger.log(LogLevel.DEBUG, e);
 		}
 	}
@@ -90,14 +90,24 @@ public final class HighScore {
 	 * This will load the existing scores or create a new file. 
 	 */
 	public static void init() { 
-		if (!FILE.exists()) {
+		if (!scoreFile.exists()) {
 			try {
-				FILE.createNewFile();
+				scoreFile.createNewFile();
 			} catch (IOException e) {
-				logger.log(LogLevel.ERROR, "Error creating file " + FILE.getAbsolutePath());
+				logger.log(LogLevel.ERROR, "Error creating file " + scoreFile.getAbsolutePath());
 				logger.log(LogLevel.DEBUG, e);
 			}
 		}
 		loadHighScores();
+	}
+	
+	/**
+	 * Set the file for the settings.
+	 * This method should only be used for testing.
+	 * @param newFile
+	 * 		The new file.
+	 */
+	protected static void setScoreFile(File newFile) {
+		scoreFile = newFile;
 	}
 }
