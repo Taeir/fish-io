@@ -53,25 +53,6 @@ public class TestSinglePlayerPlayingField extends TestPlayingField {
 	}
 	
 	/**
-	 * Tests the addEntities method.
-	 */
-	@Test
-	public void testAddEntities() {
-		getField().addEntities();
-		
-		assertEquals(PlayingField.MAX_ENEMY_COUNT + 1, getField().getEntities().size());
-		
-		for (int i = 5; i < 11; i++) {
-			getField().getEntitiesList().get(i).kill();
-		}
-		getField().cleanupDead();
-		
-		getField().addEntities();
-		
-		assertEquals(PlayingField.MAX_ENEMY_COUNT + 1, getField().getEntities().size());
-	}
-	
-	/**
 	 * Tests the checkPlayerCollisions method.
 	 */
 	@Test

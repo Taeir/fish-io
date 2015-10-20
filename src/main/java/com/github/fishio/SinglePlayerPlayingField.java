@@ -2,6 +2,7 @@ package com.github.fishio;
 
 import java.util.ArrayList;
 
+import com.github.fishio.factories.EnemyFishSpawner;
 import com.github.fishio.factories.PowerUpSpawner;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.logging.LogLevel;
@@ -22,6 +23,8 @@ public class SinglePlayerPlayingField extends PlayingField {
 	private GameThread gameThread;
 	private Scene scene;
 
+	private static final int ENEMY_COUNT = 10;
+	
 	/**
 	 * Creates the playing field for a single player.
 	 * 
@@ -67,6 +70,7 @@ public class SinglePlayerPlayingField extends PlayingField {
 		});
 		
 		new PowerUpSpawner(this);
+		new EnemyFishSpawner(this, ENEMY_COUNT);
 	}
 
 	/**
