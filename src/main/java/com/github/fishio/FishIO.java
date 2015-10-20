@@ -43,11 +43,12 @@ public final class FishIO extends Application {
 		
 		//Preload the images
 		Preloader.preloadImages();
-		log.log(LogLevel.DEBUG, "Preloaded the images.");
 		
 		//Preload the screens
 		Preloader.preloadScreens();
-		log.log(LogLevel.DEBUG, "Preloaded the screens.");
+		
+		//Start loading the sprites
+		SpriteStore.loadSprites();
 		
 		//Set settings
 		primaryStage.setTitle("Fish.io");

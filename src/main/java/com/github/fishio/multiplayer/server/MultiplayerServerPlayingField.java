@@ -3,12 +3,13 @@ package com.github.fishio.multiplayer.server;
 import java.util.Optional;
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.image.Image;
 
 import com.github.fishio.CollisionMask;
 import com.github.fishio.Entity;
+import com.github.fishio.Sprite;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.Preloader;
+import com.github.fishio.SpriteStore;
 import com.github.fishio.Vec2d;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.logging.LogLevel;
@@ -85,11 +86,8 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 	 * 		a new PlayerFish without any keys registered.
 	 */
 	public PlayerFish createClientPlayer() {
-		Image sprite = Preloader.getImageOrLoad(PlayerFish.SPRITE_LOCATION);
-		CollisionMask cm = new CollisionMask(
-				new Vec2d(startX, startY), 60, 30, 
-				Preloader.getAlphaDataOrLoad(PlayerFish.SPRITE_LOCATION),
-				Preloader.getSpriteAlphaRatioOrLoad(PlayerFish.SPRITE_LOCATION));
+		Sprite sprite = SpriteStore.getSpriteOrLoad(PlayerFish.SPRITE_LOCATION);
+		CollisionMask cm = new CollisionMask(new Vec2d(startX, startY), 60, 30, sprite);
 		PlayerFish tbr = new PlayerFish(cm, sprite);
 		
 		//TODO #168 Make setting for this "spawn invincibility"
@@ -104,11 +102,9 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 	 * Respawn the player of the server.
 	 */
 	public void respawnOwnPlayer() {
-		Image sprite = Preloader.getImageOrLoad(PlayerFish.SPRITE_LOCATION);
-		CollisionMask cm = new CollisionMask(
-				new Vec2d(startX, startY), 60, 30, 
-				Preloader.getAlphaDataOrLoad(PlayerFish.SPRITE_LOCATION),
-				Preloader.getSpriteAlphaRatioOrLoad(PlayerFish.SPRITE_LOCATION));
+		Sprite sprite = SpriteStore.getSpriteOrLoad(PlayerFish.SPRITE_LOCATION);
+		CollisionMask cm = new CollisionMask(new Vec2d(startX, startY), 60, 30, sprite);
+
 		PlayerFish nplayer = new PlayerFish(cm, Preloader.loadScreen("multiplayerGameScreen"), sprite);
 		
 		//TODO #168 Make setting for this "spawn invincibility"

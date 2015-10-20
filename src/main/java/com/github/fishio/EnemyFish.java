@@ -39,7 +39,7 @@ public class EnemyFish extends Entity implements IEatable {
 		
 		this.spriteLocation = spriteLocation;
 		if (this.spriteLocation != null) {
-			this.sprite = Preloader.getImageOrLoad(this.spriteLocation);
+			this.sprite = SpriteStore.getSpriteOrLoad(this.spriteLocation);
 		}
 		
 		logger.log(LogLevel.TRACE, "Created Enemfish: Properties{[position = " + ca.getCenterX() 
@@ -110,6 +110,6 @@ public class EnemyFish extends Entity implements IEatable {
 		this.spriteLocation = in.readUTF();
 		
 		//Load the sprite
-		this.sprite = Preloader.getImageOrLoad(this.spriteLocation);
+		this.sprite = SpriteStore.getSpriteOrLoad(this.spriteLocation);
 	}
 }

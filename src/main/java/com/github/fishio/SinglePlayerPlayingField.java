@@ -74,7 +74,7 @@ public class SinglePlayerPlayingField extends PlayingField {
 	 */
 	protected final void addPlayerFish() {
 		setPlayer(new PlayerFish(getStartCollisionMask(), scene,
-				Preloader.getImageOrLoad("sprites/fish/playerFish.png")));
+				SpriteStore.getSpriteOrLoad(PlayerFish.SPRITE_LOCATION)));
 
 		add(getPlayer());
 	}
@@ -89,8 +89,7 @@ public class SinglePlayerPlayingField extends PlayingField {
 	 */
 	public CollisionMask getStartCollisionMask() {
 		return new CollisionMask(new Vec2d(getWidth() / 2D, getHeight() / 2D), 60, 30, 
-				Preloader.getAlphaDataOrLoad("sprites/fish/playerFish.png"),
-				Preloader.getSpriteAlphaRatioOrLoad("sprites/fish/playerFish.png"));
+				SpriteStore.getSpriteOrLoad(PlayerFish.SPRITE_LOCATION));
 	}
 	
 	/**

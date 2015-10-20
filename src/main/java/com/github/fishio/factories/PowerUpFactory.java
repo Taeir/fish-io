@@ -4,15 +4,14 @@ import java.util.Random;
 
 import com.github.fishio.CollisionMask;
 import com.github.fishio.PlayingField;
-import com.github.fishio.Preloader;
+import com.github.fishio.Sprite;
+import com.github.fishio.SpriteStore;
 import com.github.fishio.Vec2d;
 import com.github.fishio.power_ups.ExtraLifePowerUp;
 import com.github.fishio.power_ups.FreezePowerUp;
 import com.github.fishio.power_ups.PowerUp;
 import com.github.fishio.power_ups.SuperSpeedPowerUp;
 import com.github.fishio.settings.Settings;
-
-import javafx.scene.image.Image;
 
 /**
  * Is able to create different types of instances of the PowerUp class.
@@ -23,18 +22,14 @@ public class PowerUpFactory {
 	 * The amount of classes a PowerUpFactory supports.
 	 */
 	public static final int POWERUP_COUNT = 3;
-	
-
 	public static final int POWERUP_WIDTH = 25;
 	public static final int POWERUP_HEIGHT = 25;
-	
 	
 	private Settings settings = Settings.getInstance();
 
 	private Random random;
 	
 	private PlayingField playingField;
-	
 	
 	/**
 	 * Creates a new PowerUpFactory.
@@ -62,12 +57,10 @@ public class PowerUpFactory {
 		int powerUpNumber = random.nextInt(POWERUP_COUNT);
 		
 		String spritePath = "sprites/powerup/pu" + powerUpNumber + ".png";
-		Image sprite = Preloader.getImageOrLoad(spritePath);
+		Sprite sprite = SpriteStore.getSpriteOrLoad(spritePath);
 		
-		CollisionMask cm = new CollisionMask(new Vec2d(x, y), POWERUP_WIDTH, POWERUP_HEIGHT, 
-				Preloader.getAlphaDataOrLoad(spritePath),
-				Preloader.getSpriteAlphaRatioOrLoad(spritePath));
-		
+		CollisionMask cm = new CollisionMask(new Vec2d(x, y), POWERUP_WIDTH, POWERUP_HEIGHT, sprite);
+
 		//Choosing a random PowerUp.
 		switch (powerUpNumber) {
 		case 0:

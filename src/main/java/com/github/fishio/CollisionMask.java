@@ -31,6 +31,22 @@ public class CollisionMask implements ICollisionArea, Serializable {
 	private transient Rectangle box;
 
 	/**
+	 * Creates a new CollisionMask.
+	 * 
+	 * @param center
+	 *            The center of the collisionMask.
+	 * @param width
+	 *            The width of the collisionMask.
+	 * @param height
+	 *            The height of the collisionMask.
+	 * @param maskedImage
+	 *            The {@link Sprite} to get the pixeldata and alpha ratio from.
+	 */
+	public CollisionMask(Vec2d center, double width, double height, Sprite maskedImage) {
+		this(center, width, height, maskedImage.getPixelData(), maskedImage.getAlphaRatio());
+	}
+	
+	/**
 	 * Constructor for a CollisionMask.
 	 * 
 	 * @param center
