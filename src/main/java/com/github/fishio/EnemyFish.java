@@ -49,7 +49,11 @@ public class EnemyFish extends Entity implements IEatable {
 
 	@Override
 	public void render(GraphicsContext gc) {
-		
+		//Don't render if dead.
+				if (isDead()) {
+					return;
+				}
+				
 		//TODO Move this to game thread.
 		getBoundingArea().setRotation(getBehaviour());	//update rotation
 		
