@@ -28,7 +28,7 @@ public class CollisionMask implements ICollisionArea, Serializable {
 	private double alphaRatio;
 	private transient boolean[][] data;
 
-	private transient Rectangle box;
+	private transient volatile Rectangle box;
 
 	/**
 	 * Creates a new CollisionMask.
