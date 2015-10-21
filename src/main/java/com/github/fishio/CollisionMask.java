@@ -31,6 +31,8 @@ public class CollisionMask implements ICollisionArea, Serializable {
 	private transient boolean[][] data;
 
 	private transient volatile Rectangle box;
+	private transient volatile HashSet<Vec2d> mask;
+	private transient boolean changeMask;
 
 	/**
 	 * Creates a new CollisionMask.
@@ -71,6 +73,8 @@ public class CollisionMask implements ICollisionArea, Serializable {
 
 		this.data = data;
 		this.alphaRatio = alphaRatio;
+		
+		change();
 	}
 	
 	/**
@@ -164,6 +168,8 @@ public class CollisionMask implements ICollisionArea, Serializable {
 		double r = width / height;
 		height = Math.sqrt(size / (alphaRatio * r));
 		width = height * r;
+		
+		change();
 	}
 	
 	@Override
@@ -171,6 +177,8 @@ public class CollisionMask implements ICollisionArea, Serializable {
 		double r = width / height;
 		height = Math.sqrt((getSize() + delta) / (alphaRatio * r));
 		width = height * r;
+		
+		change();
 	}
 	
 	@Override
@@ -181,6 +189,9 @@ public class CollisionMask implements ICollisionArea, Serializable {
 	@Override
 	public double setRotation(double angle) {
 		rotation = angle % 360;
+		
+		change();
+		
 		return rotation;
 	}
 
@@ -193,6 +204,12 @@ public class CollisionMask implements ICollisionArea, Serializable {
 		double width = this.width;
 		double height = this.height;
 		double rotation = this.rotation;
+		
+		synchronized (this) {
+			if (!changeMask) {
+				return new HashSet<Vec2d>(this.mask);
+			}
+		}
 		
 		HashSet<Vec2d> mask = new HashSet<Vec2d>();
 		int lx, ly; // location of the pixel in the image
@@ -234,7 +251,12 @@ public class CollisionMask implements ICollisionArea, Serializable {
 			Log.getLogger().log(LogLevel.DEBUG, "[CollisionMask] Size changed while creating mask!");
 		}
 		
-		return mask;
+		synchronized (this) {
+			this.mask = mask;
+			this.changeMask = false;
+		}
+		
+		return new HashSet<Vec2d>(mask);
 	}
 	
 	@Override
@@ -326,6 +348,8 @@ public class CollisionMask implements ICollisionArea, Serializable {
 	public void move(Vec2d speedVector) {
 		speedVector.y *= -1;
 		center.add(speedVector);
+		
+		change();
 	}
 
 	@Override
@@ -340,6 +364,15 @@ public class CollisionMask implements ICollisionArea, Serializable {
 		this.width = mask.width;
 		this.height = mask.height;
 		this.rotation = mask.rotation;
+		
+		change();
+	}
+	
+	/**
+	 * Is called whenever this CollisionMask changes.
+	 */
+	private synchronized void change() {
+		changeMask = true;
 	}
 	
 	private void writeObject(ObjectOutputStream out) throws IOException {
@@ -356,5 +389,7 @@ public class CollisionMask implements ICollisionArea, Serializable {
 		this.width = in.readDouble();
 		this.rotation = in.readDouble();
 		this.alphaRatio = in.readDouble();
+		
+		change();
 	}
 }
