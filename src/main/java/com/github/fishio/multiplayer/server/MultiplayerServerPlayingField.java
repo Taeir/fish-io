@@ -13,6 +13,7 @@ import com.github.fishio.Vec2d;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.multiplayer.MultiplayerPlayingField;
+import com.github.fishio.multiplayer.RepeatingFishMessageSender;
 
 /**
  * PlayingField for server side multiplayer.
@@ -21,6 +22,7 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 	private static final long SPAWN_INVINCIBILITY = 6_000L;
 	private ServerGameThread gameThread;
 	private double startX, startY;
+	private RepeatingFishMessageSender entityUpdateSender;
 	
 	/**
 	 * Creates a new MultiplayerServerPlayingField.
@@ -38,7 +40,9 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 		super(fps, canvas, width, height);
 		startX = width / 2D;
 		startY = height / 2D;
+		
 		this.gameThread = new ServerGameThread(this);
+		this.entityUpdateSender = new RepeatingFishMessageSender(new FishServerEntitiesMessage(this));
 	}
 
 	@Override
@@ -50,8 +54,7 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 	 * Sends an entities update to all connected clients.
 	 */
 	public void sendEntitiesUpdate() {
-		FishServerEntitiesMessage fsem = new FishServerEntitiesMessage(this);
-		FishIOServer.getInstance().queueMessage(fsem, true);
+		FishIOServer.getInstance().queueMessage(entityUpdateSender);
 	}
 	
 	/**

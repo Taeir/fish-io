@@ -9,6 +9,7 @@ import com.github.fishio.control.MultiplayerGameController;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.multiplayer.FishMessage;
+import com.github.fishio.multiplayer.RepeatingFishMessageSender;
 import com.github.fishio.settings.Settings;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -292,6 +293,28 @@ public final class FishIOServer implements Runnable {
 		} else {
 			cg.write(message);
 		}
+	}
+	
+	/**
+	 * Uses {@link RepeatingFishMessageSender#queueWriteFlushToAvailable(ChannelGroup)}
+	 * to send the message (once) to all clients connected, excluding those
+	 * still processing the last message.
+	 * 
+	 * @param sender
+	 * 		the RepeatingFishMessageSender to queue.
+	 * 
+	 * @return
+	 * 		<code>true</code> if sending was queued,
+	 * 		<code>false</code> if not (e.g. server not running).
+	 */
+	public boolean queueMessage(RepeatingFishMessageSender sender) {
+		ChannelGroup cg = this.allChannels;
+		if (cg == null) {
+			return false;
+		}
+		
+		sender.queueWriteFlushToAvailable(cg);
+		
 		return true;
 	}
 	
