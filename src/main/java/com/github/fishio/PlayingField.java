@@ -2,11 +2,11 @@ package com.github.fishio;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Queue;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javafx.scene.canvas.Canvas;
 
@@ -28,8 +28,8 @@ public abstract class PlayingField {
 
 	private ConcurrentLinkedDeque<IDrawable> drawables = new ConcurrentLinkedDeque<>();
 	private ConcurrentLinkedDeque<IDrawable> deadDrawables = new ConcurrentLinkedDeque<>();
-	private ConcurrentLinkedQueue<Entity> entities = new ConcurrentLinkedQueue<>();
-	private ConcurrentLinkedQueue<ICollidable> collidables = new ConcurrentLinkedQueue<>();
+	private Set<Entity> entities = Collections.newSetFromMap(new ConcurrentHashMap<Entity, Boolean>());
+	private Set<ICollidable> collidables = Collections.newSetFromMap(new ConcurrentHashMap<ICollidable, Boolean>());
 
 	private int enemyCount;
 	private int width;
@@ -163,40 +163,49 @@ public abstract class PlayingField {
 	
 	/**
 	 * @return
-	 * 		All the entities in this field.
-	 */
-	public List<Entity> getEntitiesList() {
-		return new ArrayList<Entity>(entities);
-	}
-	
-	/**
-	 * @return
 	 * 		the entities queue used by this PlayingField.
 	 */
-	public Queue<Entity> getEntities() {
+	public Set<Entity> getEntities() {
 		return entities;
 	}
 
 	/**
+	 * @return
+	 * 		the collidables in this field
+	 */
+	public Set<ICollidable> getCollidables() {
+		return collidables;
+	}
+	
+	/**
 	 * Moves Movable items.
 	 */
 	public void moveMovables() {
-		for (Entity e : entities) {
-			IMoveBehaviour b = e.getBehaviour();
-			b.preMove();
-			
-			CollisionMask mask = e.getBoundingArea();
-			if (hitsWall(e, mask)) {
-				e.hitWall();
-			}
+		entities.parallelStream().forEach(e -> {
+			moveEntity(e);
+		});
+	}
 
-			mask.move(b.getSpeedVector());
-
-			if (!e.canMoveThroughWall()) {
-				moveWithinScreen(mask);
-			}
+	/**
+	 * Moves the given entity.
+	 * 
+	 * @param entity
+	 * 		the entity to move.
+	 */
+	public void moveEntity(Entity entity) {
+		IMoveBehaviour b = entity.getBehaviour();
+		b.preMove();
+		
+		CollisionMask mask = entity.getBoundingArea();
+		if (hitsWall(entity, mask)) {
+			entity.hitWall();
 		}
-		centerScreen();
+
+		mask.move(b.getSpeedVector());
+
+		if (!entity.canMoveThroughWall()) {
+			moveWithinScreen(mask);
+		}
 	}
 
 	/**
@@ -208,15 +217,15 @@ public abstract class PlayingField {
 	/**
 	 * Check if a the given IMovable hits a wall or not.
 	 * 
-	 * @param m
-	 * 		the movable to check.
+	 * @param e
+	 * 		the entity to check.
 	 * @param box
 	 * 		the ICollisionArea to check.
 	 * 
 	 * @return
 	 * 		true if the given Movable with the given box hits a wall.
 	 */
-	private boolean hitsWall(Entity e, ICollisionArea box) {
+	public boolean hitsWall(Entity e, ICollisionArea box) {
 		// prevent playerfish from leaving the screen
 		if (e instanceof PlayerFish) {
 			return box.isOutside(0, 0, getWidth(), getHeight());
@@ -234,7 +243,7 @@ public abstract class PlayingField {
 	 * @param box
 	 * 		the ICollisionArea to move.
 	 */
-	private void moveWithinScreen(ICollisionArea box) {
+	public void moveWithinScreen(ICollisionArea box) {
 		if (box.isOutside(0, 0, getWidth(), getHeight())) {			
 			if (box.getMaxX() > getWidth()) {
 				box.move(new Vec2d(-(box.getMaxX() - getWidth()), 0));
@@ -327,16 +336,16 @@ public abstract class PlayingField {
 	 * 		the object to add.
 	 */
 	public void add(Object obj) {
-		if (obj instanceof IDrawable) {
-			drawables.addFirst((IDrawable) obj);
-		}
-
 		if (obj instanceof Entity) {
 			entities.add((Entity) obj);
 		}
-
+		
 		if (obj instanceof ICollidable) {
 			collidables.add((ICollidable) obj);
+		}
+		
+		if (obj instanceof IDrawable) {
+			drawables.addFirst((IDrawable) obj);
 		}
 	}
 
@@ -348,16 +357,17 @@ public abstract class PlayingField {
 	 */
 	public void remove(Object obj) {
 		boolean removed = false;
-		if (obj instanceof IDrawable) {
-			removed |= drawables.remove(obj);
-		}
-
+		
 		if (obj instanceof Entity) {
 			removed |= entities.remove(obj);
 		}
 		
 		if (obj instanceof ICollidable) {
 			removed |= collidables.remove(obj);
+		}
+		
+		if (obj instanceof IDrawable) {
+			removed |= drawables.remove(obj);
 		}
 		
 		if (removed && obj instanceof EnemyFish) {
@@ -374,15 +384,16 @@ public abstract class PlayingField {
 	public void clear() {
 		//Add all drawables to the drawDeaths.
 		deadDrawables.addAll(drawables);
+		
+		//Kill all entities
+		entities.parallelStream().forEach(e -> e.kill());
 
-		for (Entity e : entities) {
-			e.kill();
-		}
-
+		//Clear the lists
 		entities.clear();
 		drawables.clear();
 		collidables.clear();
 		
+		//Reset enemycount
 		enemyCount = 0;
 	}
 	
@@ -403,6 +414,9 @@ public abstract class PlayingField {
 			it.remove();
 		}
 		
+		//Remove all non playerfish from collidables
+		collidables.removeIf(c -> !(c instanceof PlayerFish));
+		
 		Iterator<IDrawable> it2 = drawables.iterator();
 		while (it2.hasNext()) {
 			IDrawable d = it2.next();
@@ -416,9 +430,6 @@ public abstract class PlayingField {
 			deadDrawables.add(d);
 			it2.remove();
 		}
-
-		//Remove all non playerfish from collidables
-		collidables.removeIf((c) -> !(c instanceof PlayerFish));
 		
 		enemyCount = 0;
 	}
