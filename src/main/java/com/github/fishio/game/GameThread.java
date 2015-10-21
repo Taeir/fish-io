@@ -37,18 +37,6 @@ public class GameThread implements Runnable, Listenable {
 	}
 	
 	/**
-	 * @param playingField
-	 * 		the playingField to use this GameThread for.
-	 * @param fake
-	 * 		if <code>true</code>, done and stop are set to <code>true</code>.
-	 */
-	public GameThread(PlayingField playingField, boolean fake) {
-		this.playingField = playingField;
-		this.done = fake;
-		this.stop = fake;
-	}
-	
-	/**
 	 * Starts this GameThread, by creating a new thread for itself and
 	 * starting it.<br>
 	 * <br>
@@ -258,6 +246,9 @@ public class GameThread implements Runnable, Listenable {
 
 		//Move all movables
 		playingField.moveMovables();
+		
+		//Center the screen after moving
+		playingField.centerScreen();
 
 		//Add new entities
 		playingField.addEntities();
