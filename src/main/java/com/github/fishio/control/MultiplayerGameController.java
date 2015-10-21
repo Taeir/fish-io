@@ -34,6 +34,11 @@ public class MultiplayerGameController implements ScreenController {
 	 * by a new one.
 	 */
 	private final ChangeListener<PlayerFish> playerChangeListener = (player, oldPlayer, newPlayer) -> {
+		if (newPlayer == null) {
+			showDeathScreen(true, null);
+			return;
+		}
+		
 		//Listen for death changes
 		newPlayer.getDeathProperty().addListener((o, oVal, nVal) -> showDeathScreen(nVal, null));
 		
