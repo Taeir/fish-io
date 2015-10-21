@@ -13,7 +13,7 @@ import javafx.scene.canvas.Canvas;
 public class MenuField extends PlayingField {
 	private GameThread gameThread;
 	
-	private static final int MAX_ENEMIES = 100;
+	private static final int MAX_ENEMIES = 10;
 	
 	/**
 	 * Constructor for the menuField.
