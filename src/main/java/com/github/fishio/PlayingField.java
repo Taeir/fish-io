@@ -131,15 +131,22 @@ public abstract class PlayingField {
 	 */
 	public void checkPlayerCollisions() {
 		//Iterate over the players
-		getPlayers().parallelStream().forEach(player -> {
-			//Iterate over the collidables
+		for (PlayerFish player : getPlayers()) {
+			//Get collidables parallel.
 			collidables.parallelStream()
+			
+			//We only want the collidables we actually collide with
 			.filter(collidable -> player != collidable && player.doesCollides(collidable))
+			
+			//We want to do the for each sequentially, otherwise we get parallelism issues
+			.sequential()
+			
+			//Iterate over the elements
 			.forEach(collidable -> {
 				player.onCollide(collidable);
 				collidable.onCollide(player);
 			});
-		});
+		}
 	}
 
 	/**
