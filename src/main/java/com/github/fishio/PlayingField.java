@@ -7,11 +7,10 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.canvas.Canvas;
 
 import com.github.fishio.behaviours.IMoveBehaviour;
-import com.github.fishio.factories.EnemyFishFactory;
+import com.github.fishio.factories.EnemyFishSpawner;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.gui.Renderer;
 import com.github.fishio.logging.Log;
@@ -21,7 +20,8 @@ import com.github.fishio.logging.LogLevel;
  * Represents the PlayingField.
  */
 public abstract class PlayingField {
-
+	private static final int ENEMY_COUNT = 10;
+	
 	protected Log logger = Log.getLogger();
 	
 	private Renderer renderer;
@@ -31,12 +31,11 @@ public abstract class PlayingField {
 	private Set<Entity> entities = Collections.newSetFromMap(new ConcurrentHashMap<Entity, Boolean>());
 	private Set<ICollidable> collidables = Collections.newSetFromMap(new ConcurrentHashMap<ICollidable, Boolean>());
 
-	private int enemyCount;
 	private int width;
 	private int height;
-	
-	private SimpleIntegerProperty maxEnemiesProperty = new SimpleIntegerProperty(10);
-	private EnemyFishFactory factory = new EnemyFishFactory();
+	private EnemyFishSpawner enemyFishSpawner;
+	//private SimpleIntegerProperty maxEnemiesProperty = new SimpleIntegerProperty(10);
+	//private EnemyFishFactory factory = new EnemyFishFactory();
 
 	/**
 	 * Creates the playing field with a set framerate and canvas.
@@ -54,9 +53,11 @@ public abstract class PlayingField {
 	 */
 	public PlayingField(int fps, Canvas canvas, int yBorder, int width, int height) {
 		//count enemies
-		enemyCount = 0;
 		this.height = height;
 		this.width = width;
+		
+		//Create the enemy fish spawner
+		enemyFishSpawner = new EnemyFishSpawner(this, ENEMY_COUNT);
 		
 		renderer = new Renderer(this, canvas, fps, yBorder);
 		logger.log(LogLevel.INFO, "Created Renderer");
@@ -98,32 +99,6 @@ public abstract class PlayingField {
 	 */
 	public int getHeight() {
 		return height;
-	}
-	
-	/**
-	 * @return
-	 * 		the maximum enemies (in the field) property.
-	 */
-	public SimpleIntegerProperty getMaxEnemiesProperty() {
-		return maxEnemiesProperty;
-	}
-	
-	/**
-	 * @return
-	 * 		the maximum amount of enemies on the field.
-	 */
-	public int getMaxEnemies() {
-		return maxEnemiesProperty.get();
-	}
-	
-	/**
-	 * Sets the maximum enemy count.
-	 * 
-	 * @param max
-	 * 		the new maximum enemy count.
-	 */
-	public void setMaxEnemies(int max) {
-		maxEnemiesProperty.set(max);
 	}
 
 	/**
@@ -168,7 +143,7 @@ public abstract class PlayingField {
 			remove(e);
 			
 			//Log action.
-			logger.log(LogLevel.DEBUG, "Removed entity. Enemycount: " + enemyCount + ".");
+			logger.log(LogLevel.DEBUG, "Removed entity");
 		}
 	}
 
@@ -176,15 +151,25 @@ public abstract class PlayingField {
 	 * Adds new entities.
 	 */
 	public void addEntities() {
-
-		//add enemy entities
-		while (enemyCount < getMaxEnemies()) {
-			EnemyFish eFish = factory.randomizedFish(getPlayers(), width, height);
-			add(eFish);
-			
-			enemyCount++;
-			logger.log(LogLevel.DEBUG, "Added enemy fish. Enemycount: " +  enemyCount + ".");
-		}
+		enemyFishSpawner.spawnEnemyFish();
+	}
+	
+	/**
+	 * @return
+	 * 		the EnemyFishSpawner this PlayingField is using.
+	 */
+	public EnemyFishSpawner getEnemyFishSpawner() {
+		return enemyFishSpawner;
+	}
+	
+	/**
+	 * Sets the EnemyFishSpawner used by this PlayingField.
+	 * 
+	 * @param spawner
+	 * 		the new enemyFishSpawner to use.
+	 */
+	public void setEnemyFishSpawner(EnemyFishSpawner spawner) {
+		this.enemyFishSpawner = spawner;
 	}
 
 	/**
@@ -387,23 +372,16 @@ public abstract class PlayingField {
 	 * 		the object to remove.
 	 */
 	public void remove(Object obj) {
-		boolean removed = false;
-		
 		if (obj instanceof Entity) {
-			removed |= entities.remove(obj);
+			entities.remove(obj);
 		}
 		
 		if (obj instanceof ICollidable) {
-			removed |= collidables.remove(obj);
+			collidables.remove(obj);
 		}
-		
+
 		if (obj instanceof IDrawable) {
-			removed |= drawables.remove(obj);
-		}
-		
-		if (removed && obj instanceof EnemyFish) {
-			//Decrease enemy count.
-			enemyCount--;
+			drawables.remove(obj);
 		}
 	}
 	
@@ -423,9 +401,6 @@ public abstract class PlayingField {
 		entities.clear();
 		drawables.clear();
 		collidables.clear();
-		
-		//Reset enemycount
-		enemyCount = 0;
 	}
 	
 	/**
@@ -461,8 +436,6 @@ public abstract class PlayingField {
 			deadDrawables.add(d);
 			it2.remove();
 		}
-		
-		enemyCount = 0;
 	}
 	
 	/**
@@ -494,21 +467,5 @@ public abstract class PlayingField {
 		}
 		
 		return false;
-	}
-	
-	/**
-	 * @return
-	 * 		The factory that creates enemy fishes.
-	 */
-	public EnemyFishFactory getFactory() {
-		return factory;
-	}
-	
-	/**
-	 * @param factory
-	 * 		Sets the factory that creates enemy fishes.
-	 */
-	public void setFactory(EnemyFishFactory factory) {
-		this.factory = factory;
 	}
 }

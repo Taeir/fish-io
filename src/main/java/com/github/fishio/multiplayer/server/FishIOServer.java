@@ -244,7 +244,7 @@ public final class FishIOServer implements Runnable {
 		MultiplayerGameController controller = Preloader.getControllerOrLoad("multiplayerGameScreen");
 		MultiplayerServerPlayingField mspf =
 				new MultiplayerServerPlayingField(60, controller.getCanvas(), width, height);
-		mspf.setMaxEnemies(maxEnemies);
+		mspf.getEnemyFishSpawner().setMaxEnemies(maxEnemies);
 		
 		this.playingFieldProperty.set(mspf);
 		

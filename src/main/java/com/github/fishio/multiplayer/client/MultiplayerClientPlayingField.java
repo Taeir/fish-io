@@ -44,7 +44,7 @@ public class MultiplayerClientPlayingField extends MultiplayerPlayingField {
 	public GameThread getGameThread() {
 		return this.gameThread;
 	}
-	
+
 	@Override
 	public void setOwnPlayer(PlayerFish player) {
 		super.setOwnPlayer(player);

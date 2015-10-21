@@ -21,7 +21,7 @@ public class SinglePlayerPlayingField extends PlayingField {
 	
 	private GameThread gameThread;
 	private Scene scene;
-
+	
 	/**
 	 * Creates the playing field for a single player.
 	 * 

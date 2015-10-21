@@ -262,10 +262,10 @@ public class Renderer implements Listenable {
 		
 		canvas.heightProperty().bind(heightProperty);
 		canvas.widthProperty().bind(widthProperty);
-		widthProperty.addListener((o, oldVal, newVal) -> {
+		heightProperty.addListener((o, oldVal, newVal) -> {
 			view.setHeight(heightProperty.doubleValue());
 		});
-		heightProperty.addListener((o, oldVal, newVal) -> {
+		widthProperty.addListener((o, oldVal, newVal) -> {
 			view.setWidth(widthProperty.doubleValue());
 		});
 		
