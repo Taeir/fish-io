@@ -54,13 +54,10 @@ public abstract class MultiplayerPlayingField extends PlayingField {
 	public void setOwnPlayer(PlayerFish player) {
 		this.playerFishProperty.set(player);
 		
-		//Remove our new entity from the list and add a new one.
-		//This is to prevent client side problems
-		if (getEntities().contains(player)) {
-			remove(player);
+		//Add the player
+		if (player != null) {
+			add(player);
 		}
-		
-		add(player);
 	}
 	
 	/**
@@ -78,6 +75,10 @@ public abstract class MultiplayerPlayingField extends PlayingField {
 	
 	@Override
 	public void add(Object o) {
+		if (o == null) {
+			return;
+		}
+		
 		super.add(o);
 		
 		if (o instanceof PlayerFish) {
@@ -87,10 +88,19 @@ public abstract class MultiplayerPlayingField extends PlayingField {
 	
 	@Override
 	public void remove(Object o) {
+		if (o == null) {
+			return;
+		}
+		
 		super.remove(o);
 		
 		if (o instanceof PlayerFish) {
 			players.remove(o);
+			
+			//If we are removing ourselves, we need to set the player to null.
+			if (o.equals(getOwnPlayer())) {
+				setOwnPlayer(null);
+			}
 		}
 	}
 	

@@ -5,7 +5,6 @@ import java.util.Optional;
 import javafx.scene.canvas.Canvas;
 
 import com.github.fishio.CollisionMask;
-import com.github.fishio.Entity;
 import com.github.fishio.Sprite;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.Preloader;
@@ -62,20 +61,33 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 	 * 		the updated PlayerFish corresponding to the client.
 	 */
 	public void updatePlayer(PlayerFish updated) {
-		Optional<Entity> oEntity = getEntities()
-				.parallelStream()
-				.filter((entity) -> entity instanceof PlayerFish && entity.getEntityId() == updated.getEntityId())
+		//Find the player by entity id
+		Optional<PlayerFish> oPlayer = getPlayers()
+				.stream()
+				.filter(player -> player.getEntityId() == updated.getEntityId())
 				.findAny();
 		
-		if (!oEntity.isPresent()) {
-			logger.log(LogLevel.WARNING, "[MSPF] A player update was received, but that player is not in the game...");
+		if (!oPlayer.isPresent()) {
+			logger.log(LogLevel.DEBUG, "[MSPF] A player update was received, but that player is not in the game...");
 			return;
 		}
 		
-		Entity entity = oEntity.get();
-		entity.getBoundingArea().updateTo(updated.getBoundingArea());
-		if (entity.getBehaviour().getClass() == updated.getBehaviour().getClass()) {
-			entity.getBehaviour().updateTo(updated.getBehaviour());
+		PlayerFish player = oPlayer.get();
+		
+		//Add synchronization here to prevent the size from getting lost.
+		synchronized (player) {
+			//Store the size, because we need to restore it after the update
+			double size = player.getBoundingArea().getSize();
+			
+			//Update the bounding area
+			player.getBoundingArea().updateTo(updated.getBoundingArea());
+			//Restore the size
+			player.getBoundingArea().setSize(size);
+		}
+		
+		//Update the behaviour
+		if (player.getBehaviour().getClass() == updated.getBehaviour().getClass()) {
+			player.getBehaviour().updateTo(updated.getBehaviour());
 		}
 	}
 	
@@ -111,6 +123,5 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 		nplayer.setInvincible(System.currentTimeMillis() + SPAWN_INVINCIBILITY);
 		
 		setOwnPlayer(nplayer);
-		add(nplayer);
 	}
 }
