@@ -1,5 +1,8 @@
 package com.github.fishio.multiplayer.server;
 
+import javafx.beans.property.SimpleObjectProperty;
+
+import com.github.fishio.PlayerFish;
 import com.github.fishio.Preloader;
 import com.github.fishio.Util;
 import com.github.fishio.control.MultiplayerGameController;
@@ -31,30 +34,21 @@ import io.netty.util.concurrent.GlobalEventExecutor;
  * This class is only used server side.
  */
 public final class FishIOServer implements Runnable {
-	private static FishIOServer instance;
+	private static final FishIOServer INSTANCE = new FishIOServer();
 	private int port;
 	private ChannelGroup allChannels;
 	private Channel channel;
 	private boolean started;
-	private MultiplayerServerPlayingField playingField;
+	private SimpleObjectProperty<MultiplayerServerPlayingField> playingFieldProperty = new SimpleObjectProperty<>();
 	
-	private FishIOServer() {
-		MultiplayerGameController controller = Preloader.getControllerOrLoad("multiplayerGameScreen");
-		playingField = new MultiplayerServerPlayingField(60, controller.getCanvas(), 1280 ,720);
-	}
+	private FishIOServer() { }
 	
 	/**
 	 * @return
 	 * 		the FishIOServer instance.
 	 */
 	public static FishIOServer getInstance() {
-		synchronized (FishIOServer.class) {
-			if (instance == null) {
-				instance = new FishIOServer();
-			}
-		}
-		
-		return instance;
+		return INSTANCE;
 	}
 	
 	/**
@@ -119,9 +113,8 @@ public final class FishIOServer implements Runnable {
 			//Call onStop when we stop
 			f.channel().closeFuture().addListener((future) -> onStop());
 			
-			//Create own player and start the game
-			this.playingField.respawnOwnPlayer();
-			this.playingField.startGame();
+			//Call onStart
+			onStart();
 			
 			//Wait until the server socket is closed.
 			f.channel().closeFuture().sync();
@@ -210,9 +203,13 @@ public final class FishIOServer implements Runnable {
 	 * Called when the server is stopped.
 	 */
 	public void onStop() {
-		//Stop the game and clear the field
-		getPlayingField().stopGame();
-		getPlayingField().clear();
+		//Remove the current playing field.
+		MultiplayerServerPlayingField mspf = getPlayingField();
+		playingFieldProperty.set(null);
+		
+		//Stop the old game and clear the field
+		mspf.stopGame();
+		mspf.clear();
 		
 		//TODO #169 show a message to the user?
 		
@@ -224,11 +221,36 @@ public final class FishIOServer implements Runnable {
 	}
 	
 	/**
+	 * Called when this server has started (is open to connections).
+	 */
+	public void onStart() {
+		//Create a new playing field
+		MultiplayerGameController controller = Preloader.getControllerOrLoad("multiplayerGameScreen");
+		MultiplayerServerPlayingField mspf =
+				new MultiplayerServerPlayingField(60, controller.getCanvas(), 10000, 10000);
+		mspf.setMaxEnemies(200);
+		
+		this.playingFieldProperty.set(mspf);
+		
+		//Create own player and start the game
+		mspf.respawnOwnPlayer();
+		mspf.startGame();
+	}
+	
+	/**
 	 * @return
 	 * 		the playingfield used by this server.
 	 */
 	public MultiplayerServerPlayingField getPlayingField() {
-		return this.playingField;
+		return this.playingFieldProperty.get();
+	}
+	
+	/**
+	 * @return
+	 * 		the playingfield property used by this server.
+	 */
+	public SimpleObjectProperty<MultiplayerServerPlayingField> getPlayingFieldProperty() {
+		return this.playingFieldProperty;
 	}
 	
 	/**
