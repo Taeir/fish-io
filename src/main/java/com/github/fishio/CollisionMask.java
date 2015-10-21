@@ -6,6 +6,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashSet;
 
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
 import com.github.fishio.settings.Settings;
 
 import javafx.scene.image.Image;
@@ -188,6 +190,10 @@ public class CollisionMask implements ICollisionArea, Serializable {
 	 * @return The built hashSet.
 	 */
 	public HashSet<Vec2d> getMask() {
+		double width = this.width;
+		double height = this.height;
+		double rotation = this.rotation;
+		
 		HashSet<Vec2d> mask = new HashSet<Vec2d>();
 		int lx, ly; // location of the pixel in the image
 		double cosa, sina;
@@ -202,7 +208,6 @@ public class CollisionMask implements ICollisionArea, Serializable {
 
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				//TODO floor?
 				int datax = (int) (x * scalex);
 				int datay = (int) (y * scaley);
 				
@@ -224,6 +229,11 @@ public class CollisionMask implements ICollisionArea, Serializable {
 				}
 			}
 		}
+		
+		if (width != this.width || height != this.height) {
+			Log.getLogger().log(LogLevel.DEBUG, "[CollisionMask] Size changed while creating mask!");
+		}
+		
 		return mask;
 	}
 	
