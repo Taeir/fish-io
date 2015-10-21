@@ -61,7 +61,7 @@ public class TestSinglePlayerPlayingField extends TestPlayingField {
 	public void testAddEntities() {
 		getField().addEntities();
 		
-		assertEquals(PlayingField.MAX_ENEMY_COUNT + 1, getField().getEntities().size());
+		assertEquals(getField().getMaxEnemies() + 1, getField().getEntities().size());
 		
 		Iterator<Entity> it = getField().getEntities().iterator();
 		int i = 0;
@@ -74,7 +74,7 @@ public class TestSinglePlayerPlayingField extends TestPlayingField {
 		
 		getField().addEntities();
 		
-		assertEquals(PlayingField.MAX_ENEMY_COUNT + 1, getField().getEntities().size());
+		assertEquals(getField().getMaxEnemies() + 1, getField().getEntities().size());
 	}
 	
 	/**

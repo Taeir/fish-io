@@ -1,6 +1,5 @@
 package com.github.fishio;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -8,6 +7,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.canvas.Canvas;
 
 import com.github.fishio.behaviours.IMoveBehaviour;
@@ -35,7 +35,7 @@ public abstract class PlayingField {
 	private int width;
 	private int height;
 	
-	public static final int MAX_ENEMY_COUNT = 10;
+	private SimpleIntegerProperty maxEnemiesProperty = new SimpleIntegerProperty(10);
 	private EnemyFishFactory factory = new EnemyFishFactory();
 
 	/**
@@ -99,6 +99,32 @@ public abstract class PlayingField {
 	public int getHeight() {
 		return height;
 	}
+	
+	/**
+	 * @return
+	 * 		the maximum enemies (in the field) property.
+	 */
+	public SimpleIntegerProperty getMaxEnemiesProperty() {
+		return maxEnemiesProperty;
+	}
+	
+	/**
+	 * @return
+	 * 		the maximum amount of enemies on the field.
+	 */
+	public int getMaxEnemies() {
+		return maxEnemiesProperty.get();
+	}
+	
+	/**
+	 * Sets the maximum enemy count.
+	 * 
+	 * @param max
+	 * 		the new maximum enemy count.
+	 */
+	public void setMaxEnemies(int max) {
+		maxEnemiesProperty.set(max);
+	}
 
 	/**
 	 * Checks for player collisions.
@@ -145,7 +171,7 @@ public abstract class PlayingField {
 	public void addEntities() {
 
 		//add enemy entities
-		while (enemyCount < MAX_ENEMY_COUNT) {
+		while (enemyCount < getMaxEnemies()) {
 			EnemyFish eFish = factory.randomizedFish(getPlayers(), width, height);
 			add(eFish);
 			
@@ -181,9 +207,7 @@ public abstract class PlayingField {
 	 * Moves Movable items.
 	 */
 	public void moveMovables() {
-		entities.parallelStream().forEach(e -> {
-			moveEntity(e);
-		});
+		entities.parallelStream().forEach(e -> moveEntity(e));
 	}
 
 	/**
@@ -375,7 +399,7 @@ public abstract class PlayingField {
 			enemyCount--;
 		}
 	}
-
+	
 	/**
 	 * Clear this PlayingField.<br>
 	 * <br>
