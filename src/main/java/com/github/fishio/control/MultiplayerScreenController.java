@@ -26,7 +26,7 @@ import javafx.scene.control.TextField;
 public class MultiplayerScreenController implements ScreenController {
 
 	private Log logger = Log.getLogger();
-	private Pattern addressPattern = Pattern.compile("(?<address>.*)(?<port>:\\d+)?");
+	private Pattern addressPattern = Pattern.compile("((?<address>.*)(?<port>:\\d+))|(?<address2>.*)");
 	
 	//Listens for when the game starts, and switches to the multiplayer game screen when it does.
 	private ChangeListener<? super GameState> gameStartListener = (observable, oldVal, newVal) -> {
@@ -105,11 +105,15 @@ public class MultiplayerScreenController implements ScreenController {
 		if (sport == null || sport.isEmpty()) {
 			port = 25565;
 		} else {
-			port = Integer.parseInt(sport);
+			port = Integer.parseInt(sport.substring(1));
 		}
 		
 		//Start connecting
-		FishIOClient.getInstance().connect(m.group("address"), port);
+		String address = m.group("address");
+		if (address == null || address.isEmpty()) {
+			address = m.group("address2");
+		}
+		FishIOClient.getInstance().connect(address, port);
 	}
 	
 	/**
