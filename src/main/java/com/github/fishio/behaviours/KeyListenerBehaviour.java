@@ -318,6 +318,7 @@ public class KeyListenerBehaviour implements IMoveBehaviour, Serializable {
 		KeyListenerBehaviour other = (KeyListenerBehaviour) behaviour;
 		this.vx = other.vx;
 		this.vy = other.vy;
+		this.maxSpeed = other.maxSpeed;
 		this.acceleration = other.acceleration;
 	}
 }

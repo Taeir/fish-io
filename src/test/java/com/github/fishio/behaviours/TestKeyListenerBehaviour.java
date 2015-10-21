@@ -92,9 +92,7 @@ public class TestKeyListenerBehaviour {
 		behaviour.updateTo(new KeyListenerBehaviour(0.2, 3.0));
 		
 		assertEquals(0.2D, behaviour.getAcceleration(), 0.0D);
-		
-		//Max speed should not have changed
-		assertEquals(4.0D, behaviour.getMaxSpeed(), 0.0D);
+		assertEquals(3.0D, behaviour.getMaxSpeed(), 0.0D);
 	}
 	
 	/**
