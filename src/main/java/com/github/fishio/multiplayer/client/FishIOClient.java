@@ -8,6 +8,7 @@ import com.github.fishio.control.MultiplayerGameController;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.multiplayer.FishMessage;
+import com.github.fishio.multiplayer.server.FishServerSettingsMessage;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -40,6 +41,8 @@ public final class FishIOClient implements Runnable {
 	
 	private String host;
 	private int port;
+	
+	private FishServerSettingsMessage settings;
 	
 	private FishIOClient() { }
 	
@@ -296,8 +299,15 @@ public final class FishIOClient implements Runnable {
 	 * Called when the connection with the server is established.
 	 */
 	public void onConnect() {
-		int width = 10000;
-		int height = 10000;
+		//Wait until we have received the settings. If awaitSettings returns false,
+		//we lost connection, so we simply return here.
+		if (!awaitSettings()) {
+			return;
+		}
+		
+		//Get the settings we need.
+		int width = (Integer) settings.getSetting("WIDTH");
+		int height = (Integer) settings.getSetting("HEIGHT");
 		
 		//Create a new playing field
 		MultiplayerGameController controller = Preloader.getControllerOrLoad("multiplayerGameScreen");
@@ -323,9 +333,38 @@ public final class FishIOClient implements Runnable {
 		//Stop the game
 		mcpf.stopGame();
 		
+		//Remove the settings
+		this.settings = null;
+		
 		//TODO #169 Show message to client?
 		
 		//Switch back to main menu
 		Util.onJavaFX(() -> Preloader.switchTo("mainMenu", 1000));
+	}
+	
+	/**
+	 * @param settings
+	 * 		sets the settings to use for this FishIOClient.
+	 */
+	public void setSettings(FishServerSettingsMessage settings) {
+		this.settings = settings;
+	}
+	
+	/**
+	 * Waits until we have received settings from the server.
+	 * 
+	 * @return
+	 * 		<code>true</code> if the settings were received,
+	 * 		<code>false</code> otherwise (e.g. connection closed).
+	 */
+	public boolean awaitSettings() {
+		while (this.settings == null) {
+			if (currentChannel == null || currentChannel.closeFuture().awaitUninterruptibly(100L)) {
+				//We lost connection
+				return false;
+			}
+		}
+		
+		return true;
 	}
 }

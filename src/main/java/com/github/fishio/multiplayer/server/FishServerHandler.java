@@ -32,6 +32,10 @@ public class FishServerHandler extends SimpleChannelInboundHandler<FishClientMes
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         //Add channels to the group.
         allChannels.add(ctx.channel());
+        
+        //Send the settings
+        ctx.writeAndFlush(FishIOServer.getInstance().getSettings());
+        
         super.channelActive(ctx);
     }
 	

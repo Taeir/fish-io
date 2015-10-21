@@ -9,6 +9,7 @@ import com.github.fishio.logging.LogLevel;
 import com.github.fishio.multiplayer.server.FishServerEntitiesMessage;
 import com.github.fishio.multiplayer.server.FishServerPlayerMessage;
 import com.github.fishio.multiplayer.server.FishServerMessage;
+import com.github.fishio.multiplayer.server.FishServerSettingsMessage;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -30,6 +31,10 @@ public class FishClientHandler extends SimpleChannelInboundHandler<FishServerMes
 		
 		if (msg instanceof FishServerPlayerMessage) {
 			handleSpawnMessage((FishServerPlayerMessage) msg);
+		}
+		
+		if (msg instanceof FishServerSettingsMessage) {
+			handleSettingsMessage((FishServerSettingsMessage) msg);
 		}
 	}
 	
@@ -74,5 +79,15 @@ public class FishClientHandler extends SimpleChannelInboundHandler<FishServerMes
 		
 		//Set the new player fish
 		mcpf.setOwnPlayer(msg.getPlayer());
+	}
+	
+	/**
+	 * Handles FishServerSettings messages.
+	 * 
+	 * @param msg
+	 * 		the message from the server.
+	 */
+	public void handleSettingsMessage(FishServerSettingsMessage msg) {
+		FishIOClient.getInstance().setSettings(msg);
 	}
 }

@@ -9,6 +9,7 @@ import com.github.fishio.control.MultiplayerGameController;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.multiplayer.FishMessage;
+import com.github.fishio.settings.Settings;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -41,6 +42,8 @@ public final class FishIOServer implements Runnable {
 	private boolean started;
 	private SimpleObjectProperty<MultiplayerServerPlayingField> playingFieldProperty = new SimpleObjectProperty<>();
 	
+	private FishServerSettingsMessage settings;
+	
 	private FishIOServer() { }
 	
 	/**
@@ -63,6 +66,13 @@ public final class FishIOServer implements Runnable {
 		}
 		
 		this.port = port;
+		
+		this.settings = new FishServerSettingsMessage();
+		this.settings.setSetting("WIDTH", 10000);
+		this.settings.setSetting("HEIGHT", 10000);
+		this.settings.setSetting("MAX_ENEMIES", 200);
+		this.settings.setSetting("PLAYER_ACCELERATION", PlayerFish.FISH_ACCELERATION);
+		this.settings.setSetting("MAX_PLAYER_SPEED", Settings.getInstance().getDouble("MAX_PLAYER_SPEED"));
 		
 		new Thread(this).start();
 	}
@@ -224,11 +234,15 @@ public final class FishIOServer implements Runnable {
 	 * Called when this server has started (is open to connections).
 	 */
 	public void onStart() {
+		int width = (Integer) settings.getSetting("WIDTH");
+		int height = (Integer) settings.getSetting("HEIGHT");
+		int maxEnemies = (Integer) settings.getSetting("MAX_ENEMIES");
+		
 		//Create a new playing field
 		MultiplayerGameController controller = Preloader.getControllerOrLoad("multiplayerGameScreen");
 		MultiplayerServerPlayingField mspf =
-				new MultiplayerServerPlayingField(60, controller.getCanvas(), 10000, 10000);
-		mspf.setMaxEnemies(200);
+				new MultiplayerServerPlayingField(60, controller.getCanvas(), width, height);
+		mspf.setMaxEnemies(maxEnemies);
 		
 		this.playingFieldProperty.set(mspf);
 		
@@ -293,5 +307,13 @@ public final class FishIOServer implements Runnable {
 		if (cg != null) {
 			cg.flush();
 		}
+	}
+	
+	/**
+	 * @return
+	 * 		the settings of the FishIOServer.
+	 */
+	public FishServerSettingsMessage getSettings() {
+		return this.settings;
 	}
 }
