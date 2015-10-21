@@ -250,21 +250,24 @@ public final class FishIOClient implements Runnable {
 	 * 		if <code>true</code>, the queue is flushed after this call.
 	 * 
 	 * @return
-	 * 		<code>true</code> if the message was queued,
-	 * 		<code>false</code> otherwise (e.g. not connected to server).
+	 * 		a ChannelFuture that can be used to determine if and when the
+	 * 		message is actually sent to the server.
+	 * 		<code>null</code> if the message was not queued (e.g. not
+	 * 		connected to server).
 	 */
-	public boolean queueMessage(FishMessage message, boolean flush) {
+	public ChannelFuture queueMessage(FishMessage message, boolean flush) {
 		Channel ch = getChannel();
 		if (ch == null) {
-			return false;
+			return null;
 		}
 		
+		ChannelFuture cf;
 		if (flush) {
-			ch.writeAndFlush(message);
+			cf = ch.writeAndFlush(message);
 		} else {
-			ch.write(message);
+			cf = ch.write(message);
 		}
-		return true;
+		return cf;
 	}
 	
 	/**

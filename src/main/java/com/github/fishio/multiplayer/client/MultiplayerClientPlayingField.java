@@ -1,6 +1,7 @@
 package com.github.fishio.multiplayer.client;
 
-import java.util.Collection;
+import io.netty.channel.ChannelFuture;
+
 import java.util.Optional;
 import java.util.Set;
 
@@ -18,6 +19,7 @@ import com.github.fishio.multiplayer.server.FishServerEntitiesMessage;
  */
 public class MultiplayerClientPlayingField extends MultiplayerPlayingField {
 	private GameThread gameThread;
+	private ChannelFuture lastPlayerUpdate;
 	
 	/**
 	 * Creates a new MultiplayerClientPlayingField.
@@ -44,22 +46,63 @@ public class MultiplayerClientPlayingField extends MultiplayerPlayingField {
 	}
 	
 	@Override
+	public void setOwnPlayer(PlayerFish player) {
+		super.setOwnPlayer(player);
+		
+		//For client side, we need an additional check for setting our own player.
+		
+		//Check if there is a fake player present
+		Optional<PlayerFish> fakePlayer = getPlayers()
+				.stream()
+				.filter(p -> p != player && p.equals(player))
+				.findAny();
+		
+		if (!fakePlayer.isPresent()) {
+			return;
+		}
+		
+		//Replace the behaviour of the fake with the new (correct) behaviour
+		fakePlayer.get().setBehaviour(player.getBehaviour());
+		
+		//Set our player to the fake one.
+		getOwnPlayerProperty().set(fakePlayer.get());
+	}
+	
+	@Override
 	public void addEntities() {
 		//The server handles adding entities.
 	}
-
+	
 	@Override
 	public void moveMovables() {
 		//The server handles moving of enemyfish
 		PlayerFish player = getOwnPlayer();
-		if (player != null) {
-			player.getBehaviour().preMove();
+		if (player == null || player.isDead()) {
+			return;
 		}
+		
+		//Move the player
+		moveEntity(player);
+		
+		//If the last update was not yet sent, we don't send a new one
+		if (lastPlayerUpdate != null && !lastPlayerUpdate.isDone()) {
+			return;
+		}
+		
+		//Send the update
+		lastPlayerUpdate = FishIOClient.getInstance().queueMessage(new FishClientPlayerFishMessage(player), true);
 	}
 	
 	@Override
 	public void checkPlayerCollisions() {
 		//The server handles collision checking
+	}
+	
+	@Override
+	public void clear() {
+		getEntities().clear();
+		getDrawables().clear();
+		getCollidables().clear();
 	}
 	
 	/**
@@ -72,39 +115,23 @@ public class MultiplayerClientPlayingField extends MultiplayerPlayingField {
 		Set<Entity> deadEntities = message.getDeadEntities(getEntities());
 		Set<Entity> newEntities = message.getNewEntities(getEntities());
 		
-		//First add the new entities
-		for (Entity e : newEntities) {
-			add(e);
-		}
+		//1) add the new entities
+		newEntities.parallelStream().forEach(e -> add(e));
 		
-		//Then remove the dead entities.
-		for (Entity e : deadEntities) {
-			remove(e);
-		}
+		//2) remove the dead entities
+		deadEntities.parallelStream().forEach(e -> remove(e));
 		
-		//Then update the entity information (position, rotation, etc.)
-		Collection<Entity> updates = message.getEntities();
-		
-		for (Entity currentEntity : getEntities()) {
-			Optional<Entity> optionalEntity = updates
-					.parallelStream()
-					.filter((uentity) -> uentity.getEntityId() == currentEntity.getEntityId())
-					.findAny();
-			
-			if (!optionalEntity.isPresent()) {
-				logger.log(LogLevel.WARNING,
-						"Cannot update entity " + currentEntity.getEntityId() + ": cannot find updated entity! "
-					  + "This means there is a mistake in the getDeadEntities or getNewEntities method of "
-					  + "FishServerEntitiesMessage!");
-				continue;
+		//3) update the entity information (position, rotation, etc.)
+		message.getEntities().parallelStream().forEach(updated -> {
+			//Find the corresponding current entity
+			for (Entity current : getEntities()) {
+				if (current.getEntityId() == updated.getEntityId()) {
+					//Update the entity
+					updateEntity(current, updated);
+					break;
+				}
 			}
-			
-			updateEntity(currentEntity, optionalEntity.get());
-		}
-		
-		if (getOwnPlayer() != null && !getEntities().contains(getOwnPlayer())) {
-			getOwnPlayer().setDead();
-		}
+		});
 	}
 
 	/**
@@ -115,23 +142,26 @@ public class MultiplayerClientPlayingField extends MultiplayerPlayingField {
 	 * @param updated
 	 * 		the entity to update with
 	 */
-	private void updateEntity(Entity current, Entity updated) {
+	public void updateEntity(Entity current, Entity updated) {
+		//Update death state
+		if (updated.isDead()) {
+			current.kill();
+		}
+		
+		//If the current entity is our own player
 		if (current instanceof PlayerFish && current.equals(getOwnPlayer())) {
-			//Dont update the speed and position of our own player, we handle that ourselves.
-			if (updated.isDead()) {
-				current.kill();
-			}
+			//We need to only update our size
+			current.getBoundingArea().setSize(updated.getBoundingArea().getSize());
+		} else {
+			//Update bounding area
+			current.getBoundingArea().updateTo(updated.getBoundingArea());
 			
-			return;
+			//Update behaviour
+			if (current.getBehaviour().getClass() == updated.getBehaviour().getClass()) {
+				current.getBehaviour().updateTo(updated.getBehaviour());
+			} else {
+				current.setBehaviour(updated.getBehaviour());
+			}
 		}
-		
-		//Update bounding area
-		current.getBoundingArea().updateTo(updated.getBoundingArea());
-		if (current.getBehaviour().getClass() == updated.getBehaviour().getClass()) {
-			current.getBehaviour().updateTo(updated.getBehaviour());
-		}
-		//TODO Allow swapping behaviors
-		
-		//TODO Additional updating for playerfish of other players?
 	}
 }
