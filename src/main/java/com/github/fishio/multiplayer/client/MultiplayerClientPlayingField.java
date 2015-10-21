@@ -2,7 +2,6 @@ package com.github.fishio.multiplayer.client;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.Queue;
 import java.util.Set;
 
 import javafx.scene.canvas.Canvas;
@@ -86,8 +85,7 @@ public class MultiplayerClientPlayingField extends MultiplayerPlayingField {
 		//Then update the entity information (position, rotation, etc.)
 		Collection<Entity> updates = message.getEntities();
 		
-		Queue<Entity> current = getEntities();
-		for (Entity currentEntity : current) {
+		for (Entity currentEntity : getEntities()) {
 			Optional<Entity> optionalEntity = updates
 					.parallelStream()
 					.filter((uentity) -> uentity.getEntityId() == currentEntity.getEntityId())
