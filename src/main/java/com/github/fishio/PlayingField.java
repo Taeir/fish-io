@@ -34,8 +34,6 @@ public abstract class PlayingField {
 	private int width;
 	private int height;
 	private EnemyFishSpawner enemyFishSpawner;
-	//private SimpleIntegerProperty maxEnemiesProperty = new SimpleIntegerProperty(10);
-	//private EnemyFishFactory factory = new EnemyFishFactory();
 
 	/**
 	 * Creates the playing field with a set framerate and canvas.
@@ -52,7 +50,6 @@ public abstract class PlayingField {
 	 * 		the height of the playing field
 	 */
 	public PlayingField(int fps, Canvas canvas, int yBorder, int width, int height) {
-		//count enemies
 		this.height = height;
 		this.width = width;
 		
