@@ -43,11 +43,6 @@ public class MultiplayerClientPlayingField extends MultiplayerPlayingField {
 	public GameThread getGameThread() {
 		return this.gameThread;
 	}
-	
-	@Override
-	public void addEntities() {
-		//The server handles adding entities.
-	}
 
 	@Override
 	public void moveMovables() {

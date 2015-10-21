@@ -11,7 +11,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javafx.scene.canvas.Canvas;
 
 import com.github.fishio.behaviours.IMoveBehaviour;
-import com.github.fishio.factories.EnemyFishFactory;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.gui.Renderer;
 import com.github.fishio.logging.Log;
@@ -30,13 +29,9 @@ public abstract class PlayingField {
 	private ConcurrentLinkedDeque<IDrawable> deadDrawables = new ConcurrentLinkedDeque<>();
 	private ConcurrentLinkedQueue<Entity> entities = new ConcurrentLinkedQueue<>();
 	private ConcurrentLinkedQueue<ICollidable> collidables = new ConcurrentLinkedQueue<>();
-
-	private int enemyCount;
+	
 	private int width;
 	private int height;
-	
-	public static final int MAX_ENEMY_COUNT = 10;
-	private EnemyFishFactory factory = new EnemyFishFactory();
 
 	/**
 	 * Creates the playing field with a set framerate and canvas.
@@ -54,7 +49,6 @@ public abstract class PlayingField {
 	 */
 	public PlayingField(int fps, Canvas canvas, int yBorder, int width, int height) {
 		//count enemies
-		enemyCount = 0;
 		this.height = height;
 		this.width = width;
 		
@@ -135,22 +129,7 @@ public abstract class PlayingField {
 			remove(e);
 			
 			//Log action.
-			logger.log(LogLevel.DEBUG, "Removed entity. Enemycount: " + enemyCount + ".");
-		}
-	}
-
-	/**
-	 * Adds new entities.
-	 */
-	public void addEntities() {
-
-		//add enemy entities
-		while (enemyCount < MAX_ENEMY_COUNT) {
-			EnemyFish eFish = factory.randomizedFish(getPlayers(), width, height);
-			add(eFish);
-			
-			enemyCount++;
-			logger.log(LogLevel.DEBUG, "Added enemy fish. Enemycount: " +  enemyCount + ".");
+			logger.log(LogLevel.DEBUG, "Removed entity");
 		}
 	}
 
@@ -359,11 +338,6 @@ public abstract class PlayingField {
 		if (obj instanceof ICollidable) {
 			removed |= collidables.remove(obj);
 		}
-		
-		if (removed && obj instanceof EnemyFish) {
-			//Decrease enemy count.
-			enemyCount--;
-		}
 	}
 
 	/**
@@ -382,8 +356,6 @@ public abstract class PlayingField {
 		entities.clear();
 		drawables.clear();
 		collidables.clear();
-		
-		enemyCount = 0;
 	}
 	
 	/**
@@ -419,8 +391,6 @@ public abstract class PlayingField {
 
 		//Remove all non playerfish from collidables
 		collidables.removeIf((c) -> !(c instanceof PlayerFish));
-		
-		enemyCount = 0;
 	}
 	
 	/**
@@ -452,21 +422,5 @@ public abstract class PlayingField {
 		}
 		
 		return false;
-	}
-	
-	/**
-	 * @return
-	 * 		The factory that creates enemy fishes.
-	 */
-	public EnemyFishFactory getFactory() {
-		return factory;
-	}
-	
-	/**
-	 * @param factory
-	 * 		Sets the factory that creates enemy fishes.
-	 */
-	public void setFactory(EnemyFishFactory factory) {
-		this.factory = factory;
 	}
 }

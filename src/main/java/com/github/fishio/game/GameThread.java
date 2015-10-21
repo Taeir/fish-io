@@ -258,9 +258,6 @@ public class GameThread implements Runnable, Listenable {
 
 		//Move all movables
 		playingField.moveMovables();
-
-		//Add new entities
-		playingField.addEntities();
 		
 		//Check for collisions
 		playingField.checkPlayerCollisions();
