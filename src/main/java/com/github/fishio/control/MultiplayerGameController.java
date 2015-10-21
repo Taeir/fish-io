@@ -99,6 +99,9 @@ public class MultiplayerGameController implements ScreenController {
 			return;
 		}
 		
+		//Set the background
+		mppf.getRenderer().setBackground(Preloader.getImageOrLoad("background.png"));
+		
 		//If the player fish changes, this listener will be called.
 		mppf.getOwnPlayerProperty().removeListener(playerChangeListener);
 		mppf.getOwnPlayerProperty().addListener(playerChangeListener);
@@ -141,7 +144,6 @@ public class MultiplayerGameController implements ScreenController {
 		} else if (FishIOServer.getInstance().isRunning()) {
 			FishIOServer.getInstance().getPlayingField().respawnOwnPlayer();
 		}
-		//TODO
 	}
 	
 	/**
