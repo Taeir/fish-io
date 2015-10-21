@@ -58,8 +58,13 @@ public class FishServerHandler extends SimpleChannelInboundHandler<FishClientMes
 	 * 		the ChannelHandlerContext that can be used to send messages back.
 	 */
 	public void handlePlayerRequest(FishClientRequestPlayerMessage msg, ChannelHandlerContext ctx) {
-		//A client is requesting a new playerfish, so we need to create one.
+		//If the playing field is null, the server must have stopped, so we return.
 		MultiplayerServerPlayingField mspf = FishIOServer.getInstance().getPlayingField();
+		if (mspf == null) {
+			return;
+		}
+
+		//A client is requesting a new playerfish, so we need to create one.
 		PlayerFish player = mspf.createClientPlayer();
 		
 		//Send a message back to the client with the newly spawned player fish
@@ -75,6 +80,9 @@ public class FishServerHandler extends SimpleChannelInboundHandler<FishClientMes
 	 */
 	public void handleClientUpdate(FishClientPlayerFishMessage msg) {
 		MultiplayerServerPlayingField mspf = FishIOServer.getInstance().getPlayingField();
+		if (mspf == null) {
+			return;
+		}
 		
 		mspf.updatePlayer(msg.getPlayer());
 	}
