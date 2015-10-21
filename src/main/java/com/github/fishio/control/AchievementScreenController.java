@@ -70,13 +70,8 @@ public class AchievementScreenController implements ScreenController {
 		
 		addKillListener();
 		
-		 
 		SimpleDoubleProperty p = Settings.getInstance().getDoubleProperty("SCREEN_HEIGHT");
-		p.addListener((o, old, newVal) -> {
-			scrollPane.setMaxHeight(newVal.intValue() - 200);
-		});
-		scrollPane.setMaxHeight(p.intValue() - 200); 
-	
+		scrollPane.maxHeightProperty().bind(p.subtract(200));
 	}
 
 	/**
