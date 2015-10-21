@@ -19,6 +19,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.group.ChannelGroup;
+import io.netty.channel.group.ChannelGroupFuture;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -277,22 +278,27 @@ public final class FishIOServer implements Runnable {
 	 * 		if <code>true</code>, the queue is flushed after this call.
 	 * 
 	 * @return
-	 * 		<code>true</code> if the message was queued,
-	 * 		<code>false</code> otherwise (e.g. server not running).
+	 * 		a ChannelGroupFuture, that can be used to determine if and when
+	 * 		the message was actually sent.
+	 * 		<code>null</code> is returned if the message could not be queued
+	 * 		(e.g. server not running).
 	 */
-	public boolean queueMessage(FishMessage message, boolean flush) {
+	public ChannelGroupFuture queueMessage(FishMessage message, boolean flush) {
 		Log.getLogger().log(LogLevel.TRACE, "[Server] Queueing message " + message.getClass().getSimpleName());
 		
 		ChannelGroup cg = this.allChannels;
 		if (cg == null) {
-			return false;
+			return null;
 		}
 		
+		ChannelGroupFuture cgf;
 		if (flush) {
-			cg.writeAndFlush(message);
+			cgf = cg.writeAndFlush(message);
 		} else {
-			cg.write(message);
+			cgf = cg.write(message);
 		}
+		
+		return cgf;
 	}
 	
 	/**
