@@ -40,7 +40,10 @@ public class FishClientHandler extends SimpleChannelInboundHandler<FishServerMes
 	 * 		the message from the server.
 	 */
 	public void handleEntitiesMessage(FishServerEntitiesMessage msg) {
-		FishIOClient.getInstance().getPlayingField().updateEntities(msg);
+		MultiplayerClientPlayingField mcpf = FishIOClient.getInstance().getPlayingField();
+		if (mcpf != null) {
+			mcpf.updateEntities(msg);
+		}
 	}
 
 	/**
@@ -50,8 +53,10 @@ public class FishClientHandler extends SimpleChannelInboundHandler<FishServerMes
 	 * 		the message from the server.
 	 */
 	public void handleSpawnMessage(FishServerPlayerMessage msg) {
+		Log.getLogger().log(LogLevel.DEBUG, "[Client] Received spawn message. Creating KeyListener.");
 		//Unregister the key handlers of the old player fish
-		PlayerFish old = FishIOClient.getInstance().getPlayingField().getOwnPlayer();
+		MultiplayerClientPlayingField mcpf = FishIOClient.getInstance().getPlayingField();
+		PlayerFish old = mcpf.getOwnPlayer();
 		if (old != null) {
 			IMoveBehaviour imb = old.getBehaviour();
 			if (imb instanceof KeyListenerBehaviour) {
@@ -59,8 +64,7 @@ public class FishClientHandler extends SimpleChannelInboundHandler<FishServerMes
 			}
 		}
 		
-		
-		//Create a new key listener
+		//We need to create a new behaviour.
 		KeyListenerBehaviour klb = KeyListenerBehaviour.createWithDefaultSettings(
 				Preloader.loadScreen("multiplayerGameScreen"));
 		
@@ -69,6 +73,6 @@ public class FishClientHandler extends SimpleChannelInboundHandler<FishServerMes
 		msg.getPlayer().setBehaviour(klb);
 		
 		//Set the new player fish
-		FishIOClient.getInstance().getPlayingField().setOwnPlayer(msg.getPlayer());
+		mcpf.setOwnPlayer(msg.getPlayer());
 	}
 }

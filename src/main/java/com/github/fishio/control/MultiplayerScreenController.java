@@ -7,12 +7,13 @@ import com.github.fishio.Preloader;
 import com.github.fishio.Util;
 import com.github.fishio.audio.AudioEngine;
 import com.github.fishio.game.GameState;
-import com.github.fishio.game.GameThread;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
+import com.github.fishio.multiplayer.MultiplayerPlayingField;
 import com.github.fishio.multiplayer.client.FishIOClient;
 import com.github.fishio.multiplayer.server.FishIOServer;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -26,6 +27,24 @@ public class MultiplayerScreenController implements ScreenController {
 
 	private Log logger = Log.getLogger();
 	private Pattern addressPattern = Pattern.compile("(?<address>.*)(?<port>:\\d+)?");
+	
+	//Listens for when the game starts, and switches to the multiplayer game screen when it does.
+	private ChangeListener<? super GameState> gameStartListener = (observable, oldVal, newVal) -> {
+		if (newVal == GameState.RUNNING) {
+			Util.onJavaFX(() -> Preloader.switchTo("multiplayerGameScreen", 0));
+		}
+	};
+	
+	//Listens for when a playingField is created, and adds the gameStartListener.
+	private ChangeListener<MultiplayerPlayingField> playingFieldListener = (observable, oldVal, newVal) -> {
+		if (newVal != null) {
+			newVal.getGameThread().stateProperty().addListener(gameStartListener);
+			
+			//Call the listener once, so we ensure we did not miss the game starting.
+			SimpleObjectProperty<GameState> sop = newVal.getGameThread().stateProperty();
+			gameStartListener.changed(sop, sop.get(), sop.get());
+		}
+	};
 	
 	@FXML
 	private Button btnBackToMenu;
@@ -44,17 +63,8 @@ public class MultiplayerScreenController implements ScreenController {
 	
 	@Override
 	public void init(Scene scene) {
-		ChangeListener<? super GameState> cl = (o, oVal, nVal) -> {
-			if (nVal == GameState.RUNNING) {
-				Util.onJavaFX(() -> Preloader.switchTo("multiplayerGameScreen", 0));
-			}
-		};
-		
-		GameThread gt = FishIOClient.getInstance().getPlayingField().getGameThread();
-		gt.stateProperty().addListener(cl);
-		
-		gt = FishIOServer.getInstance().getPlayingField().getGameThread();
-		gt.stateProperty().addListener(cl);
+		FishIOClient.getInstance().getPlayingFieldProperty().addListener(playingFieldListener);
+		FishIOServer.getInstance().getPlayingFieldProperty().addListener(playingFieldListener);
 	}
 
 	@Override
