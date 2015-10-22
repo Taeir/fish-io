@@ -16,7 +16,7 @@ public class BoundingBox implements ICollisionArea, Serializable {
 	private double width;
 	private double rotation;
 	
-	private transient Rectangle box;
+	private transient volatile Rectangle box;
 
 	/**
 	 * Creates a new Bounding Box with the given coordinates.
