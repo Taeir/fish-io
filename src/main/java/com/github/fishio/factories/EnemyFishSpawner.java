@@ -1,22 +1,22 @@
 package com.github.fishio.factories;
 
+import javafx.beans.property.SimpleIntegerProperty;
+
 import com.github.fishio.EnemyFish;
 import com.github.fishio.Entity;
 import com.github.fishio.PlayingField;
-import com.github.fishio.listeners.TickListener;
 
 /**
  * Spawns EnemyFishes on a PlayingField.
  */
-public class EnemyFishSpawner implements TickListener {
+public class EnemyFishSpawner {
 
 	private PlayingField playingField;
-	private int maxEnemies;
 	private EnemyFishFactory factory;
+	private SimpleIntegerProperty maxEnemiesProperty = new SimpleIntegerProperty();
 	
 	/**
-	 * Creates a new EnemyFishSpawner and automatically
-	 * registers it to the gameListener.
+	 * Creates a new EnemyFishSpawner for the given playingField.
 	 * 
 	 * @param playingField
 	 * 		The playingField on which this spawner should spawn EnemyFishes.
@@ -25,18 +25,44 @@ public class EnemyFishSpawner implements TickListener {
 	 */
 	public EnemyFishSpawner(PlayingField playingField, int maxEnemies) {
 		this.playingField = playingField;
-		this.maxEnemies = maxEnemies;
+		this.maxEnemiesProperty.set(maxEnemies);
 		
 		this.factory = new EnemyFishFactory();
-		
-		playingField.getGameThread().registerListener(this);
 	}
 
-	@Override
-	public void preTick() {
-		for (int enemyCount = enemyCount(); enemyCount <= maxEnemies; enemyCount++) {
+	/**
+	 * Spawns new enemy fish, until the maximum is reached.
+	 */
+	public void spawnEnemyFish() {
+		for (int enemyCount = enemyCount(); enemyCount < getMaxEnemies(); enemyCount++) {
 			addEnemyFish();
 		}
+	}
+	
+	/**
+	 * @return
+	 * 		the max enemies property.
+	 */
+	public SimpleIntegerProperty getMaxEnemiesProperty() {
+		return maxEnemiesProperty;
+	}
+	
+	/**
+	 * @return
+	 * 		the maximum amount of enemies.
+	 */
+	public int getMaxEnemies() {
+		return maxEnemiesProperty.get();
+	}
+	
+	/**
+	 * Sets the maximum amount of enemies in the field to the given value.
+	 * 
+	 * @param maxEnemies
+	 * 		the new maximum
+	 */
+	public void setMaxEnemies(int maxEnemies) {
+		maxEnemiesProperty.set(maxEnemies);
 	}
 	
 	/**
@@ -60,11 +86,9 @@ public class EnemyFishSpawner implements TickListener {
 	 * Adds a random EnemyFish to the PlayingField.
 	 */
 	private void addEnemyFish() {
-		playingField.add(factory.randomizedFish(playingField.getPlayers(), 
-				playingField.getWidth(), playingField.getHeight()));
+		EnemyFish fish = factory.randomizedFish(playingField.getPlayers(),
+				playingField.getWidth(), playingField.getHeight());
+		playingField.add(fish);
 	}
-
-	@Override
-	public void postTick() { }
 	
 }

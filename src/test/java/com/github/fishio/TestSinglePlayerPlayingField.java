@@ -8,6 +8,8 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Iterator;
+
 import org.junit.Test;
 
 import com.github.fishio.behaviours.VerticalBehaviour;
@@ -48,8 +50,31 @@ public class TestSinglePlayerPlayingField extends TestPlayingField {
 	 */
 	@Test
 	public void testGetEntities() {
-		assertEquals(1, getField().getEntitiesList().size());
-		assertTrue(getField().getEntitiesList().get(0) instanceof PlayerFish);
+		assertEquals(1, getField().getEntities().size());
+		assertTrue(getField().getEntities().iterator().next() instanceof PlayerFish);
+	}
+	
+	/**
+	 * Tests the addEntities method.
+	 */
+	@Test
+	public void testAddEntities() {
+		getField().addEntities();
+		
+		assertEquals(getField().getEnemyFishSpawner().getMaxEnemies() + 1, getField().getEntities().size());
+		
+		Iterator<Entity> it = getField().getEntities().iterator();
+		int i = 0;
+		while (it.hasNext() && i < 5) {
+			it.next().kill();
+			i++;
+		}
+		
+		getField().cleanupDead();
+		
+		getField().addEntities();
+		
+		assertEquals(getField().getEnemyFishSpawner().getMaxEnemies() + 1, getField().getEntities().size());
 	}
 	
 	/**

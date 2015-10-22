@@ -207,9 +207,9 @@ public abstract class TestPlayingField extends SlimGuiTest {
 		field.add(e);
 		field.remove(e);
 		
-		assertFalse(field.getEntitiesList().contains(e));
+		assertFalse(field.getEntities().contains(e));
 		assertFalse(field.getDrawables().contains(e));
-		assertEquals(amount, field.getEntitiesList().size());
+		assertEquals(amount, field.getEntities().size());
 	}
 	
 	/**

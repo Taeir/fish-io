@@ -7,8 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
@@ -23,7 +22,7 @@ import com.github.fishio.PlayingField;
 public class TestFishServerEntitiesMessage {
 
 	private PlayingField pf;
-	private Queue<Entity> queue;
+	private Set<Entity> queue;
 	
 	/**
 	 * Create a new playingfield and queue for every test.
@@ -35,7 +34,7 @@ public class TestFishServerEntitiesMessage {
 		Entity entity = mock(Entity.class);
 		when(entity.getEntityId()).thenReturn(10);
 		
-		queue = new LinkedList<Entity>();
+		queue = new HashSet<Entity>();
 		queue.add(entity);
 		when(pf.getEntities()).thenReturn(queue);
 	}

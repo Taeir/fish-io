@@ -3,7 +3,7 @@ package com.github.fishio.multiplayer.server;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -81,11 +81,10 @@ public class FishServerEntitiesMessage implements FishServerMessage {
 	}
 	
 	private void writeObject(ObjectOutputStream out) throws IOException {
-		out.writeObject(new ArrayList<Entity>(entities));
+		out.writeObject(entities.toArray(new Entity[0]));
 	}
 	
-	@SuppressWarnings("unchecked")
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-		this.entities = (Collection<Entity>) in.readObject();
+		this.entities = Arrays.asList((Entity[]) in.readObject());
 	}
 }

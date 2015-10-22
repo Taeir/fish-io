@@ -1,11 +1,14 @@
 package com.github.fishio.multiplayer.client;
 
+import javafx.beans.property.SimpleObjectProperty;
+
 import com.github.fishio.Preloader;
 import com.github.fishio.Util;
 import com.github.fishio.control.MultiplayerGameController;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.multiplayer.FishMessage;
+import com.github.fishio.multiplayer.server.FishServerSettingsMessage;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -28,34 +31,27 @@ import io.netty.util.concurrent.Future;
  * This class is only used client side.
  */
 public final class FishIOClient implements Runnable {
-	private static FishIOClient instance;
+	private static final FishIOClient INSTANCE = new FishIOClient();
 	
 	private volatile boolean connected;
 	private volatile boolean connecting;
 	private volatile Channel currentChannel;
 	
-	private MultiplayerClientPlayingField playingField;
+	private SimpleObjectProperty<MultiplayerClientPlayingField> playingFieldProperty = new SimpleObjectProperty<>();
 	
 	private String host;
 	private int port;
 	
-	private FishIOClient() {
-		MultiplayerGameController controller = Preloader.getControllerOrLoad("multiplayerGameScreen");
-		playingField = new MultiplayerClientPlayingField(60, controller.getCanvas(), 1280, 720);
-	}
+	private FishServerSettingsMessage settings;
+	
+	private FishIOClient() { }
 	
 	/**
 	 * @return
 	 * 		the FishIOClient instance.
 	 */
 	public static FishIOClient getInstance() {
-		synchronized (FishIOClient.class) {
-			if (instance == null) {
-				instance = new FishIOClient();
-			}
-		}
-		
-		return instance;
+		return INSTANCE;
 	}
 	
 	/**
@@ -131,11 +127,8 @@ public final class FishIOClient implements Runnable {
 			//Call onDisconnect when we disconnect from the server.
 			f.channel().closeFuture().addListener((future) -> onDisconnect());
 			
-			//Send the player request
-			f.channel().writeAndFlush(new FishClientRequestPlayerMessage());
-			
-			//Start the game
-			getPlayingField().startGame();
+			//Call our onConnect methods, to indicate that we are connected.
+			onConnect();
 			
 			//Wait until the connection is closed.
 			f.channel().closeFuture().sync();
@@ -257,21 +250,24 @@ public final class FishIOClient implements Runnable {
 	 * 		if <code>true</code>, the queue is flushed after this call.
 	 * 
 	 * @return
-	 * 		<code>true</code> if the message was queued,
-	 * 		<code>false</code> otherwise (e.g. not connected to server).
+	 * 		a ChannelFuture that can be used to determine if and when the
+	 * 		message is actually sent to the server.
+	 * 		<code>null</code> if the message was not queued (e.g. not
+	 * 		connected to server).
 	 */
-	public boolean queueMessage(FishMessage message, boolean flush) {
+	public ChannelFuture queueMessage(FishMessage message, boolean flush) {
 		Channel ch = getChannel();
 		if (ch == null) {
-			return false;
+			return null;
 		}
 		
+		ChannelFuture cf;
 		if (flush) {
-			ch.writeAndFlush(message);
+			cf = ch.writeAndFlush(message);
 		} else {
-			ch.write(message);
+			cf = ch.write(message);
 		}
-		return true;
+		return cf;
 	}
 	
 	/**
@@ -291,20 +287,87 @@ public final class FishIOClient implements Runnable {
 	 * 		the playingfield used by this client.
 	 */
 	public MultiplayerClientPlayingField getPlayingField() {
-		return this.playingField;
+		return playingFieldProperty.get();
+	}
+	
+	/**
+	 * @return
+	 * 		the playingfield property used by this client.
+	 */
+	public SimpleObjectProperty<MultiplayerClientPlayingField> getPlayingFieldProperty() {
+		return this.playingFieldProperty;
+	}
+	
+	/**
+	 * Called when the connection with the server is established.
+	 */
+	public void onConnect() {
+		//Wait until we have received the settings. If awaitSettings returns false,
+		//we lost connection, so we simply return here.
+		if (!awaitSettings()) {
+			return;
+		}
+		
+		//Get the settings we need.
+		int width = (Integer) settings.getSetting("WIDTH");
+		int height = (Integer) settings.getSetting("HEIGHT");
+		
+		//Create a new playing field
+		MultiplayerGameController controller = Preloader.getControllerOrLoad("multiplayerGameScreen");
+		MultiplayerClientPlayingField mcpf =
+				new MultiplayerClientPlayingField(60, controller.getCanvas(), width, height);
+		playingFieldProperty.set(mcpf);
+		
+		//Request a player fish
+		queueMessage(new FishClientRequestPlayerMessage(), true);
+		
+		//Start the game
+		mcpf.startGame();
 	}
 	
 	/**
 	 * Called when we are disconnected from the server.
 	 */
 	public void onDisconnect() {
-		//Stop the game and clear the field
-		getPlayingField().stopGame();
-		getPlayingField().clear();
+		//Remove the current playing field.
+		MultiplayerClientPlayingField mcpf = getPlayingField();
+		playingFieldProperty.set(null);
+		
+		//Stop the game
+		mcpf.stopGame();
+		
+		//Remove the settings
+		this.settings = null;
 		
 		//TODO #169 Show message to client?
 		
 		//Switch back to main menu
 		Util.onJavaFX(() -> Preloader.switchTo("mainMenu", 1000));
+	}
+	
+	/**
+	 * @param settings
+	 * 		sets the settings to use for this FishIOClient.
+	 */
+	public void setSettings(FishServerSettingsMessage settings) {
+		this.settings = settings;
+	}
+	
+	/**
+	 * Waits until we have received settings from the server.
+	 * 
+	 * @return
+	 * 		<code>true</code> if the settings were received,
+	 * 		<code>false</code> otherwise (e.g. connection closed).
+	 */
+	public boolean awaitSettings() {
+		while (this.settings == null) {
+			if (currentChannel == null || currentChannel.closeFuture().awaitUninterruptibly(100L)) {
+				//We lost connection
+				return false;
+			}
+		}
+		
+		return true;
 	}
 }

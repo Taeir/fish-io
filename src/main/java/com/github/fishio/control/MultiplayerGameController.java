@@ -34,6 +34,11 @@ public class MultiplayerGameController implements ScreenController {
 	 * by a new one.
 	 */
 	private final ChangeListener<PlayerFish> playerChangeListener = (player, oldPlayer, newPlayer) -> {
+		if (newPlayer == null) {
+			showDeathScreen(true, null);
+			return;
+		}
+		
 		//Listen for death changes
 		newPlayer.getDeathProperty().addListener((o, oVal, nVal) -> showDeathScreen(nVal, null));
 		
@@ -94,6 +99,9 @@ public class MultiplayerGameController implements ScreenController {
 			return;
 		}
 		
+		//Set the background
+		mppf.getRenderer().setBackground(Preloader.getImageOrLoad("background.png"));
+		
 		//If the player fish changes, this listener will be called.
 		mppf.getOwnPlayerProperty().removeListener(playerChangeListener);
 		mppf.getOwnPlayerProperty().addListener(playerChangeListener);
@@ -136,7 +144,6 @@ public class MultiplayerGameController implements ScreenController {
 		} else if (FishIOServer.getInstance().isRunning()) {
 			FishIOServer.getInstance().getPlayingField().respawnOwnPlayer();
 		}
-		//TODO
 	}
 	
 	/**

@@ -28,7 +28,7 @@ public class KeyListenerBehaviour implements IMoveBehaviour, Serializable {
 	private transient boolean leftPressed;
 	private transient boolean rightPressed;
 	
-	private transient Scene scene;
+	private transient volatile Scene scene;
 	private transient EventHandler<? super KeyEvent> pressHandler;
 	private transient EventHandler<? super KeyEvent> releaseHandler;
 	
@@ -111,6 +111,9 @@ public class KeyListenerBehaviour implements IMoveBehaviour, Serializable {
 	 * 		The KeyCode of the key that when pressed, the entity with this behaviour goes right. 
 	 */
 	private void registerHandlers(Scene scene, KeyCode upKey, KeyCode downKey, KeyCode leftKey, KeyCode rightKey) {
+		//Unregister old handlers first
+		unregisterKeyHandlers();
+		
 		this.scene = scene;
 		
 		//Create the press handler
@@ -148,13 +151,18 @@ public class KeyListenerBehaviour implements IMoveBehaviour, Serializable {
 	 * Unregisters key handlers from the scene they were registered to.
 	 */
 	public void unregisterKeyHandlers() {
-		if (this.scene == null) {
+		Scene scene;
+		synchronized (this) {
+			scene = this.scene;
+			this.scene = null;
+		}
+		
+		if (scene == null) {
 			return;
 		}
 		
 		scene.removeEventHandler(KeyEvent.KEY_PRESSED, pressHandler);
 		scene.removeEventHandler(KeyEvent.KEY_RELEASED, releaseHandler);
-		this.scene = null;
 	}
 	
 	@Override
