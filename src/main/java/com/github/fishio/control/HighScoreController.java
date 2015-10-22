@@ -9,7 +9,6 @@ import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.settings.Settings;
 
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
@@ -36,12 +35,8 @@ public class HighScoreController implements ScreenController {
 	
 	@Override
 	public void init(Scene scene) {
-		SimpleDoubleProperty p = Settings.getInstance().getDoubleProperty("SCREEN_HEIGHT");
-		p.addListener((o, old, newVal) -> {
-			scrollPane.setPrefHeight(newVal.intValue() - 240);
-		});
+		scrollPane.prefHeightProperty().bind(Settings.getInstance().getDoubleProperty("SCREEN_HEIGHT").subtract(240));
 		table.prefHeightProperty().bind(scrollPane.heightProperty().subtract(10));
-		scrollPane.setPrefHeight(p.intValue() - 240);
 	}
 
 	@Override
