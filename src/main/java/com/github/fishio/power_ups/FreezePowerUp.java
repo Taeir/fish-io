@@ -55,7 +55,7 @@ public class FreezePowerUp extends PowerUpDuration {
 	public void startEffect() {
 		getPlayingField().getEntities().parallelStream()
 			.filter(e -> e instanceof EnemyFish)
-			.forEach((e) -> {
+			.forEach(e -> {
 				EnemyFish fish = (EnemyFish) e;
 				oldBehaviours.put(fish, fish.getBehaviour());
 				fish.setBehaviour(new FrozenBehaviour());

@@ -8,7 +8,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 
-import java.util.LinkedList;
+import java.util.HashSet;
 
 import javafx.scene.image.Image;
 
@@ -39,7 +39,7 @@ public class TestPuFreeze extends TestDurationPowerUp {
 	public void setUp() {
 		this.pf = mock(SinglePlayerPlayingField.class);
 		GameThread gt = spy(new GameThread(pf));
-		LinkedList<Entity> entities = new LinkedList<Entity>();
+		HashSet<Entity> entities = new HashSet<Entity>();
 		when(pf.getGameThread()).thenReturn(gt);
 		when(pf.getEntities()).thenReturn(entities);
 		this.pu = spy(new FreezePowerUp(null, pf, mock(Image.class)));
@@ -61,20 +61,19 @@ public class TestPuFreeze extends TestDurationPowerUp {
 	@Override
 	public void testStartEffect() {
 		//Creating our own list of entities for in the PlayingField.
-		LinkedList<Entity> entities = new LinkedList<Entity>();
-		entities.add(mock(EnemyFish.class));
+		HashSet<Entity> entities = new HashSet<Entity>();
+		EnemyFish ef1 = mock(EnemyFish.class);
+		EnemyFish ef2 = mock(EnemyFish.class);
+		entities.add(ef1);
 		entities.add(mock(PlayerFish.class));
 		entities.add(mock(FreezePowerUp.class));
-		entities.add(mock(EnemyFish.class));
+		entities.add(ef2);
 		
 		//Making the PlayingField return our own entities.
 		when(pf.getEntities()).thenReturn(entities);
 		
 		//Invoking the startEffect method
 		pu.startEffect();
-		
-		EnemyFish ef1 = (EnemyFish) entities.get(0);
-		EnemyFish ef2 = (EnemyFish) entities.get(3);
 		
 		//Making sure the EnemyFishes got frozen.
 		verify(ef1).setBehaviour(any(FrozenBehaviour.class));
@@ -90,22 +89,20 @@ public class TestPuFreeze extends TestDurationPowerUp {
 	@Override
 	public void testEndEffect() {
 		//Creating our own list of entities for in the PlayingField.
-		LinkedList<Entity> entities = new LinkedList<Entity>();
-		entities.add(mock(EnemyFish.class));
+		HashSet<Entity> entities = new HashSet<Entity>();
+		EnemyFish ef1 = mock(EnemyFish.class);
+		EnemyFish ef2 = mock(EnemyFish.class);
+		entities.add(ef1);
 		entities.add(mock(PlayerFish.class));
 		entities.add(mock(FreezePowerUp.class));
-		entities.add(mock(EnemyFish.class));
+		entities.add(ef2);
 		
 		//Making the PlayingField return our own entities.
-		when(pf.getEntitiesList()).thenReturn(entities);
 		when(pf.getEntities()).thenReturn(entities);
 		
 		//Invoking the startEffect method and then the endEffect
 		pu.startEffect();
 		pu.endEffect();
-		
-		EnemyFish ef1 = (EnemyFish) entities.get(0);
-		EnemyFish ef2 = (EnemyFish) entities.get(3);
 		
 		//Making sure the EnemyFishes got unfrozen (even though they weren't frozen in the first place).
 		verify(ef1, atLeastOnce()).setBehaviour(any(RandomBehaviour.class));

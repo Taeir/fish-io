@@ -8,6 +8,8 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Iterator;
+
 import org.junit.Test;
 
 import com.github.fishio.behaviours.VerticalBehaviour;
@@ -48,8 +50,8 @@ public class TestSinglePlayerPlayingField extends TestPlayingField {
 	 */
 	@Test
 	public void testGetEntities() {
-		assertEquals(1, getField().getEntitiesList().size());
-		assertTrue(getField().getEntitiesList().get(0) instanceof PlayerFish);
+		assertEquals(1, getField().getEntities().size());
+		assertTrue(getField().getEntities().iterator().next() instanceof PlayerFish);
 	}
 	
 	/**
@@ -59,16 +61,20 @@ public class TestSinglePlayerPlayingField extends TestPlayingField {
 	public void testAddEntities() {
 		getField().addEntities();
 		
-		assertEquals(PlayingField.MAX_ENEMY_COUNT + 1, getField().getEntities().size());
+		assertEquals(getField().getEnemyFishSpawner().getMaxEnemies() + 1, getField().getEntities().size());
 		
-		for (int i = 5; i < 11; i++) {
-			getField().getEntitiesList().get(i).kill();
+		Iterator<Entity> it = getField().getEntities().iterator();
+		int i = 0;
+		while (it.hasNext() && i < 5) {
+			it.next().kill();
+			i++;
 		}
+		
 		getField().cleanupDead();
 		
 		getField().addEntities();
 		
-		assertEquals(PlayingField.MAX_ENEMY_COUNT + 1, getField().getEntities().size());
+		assertEquals(getField().getEnemyFishSpawner().getMaxEnemies() + 1, getField().getEntities().size());
 	}
 	
 	/**

@@ -2,6 +2,7 @@ package com.github.fishio;
 
 import java.util.ArrayList;
 
+import com.github.fishio.factories.EnemyFishSpawner;
 import com.github.fishio.game.GameThread;
 
 import javafx.scene.canvas.Canvas;
@@ -11,6 +12,8 @@ import javafx.scene.canvas.Canvas;
  */
 public class MenuField extends PlayingField {
 	private GameThread gameThread;
+	
+	private static final int MAX_ENEMIES = 10;
 	
 	/**
 	 * Constructor for the menuField.
@@ -23,25 +26,17 @@ public class MenuField extends PlayingField {
 		super(fps, canvas, 0, 1280, 720);
 		
 		this.gameThread = new GameThread(this);
+		
+		new EnemyFishSpawner(this, MAX_ENEMIES);
 	}
 
 	@Override
 	public ArrayList<PlayerFish> getPlayers() {
-		return null;
+		return new ArrayList<>();
 	}
 	
 	@Override
 	public void checkPlayerCollisions() { }
-	
-	@Override
-	public void addEntities() {
-		//add enemy entities
-		while (getEntities().size()  < 5) {
-			EnemyFish eFish = getFactory().randomizedFish(new BoundingBox(null, 60, 60),
-					getWidth(), getHeight());
-			add(eFish);
-		}
-	}
 
 	@Override
 	public GameThread getGameThread() {

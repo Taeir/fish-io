@@ -1,11 +1,16 @@
 package com.github.fishio.multiplayer.server;
 
+import javafx.beans.property.SimpleObjectProperty;
+
+import com.github.fishio.PlayerFish;
 import com.github.fishio.Preloader;
 import com.github.fishio.Util;
 import com.github.fishio.control.MultiplayerGameController;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.multiplayer.FishMessage;
+import com.github.fishio.multiplayer.RepeatingFishMessageSender;
+import com.github.fishio.settings.Settings;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -14,6 +19,7 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.group.ChannelGroup;
+import io.netty.channel.group.ChannelGroupFuture;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -31,30 +37,23 @@ import io.netty.util.concurrent.GlobalEventExecutor;
  * This class is only used server side.
  */
 public final class FishIOServer implements Runnable {
-	private static FishIOServer instance;
+	private static final FishIOServer INSTANCE = new FishIOServer();
 	private int port;
 	private ChannelGroup allChannels;
 	private Channel channel;
 	private boolean started;
-	private MultiplayerServerPlayingField playingField;
+	private SimpleObjectProperty<MultiplayerServerPlayingField> playingFieldProperty = new SimpleObjectProperty<>();
 	
-	private FishIOServer() {
-		MultiplayerGameController controller = Preloader.getControllerOrLoad("multiplayerGameScreen");
-		playingField = new MultiplayerServerPlayingField(60, controller.getCanvas(), 1280 ,720);
-	}
+	private FishServerSettingsMessage settings;
+	
+	private FishIOServer() { }
 	
 	/**
 	 * @return
 	 * 		the FishIOServer instance.
 	 */
 	public static FishIOServer getInstance() {
-		synchronized (FishIOServer.class) {
-			if (instance == null) {
-				instance = new FishIOServer();
-			}
-		}
-		
-		return instance;
+		return INSTANCE;
 	}
 	
 	/**
@@ -69,6 +68,13 @@ public final class FishIOServer implements Runnable {
 		}
 		
 		this.port = port;
+		
+		this.settings = new FishServerSettingsMessage();
+		this.settings.setSetting("WIDTH", 10000);
+		this.settings.setSetting("HEIGHT", 10000);
+		this.settings.setSetting("MAX_ENEMIES", 200);
+		this.settings.setSetting("PLAYER_ACCELERATION", PlayerFish.FISH_ACCELERATION);
+		this.settings.setSetting("MAX_PLAYER_SPEED", Settings.getInstance().getDouble("MAX_PLAYER_SPEED"));
 		
 		new Thread(this).start();
 	}
@@ -119,9 +125,8 @@ public final class FishIOServer implements Runnable {
 			//Call onStop when we stop
 			f.channel().closeFuture().addListener((future) -> onStop());
 			
-			//Create own player and start the game
-			this.playingField.respawnOwnPlayer();
-			this.playingField.startGame();
+			//Call onStart
+			onStart();
 			
 			//Wait until the server socket is closed.
 			f.channel().closeFuture().sync();
@@ -210,9 +215,13 @@ public final class FishIOServer implements Runnable {
 	 * Called when the server is stopped.
 	 */
 	public void onStop() {
-		//Stop the game and clear the field
-		getPlayingField().stopGame();
-		getPlayingField().clear();
+		//Remove the current playing field.
+		MultiplayerServerPlayingField mspf = getPlayingField();
+		playingFieldProperty.set(null);
+		
+		//Stop the old game and clear the field
+		mspf.stopGame();
+		mspf.clear();
 		
 		//TODO #169 show a message to the user?
 		
@@ -224,11 +233,40 @@ public final class FishIOServer implements Runnable {
 	}
 	
 	/**
+	 * Called when this server has started (is open to connections).
+	 */
+	public void onStart() {
+		int width = (Integer) settings.getSetting("WIDTH");
+		int height = (Integer) settings.getSetting("HEIGHT");
+		int maxEnemies = (Integer) settings.getSetting("MAX_ENEMIES");
+		
+		//Create a new playing field
+		MultiplayerGameController controller = Preloader.getControllerOrLoad("multiplayerGameScreen");
+		MultiplayerServerPlayingField mspf =
+				new MultiplayerServerPlayingField(60, controller.getCanvas(), width, height);
+		mspf.getEnemyFishSpawner().setMaxEnemies(maxEnemies);
+		
+		this.playingFieldProperty.set(mspf);
+		
+		//Create own player and start the game
+		mspf.respawnOwnPlayer();
+		mspf.startGame();
+	}
+	
+	/**
 	 * @return
 	 * 		the playingfield used by this server.
 	 */
 	public MultiplayerServerPlayingField getPlayingField() {
-		return this.playingField;
+		return this.playingFieldProperty.get();
+	}
+	
+	/**
+	 * @return
+	 * 		the playingfield property used by this server.
+	 */
+	public SimpleObjectProperty<MultiplayerServerPlayingField> getPlayingFieldProperty() {
+		return this.playingFieldProperty;
 	}
 	
 	/**
@@ -240,22 +278,49 @@ public final class FishIOServer implements Runnable {
 	 * 		if <code>true</code>, the queue is flushed after this call.
 	 * 
 	 * @return
-	 * 		<code>true</code> if the message was queued,
-	 * 		<code>false</code> otherwise (e.g. server not running).
+	 * 		a ChannelGroupFuture, that can be used to determine if and when
+	 * 		the message was actually sent.
+	 * 		<code>null</code> is returned if the message could not be queued
+	 * 		(e.g. server not running).
 	 */
-	public boolean queueMessage(FishMessage message, boolean flush) {
+	public ChannelGroupFuture queueMessage(FishMessage message, boolean flush) {
 		Log.getLogger().log(LogLevel.TRACE, "[Server] Queueing message " + message.getClass().getSimpleName());
 		
+		ChannelGroup cg = this.allChannels;
+		if (cg == null) {
+			return null;
+		}
+		
+		ChannelGroupFuture cgf;
+		if (flush) {
+			cgf = cg.writeAndFlush(message);
+		} else {
+			cgf = cg.write(message);
+		}
+		
+		return cgf;
+	}
+	
+	/**
+	 * Uses {@link RepeatingFishMessageSender#queueWriteFlushToAvailable(ChannelGroup)}
+	 * to send the message (once) to all clients connected, excluding those
+	 * still processing the last message.
+	 * 
+	 * @param sender
+	 * 		the RepeatingFishMessageSender to queue.
+	 * 
+	 * @return
+	 * 		<code>true</code> if sending was queued,
+	 * 		<code>false</code> if not (e.g. server not running).
+	 */
+	public boolean queueMessage(RepeatingFishMessageSender sender) {
 		ChannelGroup cg = this.allChannels;
 		if (cg == null) {
 			return false;
 		}
 		
-		if (flush) {
-			cg.writeAndFlush(message);
-		} else {
-			cg.write(message);
-		}
+		sender.queueWriteFlushToAvailable(cg);
+		
 		return true;
 	}
 	
@@ -271,5 +336,13 @@ public final class FishIOServer implements Runnable {
 		if (cg != null) {
 			cg.flush();
 		}
+	}
+	
+	/**
+	 * @return
+	 * 		the settings of the FishIOServer.
+	 */
+	public FishServerSettingsMessage getSettings() {
+		return this.settings;
 	}
 }
