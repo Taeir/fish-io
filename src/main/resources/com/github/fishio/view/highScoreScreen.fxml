@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane minHeight="480.0" minWidth="640.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.fishio.control.HighScoreController">
+   <children>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" spacing="20.0" StackPane.alignment="TOP_CENTER">
+         <children>
+            <Label text="High scores">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Label>
+            <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" hmax="0.0" maxWidth="315.0" prefWidth="0.0" style="-fx-background-color: transparent;">
+               <VBox.margin>
+                  <Insets bottom="40.0" />
+               </VBox.margin>
+               <content>
+                  <TableView fx:id="table">
+                    <columns>
+                      <TableColumn fx:id="playerColumn" minWidth="200.0" prefWidth="75.0" text="Player" />
+                      <TableColumn fx:id="scoreColumn" minWidth="100.0" prefWidth="75.0" text="Score" />
+                    </columns>
+                  </TableView>
+               </content>
+            </ScrollPane>
+            <Button fx:id="btnBackToMenu" mnemonicParsing="false" onAction="#backToMenu" text="Back to menu">
+               <VBox.margin>
+                  <Insets bottom="25.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+         <StackPane.margin>
+            <Insets bottom="40.0" top="40.0" />
+         </StackPane.margin>
+      </VBox>
+   </children>
+</StackPane>

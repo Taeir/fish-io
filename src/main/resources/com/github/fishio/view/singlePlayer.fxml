@@ -41,7 +41,7 @@
             <Canvas fx:id="gameCanvas" height="430.0" width="640.0" />
          </children>
       </VBox>
-      <VBox fx:id="deathScreen" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="250.0" spacing="5.0" style="-fx-background-color: #AAAAFF;" visible="false">
+      <VBox fx:id="deathScreen" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="250.0" spacing="5.0" style="-fx-background-color: #AAAAFF;">
          <children>
             <Label text="You died!">
                <font>
@@ -50,9 +50,14 @@
             </Label>
             <Label fx:id="endScore" text="score: 0 points" />
             <Button fx:id="btnDSRevive" minWidth="100.0" mnemonicParsing="false" onAction="#revive" text="Revive" />
-            <Button fx:id="btnDSRestart" minWidth="100.0" mnemonicParsing="false" onAction="#restartGame" text="Restart">
+            <TextField fx:id="scoreName" maxWidth="200.0" promptText="Enter a name for your score">
                <VBox.margin>
                   <Insets top="50.0" />
+               </VBox.margin>
+            </TextField>
+            <Button fx:id="btnDSRestart" minWidth="100.0" mnemonicParsing="false" onAction="#restartGame" text="Restart">
+               <VBox.margin>
+                  <Insets />
                </VBox.margin>
             </Button>
             <Button fx:id="btnDSMenu" minWidth="100.0" mnemonicParsing="false" onAction="#backToMenu" text="Menu" />

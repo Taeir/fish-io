@@ -78,6 +78,8 @@ public final class FishIO extends Application {
 		//Start loading audio and start background music
 		AudioEngine.getInstance().getAudioFactory().startLoading();
 		AudioEngine.getInstance().startBackgroundMusicWhenLoaded();
+		
+		HighScore.init();
 	}
 	
 	@Override

@@ -31,16 +31,10 @@ public class MainMenuController implements ScreenController {
 	private Button btnMultiplayer;
 	
 	@FXML
-	private Button btnLoadLevel;
-	
-	@FXML
 	private Button btnShowHighscores;
 	
 	@FXML
 	private Button btnShowAchievements;
-	
-	@FXML
-	private Button btnShowStatistics;
 	
 	@FXML
 	private Button btnShowSettings;
@@ -103,7 +97,8 @@ public class MainMenuController implements ScreenController {
 	public void showHighScores() {
 		AudioEngine.getInstance().playButtonSound();
 		
-		//TODO (not now)
+		logger.log(LogLevel.INFO, "Player Pressed the highScoreScreen Button.");
+		Preloader.switchTo("highScoreScreen", 400);
 	}
 
 	/**
@@ -116,17 +111,6 @@ public class MainMenuController implements ScreenController {
 		
 		logger.log(LogLevel.INFO, "Player Pressed the achievementScreen Button.");
 		Preloader.switchTo("achievementScreen", 400);
-	}
-
-	/**
-	 * Show the statistics screen.
-	 * This Method is called when pressing the menu button.
-	 */
-	@FXML
-	public void showStatistics() {
-		AudioEngine.getInstance().playButtonSound();
-		
-		//TODO (not now)
 	}
 
 	/**
@@ -184,14 +168,6 @@ public class MainMenuController implements ScreenController {
 
 	/**
 	 * @return
-	 * 		the button that loads a level from a save file.
-	 */
-	public Button getBtnLoadLevel() {
-		return btnLoadLevel;
-	}
-
-	/**
-	 * @return
 	 * 		the button that shows the highscores screen.
 	 */
 	public Button getBtnShowHighscores() {
@@ -204,14 +180,6 @@ public class MainMenuController implements ScreenController {
 	 */
 	public Button getBtnShowAchievements() {
 		return btnShowAchievements;
-	}
-
-	/**
-	 * @return
-	 * 		the button that shows the statistics.
-	 */
-	public Button getBtnShowStatistics() {
-		return btnShowStatistics;
 	}
 
 	/**
