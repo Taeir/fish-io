@@ -42,4 +42,15 @@ public class TestIDrawableDebugDraw {
 		Mockito.when(collisionArea.getTopRight()).thenReturn(new Vec2d(4, 4));
 	}
 	
+	/**
+	 * Tests the debugDrawMethod by checking whether the angle is
+	 * properly written on a canvas.
+	 */
+	@Test
+	public void testDebugDrawAngleDrawn() {
+		drawable.debugDraw(graphicsContext, collisionArea);
+		
+		Mockito.verify(graphicsContext).fillText("angle: 42.0", 69D, 1003D);
+	}
+	
 }
