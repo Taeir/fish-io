@@ -1,6 +1,7 @@
 package com.github.fishio;
 
 import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mockito;
 
 import javafx.scene.canvas.Canvas;
@@ -15,6 +16,11 @@ public class TestIDrawableDebugDraw {
 	private CollisionMask collisionArea;
 	private GraphicsContext graphicsContext;
 	
+	/**
+	 * Initialises the important fields for testing.
+	 * The collisionArea field and graphicsContext field are both
+	 * mocked classes so stubbing and verifying will be easy.
+	 */
 	@Before
 	public void setUp() {
 		this.collisionArea = Mockito.mock(CollisionMask.class);
