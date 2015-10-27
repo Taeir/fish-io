@@ -1,6 +1,7 @@
 package com.github.fishio.control;
 
 import com.github.fishio.Preloader;
+import com.github.fishio.audio.AudioEngine;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.settings.Settings;
@@ -101,6 +102,7 @@ public class SettingsScreenController implements ScreenController {
 			button.setText("Change");
 			button.setOnAction(e -> {
 				e.consume();
+				AudioEngine.getInstance().playButtonSound();
 				button.setText("Type new key");
 				
 				button.setOnKeyPressed(k -> {
@@ -143,9 +145,11 @@ public class SettingsScreenController implements ScreenController {
 				e.consume();
 				if (settings.getBoolean(key)) {
 					settings.setBoolean(key, false);
+					AudioEngine.getInstance().playButtonSound();
 					button.setText("Enable");				
 				} else {
 					settings.setBoolean(key, true);
+					AudioEngine.getInstance().playButtonSound();
 					button.setText("Disable");
 				}
 			});
@@ -214,6 +218,7 @@ public class SettingsScreenController implements ScreenController {
 	@FXML
 	public void backToMenu() {
 		settings.save();
+		AudioEngine.getInstance().playButtonSound();
 		logger.log(LogLevel.INFO, "Player Pressed the back to menu Button.");
 		Preloader.switchTo("mainMenu", 400);
 	}

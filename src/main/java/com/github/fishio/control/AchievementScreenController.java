@@ -2,6 +2,9 @@ package com.github.fishio.control;
 
 import com.github.fishio.Preloader;
 import com.github.fishio.achievements.AchievementManager;
+import com.github.fishio.audio.AudioEngine;
+import com.github.fishio.logging.Log;
+import com.github.fishio.logging.LogLevel;
 import com.github.fishio.settings.Settings;
 
 import javafx.beans.property.SimpleDoubleProperty;
@@ -15,6 +18,9 @@ import javafx.scene.control.ScrollPane;
  * Achievement screen controller.
  */
 public class AchievementScreenController implements ScreenController {
+
+	private Log logger = Log.getLogger();
+
 	@FXML 
 	private ScrollPane scrollPane;
 	@FXML
@@ -163,6 +169,8 @@ public class AchievementScreenController implements ScreenController {
 	 */
 	@FXML
 	public void backToMenu() {
+		AudioEngine.getInstance().playButtonSound();
+		logger.log(LogLevel.INFO, "Player Pressed the back to menu Button.");
 		Preloader.switchTo("mainMenu", 400);
 	}
 	
