@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="480.0" minWidth="640.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.fishio.control.AchievementScreenController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="480.0" minWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.github.fishio.control.AchievementScreenController">
   <children>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" StackPane.alignment="TOP_CENTER">
          <children>
@@ -57,6 +57,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
+                                          <ImageView fx:id="achieveLVLIcon1" fitHeight="150.0" fitWidth="200.0" layoutX="10.0" pickOnBounds="true" preserveRatio="true" />
                                        </children>
                                        <padding>
                                           <Insets left="50.0" />
@@ -250,6 +251,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
+                                          <ImageView fx:id="achieveLVLIcon2" fitHeight="150.0" fitWidth="200.0" layoutX="10.0" pickOnBounds="true" preserveRatio="true" />
                                        </children>
                                        <padding>
                                           <Insets left="50.0" />

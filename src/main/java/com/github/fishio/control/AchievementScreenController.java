@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.ImageView;
 
 /**
  * Achievement screen controller.
@@ -65,6 +66,10 @@ public class AchievementScreenController implements ScreenController {
 	private Label icon24;
 	@FXML
 	private Label icon25;
+	@FXML
+	private ImageView achieveLVLIcon1;
+	@FXML
+	private ImageView achieveLVLIcon2;
 	
 	@Override
 	public void init(Scene scene) {
@@ -104,19 +109,21 @@ public class AchievementScreenController implements ScreenController {
 			//Fall through is intended.
 			switch (nVal.intValue()) {
 				case 5:
-					smallachieve15.setOpacity(1);
+				smallachieve25.setOpacity(1);
 				case 4:
-					smallachieve14.setOpacity(1);
+				smallachieve24.setOpacity(1);
 				case 3:
-					smallachieve13.setOpacity(1);
+				smallachieve23.setOpacity(1);
 				case 2:
-					smallachieve12.setOpacity(1);
+				smallachieve22.setOpacity(1);
 				case 1:
-					smallachieve11.setOpacity(1);
+				smallachieve21.setOpacity(1);
 					break;
 				default:
 					break;
 			}
+			achieveLVLIcon2
+					.setImage(Preloader.getImageOrLoad("/sprites/ChieveLvls/AchieveLVL" + nVal.intValue() + ".png"));
 		});
 	}
 
@@ -128,19 +135,21 @@ public class AchievementScreenController implements ScreenController {
 			//Fall through is intended.
 			switch (nVal.intValue()) {
 				case 5:
-					smallachieve25.setOpacity(1);
+				smallachieve15.setOpacity(1);
 				case 4:
-					smallachieve24.setOpacity(1);
+				smallachieve14.setOpacity(1);
 				case 3:
-					smallachieve23.setOpacity(1);
+				smallachieve13.setOpacity(1);
 				case 2:
-					smallachieve22.setOpacity(1);
+				smallachieve12.setOpacity(1);
 				case 1:
-					smallachieve21.setOpacity(1);
+				smallachieve11.setOpacity(1);
 					break;
 				default:
 					break;
 			}
+			achieveLVLIcon1
+					.setImage(Preloader.getImageOrLoad("/sprites/ChieveLvls/AchieveLVL" + nVal.intValue() + ".png"));
 		});
 	}
 
