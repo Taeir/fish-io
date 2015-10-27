@@ -49,8 +49,8 @@ public class TestIDrawableDebugDraw {
 		
 		HashSet<Vec2d> set = new HashSet<>();
 		set.add(new Vec2d());
-		set.add(new Vec2d(100,100));
-		set.add(new Vec2d(200,200));
+		set.add(new Vec2d(100, 100));
+		set.add(new Vec2d(200, 200));
 		when(collisionArea.getMask()).thenReturn(set);
 	}
 	
