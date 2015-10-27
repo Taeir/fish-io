@@ -65,7 +65,6 @@ public final class Preloader {
 	 */
 	public static void preloadImages() {
 		Log.getLogger().log(LogLevel.DEBUG, "[Preloader] Preloading images...");
-		
 		//Load the background and the logo (short tasks)
 		MultiThreadedUtility.submitTask(() -> tryPreLoad("background.png"), true);
 		MultiThreadedUtility.submitTask(() -> tryPreLoad("logo.png"), true);
@@ -87,7 +86,7 @@ public final class Preloader {
 	 * @param file
 	 * 		the file of the image.
 	 */
-	private static void tryPreLoad(String file) {
+	protected static void tryPreLoad(String file) {
 		synchronized (IMAGES) {
 			if (IMAGES.containsKey(file)) {
 				return;
@@ -396,5 +395,19 @@ public final class Preloader {
 		if (current != null) {
 			getController(current).onSwitchAway();
 		}		
+	}
+
+	/**
+	 * @return the screens
+	 */
+	static HashMap<String, Scene> getScreens() {
+		return SCREENS;
+	}
+
+	/**
+	 * @return the images
+	 */
+	static HashMap<String, Image> getImages() {
+		return IMAGES;
 	}
 }
