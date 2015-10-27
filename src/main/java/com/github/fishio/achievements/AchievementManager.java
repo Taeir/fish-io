@@ -16,7 +16,7 @@ public final class AchievementManager {
 			
 			int nr = ((PlayerDeathObserver) observer).getCounter();
 			AchievementIO.addObserverCounter(PLAYER_DEATH.getName(), nr);
-			
+
 			if (nr >= 100) {
 				setLevel(5);
 				Log.getLogger().log(LogLevel.INFO, "Achievement gained for dying 100 times");
@@ -49,6 +49,7 @@ public final class AchievementManager {
 			
 			int nr = ((EnemyKillObserver) observer).getCounter();
 			AchievementIO.addObserverCounter(ENEMY_KILL.getName(), nr);
+
 
 			if (nr >= 500) {
 				setLevel(5);

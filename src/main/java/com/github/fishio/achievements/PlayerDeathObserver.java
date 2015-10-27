@@ -30,6 +30,7 @@ public class PlayerDeathObserver implements AchievementObserver {
 		registerPlayerListener(subject);
 		
 		attachAchievement(AchievementManager.PLAYER_DEATH);
+		notifyAchievements();
 	}
 	
 	/**
