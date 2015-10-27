@@ -26,6 +26,7 @@ public class SettingsScreenController implements ScreenController {
 
 	private Log logger = Log.getLogger();
 	private Settings settings = Settings.getInstance();
+	private AudioEngine buttonAudio = AudioEngine.getInstance();
 	
 	@FXML
 	private Button btnBackToMenu;
@@ -102,7 +103,7 @@ public class SettingsScreenController implements ScreenController {
 			button.setText("Change");
 			button.setOnAction(e -> {
 				e.consume();
-				AudioEngine.getInstance().playButtonSound();
+				buttonAudio.playButtonSound();
 				button.setText("Type new key");
 				
 				button.setOnKeyPressed(k -> {
@@ -145,11 +146,11 @@ public class SettingsScreenController implements ScreenController {
 				e.consume();
 				if (settings.getBoolean(key)) {
 					settings.setBoolean(key, false);
-					AudioEngine.getInstance().playButtonSound();
+					buttonAudio.playButtonSound();
 					button.setText("Enable");				
 				} else {
 					settings.setBoolean(key, true);
-					AudioEngine.getInstance().playButtonSound();
+					buttonAudio.playButtonSound();
 					button.setText("Disable");
 				}
 			});
@@ -218,7 +219,7 @@ public class SettingsScreenController implements ScreenController {
 	@FXML
 	public void backToMenu() {
 		settings.save();
-		AudioEngine.getInstance().playButtonSound();
+		buttonAudio.playButtonSound();
 		logger.log(LogLevel.INFO, "Player Pressed the back to menu Button.");
 		Preloader.switchTo("mainMenu", 400);
 	}
