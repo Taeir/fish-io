@@ -23,6 +23,7 @@ public class PlayerDeathObserver implements AchievementObserver {
 	 *            The subject this observer has to be notified by.
 	 */
 	public PlayerDeathObserver(SinglePlayerPlayingField subject) {
+		setCounter(AchievementIO.get("playerDeath"));
 		this.playerFish = subject.getPlayer();
 		this.playerFish.attach(this);
 		

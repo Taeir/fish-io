@@ -15,19 +15,24 @@ public final class AchievementManager {
 			}
 			
 			int nr = ((PlayerDeathObserver) observer).getCounter();
+			AchievementIO.addObserverCounter(PLAYER_DEATH.getName(), nr);
 			
 			if (nr >= 100) {
 				setLevel(5);
 				Log.getLogger().log(LogLevel.INFO, "Achievement gained for dying 100 times");
+
 			} else if (nr >= 50) {
 				setLevel(4);
 				Log.getLogger().log(LogLevel.INFO, "Achievement gained for dying 50 times");
+
 			} else if (nr >= 10) {
 				setLevel(3);
 				Log.getLogger().log(LogLevel.INFO, "Achievement gained for dying 10 times");
+
 			} else if (nr >= 5) {
 				setLevel(2);
 				Log.getLogger().log(LogLevel.INFO, "Achievement gained for dying 5 times");
+
 			} else if (nr >= 1) {
 				setLevel(1);
 				Log.getLogger().log(LogLevel.INFO, "Achievement gained for dying 1 time");
@@ -43,7 +48,8 @@ public final class AchievementManager {
 			}
 			
 			int nr = ((EnemyKillObserver) observer).getCounter();
-			
+			AchievementIO.addObserverCounter(ENEMY_KILL.getName(), nr);
+
 			if (nr >= 500) {
 				setLevel(5);
 				Log.getLogger().log(LogLevel.INFO, "Achievement gained for killing an enemy fish 500 times");

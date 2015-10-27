@@ -23,6 +23,7 @@ public class EnemyKillObserver implements AchievementObserver {
 	 *            The subject this observer has to be notified by.
 	 */
 	public EnemyKillObserver(SinglePlayerPlayingField subject) {
+		enemykillcounter = AchievementIO.get("enemyKill");
 		this.playerFish = subject.getPlayer();
 		this.playerFish.attach(this);
 		
