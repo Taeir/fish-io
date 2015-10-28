@@ -23,12 +23,8 @@ import javafx.scene.layout.HBox;
  * Controller for the settings screen.
  */
 public class SettingsScreenController implements ScreenController {
-
 	private Log logger = Log.getLogger();
 	private Settings settings = Settings.getInstance();
-	
-	@FXML
-	private Button btnBackToMenu;
 	
 	@FXML
 	private GridPane gridPane;
@@ -292,8 +288,15 @@ public class SettingsScreenController implements ScreenController {
 	 * initialized from the fxml file. This method is used only for testing.
 	 */
 	protected void initFXMLForTest() {
-		btnBackToMenu = new Button();
 		gridPane = new GridPane();
 		scrollPane = new ScrollPane(gridPane);
+	}
+	
+	/**
+	 * @return
+	 * 		the gridpane used by the SettingsScreen.
+	 */
+	public GridPane getGridPane() {
+		return gridPane;
 	}
 }

@@ -31,7 +31,7 @@
                   </GridPane>
                </content>
             </ScrollPane>
-            <Button fx:id="btnBackToMenu" mnemonicParsing="false" onAction="#backToMenu" text="Back to menu">
+            <Button mnemonicParsing="false" onAction="#backToMenu" text="Back to menu">
                <VBox.margin>
                   <Insets bottom="25.0" />
                </VBox.margin>
