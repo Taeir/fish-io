@@ -134,6 +134,10 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	private void registerAchievementPopups() {
 		AchievementManager.ENEMY_KILL.getLevelProperty().addListener((o, oVal, nVal) -> {
+			if (nVal.intValue() <= 0) {
+				return;
+			}
+			
 			Util.onJavaFX(() -> {
 				Image img = new Image("/sprites/chieveLarge/Achieve1.png");
 				showAchievePopup(img, "Glutton!", nVal.intValue());
@@ -142,9 +146,12 @@ public class SinglePlayerController implements ScreenController {
 		
 		AchievementManager.PLAYER_DEATH.getLevelProperty().addListener((o, oVal, nVal) -> {
 			Util.onJavaFX(() -> {
+				if (nVal.intValue() <= 0) {
+					return;
+				}
+				
 				Image img = new Image("/sprites/chieveLarge/Achieve2.png");
 				showAchievePopup(img, "Survival of the fittest!", nVal.intValue());
-
 			});
 		});
 	}
