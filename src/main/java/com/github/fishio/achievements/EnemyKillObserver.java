@@ -30,7 +30,6 @@ public class EnemyKillObserver implements AchievementObserver {
 		registerPlayerListener(subject);
 		
 		attachAchievement(AchievementManager.ENEMY_KILL);
-		attachAchievement(AchievementManager.PLAYER_DEATH);
 		notifyAchievements();
 	}
 	

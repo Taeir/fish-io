@@ -36,6 +36,8 @@ public final class AchievementManager {
 			} else if (nr >= 1) {
 				setLevel(1);
 				Log.getLogger().log(LogLevel.INFO, "Achievement gained for dying 1 time");
+			} else {
+				setLevel(0);
 			}
 		}
 	};
@@ -66,6 +68,8 @@ public final class AchievementManager {
 			} else if (nr >= 3) {
 				setLevel(1);
 				Log.getLogger().log(LogLevel.INFO, "Achievement gained for killing an enemy fish 3 times");
+			} else {
+				setLevel(0);
 			}
 		}
 	};
