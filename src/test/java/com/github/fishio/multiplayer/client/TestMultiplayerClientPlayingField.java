@@ -1,19 +1,20 @@
 package com.github.fishio.multiplayer.client;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Set;
-
-import org.junit.Test;
 
 import javafx.scene.canvas.Canvas;
+
+import org.junit.Test;
 
 import com.github.fishio.CollisionMask;
 import com.github.fishio.EnemyFish;
 import com.github.fishio.Entity;
-import com.github.fishio.ICollidable;
-import com.github.fishio.ICollisionArea;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.behaviours.FrozenBehaviour;
 import com.github.fishio.behaviours.IMoveBehaviour;
