@@ -17,7 +17,7 @@ import com.github.fishio.PlayingField;
 public class FishServerEntitiesMessage implements FishServerMessage {
 	private static final long serialVersionUID = -6352446970035595155L;
 	
-	private Collection<Entity> entities;
+	private Collection<? extends Entity> entities;
 	
 	/**
 	 * @param field
@@ -28,10 +28,18 @@ public class FishServerEntitiesMessage implements FishServerMessage {
 	}
 	
 	/**
+	 * @param entities
+	 * 		the entities to put in this message.
+	 */
+	public FishServerEntitiesMessage(Collection<? extends Entity> entities) {
+		this.entities = entities;
+	}
+	
+	/**
 	 * @return
 	 * 		the entities in this message.
 	 */
-	public Collection<Entity> getEntities() {
+	public Collection<? extends Entity> getEntities() {
 		return entities;
 	}
 	
