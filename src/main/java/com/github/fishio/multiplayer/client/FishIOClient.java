@@ -155,27 +155,7 @@ public final class FishIOClient implements Runnable {
 	}
 	
 	/**
-	 * @return
-	 * 		<code>true</code> if this client is able to connect to a new
-	 * 		server. <code>false</code> if we are still connecting or
-	 * 		connected to a server.
-	 */
-	public boolean canConnect() {
-		return !isConnecting() && !isConnectedQuick();
-	}
-	
-	/**
-	 * @return
-	 * 		<code>true</code> if this client is connecting to a server.
-	 * 		<code>false</code> otherwise.
-	 */
-	public boolean isConnecting() {
-		return connecting;
-	}
-	
-	/**
-	 * Performs a quick check to see if we are connected.<br>
-	 * Use {@link #isConnected()} if you want to know for certain.
+	 * Performs a quick (non blocking) check to see if we are connected.
 	 * 
 	 * @return
 	 * 		<code>true</code> if this client is connected to a server.
@@ -183,18 +163,6 @@ public final class FishIOClient implements Runnable {
 	 */
 	public boolean isConnectedQuick() {
 		return connected;
-	}
-	
-	/**
-	 * Note: this method can block under certain circumstances. Use
-	 * {@link #isConnectedQuick()} to check without blocking.
-	 * 
-	 * @return
-	 * 		<code>true</code> if this client is connected to a server.
-	 * 		<code>false</code> otherwise.
-	 */
-	public synchronized boolean isConnected() {
-		return currentChannel != null && currentChannel.isActive();
 	}
 	
 	/**
@@ -271,18 +239,6 @@ public final class FishIOClient implements Runnable {
 	}
 	
 	/**
-	 * If this client is connected to a server, this method flushes all
-	 * queued messages to the server.
-	 */
-	public void flush() {
-		Channel ch = getChannel();
-
-		if (ch != null) {
-			ch.flush();
-		}
-	}
-	
-	/**
 	 * @return
 	 * 		the playingfield used by this client.
 	 */
@@ -343,6 +299,14 @@ public final class FishIOClient implements Runnable {
 		
 		//Switch back to main menu
 		Util.onJavaFX(() -> Preloader.switchTo("mainMenu", 1000));
+	}
+	
+	/**
+	 * @return
+	 * 		the settings for this FishIOClient, can be <code>null</code>.
+	 */
+	public FishServerSettingsMessage getSettings() {
+		return this.settings;
 	}
 	
 	/**
