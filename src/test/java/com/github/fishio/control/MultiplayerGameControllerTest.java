@@ -219,7 +219,7 @@ public class MultiplayerGameControllerTest extends NoSoundSlimGuiTest {
 		controller.onEnd();
 		
 		//No errors should occur
-		verify(TestUtil.getMockHandler(), times(0)).output(any(), any());
+		verify(TestUtil.getMockHandler(), times(0)).output(any(), any(Exception.class));
 	}
 
 }
