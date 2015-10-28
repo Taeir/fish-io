@@ -4,13 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import javafx.beans.property.SimpleObjectProperty;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import com.github.fishio.PlayerFish;
 import com.github.fishio.SinglePlayerPlayingField;
+
+import javafx.beans.property.SimpleObjectProperty;
 
 /**
  * This class tests the Player Death achievement.
@@ -38,7 +38,9 @@ public class TestAchievePlayerDeath {
 		
 		when(sppf.getPlayer()).thenReturn(pf);
 		when(sppf.playerProperty()).thenReturn(sop);
-		return new PlayerDeathObserver(sppf);
+		PlayerDeathObserver pdo = new PlayerDeathObserver(sppf);
+		pdo.setCounter(0);
+		return pdo;
 	}
 	
 	/**

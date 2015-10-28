@@ -76,9 +76,7 @@ public class AchievementScreenController implements ScreenController {
 		bindOpacities();
 		
 		setDefaultOpacities();
-		
 		addDeathListener();
-		
 		addKillListener();
 		
 		SimpleDoubleProperty p = Settings.getInstance().getDoubleProperty("SCREEN_HEIGHT");
