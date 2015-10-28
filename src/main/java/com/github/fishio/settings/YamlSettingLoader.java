@@ -192,9 +192,4 @@ public class YamlSettingLoader implements ISettingLoader {
 		}
 		
 	}
-
-	@Override
-	public void setFileName(String name) {
-		settingsFile = new File(name + ".yml");
-	}
 }

@@ -53,12 +53,4 @@ public interface ISettingLoader {
 	 * 		A HashMap containing all the descriptions.
 	 */
 	HashMap<String, String> getDescriptions();
-	
-	/**
-	 * Change the file name.
-	 * If the name is not set with this method, 'settings' will be used as default.
-	 * @param name
-	 * 		The filename excluding file-extension.
-	 */
-	void setFileName(String name);
 }
