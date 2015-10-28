@@ -29,6 +29,7 @@
     <rule ref="rulesets/java/junit.xml">
         <exclude name="JUnitAssertionsShouldIncludeMessage"/>
         <exclude name="JUnitTestContainsTooManyAsserts" />
+		<exclude name="JUnitTestsShouldIncludeAssert" />
     </rule>
     <rule ref="rulesets/java/junit.xml/JUnitTestContainsTooManyAsserts">
         <properties>
