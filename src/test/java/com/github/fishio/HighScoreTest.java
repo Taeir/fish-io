@@ -20,43 +20,58 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.github.fishio.logging.ConsoleHandler;
-import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
+import com.github.fishio.test.util.TestUtil;
 
 /**
  * Test class for {@link HighScore}.
  */
 public class HighScoreTest {
-	
+	private static final String HIGH_SCORE_FILE = "testHighScores.yml";
 	/**
-	 * Save the current highscores before running the test.
+	 * The player name that will be used by the tests.
+	 */
+	private static final String PLAYER_NAME = "bananas";
+
+	/**
+	 * Save the current highscores, and set up the logger.
 	 */
 	@BeforeClass
-	public static void copyScores() {
-		File file = new File("highScores.yml");
-		File newFile = new File("highScores.tmp");
-		newFile.delete();
-		file.renameTo(newFile);
+	public static void setUpClass() {
+		//Setup the logger for testing
+		TestUtil.setUpLoggerForTesting(LogLevel.ERROR);
+		
+		//Use test highscores file
+		HighScore.setScoreFile(new File(HIGH_SCORE_FILE));
 	}
 	
 	/**
-	 * Restore the old highscore file.
+	 * Restore the old highscore file and the logger.
 	 */
 	@AfterClass
-	public static void restoreScores() {
-		File file = new File("highScores.yml");
-		File tempFile = new File("highScores.tmp");
+	public static void tearDownClass() {
+		//Restore the logger
+		TestUtil.restoreLogger();
+		
+		//Restore the normal file
+		HighScore.setScoreFile(new File("highScores.yml"));
+		
+		//Delete the test highscores file
+		File file = new File(HIGH_SCORE_FILE);
 		file.delete();
-		tempFile.renameTo(file);
 	}
 	
 	/**
-	 * Reset all high scores.
+	 * Reset all high scores and reset the logger.
 	 */
 	@Before
-	public void before() {
+	public void setUp() {
+		//Reset the file and the scores
+		HighScore.setScoreFile(new File(HIGH_SCORE_FILE));
 		HighScore.getAll().clear();
+		
+		//Reset the logger
+		TestUtil.resetMockHandler();
 	}
 	
 	/**
@@ -74,7 +89,7 @@ public class HighScoreTest {
 	 */
 	@Test
 	public void testAddSize() {
-		HighScore.addScore(10, "bananas");
+		HighScore.addScore(10, PLAYER_NAME);
 		assertEquals(1, HighScore.getAll().size());
 	}
 	
@@ -84,8 +99,8 @@ public class HighScoreTest {
 	 */
 	@Test
 	public void testAddSameSize() {
-		HighScore.addScore(7, "bananas");
-		HighScore.addScore(9, "bananas");
+		HighScore.addScore(7, PLAYER_NAME);
+		HighScore.addScore(9, PLAYER_NAME);
 		assertEquals(1, HighScore.getAll().size());
 	}
 	
@@ -95,8 +110,8 @@ public class HighScoreTest {
 	 */
 	@Test
 	public void testAddValue() {
-		HighScore.addScore(12, "bananas");
-		assertEquals(12, HighScore.getAll().get("bananas").intValue());
+		HighScore.addScore(12, PLAYER_NAME);
+		assertEquals(12, HighScore.getAll().get(PLAYER_NAME).intValue());
 	}
 	
 	/**
@@ -105,9 +120,9 @@ public class HighScoreTest {
 	 */
 	@Test
 	public void testAddHigherValue() {
-		HighScore.addScore(10, "bananas");
-		HighScore.addScore(12, "bananas");
-		assertEquals(12, HighScore.getAll().get("bananas").intValue());
+		HighScore.addScore(10, PLAYER_NAME);
+		HighScore.addScore(12, PLAYER_NAME);
+		assertEquals(12, HighScore.getAll().get(PLAYER_NAME).intValue());
 	}
 	
 	/**
@@ -116,9 +131,9 @@ public class HighScoreTest {
 	 */
 	@Test
 	public void testAddLowerValue() {
-		HighScore.addScore(12, "bananas");
-		HighScore.addScore(6, "bananas");
-		assertEquals(12, HighScore.getAll().get("bananas").intValue());
+		HighScore.addScore(12, PLAYER_NAME);
+		HighScore.addScore(6, PLAYER_NAME);
+		assertEquals(12, HighScore.getAll().get(PLAYER_NAME).intValue());
 	}
 	
 	/**
@@ -127,34 +142,35 @@ public class HighScoreTest {
 	 */
 	@Test
 	public void testInit() {
-		File file = new File("highScores.yml");
+		File file = new File(HIGH_SCORE_FILE);
 		file.delete();
 		assertFalse(file.exists());
+		
+		//Initialize the highscores
 		HighScore.init();
+		
+		//It should have created the file and the highscores should be empty.
 		assertTrue(file.exists());
-		HighScore.init();
 		assertEquals(0, HighScore.getAll().size());
 	}
 	
 	/**
 	 * Test for {@link HighScore#init()}.
 	 * Test exception handling.
+	 * 
 	 * @throws IOException
 	 * 		When something goes wrong.
 	 */
 	@Test
 	public void testInitException() throws IOException {
 		File file = mock(File.class);
+		when(file.createNewFile()).thenThrow(new IOException("Fake IOException on file creation"));
+		
 		HighScore.setScoreFile(file);
-		Log log = Log.getLogger();
-		ConsoleHandler mock = mock(ConsoleHandler.class);
-		log.removeAllHandlers();
-		log.addHandler(mock);
-		when(file.createNewFile()).thenThrow(new IOException("test"));
+
 		HighScore.init();
 		
-		verify(mock).output(LogLevel.ERROR, "Error creating file null");
-		HighScore.setScoreFile(new File("highScores.yml"));	//reset
+		verify(TestUtil.getMockHandler()).output(LogLevel.ERROR, "Error creating file null");
 	}
 	
 	/**
@@ -166,16 +182,13 @@ public class HighScoreTest {
 	@Test
 	public void testLoadException() throws IOException {
 		File file = mock(File.class);
+		when(file.createNewFile()).thenThrow(new IOException("Fake IOException on file creation"));
+		
 		HighScore.setScoreFile(file);
-		Log log = Log.getLogger();
-		ConsoleHandler mock = mock(ConsoleHandler.class);
-		log.removeAllHandlers();
-		log.addHandler(mock);
-		when(file.createNewFile()).thenThrow(new IOException("test"));
+
 		HighScore.loadHighScores();
 		
-		verify(mock).output(LogLevel.ERROR, "Error loading file null");
-		HighScore.setScoreFile(new File("highScores.yml"));	//reset
+		verify(TestUtil.getMockHandler()).output(LogLevel.ERROR, "Error loading file null");
 	}
 	
 	/**
@@ -186,7 +199,7 @@ public class HighScoreTest {
 	 */
 	@Test
 	public void testload() throws IOException {
-		try (FileWriter fw = new FileWriter(new File("highScores.yml"))) {
+		try (FileWriter fw = new FileWriter(new File(HIGH_SCORE_FILE))) {
 			fw.write("test: 0 \ntest2: 11");
 			fw.flush();
 		}
@@ -209,7 +222,7 @@ public class HighScoreTest {
 		HighScore.addScore(23, "test2");
 		HighScore.save();
 		
-		try (BufferedReader br = new BufferedReader(new FileReader(new File("highScores.yml")))) {
+		try (BufferedReader br = new BufferedReader(new FileReader(new File(HIGH_SCORE_FILE)))) {
 			assertEquals("test2: 23", br.readLine());
 			assertEquals("test: 12", br.readLine());
 			assertNull(br.readLine());
@@ -224,16 +237,13 @@ public class HighScoreTest {
 	 */
 	@Test
 	public void testWriteException() throws IOException {
-		File file = new File("highScores.yml");
-		file.setWritable(false);
-		Log log = Log.getLogger();
-		ConsoleHandler mock = mock(ConsoleHandler.class);
-		log.removeAllHandlers();
-		log.addHandler(mock);
+		//Create a completely invalid file
+		File file = new File("\0\0/\\");
+		HighScore.setScoreFile(file);
+		
 		HighScore.save();
 		
-		verify(mock).output(LogLevel.ERROR, "Error writing file " + file.getAbsolutePath());
-		file.setWritable(true);	//reset
+		verify(TestUtil.getMockHandler()).output(LogLevel.ERROR, "Error writing file " + file.getAbsolutePath());
 	}
 	
 
