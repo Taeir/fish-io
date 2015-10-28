@@ -35,11 +35,11 @@ public class EnemyFishFactory {
 	 * @return
 	 * 		a randomized EnemyFish.
 	 */
-	public EnemyFish randomizedFish(ICollisionArea ca, int w , int h) {
+	public EnemyFish randomizedFish(ICollisionArea ca, int w, int h) {
 		int minSize = (int) (ca.getSize() * 0.2);
 		int maxSize = (int) (ca.getSize() * 4.5);
 		
-		return randomizedFish(minSize, maxSize, w , h);
+		return randomizedFish(minSize, maxSize, w, h);
 	}
 	
 	/**
