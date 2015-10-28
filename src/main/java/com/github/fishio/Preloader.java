@@ -226,6 +226,9 @@ public final class Preloader {
 			//Set the controller as userdata for the scene.
 			scene.getProperties().put("Controller", controller);
 			
+			//Set css file
+			scene.getStylesheets().add("/com/github/fishio/css/main.css");
+			
 			//Initialize the controller
 			try {
 				controller.init(scene);
@@ -237,7 +240,7 @@ public final class Preloader {
 			//Add the scene
 			synchronized (SCREENS) {
 				SCREENS.put(filename, scene);
-			}
+			}			
 			
 			return scene;
 		} catch (IOException e) {
