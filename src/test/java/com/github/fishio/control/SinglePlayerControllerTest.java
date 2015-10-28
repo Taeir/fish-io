@@ -17,50 +17,24 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.github.fishio.PlayerFish;
 import com.github.fishio.SinglePlayerPlayingField;
 import com.github.fishio.audio.AudioEngine;
-import com.github.fishio.audio.IAudioFactory;
-import com.github.fishio.audio.NoAudioFactory;
 import com.github.fishio.game.GameState;
 import com.github.fishio.game.GameThread;
+import com.github.fishio.gui.NoSoundSlimGuiTest;
 import com.github.fishio.gui.Renderer;
-import com.github.fishio.gui.SlimGuiTest;
 
 /**
  * Test class for {@link SinglePlayerController}.
  */
-public class SinglePlayerControllerTest extends SlimGuiTest {
-	private static IAudioFactory oldFactory;
+public class SinglePlayerControllerTest extends NoSoundSlimGuiTest {
 	private SinglePlayerController controller;
 	private Scene scene;
 	private Canvas canvas;
-	
-	/**
-	 * Before running any tests, sets the AudioFactory to the NoAudioFactory
-	 * so travis does not give errors during the gui tests.
-	 */
-	@BeforeClass
-	public static void setUpClass() {
-		//Store the old audio factory
-		oldFactory = AudioEngine.getInstance().getAudioFactory();
-		
-		NoAudioFactory naf = new NoAudioFactory();
-		AudioEngine.getInstance().setAudioFactory(naf);
-	}
-	
-	/**
-	 * Restore the old AudioFactory after all tests are done.
-	 */
-	@AfterClass
-	public static void tearDownClass() {
-		AudioEngine.getInstance().setAudioFactory(oldFactory);
-	}
 	
 	/**
 	 * Creates a new controller before every test, so that tests do not
