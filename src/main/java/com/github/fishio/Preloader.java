@@ -401,4 +401,20 @@ public final class Preloader {
 			getController(current).onSwitchAway();
 		}		
 	}
+	
+	/**
+	 * Sets the screen with the given name to the given scene.
+	 * 
+	 * <b>Used only by the tests.</b>
+	 * 
+	 * @param name
+	 * 		the name of the screen.
+	 * @param scene
+	 * 		the scene to associate with the given name.
+	 */
+	public static void setScreen(String name, Scene scene) {
+		synchronized (SCREENS) {
+			SCREENS.put(name, scene);
+		}
+	}
 }
