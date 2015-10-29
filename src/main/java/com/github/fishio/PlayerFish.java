@@ -30,7 +30,7 @@ public class PlayerFish extends Entity implements IEatable, Subject {
 	private SimpleIntegerProperty lives = new SimpleIntegerProperty(settings.getInteger("START_LIVES"));
 	
 	private long invincible;
-	private double hue = 65;
+	private double hue;
 
 	/**
 	 * Creates the Player fish which the user will be able to control.
@@ -277,14 +277,23 @@ public class PlayerFish extends Entity implements IEatable, Subject {
 		return false;
 	}
 
+	/**
+	 * Returns the hue value of the player fish' sprite. In the case the sprite
+	 * does not have a hue value yet, it will generate one using the
+	 * generateHue() method.
+	 * 
+	 * @return The hue value of the sprite of the player fish.
+	 */
 	public double getHue() {
-		if (hue == 65) {
+		if (!(-1 < hue && hue < 1)) {
 			hue = generateHue();
 		}
 		return hue;
 	}
+	
 	/**
-	 * This method generates a random hue for the color of a playerfish.
+	 * This method generates a random hue for the color of the sprite of a
+	 * playerfish.
 	 * 
 	 * @return A hue in the spectrum from -1.0 till 1.0.
 	 */
