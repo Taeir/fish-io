@@ -115,9 +115,4 @@ public class YamlSettingWriter implements ISettingWriter {
 			Log.getLogger().log(LogLevel.ERROR, "Error saving settings file!");
 		}
 	}
-
-	@Override
-	public void setFileName(String name) {
-		settingsFile = new File(name + ".yml");
-	}
 }

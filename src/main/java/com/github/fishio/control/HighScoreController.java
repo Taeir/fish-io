@@ -5,12 +5,13 @@ import java.util.Set;
 
 import com.github.fishio.HighScore;
 import com.github.fishio.Preloader;
+import com.github.fishio.audio.AudioEngine;
 import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.settings.Settings;
 
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -59,6 +60,7 @@ public class HighScoreController implements ScreenController {
 	 */
 	@FXML
 	public void backToMenu() {
+		AudioEngine.getInstance().playButtonSound();
 		Log.getLogger().log(LogLevel.INFO, "Player Pressed the back to menu Button.");
 		Preloader.switchTo("mainMenu", 400);
 	}

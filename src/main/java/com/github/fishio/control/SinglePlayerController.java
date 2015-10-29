@@ -146,14 +146,15 @@ public class SinglePlayerController implements ScreenController {
 		AchievementManager.ENEMY_KILL.getLevelProperty().addListener((o, oVal, nVal) -> {
 			Util.onJavaFX(() -> {
 				Image img = new Image("/sprites/chieveLarge/Achieve1.png");
-				showAchievePopup(img, "Glutton!");
+				showAchievePopup(img, "Glutton!", nVal.intValue());
 			});
 		});
 		
 		AchievementManager.PLAYER_DEATH.getLevelProperty().addListener((o, oVal, nVal) -> {
 			Util.onJavaFX(() -> {
 				Image img = new Image("/sprites/chieveLarge/Achieve2.png");
-				showAchievePopup(img, "Survival of the fittest!");
+				showAchievePopup(img, "Survival of the fittest!", nVal.intValue());
+
 			});
 		});
 	}
@@ -218,19 +219,23 @@ public class SinglePlayerController implements ScreenController {
 	 * obtained.
 	 * 
 	 * @param image
-	 * 		the image to show.
-	 * @param description 
-	 * 		the description of the popup
+	 *            the image to show.
+	 * @param description
+	 *            the description of the popup
+	 * @param level
+	 *            the level of the achievement that has to be displayed.
 	 */
-	public void showAchievePopup(Image image, String description) {
+	public void showAchievePopup(Image image, String description, int level) {
 		int in = 2000;
 		int out = 1000;
 		int duration = 5000;
 		
 		ObservableList<Node> list = ((HBox) achievePopup.getChildren().get(1)).getChildren();
 		ImageView img = (ImageView) list.get(0);
-		Label label = (Label) list.get(1);
+		ImageView popUpLVL = (ImageView) list.get(1);
+		Label label = (Label) list.get(2);
 		
+		popUpLVL.setImage(Preloader.getImageOrLoad("/sprites/ChieveLvls/AchieveLVL" + level + ".png"));
 		img.setImage(image);
 		label.setText(description);
 		
