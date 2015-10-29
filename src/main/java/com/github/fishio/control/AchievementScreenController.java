@@ -67,6 +67,16 @@ public class AchievementScreenController implements ScreenController {
 	@FXML
 	private Label smallachieve55;
 	@FXML
+	private Label smallachieve71;
+	@FXML
+	private Label smallachieve72;
+	@FXML
+	private Label smallachieve73;
+	@FXML
+	private Label smallachieve74;
+	@FXML
+	private Label smallachieve75;
+	@FXML
 	private Label icon11;
 	@FXML
 	private Label icon12;
@@ -107,6 +117,17 @@ public class AchievementScreenController implements ScreenController {
 	@FXML
 	private Label icon55;
 	@FXML
+	private Label icon71;
+	@FXML
+	private Label icon72;
+	@FXML
+	private Label icon73;
+	@FXML
+	private Label icon74;
+	@FXML
+	private Label icon75;
+
+	@FXML
 	private ImageView achieveLVLIcon1;
 	@FXML
 	private ImageView achieveLVLIcon2;
@@ -114,6 +135,8 @@ public class AchievementScreenController implements ScreenController {
 	private ImageView achieveLVLIcon3;
 	@FXML
 	private ImageView achieveLVLIcon5;
+	@FXML
+	private ImageView achieveLVLIcon7;
 	
 	@Override
 	public void init(Scene scene) {
@@ -124,6 +147,7 @@ public class AchievementScreenController implements ScreenController {
 		addDeathListener();
 		addHitWallListener();
 		addLivesListener();
+		addScoreListener();
 
 		SimpleDoubleProperty p = Settings.getInstance().getDoubleProperty("SCREEN_HEIGHT");
 		scrollPane.maxHeightProperty().bind(p.subtract(200));
@@ -156,6 +180,12 @@ public class AchievementScreenController implements ScreenController {
 		smallachieve53.setOpacity(0.1);
 		smallachieve54.setOpacity(0.1);
 		smallachieve55.setOpacity(0.1);
+
+		smallachieve71.setOpacity(0.1);
+		smallachieve72.setOpacity(0.1);
+		smallachieve73.setOpacity(0.1);
+		smallachieve74.setOpacity(0.1);
+		smallachieve75.setOpacity(0.1);
 	}
 
 	/**
@@ -262,6 +292,33 @@ public class AchievementScreenController implements ScreenController {
 					.setImage(Preloader.getImageOrLoad("/sprites/ChieveLvls/AchieveLVL" + nVal.intValue() + ".png"));
 		});
 	}
+
+	/**
+	 * Adds a listener to the player score achievement.
+	 */
+	private void addScoreListener() {
+		AchievementManager.PLAYER_SCORE.getLevelProperty().addListener((o, oVal, nVal) -> {
+			// Fall through is intended.
+			switch (nVal.intValue()) {
+			case 5:
+				smallachieve75.setOpacity(1);
+			case 4:
+				smallachieve74.setOpacity(1);
+			case 3:
+				smallachieve73.setOpacity(1);
+			case 2:
+				smallachieve72.setOpacity(1);
+			case 1:
+				smallachieve71.setOpacity(1);
+				break;
+			default:
+				break;
+			}
+			achieveLVLIcon7
+					.setImage(Preloader.getImageOrLoad("/sprites/ChieveLvls/AchieveLVL" + nVal.intValue() + ".png"));
+		});
+	}
+
 	/**
 	 * Links the opacities from the icons to the labels.
 	 */
@@ -289,6 +346,12 @@ public class AchievementScreenController implements ScreenController {
 		icon53.opacityProperty().bind(smallachieve53.opacityProperty());
 		icon54.opacityProperty().bind(smallachieve54.opacityProperty());
 		icon55.opacityProperty().bind(smallachieve55.opacityProperty());
+
+		icon71.opacityProperty().bind(smallachieve71.opacityProperty());
+		icon72.opacityProperty().bind(smallachieve72.opacityProperty());
+		icon73.opacityProperty().bind(smallachieve73.opacityProperty());
+		icon74.opacityProperty().bind(smallachieve74.opacityProperty());
+		icon75.opacityProperty().bind(smallachieve75.opacityProperty());
 
 	}
 	

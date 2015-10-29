@@ -82,6 +82,7 @@ public final class AchievementManager {
 			}
 
 			int nr = ((HitWallObserver) observer).getCounter();
+			AchievementIO.addObserverCounter(HIT_WALL.getName(), nr);
 
 			if (nr >= 500) {
 				setLevel(5);
@@ -112,6 +113,7 @@ public final class AchievementManager {
 			}
 
 			int nr = ((LivesConsumptionObserver) observer).getCounter();
+			AchievementIO.addObserverCounter(LIVES_CONSUMPTION.getName(), nr);
 
 			if (nr >= 243) {
 				setLevel(5);
@@ -128,6 +130,37 @@ public final class AchievementManager {
 			} else if (nr >= 3) {
 				setLevel(1);
 				Log.getLogger().log(LogLevel.INFO, "Achievement gained for resurrecting 3 times");
+			} else {
+				setLevel(0);
+			}
+		}
+	};
+
+	public static final Achievement PLAYER_SCORE = new Achievement("playerScore") {
+		@Override
+		public void updateAchievement(AchievementObserver observer) {
+			if (!(observer instanceof PlayerScoreObserver)) {
+				return;
+			}
+
+			int nr = ((PlayerScoreObserver) observer).getCounter();
+			AchievementIO.addObserverCounter(PLAYER_SCORE.getName(), nr);
+
+			if (nr >= 1000) {
+				setLevel(5);
+				Log.getLogger().log(LogLevel.INFO, "Achievement gained for gaining a cumulative score of 1000");
+			} else if (nr >= 500) {
+				setLevel(4);
+				Log.getLogger().log(LogLevel.INFO, "Achievement gained for gaining a cumulative score of 500");
+			} else if (nr >= 200) {
+				setLevel(3);
+				Log.getLogger().log(LogLevel.INFO, "Achievement gained for gaining a cumulative score of 200");
+			} else if (nr >= 50) {
+				setLevel(2);
+				Log.getLogger().log(LogLevel.INFO, "Achievement gained for gaining a cumulative score of 50");
+			} else if (nr >= 10) {
+				setLevel(1);
+				Log.getLogger().log(LogLevel.INFO, "Achievement gained for gaining a cumulative score of 10");
 			} else {
 				setLevel(0);
 			}

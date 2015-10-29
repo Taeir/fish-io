@@ -23,12 +23,14 @@ public class HitWallObserver implements AchievementObserver {
 	 *            The subject this observer has to be notified by.
 	 */
 	public HitWallObserver(SinglePlayerPlayingField subject) {
-			this.playerFish = subject.getPlayer();
-			this.playerFish.attach(this);
-			
-			registerPlayerListener(subject);
-			
-			attachAchievement(AchievementManager.HIT_WALL);
+		setCounter(AchievementIO.get("hitWall"));
+		this.playerFish = subject.getPlayer();
+		this.playerFish.attach(this);
+
+		registerPlayerListener(subject);
+
+		attachAchievement(AchievementManager.HIT_WALL);
+		notifyAchievements();
 		}
 	
 	/**

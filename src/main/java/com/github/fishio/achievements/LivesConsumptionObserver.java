@@ -12,7 +12,6 @@ import com.github.fishio.SinglePlayerPlayingField;
  *
  */
 public class LivesConsumptionObserver implements AchievementObserver {
-	//TODO TODO TODO
 	private List<Achievement> achievements = new ArrayList<>();
 	private Subject playerFish;
 	private int livesconsumptioncounter = 0;
@@ -24,12 +23,14 @@ public class LivesConsumptionObserver implements AchievementObserver {
 	 *            The subject this observer has to be notified by.
 	 */
 	public LivesConsumptionObserver(SinglePlayerPlayingField subject) {
+		setCounter(AchievementIO.get("livesConsumption"));
 		this.playerFish = subject.getPlayer();
 		this.playerFish.attach(this);
 
 		registerPlayerListener(subject);
 
 		attachAchievement(AchievementManager.LIVES_CONSUMPTION);
+		notifyAchievements();
 	}
 
 	/**
