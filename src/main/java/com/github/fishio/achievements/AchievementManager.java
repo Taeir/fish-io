@@ -63,7 +63,35 @@ public final class AchievementManager {
 		}
 	};
 	
-	public static final Achievement LIVES_CONSUMPTION = new Achievement("Lives") {
+	public static final Achievement HIT_WALL = new Achievement("hitWall") {
+		@Override
+		public void updateAchievement(AchievementObserver observer) {
+			if (!(observer instanceof HitWallObserver)) {
+				return;
+			}
+
+			int nr = ((HitWallObserver) observer).getCounter();
+
+			if (nr >= 500) {
+				setLevel(5);
+				Log.getLogger().log(LogLevel.INFO, "Achievement gained for hitting the outer wall 500 times");
+			} else if (nr >= 100) {
+				setLevel(4);
+				Log.getLogger().log(LogLevel.INFO, "Achievement gained for hitting the outer wall 100 times");
+			} else if (nr >= 50) {
+				setLevel(3);
+				Log.getLogger().log(LogLevel.INFO, "Achievement gained for hitting the outer wall 50 times");
+			} else if (nr >= 10) {
+				setLevel(2);
+				Log.getLogger().log(LogLevel.INFO, "Achievement gained for hitting the outer wall 10 times");
+			} else if (nr >= 1) {
+				setLevel(1);
+				Log.getLogger().log(LogLevel.INFO, "Achievement gained for hitting the outer wall once");
+			}
+		}
+	};
+
+	public static final Achievement LIVES_CONSUMPTION = new Achievement("livesConsumption") {
 		@Override
 		public void updateAchievement(AchievementObserver observer) {
 			if (!(observer instanceof LivesConsumptionObserver)) {

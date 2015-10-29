@@ -153,6 +153,21 @@ public class SinglePlayerController implements ScreenController {
 
 			});
 		});
+
+		AchievementManager.HIT_WALL.getLevelProperty().addListener((o, oVal, nVal) -> {
+			Util.onJavaFX(() -> {
+				Image img = new Image("/sprites/chieveLarge/Achieve3.png");
+				showAchievePopup(img, "Thinking out of the box!", nVal.intValue());
+
+			});
+		});
+
+		AchievementManager.LIVES_CONSUMPTION.getLevelProperty().addListener((o, oVal, nVal) -> {
+			Util.onJavaFX(() -> {
+				Image img = new Image("/sprites/chieveLarge/Achieve5.png");
+				showAchievePopup(img, "King of resurection!", nVal.intValue());
+			});
+		});
 	}
 	
 	@Override
