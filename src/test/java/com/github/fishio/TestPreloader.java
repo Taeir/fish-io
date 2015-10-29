@@ -2,8 +2,8 @@ package com.github.fishio;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import java.util.HashMap;
@@ -17,11 +17,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.github.fishio.control.ScreenController;
+import com.github.fishio.control.TestController;
 import com.github.fishio.gui.SlimGuiTest;
-import com.github.fishio.logging.ConsoleHandler;
-import com.github.fishio.logging.Log;
 import com.github.fishio.logging.LogLevel;
-import com.github.fishio.settings.Settings;
+import com.github.fishio.test.util.TestUtil;
 
 /**
  * Test for the {@link Preloader} class.
@@ -29,14 +29,13 @@ import com.github.fishio.settings.Settings;
 public class TestPreloader extends SlimGuiTest {
 	private static HashMap<String, Image> images;
 	private static HashMap<String, Scene> screens;
-	private ConsoleHandler consoleHandler;
 
 	/**
 	 * Set the logLevel to trace and get the hashMaps containing loaded images and screens.
 	 */
 	@BeforeClass
-	public static void beforeClass() {
-		Log.getLogger().setLogLevel(LogLevel.TRACE);
+	public static void setUpClass() {
+		TestUtil.setUpLoggerForTesting(LogLevel.TRACE);
 		images = Preloader.getImages();
 		screens = Preloader.getScreens();
 	}
@@ -45,19 +44,18 @@ public class TestPreloader extends SlimGuiTest {
 	 * Restore the logLoevel after the tests.
 	 */
 	@AfterClass
-	public static void afterClass() {
-		Log.getLogger().setLogLevel(LogLevel.fromInt(Settings.getInstance().getInteger("LOG_LEVEL")));
+	public static void tearDownClass() {
+		//Restore the logger
+		TestUtil.restoreLogger();
 	}
 
 	/**
 	 * Before each test reset the consoleHandler and clear all loaded images and screens.
 	 */
 	@Before
-	public  void before() {
-		Log log = Log.getLogger();
-		log.removeAllHandlers();
-		consoleHandler = mock(ConsoleHandler.class);
-		log.addHandler(consoleHandler);
+	public  void setUp() {
+		//Reset the logger
+		TestUtil.resetMockHandler();
 
 		images.clear();
 		screens.clear();
@@ -69,7 +67,7 @@ public class TestPreloader extends SlimGuiTest {
 	@Test
 	public void testPreloadImagesLog() {
 		Preloader.preloadImages();
-		verify(consoleHandler).output(LogLevel.DEBUG, "[Preloader] Preloading images...");
+		verify(TestUtil.getMockHandler()).output(LogLevel.DEBUG, "[Preloader] Preloading images...");
 	}
 
 	/**
@@ -78,7 +76,7 @@ public class TestPreloader extends SlimGuiTest {
 	@Test
 	public void testTryLoadImagesException() {
 		Preloader.tryPreLoad("banana");
-		verify(consoleHandler).output(LogLevel.ERROR, "Error while trying to load image: banana");
+		verify(TestUtil.getMockHandler()).output(LogLevel.ERROR, "Error while trying to load image: banana");
 	}
 
 	/**
@@ -138,7 +136,7 @@ public class TestPreloader extends SlimGuiTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetImageLoad() {
 		Preloader.getImage("banana");
-		verify(consoleHandler).output(LogLevel.ERROR, "No image loaded for banana!");
+		verify(TestUtil.getMockHandler()).output(LogLevel.ERROR, "No image loaded for banana!");
 	}
 
 	/**
@@ -158,7 +156,7 @@ public class TestPreloader extends SlimGuiTest {
 	@Test
 	public void testLoadScreenLoadController() {
 		Preloader.loadScreen("testScreen");
-		verify(consoleHandler).output(LogLevel.INFO, "Controller loaded");
+		verify(TestUtil.getMockHandler()).output(LogLevel.INFO, "Controller loaded");
 	}
 	
 	/**
@@ -167,7 +165,8 @@ public class TestPreloader extends SlimGuiTest {
 	@Test
 	public void testLoadScreenLoadNoController() {
 		Preloader.loadScreen("testScreen_NoController");
-		verify(consoleHandler).output(LogLevel.ERROR, "Screen controller not found for testScreen_NoController");
+		verify(TestUtil.getMockHandler()).output(LogLevel.ERROR,
+				"Screen controller not found for testScreen_NoController");
 	}
 	
 	/**
@@ -176,7 +175,7 @@ public class TestPreloader extends SlimGuiTest {
 	@Test
 	public void testLoadScreenLoadError() {
 		Preloader.loadScreen("errorScreen");
-		verify(consoleHandler).output(LogLevel.ERROR, "Error loading screen errorScreen");
+		verify(TestUtil.getMockHandler()).output(LogLevel.ERROR, "Error loading screen errorScreen");
 	}
 	
 	/**
@@ -197,5 +196,33 @@ public class TestPreloader extends SlimGuiTest {
 		MultiThreadedUtility.submitTask(() -> Preloader.loadScreen("testScreen"), false);
 		Scene scene = Preloader.loadScreen("testScreen");
 		assertEquals(screens.get("testScreen"), scene);
+	}
+	
+	/**
+	 * Test for getting the controller of a null.
+	 */
+	@Test
+	public void testGetControllerNull() {
+		assertNull(Preloader.getController(null));		
+	}
+	
+	/**
+	 * Test if getting the controller results in the set controller.
+	 */
+	@Test
+	public void testGetController() {
+		Scene scene = new Scene(new StackPane());
+		ScreenController controller = new TestController();
+		scene.getProperties().put("Controller", controller);
+		assertEquals(controller, Preloader.getController(scene));		
+	}
+	
+	/**
+	 * Test for getting the controller of a class without a controller.
+	 */
+	@Test
+	public void testGetControllerEmpty() {
+		Scene scene = new Scene(new StackPane());
+		assertNull(Preloader.getController(scene));	
 	}
 }
