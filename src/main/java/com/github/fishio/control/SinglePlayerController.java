@@ -7,6 +7,8 @@ import com.github.fishio.SinglePlayerPlayingField;
 import com.github.fishio.Util;
 import com.github.fishio.achievements.AchievementManager;
 import com.github.fishio.achievements.EnemyKillObserver;
+import com.github.fishio.achievements.HitWallObserver;
+import com.github.fishio.achievements.LivesConsumptionObserver;
 import com.github.fishio.achievements.PlayerDeathObserver;
 import com.github.fishio.audio.AudioEngine;
 import com.github.fishio.game.GameThread;
@@ -121,6 +123,8 @@ public class SinglePlayerController implements ScreenController {
 		//Create observers for the achievements
 		new PlayerDeathObserver(playingField);
 		new EnemyKillObserver(playingField);
+		new HitWallObserver(playingField);
+		new LivesConsumptionObserver(playingField);
 		
 		AudioEngine.getInstance().getMuteStateProperty().addListener((o, oVal, nVal) -> {
 			if (nVal.intValue() == AudioEngine.NO_MUTE) {

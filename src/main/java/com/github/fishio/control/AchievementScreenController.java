@@ -119,7 +119,7 @@ public class AchievementScreenController implements ScreenController {
 	public void init(Scene scene) {
 		bindOpacities();
 		setDefaultOpacities();
-		
+
 		addKillListener();
 		addDeathListener();
 		addHitWallListener();

@@ -38,7 +38,6 @@ public final class HighScore {
 		if (temp == null || temp.intValue() < score) {
 			highscores.put(name, score);
 			logger.log(LogLevel.TRACE, "New high score added: " + score + " points for " + name);
-			save();
 		}
 	}
 
@@ -102,10 +101,11 @@ public final class HighScore {
 	}
 	
 	/**
-	 * Set the file for the settings.
-	 * This method should only be used for testing.
+	 * Set the file for the highscores. This method should only be used for
+	 * testing.
+	 * 
 	 * @param newFile
-	 * 		The new file.
+	 *            The new file.
 	 */
 	protected static void setScoreFile(File newFile) {
 		scoreFile = newFile;
