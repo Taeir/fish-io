@@ -6,10 +6,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.mockito.Mockito;
 
 import com.github.fishio.FakeException;
+import com.github.fishio.logging.LogLevel;
+import com.github.fishio.test.util.TestUtil;
 
 /**
  * Interface test for the {@link Listenable} interface.<br>
@@ -17,6 +21,23 @@ import com.github.fishio.FakeException;
  * If you need to extend another class, take a look at {@link IListenableTest}.
  */
 public abstract class TestListenable {
+	
+	/**
+	 * Set up the logger for testing before running any tests.
+	 * This prevents logger output
+	 */
+	@BeforeClass
+	public static void setUpListenableClass() {
+		TestUtil.setUpLoggerForTesting(LogLevel.ERROR);
+	}
+	
+	/**
+	 * Restore the logger after all tests are done.
+	 */
+	@AfterClass
+	public static void tearDownListenableClass() {
+		TestUtil.restoreLogger();
+	}
 	
 	/**
 	 * @return
