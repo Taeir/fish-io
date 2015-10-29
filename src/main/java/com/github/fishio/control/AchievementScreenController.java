@@ -352,7 +352,6 @@ public class AchievementScreenController implements ScreenController {
 		icon73.opacityProperty().bind(smallachieve73.opacityProperty());
 		icon74.opacityProperty().bind(smallachieve74.opacityProperty());
 		icon75.opacityProperty().bind(smallachieve75.opacityProperty());
-
 	}
 	
 	@Override
