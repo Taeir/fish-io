@@ -5,9 +5,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
@@ -56,6 +56,17 @@ public class TestPlayerFish extends TestIEatable {
 		verify(pf).kill();
 	}
 	
+	/**
+	 * Tests {@link PlayerFish#kill()} for a PlayerFish already dead.
+	 */
+	@Test
+	public void testKill() {
+		int lives = pf.getLives();
+		when(pf.isDead()).thenReturn(true);
+		pf.kill();
+		assertEquals(pf.getLives(), lives);
+	}
+
 	/**
 	 * Tests {@link PlayerFish#setDead()}.
 	 */
