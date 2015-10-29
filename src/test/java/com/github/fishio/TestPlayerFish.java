@@ -60,9 +60,20 @@ public class TestPlayerFish extends TestIEatable {
 	 * Tests {@link PlayerFish#kill()} for a PlayerFish already dead.
 	 */
 	@Test
-	public void testKill() {
+	public void testKillDead() {
 		int lives = pf.getLives();
 		when(pf.isDead()).thenReturn(true);
+		pf.kill();
+		assertEquals(pf.getLives(), lives);
+	}
+
+	/**
+	 * Tests {@link PlayerFish#kill()} for a PlayerFish that is invincible.
+	 */
+	@Test
+	public void testKillInvincible() {
+		int lives = pf.getLives();
+		when(pf.isInvincible()).thenReturn(true);
 		pf.kill();
 		assertEquals(pf.getLives(), lives);
 	}
@@ -115,8 +126,6 @@ public class TestPlayerFish extends TestIEatable {
 		assertEquals(time, pf.getInvincible());
 	}
 	
-
-
 	@Override
 	public void testCanBeEatenBy() {
 		testCanBeEatenByLargerEnemy();
