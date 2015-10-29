@@ -16,7 +16,13 @@ import com.github.fishio.logging.LogLevel;
  * from file, making sure that the achievements are saved and loaded.
  *
  */
-public class AchievementIO {
+public final class AchievementIO {
+
+	/**
+	 * Private constructor for this final class.
+	 */
+	private AchievementIO() {
+	}
 	
 	private static File achievementFile = new File("achievements.yml");
 	private static Log logger = Log.getLogger();
