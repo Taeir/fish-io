@@ -12,6 +12,7 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
+import com.github.fishio.behaviours.KeyListenerBehaviour;
 import com.github.fishio.behaviours.VerticalBehaviour;
 
 import javafx.scene.Scene;
@@ -25,6 +26,11 @@ public class TestSinglePlayerPlayingField extends TestPlayingField {
 	@Override
 	public PlayingField getPlayingField(int fps, Canvas canvas) {
 		return new SinglePlayerPlayingField(fps, canvas, mock(Scene.class), 1280, 720);
+	}
+	
+	@Override
+	public SinglePlayerPlayingField getField() {
+		return (SinglePlayerPlayingField) super.getField();
 	}
 	
 	@Override
@@ -125,6 +131,25 @@ public class TestSinglePlayerPlayingField extends TestPlayingField {
 		verify(b).preMove();
 		verify(ca).move(new Vec2d(0, -3));
 		
+	}
+	
+	/**
+	 * Test for {@link SinglePlayerPlayingField#revivePlayer()}.
+	 */
+	public void testRevivePlayer() {
+		PlayerFish player = getField().getPlayer();
+		
+		//Give the player a speed
+		((KeyListenerBehaviour) player.getBehaviour()).setSpeedVector(new Vec2d(10, 10));
+		//Give the player a rotation
+		player.getBoundingArea().setRotation(20);
+		
+		//Call the revive
+		getField().revivePlayer();
+		
+		//The speed and position of the player should have been reset.
+		assertEquals(0, player.getBehaviour().getSpeed(), 0);
+		assertEquals(0, player.getBoundingArea().getRotation(), 0);
 	}
 
 }

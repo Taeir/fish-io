@@ -1,10 +1,7 @@
 package com.github.fishio.control;
 
-import com.github.fishio.CollisionMask;
-import com.github.fishio.FishIO;
 import com.github.fishio.HighScore;
 import com.github.fishio.PlayerFish;
-import com.github.fishio.PlayingField;
 import com.github.fishio.Preloader;
 import com.github.fishio.SinglePlayerPlayingField;
 import com.github.fishio.Util;
@@ -135,7 +132,6 @@ public class SinglePlayerController implements ScreenController {
 			}
 		});
 		
-		//TODO Invert relation.
 		registerAchievementPopups();
 	}
 
@@ -161,11 +157,9 @@ public class SinglePlayerController implements ScreenController {
 	
 	@Override
 	public void onSwitchTo() {
-		FishIO.getInstance().getPrimaryStage().setTitle("Fish.io Singleplayer");
-		
 		//Reset the pause button
-		getBtnPause().setText(PAUSE_TEXT);
-		getBtnPause().setDisable(false);
+		getPauseButton().setText(PAUSE_TEXT);
+		getPauseButton().setDisable(false);
 		
 		//Hide the death screen
 		deathScreen.setVisible(false);
@@ -177,38 +171,35 @@ public class SinglePlayerController implements ScreenController {
 
 	/**
 	 * Called when the pause button is pressed.
-	 * 
-	 * @param event
-	 * 		the event of the user pressing the button.
 	 */
 	@FXML
-	public void onPause(ActionEvent event) {
+	public void onPause() {
 		AudioEngine.getInstance().playButtonSound();
 		
 		GameThread gameThread = playingField.getGameThread();
 		if (gameThread.isRunning()) {
 			try {
 				playingField.stopGameAndWait();
-			} catch (InterruptedException ex) { }
-			getBtnPause().setText(UNPAUSE_TEXT);
+			} catch (InterruptedException ex) { 
+				logger.log(LogLevel.ERROR, "Error on pausing the game!");
+				logger.log(LogLevel.DEBUG, ex);
+			}
+			getPauseButton().setText(UNPAUSE_TEXT);
 			
 			logger.log(LogLevel.INFO, "Player paused the game.");
 		} else {
 			logger.log(LogLevel.INFO, "Player resumed the game.");
 			
 			playingField.startGame();
-			getBtnPause().setText(PAUSE_TEXT);
+			getPauseButton().setText(PAUSE_TEXT);
 		}
 	}
 	
 	/**
 	 * Called when the mute button is pressed.
-	 * 
-	 * @param event
-	 * 		the event of the user pressing the button.
 	 */
 	@FXML
-	public void onMute(ActionEvent event) {
+	public void onMute() {
 		AudioEngine.getInstance().playButtonSound();
 		
 		AudioEngine.getInstance().toggleMuteState();
@@ -285,7 +276,7 @@ public class SinglePlayerController implements ScreenController {
 		
 		if (visible) {
 			//Disable pause button
-			getBtnPause().setDisable(true);
+			getPauseButton().setDisable(true);
 			
 			//Show deathscreen fully transparent and fade it in
 			deathScreen.setOpacity(0.0);
@@ -345,11 +336,11 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	@FXML
 	public void backToMenu() {
+		AudioEngine.getInstance().playButtonSound();
+		
 		if (playingField.getPlayer().livesProperty().intValue() <= 0) {
 			 saveScore();
 		}
-		
-		AudioEngine.getInstance().playButtonSound();
 		
 		playingField.stopGame();
 		playingField.clear();
@@ -366,17 +357,14 @@ public class SinglePlayerController implements ScreenController {
 		AudioEngine.getInstance().playButtonSound();
 		
 		//Reset the pause button
-		getBtnPause().setText(PAUSE_TEXT);
-		getBtnPause().setDisable(false);
+		getPauseButton().setText(PAUSE_TEXT);
+		getPauseButton().setDisable(false);
 		
 		//Remove all enemies.
 		playingField.clearEnemies();
 		
-		PlayerFish player = playingField.getPlayer();
-		
-		//Reset the bounding box of the player fish.
-		CollisionMask area = playingField.getStartCollisionMask();
-		player.setBoundingArea(area);
+		//Revive the player
+		playingField.revivePlayer();
 		
 		//Start the render thread (it takes some time to appear).
 		playingField.getRenderer().startRendering();
@@ -396,8 +384,8 @@ public class SinglePlayerController implements ScreenController {
 			saveScore();
 		}		
 		//Reset the pause button
-		getBtnPause().setText(PAUSE_TEXT);
-		getBtnPause().setDisable(false);
+		getPauseButton().setText(PAUSE_TEXT);
+		getPauseButton().setDisable(false);
 		
 		//Stop the game, clear all items, and start it again.
 		try {
@@ -409,9 +397,7 @@ public class SinglePlayerController implements ScreenController {
 		playingField.getRenderer().startRendering();
 
 		//Hide the deathscreen. When the animation is done, start the game thread.
-		showDeathScreen(false, event -> {
-			playingField.startGame();
-		});
+		showDeathScreen(false, event -> playingField.startGame());
 	}
 	
 	/**
@@ -421,16 +407,16 @@ public class SinglePlayerController implements ScreenController {
 		GameThread gameThread = playingField.getGameThread();
 		if (!playingField.isPlayerAlive()) {
 			//All player fish are dead
-			getBtnPause().setText(PAUSE_TEXT);
-			getBtnPause().setDisable(true);
+			getPauseButton().setText(PAUSE_TEXT);
+			getPauseButton().setDisable(true);
 		} else if (gameThread.isRunning()) {
 			//There is a player fish alive and the game is running
-			getBtnPause().setText(PAUSE_TEXT);
-			getBtnPause().setDisable(false);
+			getPauseButton().setText(PAUSE_TEXT);
+			getPauseButton().setDisable(false);
 		} else {
 			//There is a player fish alive and the game is not running
-			getBtnPause().setText(UNPAUSE_TEXT);
-			getBtnPause().setDisable(false);
+			getPauseButton().setText(UNPAUSE_TEXT);
+			getPauseButton().setDisable(false);
 		}
 	}
 	
@@ -459,86 +445,84 @@ public class SinglePlayerController implements ScreenController {
 
 	/**
 	 * @return
-	 * 		if the death screen is being shown.
+	 * 		the playingfield
 	 */
-	public boolean isDeathScreenShown() {
-		return deathScreen.isVisible();
+	public SinglePlayerPlayingField getPlayingField() {
+		return playingField;
+	}
+	
+	/**
+	 * Sets the playing field to the given one.
+	 * 
+	 * @param playingField
+	 * 		the playing field to use.
+	 */
+	public void setPlayingField(SinglePlayerPlayingField playingField) {
+		this.playingField = playingField;
 	}
 
 	/**
-	 * @return
-	 * 		the deathScreen box.
+	 * Sets the canvas of this controller.
+	 * Used by the tests.
+	 * 
+	 * @param canvas
+	 * 		the new canvas to use.
 	 */
-	public VBox getDeathScreen() {
-		return deathScreen;
+	public void setGameCanvas(Canvas canvas) {
+		this.gameCanvas = canvas;
 	}
-
-	/**
-	 * @return
-	 * 		the score label.
-	 */
-	public Label getScoreField() {
-		return scoreField;
-	}
-
+	
 	/**
 	 * @return
 	 * 		the pause button.
 	 */
-	public Button getBtnPause() {
+	public Button getPauseButton() {
 		return btnPause;
 	}
-
+	
 	/**
 	 * @return
 	 * 		the mute/unmute button.
 	 */
-	public Button getBtnMute() {
+	public Button getMuteButton() {
 		return btnMute;
 	}
-
-	/**
-	 * @return
-	 * 		the button that goes back to the menu.
-	 */
-	public Button getBtnMenu() {
-		return btnMenu;
-	}
 	
 	/**
-	 * @return
-	 * 		the revive button on the deathscreen.
+	 * Saves the score to the high scores.
 	 */
-	public Button getBtnDSRevive() {
-		return btnDSRevive;
-	}
-
-	/**
-	 * @return
-	 * 		the button on the death screen that restarts the game.
-	 */
-	public Button getBtnDSRestart() {
-		return btnDSRestart;
-	}
-
-	/**
-	 * @return
-	 * 		the button on the death screen that returns to the main menu.
-	 */
-	public Button getBtnDSMenu() {
-		return btnDSMenu;
-	}
-
-	/**
-	 * @return
-	 * 		the playingfield
-	 */
-	public PlayingField getPlayingField() {
-		return playingField;
-	}
-	
 	private void saveScore() {
 		int score = playingField.getPlayer().scoreProperty().intValue();
 		HighScore.addScore(score, scoreName.getText());
+	}
+	
+	/**
+	 * Initializes all the fields in this class that would normally be
+	 * initialized from the fxml file. This method is used only for testing.
+	 */
+	protected void initFXMLForTest() {
+		this.btnPause = new Button();
+		this.btnMute = new Button();
+		this.btnMenu = new Button();
+		
+		this.btnDSMenu = new Button();
+		this.btnDSRestart = new Button();
+		this.btnDSRevive = new Button();
+		
+		this.livesField = new Label();
+		this.scoreField = new Label();
+		
+		this.endScore = new Label();
+		this.scoreName = new TextField();
+		
+		this.deathScreen = new VBox();
+		
+		this.achievePopup = new VBox();
+		this.achievePopup.getChildren().add(new HBox());
+		
+		HBox achieves = new HBox();
+		achieves.getChildren().add(new ImageView());
+		achieves.getChildren().add(new Label());
+		this.achievePopup.getChildren().add(achieves);
 	}
 }

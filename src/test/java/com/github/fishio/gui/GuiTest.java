@@ -23,7 +23,7 @@ import javafx.stage.Stage;
 /**
  * Base class for GUI Tests.
  */
-public class GuiTest extends AppTest {
+public abstract class GuiTest extends AppTest {
 	private static final FishIO FISH_IO = new FishIO();
 	public static final String DEFAULT_STARTSCREEN = "splashScreen";
 	

@@ -2,6 +2,7 @@ package com.github.fishio;
 
 import java.util.ArrayList;
 
+import com.github.fishio.behaviours.KeyListenerBehaviour;
 import com.github.fishio.factories.PowerUpSpawner;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.logging.LogLevel;
@@ -82,6 +83,24 @@ public class SinglePlayerPlayingField extends PlayingField {
 	@Override
 	public GameThread getGameThread() {
 		return gameThread;
+	}
+	
+	/**
+	 * Revives the player. This resets its position and behaviour.
+	 */
+	public void revivePlayer() {
+		//Reset the behaviour of the player
+		if (getPlayer().getBehaviour() instanceof KeyListenerBehaviour) {
+			KeyListenerBehaviour klb = (KeyListenerBehaviour) getPlayer().getBehaviour();
+			klb.setDownPressed(false);
+			klb.setUpPressed(false);
+			klb.setLeftPressed(false);
+			klb.setRightPressed(false);
+			klb.setSpeedVector(new Vec2d(0, 0));
+		}
+		
+		//Reset the bounding box of the player fish.
+		getPlayer().setBoundingArea(getStartCollisionMask());
 	}
 	
 	/**
