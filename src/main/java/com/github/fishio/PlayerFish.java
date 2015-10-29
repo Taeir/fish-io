@@ -11,6 +11,7 @@ import com.github.fishio.behaviours.KeyListenerBehaviour;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 
 /**
@@ -29,6 +30,7 @@ public class PlayerFish extends Entity implements IEatable, Subject {
 	private SimpleIntegerProperty lives = new SimpleIntegerProperty(settings.getInteger("START_LIVES"));
 	
 	private long invincible;
+	private double hue = 65;
 
 	/**
 	 * Creates the Player fish which the user will be able to control.
@@ -174,7 +176,13 @@ public class PlayerFish extends Entity implements IEatable, Subject {
 		
 		//Only render if the fish has a sprite
 		if (sprite != null) {
+			gc.save();
+			ColorAdjust colorAdjust = new ColorAdjust();
+			colorAdjust.setHue(this.getHue());
+
+			gc.setEffect(colorAdjust);
 			drawRotatedImage(gc, sprite, getBoundingArea());
+			gc.restore();
 		} else {
 			//Call the render method of entity, which simply renders a red box.
 			super.render(gc);
@@ -267,6 +275,21 @@ public class PlayerFish extends Entity implements IEatable, Subject {
 			return true;
 		}
 		return false;
+	}
+
+	public double getHue() {
+		if (hue == 65) {
+			hue = generateHue();
+		}
+		return hue;
+	}
+	/**
+	 * This method generates a random hue for the color of a playerfish.
+	 * 
+	 * @return A hue in the spectrum from -1.0 till 1.0.
+	 */
+	public double generateHue() {
+		return 2 * Math.random() - 1;
 	}
 
 	@Override
