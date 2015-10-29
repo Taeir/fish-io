@@ -14,7 +14,6 @@ import com.github.fishio.multiplayer.MultiplayerPlayingField;
 import com.github.fishio.multiplayer.RepeatingFishMessageSender;
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.paint.Color;
 
 /**
  * PlayingField for server side multiplayer.
@@ -104,14 +103,8 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 	public PlayerFish createClientPlayer() {
 		Sprite sprite = SpriteStore.getSpriteOrLoad(PlayerFish.SPRITE_LOCATION);
 
-		double red = Math.random();
-		double green = Math.random();
-		double blue = Math.random();
-		Color color = Color.color(red, green, blue);
-
-		Sprite mpSprite = new Sprite(PlayerFish.SPRITE_LOCATION, color);
-		CollisionMask cm = new CollisionMask(new Vec2d(startX, startY), 60, 30, mpSprite);
-		PlayerFish tbr = new PlayerFish(cm, mpSprite);
+		CollisionMask cm = new CollisionMask(new Vec2d(startX, startY), 60, 30, sprite);
+		PlayerFish tbr = new PlayerFish(cm, sprite);
 
 		//TODO #168 Make setting for this "spawn invincibility"
 		tbr.setInvincible(System.currentTimeMillis() + SPAWN_INVINCIBILITY);
