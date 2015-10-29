@@ -63,5 +63,33 @@ public final class AchievementManager {
 		}
 	};
 	
+	public static final Achievement LIVES_CONSUMPTION = new Achievement("Lives") {
+		@Override
+		public void updateAchievement(AchievementObserver observer) {
+			if (!(observer instanceof LivesConsumptionObserver)) {
+				return;
+			}
+
+			int nr = ((LivesConsumptionObserver) observer).getCounter();
+
+			if (nr >= 243) {
+				setLevel(5);
+				Log.getLogger().log(LogLevel.INFO, "Achievement gained for resurrecting 243 times");
+			} else if (nr >= 81) {
+				setLevel(4);
+				Log.getLogger().log(LogLevel.INFO, "Achievement gained for resurrecting 81 times");
+			} else if (nr >= 27) {
+				setLevel(3);
+				Log.getLogger().log(LogLevel.INFO, "Achievement gained for resurrecting 27 times");
+			} else if (nr >= 9) {
+				setLevel(2);
+				Log.getLogger().log(LogLevel.INFO, "Achievement gained for resurrecting 9 times");
+			} else if (nr >= 3) {
+				setLevel(1);
+				Log.getLogger().log(LogLevel.INFO, "Achievement gained for resurrecting 3 times");
+			}
+		}
+	};
+
 	private AchievementManager() { }
 }
