@@ -75,6 +75,10 @@ public final class Preloader {
 				tryPreLoad("sprites/chieveIcon/Achievesmall" + i + ".png");
 				tryPreLoad("sprites/chieveLarge/Achieve" + i + ".png");
 			}
+			for (int i = 1; i < 6; i++) {
+				tryPreLoad("sprites/ChieveLvls/AchieveLvl" + i + ".png");
+				tryPreLoad("sprites/ChieveIconLvls/AchieveIconLvl" + i + ".png");
+			}		
 		}, true);
 	}
 	

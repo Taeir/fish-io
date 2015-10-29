@@ -66,7 +66,9 @@ public final class Settings {
 		SimpleDoubleProperty s = sliderSettings.get(setting);
 		if (s == null) {
 			logger.log(LogLevel.ERROR, "Setting '" + setting + "' not found!");
-			return new SimpleDoubleProperty(Double.NaN);
+			s = new SimpleDoubleProperty(Double.NaN);
+			
+			sliderSettings.put(setting, s);
 		}		
 		return s;
 	}
@@ -82,7 +84,9 @@ public final class Settings {
 		SimpleDoubleProperty s = doubleSettings.get(setting);
 		if (s == null) {
 			logger.log(LogLevel.ERROR, "Setting '" + setting + "' not found!");
-			return new SimpleDoubleProperty(Double.NaN);
+			s = new SimpleDoubleProperty(Double.NaN);
+			
+			doubleSettings.put(setting, s);
 		}		
 		return s;
 	}
@@ -98,7 +102,9 @@ public final class Settings {
 		SimpleIntegerProperty s = integerSettings.get(setting);
 		if (s == null) {
 			logger.log(LogLevel.ERROR, "Setting '" + setting + "' not found!");
-			return new SimpleIntegerProperty(Integer.MIN_VALUE);
+			s = new SimpleIntegerProperty(Integer.MIN_VALUE);
+			
+			integerSettings.put(setting, s);
 		}		
 		return s;
 	}
@@ -114,7 +120,9 @@ public final class Settings {
 		SimpleBooleanProperty s = booleanSettings.get(setting);
 		if (s == null) {
 			logger.log(LogLevel.ERROR, "Setting '" + setting + "' not found!");
-			return new SimpleBooleanProperty();
+			s = new SimpleBooleanProperty();
+			
+			booleanSettings.put(setting, s);
 		}
 		return s;
 	}
@@ -172,6 +180,21 @@ public final class Settings {
 	 */
 	public boolean getBoolean(String setting) {
 		return getBooleanProperty(setting).getValue().booleanValue();
+	}
+	
+	/**
+	 * Get the description of a setting.
+	 * @param key
+	 * 		the setting.
+	 * @return
+	 * 		the description of the setting, or 'No description available' when not found.
+	 */
+	public String getDescription(String key) {
+		String res = descriptions.get(key);
+		if (res == null) {
+			return "No description available.";
+		}
+		return res;
 	}
 	
 	/**
@@ -233,6 +256,18 @@ public final class Settings {
 		keySettings.put(setting, newValue);
 		logger.log(LogLevel.DEBUG, setting + " changed to " + newValue.getName());		
 	}
+	
+	/**
+	 * Sets the description of a setting.
+	 * 
+	 * @param setting
+	 * 		the setting to set the description of.
+	 * @param description
+	 * 		the new description for the setting.
+	 */
+	public void setDescription(String setting, String description) {
+		descriptions.put(setting, description);
+	}
 
 	/**
 	 * Saves the current settings to a file.
@@ -277,21 +312,6 @@ public final class Settings {
 	 */
 	public Set<String> getKeySettings() {
 		return keySettings.keySet();
-	}
-
-	/**
-	 * Get the description of a setting.
-	 * @param key
-	 * 		the setting.
-	 * @return
-	 * 		the description of the setting, or 'No description available' when not found.
-	 */
-	public String getDescription(String key) {
-		String res = descriptions.get(key);
-		if (res == null) {
-			return "No description available.";
-		}
-		return res;
 	}
 
 	/**

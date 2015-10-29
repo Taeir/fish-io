@@ -46,8 +46,7 @@ public interface Listenable {
 					Log.getLogger().log(LogLevel.ERROR, "Error in preTick:\t" + ex.getMessage());
 				}
 				
-				//TODO Handle exception differently
-				ex.printStackTrace();
+				Log.getLogger().log(LogLevel.DEBUG, ex);
 			}
 		}
 	}
@@ -69,8 +68,7 @@ public interface Listenable {
 					Log.getLogger().log(LogLevel.ERROR, "Error in postTick:\t" + ex.getMessage());
 				}
 				
-				//TODO Handle exception differently
-				ex.printStackTrace();
+				Log.getLogger().log(LogLevel.DEBUG, ex);
 			}
 		}
 	}

@@ -22,6 +22,16 @@ import javafx.scene.input.KeyCode;
  * This class
  */
 public class SettingsTest {
+	private static final String NON_EXISTENT_SETTING = "NON_EXISTENT";
+	private static final String BOOLEAN_TRUE_SETTING = "BOOLEAN_TRUE";
+	private static final String BOOLEAN_FALSE_SETTING = "BOOLEAN_FALSE";
+	private static final String DOUBLE_SETTING = "DOUBLE";
+	private static final String INTEGER_SETTING = "INTEGER";
+	private static final String SLIDER_SETTING = "SLIDER";
+	private static final String KEY_SETTING = "KEY";
+	private static final String DESCRIPTION_SETTING = "SETTING_TEST_DESCRIPTION";
+	private static final String DESCRIPTION = "This is a description.";
+	
 	private static final String SETTINGS_FILE = "settings.yml";
 	private static final double DELTA = 10E-8;
 	
@@ -31,39 +41,60 @@ public class SettingsTest {
 	 * Copy the settings file and load the default settings.
 	 */
 	@BeforeClass
-	public static void beforeClass() {
+	public static void setUpClass() {
+		//Rename the settings file to a temp file
 		File file = new File(SETTINGS_FILE);
 		if (file.exists()) {
 			file.renameTo(new File(".settings.yml.tmp"));
 		}
+		
+		//Set the instance, load and save the settings
 		instance = Settings.getInstance();
-		
-		if (!new File(SETTINGS_FILE).exists()) {
-			instance.load();
-		}
-		
-		instance.save();
-	}
-	
-	/**
-	 * Reload settings.
-	 */
-	@Before
-	public void before() {
-		new File(SETTINGS_FILE).delete();
 		instance.load();
+		instance.save();
 	}
 	
 	/**
 	 * restore the old setting file.
 	 */
 	@AfterClass
-	public static void afterClass() {
+	public static void tearDownClass() {
+		//Delete the settings file
 		File file = new File(SETTINGS_FILE);
-		File temp = new File(".settings.yml.tmp");
 		file.delete();
+		
+		//Restore the old settings
+		File temp = new File(".settings.yml.tmp");
 		temp.renameTo(file);
-		temp.delete();
+	}
+	
+	/**
+	 * Reload settings.
+	 */
+	@Before
+	public void setUp() {
+		//Delete the settings file and load (this loads the defaults)
+		new File(SETTINGS_FILE).delete();
+		instance.load();
+		
+		//Add fake settings
+		instance.setBoolean(BOOLEAN_TRUE_SETTING, true);
+		instance.setBoolean(BOOLEAN_FALSE_SETTING, false);
+		instance.setDouble(DOUBLE_SETTING, 3.8);
+		instance.setInteger(INTEGER_SETTING, 6);
+		instance.setKey(KEY_SETTING, KeyCode.ENTER);
+		instance.setSlider(SLIDER_SETTING, 0.45);
+		
+		instance.setDescription(DESCRIPTION_SETTING, DESCRIPTION);
+	}
+	
+	/**
+	 * Resets the settings to defaults.
+	 */
+	private void resetSettings() {
+		//Delete the settings file and load (this loads the defaults)
+		new File(SETTINGS_FILE).delete();
+		instance.load();
 	}
 	
 	/**
@@ -79,7 +110,7 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testGetSliderPropertyNull() {
-		SimpleDoubleProperty property = instance.getSliderProperty("NON_EXISTENT");
+		SimpleDoubleProperty property = instance.getSliderProperty(NON_EXISTENT_SETTING);
 		assertEquals(Double.NaN, property.doubleValue(), DELTA);
 	}
 	
@@ -88,8 +119,8 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testGetSliderValue() {
-		double value = instance.getSlider("MUSIC_VOLUME");
-		assertEquals(0.8, value, DELTA);
+		double value = instance.getSlider(SLIDER_SETTING);
+		assertEquals(0.45, value, DELTA);
 	}	
 	
 	/**
@@ -97,7 +128,7 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testGetDoubleNull() {
-		double value = instance.getDouble("NON_EXISTENT");
+		double value = instance.getDouble(NON_EXISTENT_SETTING);
 		assertEquals(Double.NaN, value, DELTA);
 	}
 	
@@ -106,8 +137,8 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testGetDoubleValue() {
-		double value = instance.getDouble("FISH_EAT_THRESHOLD");
-		assertEquals(1.2, value, DELTA);
+		double value = instance.getDouble(DOUBLE_SETTING);
+		assertEquals(3.8, value, DELTA);
 	}	
 	
 	/**
@@ -115,7 +146,7 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testGetIntegerNull() {
-		int value = instance.getInteger("NON_EXISTENT");
+		int value = instance.getInteger(NON_EXISTENT_SETTING);
 		assertEquals(Integer.MIN_VALUE, value);
 	}
 	
@@ -124,8 +155,8 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testGetIntegerValue() {
-		int value = instance.getInteger("MAX_LIVES");
-		assertEquals(5, value);
+		int value = instance.getInteger(INTEGER_SETTING);
+		assertEquals(6, value);
 	}
 	
 	/**
@@ -133,7 +164,7 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testGetBooleanNull() {
-		assertFalse(instance.getBoolean("NON_EXISTENT"));
+		assertFalse(instance.getBoolean(NON_EXISTENT_SETTING));
 	}
 	
 	/**
@@ -141,7 +172,7 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testGetBooleanValueFalse() {
-		assertFalse(instance.getBoolean("DEBUG_DRAW"));
+		assertFalse(instance.getBoolean(BOOLEAN_FALSE_SETTING));
 	}
 	
 	/**
@@ -149,7 +180,7 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testGetBooleanValueTrue() {
-		assertTrue(instance.getBoolean("PIXEL_PERFECT_COLLISIONS"));
+		assertTrue(instance.getBoolean(BOOLEAN_TRUE_SETTING));
 	}
 	
 	/**
@@ -157,7 +188,7 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testGetKeyCodeNull() {
-		KeyCode key = instance.getKeyCode("NON_EXISTENT");
+		KeyCode key = instance.getKeyCode(NON_EXISTENT_SETTING);
 		assertNull(key);
 	}
 	
@@ -166,8 +197,8 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testGetKeyCodeValue() {
-		KeyCode value = instance.getKeyCode("SWIM_UP");
-		assertEquals(KeyCode.UP, value);
+		KeyCode value = instance.getKeyCode(KEY_SETTING);
+		assertEquals(KeyCode.ENTER, value);
 	}
 	
 	/**
@@ -175,7 +206,7 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testGetDescriptionNull() {
-		String desc = instance.getDescription("NON_EXISTENT");
+		String desc = instance.getDescription(NON_EXISTENT_SETTING);
 		assertEquals("No description available.", desc);
 	}
 	
@@ -184,8 +215,8 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testGetDescriptionValue() {
-		String desc = instance.getDescription("DEBUG_DRAW");
-		assertEquals("The game is rendered with debug values.", desc);
+		String desc = instance.getDescription(DESCRIPTION_SETTING);
+		assertEquals(DESCRIPTION, desc);
 	}
 	
 	/**
@@ -194,6 +225,7 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testDefaultDoubleSettingsKeySet() {
+		resetSettings();
 		Set<String> expected = Settings.getDefaultDoubleSettings().keySet();
 		Set<String> actual = instance.getDoubleSettings();
 		assertEquals(expected, actual);
@@ -205,6 +237,7 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testDefaultIntegerSettingsKeySet() {
+		resetSettings();
 		Set<String> expected = Settings.getDefaultIntegerSettings().keySet();
 		Set<String> actual = instance.getIntegerSettings();
 		assertEquals(expected, actual);
@@ -216,6 +249,7 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testDefaultBooleanSettingsKeySet() {
+		resetSettings();
 		Set<String> expected = Settings.getDefaultBooleanSettings().keySet();
 		Set<String> actual = instance.getBooleanSettings();
 		assertEquals(expected, actual);
@@ -227,6 +261,7 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testDefaultSliderSettingsKeySet() {
+		resetSettings();
 		Set<String> expected = Settings.getDefaultSliderSettings().keySet();
 		Set<String> actual = instance.getSliderSettings();
 		assertEquals(expected, actual);
@@ -238,6 +273,7 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testDefaultKeyCodeSettingsKeySet() {
+		resetSettings();
 		Set<String> expected = Settings.getDefaultKeyCodeSettings().keySet();
 		Set<String> actual = instance.getKeySettings();
 		assertEquals(expected, actual);
@@ -248,8 +284,8 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testSetDouble() {
-		instance.setDouble("FISH_EAT_THRESHOLD", 12345.6);
-		assertEquals(12345.6, instance.getDouble("FISH_EAT_THRESHOLD"), DELTA);
+		instance.setDouble(DOUBLE_SETTING, 12345.6);
+		assertEquals(12345.6, instance.getDouble(DOUBLE_SETTING), DELTA);
 	}
 	
 	/**
@@ -257,8 +293,8 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testSetInteger() {
-		instance.setInteger("MAX_LIVES", 12);
-		assertEquals(12, instance.getInteger("MAX_LIVES"));
+		instance.setInteger(INTEGER_SETTING, 12);
+		assertEquals(12, instance.getInteger(INTEGER_SETTING));
 	}
 	
 	/**
@@ -266,8 +302,8 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testSetBoolean() {
-		instance.setBoolean("DEBUG_DRAW", true);
-		assertTrue(instance.getBoolean("DEBUG_DRAW"));
+		instance.setBoolean(BOOLEAN_FALSE_SETTING, true);
+		assertTrue(instance.getBoolean(BOOLEAN_FALSE_SETTING));
 	}
 	
 	/**
@@ -275,8 +311,8 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testSetKeyCode() {
-		instance.setKey("SWIM_UP", KeyCode.SPACE);
-		assertEquals(KeyCode.SPACE, instance.getKeyCode("SWIM_UP"));
+		instance.setKey(KEY_SETTING, KeyCode.SPACE);
+		assertEquals(KeyCode.SPACE, instance.getKeyCode(KEY_SETTING));
 	}
 	
 	/**
@@ -284,8 +320,8 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testSetSlider() {
-		instance.setSlider("MASTER_VOLUME", 0.001);
-		assertEquals(0.001, instance.getSlider("MASTER_VOLUME"), DELTA);
+		instance.setSlider(SLIDER_SETTING, 0.001);
+		assertEquals(0.001, instance.getSlider(SLIDER_SETTING), DELTA);
 	}
 	
 	/**
@@ -294,26 +330,26 @@ public class SettingsTest {
 	 */
 	@Test
 	public void testSaveLoad() {
-		double doubl = instance.getDouble("FISH_EAT_THRESHOLD");
-		int in = instance.getInteger("MAX_LIVES");
-		boolean bool = instance.getBoolean("DEBUG_DRAW");
-		double slider = instance.getSlider("MASTER_VOLUME");
-		KeyCode key = instance.getKeyCode("SWIM_UP");
+		double doubl = instance.getDouble(DOUBLE_SETTING);
+		int in = instance.getInteger(INTEGER_SETTING);
+		boolean bool = instance.getBoolean(BOOLEAN_FALSE_SETTING);
+		double slider = instance.getSlider(SLIDER_SETTING);
+		KeyCode key = instance.getKeyCode(KEY_SETTING);
 		
 		instance.save();
 		
-		instance.setDouble("FISH_EAT_THRESHOLD", doubl + 12.3);
-		instance.setInteger("MAX_LIVES", in + 12);
-		instance.setBoolean("DEBUG_DRAW", !bool);
-		instance.setSlider("MASTER_VOLUME", slider - 0.5);
-		instance.setKey("SWIM_UP", KeyCode.SPACE); // as space as a default would break the game.
+		instance.setDouble(DOUBLE_SETTING, doubl + 12.3);
+		instance.setInteger(INTEGER_SETTING, in + 12);
+		instance.setBoolean(BOOLEAN_FALSE_SETTING, !bool);
+		instance.setSlider(SLIDER_SETTING, slider - 0.5);
+		instance.setKey(KEY_SETTING, KeyCode.SPACE); // as space as a default would break the game.
 		
 		instance.load();
 	
-		assertEquals(doubl, instance.getDouble("FISH_EAT_THRESHOLD"), DELTA);
-		assertEquals(in, instance.getInteger("MAX_LIVES"));
-		assertEquals(bool, instance.getBoolean("DEBUG_DRAW"));
-		assertEquals(slider, instance.getSlider("MASTER_VOLUME"), DELTA);
-		assertEquals(key, instance.getKeyCode("SWIM_UP"));
+		assertEquals(doubl, instance.getDouble(DOUBLE_SETTING), DELTA);
+		assertEquals(in, instance.getInteger(INTEGER_SETTING));
+		assertEquals(bool, instance.getBoolean(BOOLEAN_FALSE_SETTING));
+		assertEquals(slider, instance.getSlider(SLIDER_SETTING), DELTA);
+		assertEquals(key, instance.getKeyCode(KEY_SETTING));
 	}
 }

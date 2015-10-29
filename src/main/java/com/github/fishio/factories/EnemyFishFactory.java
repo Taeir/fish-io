@@ -7,10 +7,10 @@ import com.github.fishio.CollisionMask;
 import com.github.fishio.EnemyFish;
 import com.github.fishio.Entity;
 import com.github.fishio.ICollisionArea;
-import com.github.fishio.Vec2d;
-import com.github.fishio.settings.Settings;
 import com.github.fishio.Sprite;
 import com.github.fishio.SpriteStore;
+import com.github.fishio.Vec2d;
+import com.github.fishio.settings.Settings;
 
 /**
  * An EnemyFishFactory has the ability to create different EnemyFishes.
@@ -27,19 +27,19 @@ public class EnemyFishFactory {
 	 * @param ca
 	 * 		a Collision Area which decides the minimum and maximum size
 	 * 		of the fish being spawned.
-	 * @param w
+	 * @param playingFieldWidth
 	 * 		the width of the playingfield outside which the fish is spawned
-	 * @param h
+	 * @param playingFieldHeight
 	 * 		the height of the playingfield outside which the fish is spawned
 	 * 
 	 * @return
 	 * 		a randomized EnemyFish.
 	 */
-	public EnemyFish randomizedFish(ICollisionArea ca, int w, int h) {
+	public EnemyFish randomizedFish(ICollisionArea ca, int playingFieldWidth, int playingFieldHeight) {
 		int minSize = (int) (ca.getSize() * 0.2);
 		int maxSize = (int) (ca.getSize() * 4.5);
 		
-		return randomizedFish(minSize, maxSize, w, h);
+		return randomizedFish(minSize, maxSize, playingFieldWidth, playingFieldHeight);
 	}
 	
 	/**
@@ -49,17 +49,17 @@ public class EnemyFishFactory {
 	 * @param sizes
 	 * 		a collection of entities used for determining the size of the
 	 * 		fish being spawned.
-	 * @param w
+	 * @param playingFieldWidth
 	 * 		the width of the playingfield outside which the fish is spawned
-	 * @param h
+	 * @param playingFieldHeight
 	 * 		the height of the playingfield outside which the fish is spawned
 	 * 
 	 * @return
 	 * 		a randomized EnemyFish.
 	 */
-	public EnemyFish randomizedFish(Collection<? extends Entity> sizes, int w, int h) {
+	public EnemyFish randomizedFish(Collection<? extends Entity> sizes, int playingFieldWidth, int playingFieldHeight) {
 		if (sizes.isEmpty()) {
-			return randomizedFish(500, 1000, w, h);
+			return randomizedFish(500, 1000, playingFieldWidth, playingFieldHeight);
 		}
 		
 		int minSize = Integer.MAX_VALUE;
@@ -77,7 +77,7 @@ public class EnemyFishFactory {
 			}
 		}
 		
-		return randomizedFish(minSize, maxSize, w, h);
+		return randomizedFish(minSize, maxSize, playingFieldWidth, playingFieldHeight);
 	}
 
 	/**
@@ -88,53 +88,53 @@ public class EnemyFishFactory {
 	 * 		the minimum size of the fish
 	 * @param maxSize
 	 * 		the maximum size of the fish
-	 * @param w
+	 * @param playingFieldWidth
 	 * 		the width of the playingfield outside which the fish is spawned
-	 * @param h
+	 * @param playingFieldHeight
 	 * 		the height of the playingfield outside which the fish is spawned
 	 * 
 	 * @return
 	 * 		a random Enemyfish
 	 */
-	public EnemyFish randomizedFish(int minSize, int maxSize, int w, int h) {
+	public EnemyFish randomizedFish(int minSize, int maxSize, int playingFieldWidth, int playingFieldHeight) {
 		//randomize fish properties 
 		int size = random.nextInt(maxSize - minSize + 1) + minSize;
 		String spriteString = getRandomSprite();
 		Sprite sprite = SpriteStore.getSpriteOrLoad(spriteString);
 		//TODO use setSize() instead of width/height calculations
 		double ratio = sprite.getWidth() / sprite.getHeight();
-		double width = Math.sqrt(size * ratio);
-		double height = size / width;
+		double enemyFishWidth = Math.sqrt(size * ratio);
+		double enemyFishHeight = size / enemyFishWidth;
 
 		double vx = 0.0, vy = 0.0;
 		Vec2d position = null;
 		//pick a side
 		switch (random.nextInt(4)) {
 		case 0: 	// left
-			position = new Vec2d(-width, Math.random() * h); 
+			position = new Vec2d(-enemyFishWidth, Math.random() * playingFieldHeight); 
 			vx = Math.abs(randomSpeed());
 			vy = randomSpeed();
 			break;
 		case 1: 	// top
-			position = new Vec2d(Math.random() * w, -height);
+			position = new Vec2d(Math.random() * playingFieldWidth, -enemyFishHeight);
 			vx = randomSpeed();
 			vy = -Math.abs(randomSpeed());
 			break;
 		case 2: 	// right
-			position = new Vec2d(w + width,
-					Math.random() * h);
+			position = new Vec2d(playingFieldWidth + enemyFishWidth,
+					Math.random() * playingFieldHeight);
 			vx = -Math.abs(randomSpeed());
 			vy = randomSpeed();
 			break;
 		default: 	// bottom
-			position = new Vec2d(Math.random() * w, h + height);
+			position = new Vec2d(Math.random() * playingFieldWidth, playingFieldHeight + enemyFishHeight);
 			vx = randomSpeed();
 			vy = Math.abs(randomSpeed());
 			break;
 		}
 
-		EnemyFish eFish =
-				new EnemyFish(new CollisionMask(position, width, height, sprite), spriteString, vx, vy);
+		EnemyFish eFish = new EnemyFish(
+					new CollisionMask(position, enemyFishWidth, enemyFishHeight, sprite), spriteString, vx, vy);
 		
 		//TODO Check for decent properties
 		//eFish.checkProperties()
