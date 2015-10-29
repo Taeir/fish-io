@@ -7,7 +7,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 /**
- * Image with collision mask data.
+ * Image with collision mask data and, if desired, an altered color.
  */
 public class Sprite extends Image {
 	private double alphaRatio;
