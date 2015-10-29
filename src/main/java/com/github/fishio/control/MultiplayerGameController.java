@@ -2,7 +2,6 @@ package com.github.fishio.control;
 
 import com.github.fishio.PlayerFish;
 import com.github.fishio.Preloader;
-import com.github.fishio.Sprite;
 import com.github.fishio.Util;
 import com.github.fishio.audio.AudioEngine;
 import com.github.fishio.multiplayer.MultiplayerPlayingField;
@@ -20,8 +19,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.effect.ColorAdjust;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -239,25 +236,6 @@ public class MultiplayerGameController implements ScreenController {
 	 */
 	public Canvas getCanvas() {
 		return this.gameCanvas;
-	}
-
-	/**
-	 * Changes the hue of the displaying of a sprite. This method returns an
-	 * ImageView which should be attached to the sprite of a client in the game.
-	 * This way, each client in the multiplayer game will get a different hue
-	 * (and so color).
-	 * 
-	 * @param sprite
-	 *            The sprite which hue has to be changed.
-	 * @return An imageView with a different hue.
-	 */
-	public ImageView spriteColourChanger(Sprite sprite) {
-		ImageView imageView = new ImageView();
-		double hue = 2 * Math.random() - 1;
-		ColorAdjust coloradj = new ColorAdjust(hue, 0.0, 0.0, 0.0);
-		imageView.setEffect(coloradj);
-		return imageView;
-
 	}
 
 }
