@@ -76,9 +76,15 @@ public class TestTxtFileHandler extends TestIHandler {
 	
 	/**
 	 * Test if output calls correct method.
+	 * 
+	 * @throws IOException
+	 * 		we verify that write was called on our mocked buffered writer,
+	 * 		but the exception has to be caught. Since we are only verifying
+	 * 		and not actually calling the method, this exception cannot occur.
+	 * 		This throws is here to make the code cleaner.
 	 */
 	@Test
-	public void testOutput() {
+	public void testOutput() throws IOException {
 		IFormatter formatter = mock(DefaultFormat.class);
 		when(formatter.formatOutput(LogLevel.ERROR, filename)).thenReturn("Test Output");
 		BufferedWriter mockedBW = mock(BufferedWriter.class);
@@ -87,11 +93,7 @@ public class TestTxtFileHandler extends TestIHandler {
 		handler.setBufferedWriter(mockedBW);
 		handler.output(LogLevel.ERROR, filename);
 		verify(formatter).formatOutput(LogLevel.ERROR, filename);
-		try {
-			verify(mockedBW).write("Test Output");
-		} catch (IOException e) {
-			//This is a verify interaction, not a real call, so no IOException will occur here.
-		}
+		verify(mockedBW).write("Test Output");
 	}
 
 	/**
