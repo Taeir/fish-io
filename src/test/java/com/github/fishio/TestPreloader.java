@@ -27,6 +27,8 @@ import com.github.fishio.test.util.TestUtil;
  * Test for the {@link Preloader} class.
  */
 public class TestPreloader extends SlimGuiTest {
+	private static final String DEFAULT_NAME = "banana";
+	private static final String DEFAULT_IMAGE = "AlphaDataTest.png";
 	private static HashMap<String, Image> images;
 	private static HashMap<String, Scene> screens;
 
@@ -41,7 +43,7 @@ public class TestPreloader extends SlimGuiTest {
 	}
 
 	/**
-	 * Restore the logLoevel after the tests.
+	 * Restore the logLevel after the tests.
 	 */
 	@AfterClass
 	public static void tearDownClass() {
@@ -75,8 +77,8 @@ public class TestPreloader extends SlimGuiTest {
 	 */
 	@Test
 	public void testTryLoadImagesException() {
-		Preloader.tryPreLoad("banana");
-		verify(TestUtil.getMockHandler()).output(LogLevel.ERROR, "Error while trying to load image: banana");
+		Preloader.tryPreLoad(DEFAULT_NAME);
+		verify(TestUtil.getMockHandler()).output(LogLevel.ERROR, "Error while trying to load image: " + DEFAULT_NAME);
 	}
 
 	/**
@@ -84,10 +86,10 @@ public class TestPreloader extends SlimGuiTest {
 	 */
 	@Test
 	public void testTryLoadImagesExisting() {
-		Image image = new Image("AlphaDataTest.png");
-		images.put("banana", image);
-		Preloader.tryPreLoad("banana");
-		assertEquals(image, images.get("banana")); // not overwritten		
+		Image image = new Image(DEFAULT_IMAGE);
+		images.put(DEFAULT_NAME, image);
+		Preloader.tryPreLoad(DEFAULT_NAME);
+		assertEquals(image, images.get(DEFAULT_NAME)); // not overwritten		
 	}
 
 	/**
@@ -95,9 +97,9 @@ public class TestPreloader extends SlimGuiTest {
 	 */
 	@Test
 	public void testTryLoadImagesLoad() {
-		Preloader.tryPreLoad("AlphaDataTest.png");
-		assertNotNull(images.get("AlphaDataTest.png"));	
-		assertEquals(3, images.get("AlphaDataTest.png").getWidth(), 1E-8);
+		Preloader.tryPreLoad(DEFAULT_IMAGE);
+		assertNotNull(images.get(DEFAULT_IMAGE));	
+		assertEquals(3, images.get(DEFAULT_IMAGE).getWidth(), 1E-8);
 	}
 
 	/**
@@ -105,9 +107,9 @@ public class TestPreloader extends SlimGuiTest {
 	 */
 	@Test
 	public void testGetImageOrLoadGet() {
-		Image image = new Image("AlphaDataTest.png");
-		images.put("banana", image);
-		assertEquals(image, Preloader.getImageOrLoad("banana"));	
+		Image image = new Image(DEFAULT_IMAGE);
+		images.put(DEFAULT_NAME, image);
+		assertEquals(image, Preloader.getImageOrLoad(DEFAULT_NAME));	
 	}
 
 	/**
@@ -115,7 +117,7 @@ public class TestPreloader extends SlimGuiTest {
 	 */
 	@Test
 	public void testGetImageOrLoadLoad() {
-		Image image = Preloader.getImageOrLoad("AlphaDataTest.png");
+		Image image = Preloader.getImageOrLoad(DEFAULT_IMAGE);
 		assertEquals(3, image.getWidth(), 1E-8);
 	}
 
@@ -124,10 +126,10 @@ public class TestPreloader extends SlimGuiTest {
 	 */
 	@Test
 	public void testGetImageExisting() {
-		Image image = new Image("AlphaDataTest.png");
-		images.put("banana", image);
-		Preloader.getImage("banana");
-		assertEquals(image, images.get("banana"));		
+		Image image = new Image(DEFAULT_IMAGE);
+		images.put(DEFAULT_NAME, image);
+		Preloader.getImage(DEFAULT_NAME);
+		assertEquals(image, images.get(DEFAULT_NAME));		
 	}
 
 	/**
@@ -135,8 +137,8 @@ public class TestPreloader extends SlimGuiTest {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetImageLoad() {
-		Preloader.getImage("banana");
-		verify(TestUtil.getMockHandler()).output(LogLevel.ERROR, "No image loaded for banana!");
+		Preloader.getImage(DEFAULT_NAME);
+		verify(TestUtil.getMockHandler()).output(LogLevel.ERROR, "No image loaded for " + DEFAULT_NAME + "!");
 	}
 
 	/**
@@ -145,8 +147,8 @@ public class TestPreloader extends SlimGuiTest {
 	@Test
 	public void testLoadScreenLoaded() {
 		Scene exp = new Scene(new StackPane());
-		screens.put("banana", exp);
-		Scene res = Preloader.loadScreen("banana");
+		screens.put(DEFAULT_NAME, exp);
+		Scene res = Preloader.loadScreen(DEFAULT_NAME);
 		assertEquals(exp, res);
 	}
 
