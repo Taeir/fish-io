@@ -180,7 +180,10 @@ public class SinglePlayerController implements ScreenController {
 		if (gameThread.isRunning()) {
 			try {
 				playingField.stopGameAndWait();
-			} catch (InterruptedException ex) { }
+			} catch (InterruptedException ex) { 
+				logger.log(LogLevel.ERROR, "Error on pausing the game!");
+				logger.log(LogLevel.DEBUG, ex);
+			}
 			getPauseButton().setText(UNPAUSE_TEXT);
 			
 			logger.log(LogLevel.INFO, "Player paused the game.");
