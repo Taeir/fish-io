@@ -85,9 +85,10 @@ public class Renderer implements Listenable {
 			if (isRendering()) {
 				newRenderThread.play();
 				stopRendering();
-				this.renderThread = newRenderThread;
 				Log.getLogger().log(LogLevel.INFO, "[Renderer] Restarted renderer.");
 			}
+			
+			this.renderThread = newRenderThread;
 			
 			Log.getLogger().log(LogLevel.INFO, "[Renderer] Changed framerate to: " + newValue.intValue() + " FPS.");
 		});
@@ -151,11 +152,6 @@ public class Renderer implements Listenable {
 			it.next().render(gc);
 		}
 		
-		//Render all death animations
-		IDrawable drawable;
-		while ((drawable = playingField.getDeadDrawables().pollLast()) != null) {
-			drawable.drawDeath(gc);
-		}
 		gc.restore();
 	}
 	

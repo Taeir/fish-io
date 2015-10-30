@@ -15,14 +15,6 @@ import javafx.scene.transform.Rotate;
 public interface IDrawable {
 
 	/**
-	 * Called when this object dies.
-	 * 
-	 * @param gc
-	 * 		the {@link GraphicsContext} to render on.
-	 */
-	void drawDeath(GraphicsContext gc);
-
-	/**
 	 * Called when this object should be rendered.
 	 * 
 	 * @param gc
