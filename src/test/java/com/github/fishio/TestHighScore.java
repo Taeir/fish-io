@@ -26,7 +26,7 @@ import com.github.fishio.test.util.TestUtil;
 /**
  * Test class for {@link HighScore}.
  */
-public class HighScoreTest {
+public class TestHighScore {
 	private static final String HIGH_SCORE_FILE = "testHighScores.yml";
 	/**
 	 * The player name that will be used by the tests.
