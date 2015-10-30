@@ -143,6 +143,11 @@ public class MultiplayerClientPlayingField extends MultiplayerPlayingField {
 	 * 		the entity to update with
 	 */
 	public void updateEntity(Entity current, Entity updated) {
+		//If current and updated are the same object, we don't need to update it.
+		if (current == updated) {
+			return;
+		}
+		
 		//Update death state
 		if (updated.isDead()) {
 			current.kill();

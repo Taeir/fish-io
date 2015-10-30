@@ -223,8 +223,6 @@ public final class FishIOServer implements Runnable {
 		mspf.stopGame();
 		mspf.clear();
 		
-		//TODO #169 show a message to the user?
-		
 		//Log that we have stopped
 		Log.getLogger().log(LogLevel.INFO, "[Server] Server stopped");
 		
@@ -322,20 +320,6 @@ public final class FishIOServer implements Runnable {
 		sender.queueWriteFlushToAvailable(cg);
 		
 		return true;
-	}
-	
-	/**
-	 * If this server is running, this method flushes all queued messages
-	 * to all connected clients.
-	 */
-	public void flush() {
-		Log.getLogger().log(LogLevel.TRACE, "[Server] Flushing messages");
-		
-		ChannelGroup cg = this.allChannels;
-		
-		if (cg != null) {
-			cg.flush();
-		}
 	}
 	
 	/**

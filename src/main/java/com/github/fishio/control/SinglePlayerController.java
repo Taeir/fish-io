@@ -247,6 +247,10 @@ public class SinglePlayerController implements ScreenController {
 	 *            the level of the achievement that has to be displayed.
 	 */
 	public void showAchievePopup(Image image, String description, int level) {
+		if (level == 0) {
+			return;
+		}
+		
 		int in = 2000;
 		int out = 1000;
 		int duration = 5000;
@@ -256,7 +260,7 @@ public class SinglePlayerController implements ScreenController {
 		ImageView popUpLVL = (ImageView) list.get(1);
 		Label label = (Label) list.get(2);
 		
-		popUpLVL.setImage(Preloader.getImageOrLoad("/sprites/ChieveLvls/AchieveLVL" + level + ".png"));
+		popUpLVL.setImage(Preloader.getImageOrLoad("/sprites/ChieveLvls/AchieveLvl" + level + ".png"));
 		img.setImage(image);
 		label.setText(description);
 		
