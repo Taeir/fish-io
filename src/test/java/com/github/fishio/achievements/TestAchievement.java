@@ -1,7 +1,6 @@
 package com.github.fishio.achievements;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
@@ -90,8 +89,9 @@ public abstract class TestAchievement {
 	 */
 	@Test
 	public void testGetLevelProperty() {
-		Achievement a = newAchievement("test", 5);
-		SimpleIntegerProperty levelProperty = new SimpleIntegerProperty(5);
+		Achievement a = newAchievement("test", 2);
+		SimpleIntegerProperty levelProperty = new SimpleIntegerProperty();
+		levelProperty.set(2);
 		assertEquals(a.getLevelProperty(), levelProperty.get());
 	}
 
@@ -117,9 +117,41 @@ public abstract class TestAchievement {
 	 */
 	@Test
 	public void testEqualsOtherClass() {
-		assertFalse(newAchievement().equals(new Double(1.0)));
+		assertNotEquals(newAchievement(), (new Double(1.0)));
+	}
+
+	/**
+	 * Test equals for a different name but same level.
+	 */
+	@Test
+	public void testEqualsDifferentName() {
+		assertNotEquals(newAchievement("test1", 0), newAchievement("test2", 0));
+	}
+
+	/**
+	 * Test equals for a different level but same name.
+	 */
+	@Test
+	public void testEqualsDifferentLevel() {
+		assertNotEquals(newAchievement("test1", 0), newAchievement("test1", 3));
+	}
+
+	/**
+	 * Test equals for a different level and name.
+	 */
+	@Test
+	public void testEqualsDifferentLevelName() {
+		assertNotEquals(newAchievement("test1", 0), newAchievement("test2", 3));
 	}
 	
+	/**
+	 * Test equals for a same level and name.
+	 */
+	@Test
+	public void testEqualsSameLevelName() {
+		assertEquals(newAchievement("test1", 0), newAchievement("test1", 0));
+	}
+
 	/**
 	 * Test equals with different achievement in second object.
 	 */
@@ -135,7 +167,6 @@ public abstract class TestAchievement {
 	@Test
 	public void testHashCode() {
 		Achievement a = newAchievement("a", 1);
-		
 		assertEquals("a".hashCode() * 31 + 1, a.hashCode());
 	}
 }
