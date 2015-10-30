@@ -13,7 +13,7 @@ import com.github.fishio.SinglePlayerPlayingField;
 import javafx.beans.property.SimpleObjectProperty;
 
 /**
- * This class tests the Player Death achievement.
+ * This class tests the Lives Consumption achievement.
  *
  */
 public class TestAchieveLivesConsumption {
