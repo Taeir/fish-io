@@ -27,7 +27,6 @@ public abstract class PlayingField {
 	private Renderer renderer;
 
 	private ConcurrentLinkedDeque<IDrawable> drawables = new ConcurrentLinkedDeque<>();
-	private ConcurrentLinkedDeque<IDrawable> deadDrawables = new ConcurrentLinkedDeque<>();
 	private Set<Entity> entities = Collections.newSetFromMap(new ConcurrentHashMap<Entity, Boolean>());
 	private Set<ICollidable> collidables = Collections.newSetFromMap(new ConcurrentHashMap<ICollidable, Boolean>());
 
@@ -388,9 +387,6 @@ public abstract class PlayingField {
 	 * This removes all Entities and Drawables.
 	 */
 	public void clear() {
-		//Add all drawables to the drawDeaths.
-		deadDrawables.addAll(drawables);
-		
 		//Kill all entities
 		entities.parallelStream().forEach(e -> e.kill());
 
@@ -419,20 +415,7 @@ public abstract class PlayingField {
 		
 		//Remove all non playerfish from collidables
 		collidables.removeIf(c -> !(c instanceof PlayerFish));
-		
-		Iterator<IDrawable> it2 = drawables.iterator();
-		while (it2.hasNext()) {
-			IDrawable d = it2.next();
-			
-			//Skip playerfish
-			if (d instanceof PlayerFish) {
-				continue;
-			}
-			
-			//Add to deadDrawables and remove
-			deadDrawables.add(d);
-			it2.remove();
-		}
+		drawables.removeIf(c -> !(c instanceof PlayerFish));
 	}
 	
 	/**
@@ -441,14 +424,6 @@ public abstract class PlayingField {
 	 */
 	public ConcurrentLinkedDeque<IDrawable> getDrawables() {
 		return drawables;
-	}
-	
-	/**
-	 * @return
-	 * 		the drawables that died last game tick.
-	 */
-	public ConcurrentLinkedDeque<IDrawable> getDeadDrawables() {
-		return deadDrawables;
 	}
 	
 	/**

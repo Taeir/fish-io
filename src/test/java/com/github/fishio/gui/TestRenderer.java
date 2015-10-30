@@ -50,7 +50,6 @@ public class TestRenderer extends TestListenable {
 		//Create a new SinglePlayerPlayingField mock.
 		sppf = Mockito.mock(SinglePlayerPlayingField.class);
 		when(sppf.getDrawables()).thenReturn(new ConcurrentLinkedDeque<>());
-		when(sppf.getDeadDrawables()).thenReturn(new ConcurrentLinkedDeque<>());
 
 		//Create a new Canvas and spy on it.
 		canvas = spy(new Canvas());
