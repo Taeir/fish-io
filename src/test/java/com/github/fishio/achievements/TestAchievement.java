@@ -141,7 +141,7 @@ public abstract class TestAchievement {
 	 */
 	@Test
 	public void testEqualsDifferentLevelName() {
-		assertNotEquals(newAchievement("test1", 0), newAchievement("test2", 3));
+		assertNotEquals(newAchievement("test2", 0), newAchievement("test3", 3));
 	}
 	
 	/**
@@ -149,7 +149,7 @@ public abstract class TestAchievement {
 	 */
 	@Test
 	public void testEqualsSameLevelName() {
-		assertEquals(newAchievement("test1", 0), newAchievement("test1", 0));
+		assertEquals(newAchievement("test4", 0), newAchievement("test4", 0));
 	}
 
 	/**

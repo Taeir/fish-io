@@ -36,7 +36,7 @@ public final class AudioTestUtil {
 	public static boolean supportsSoundEffects() {
 		try {
 			Path path = AudioUtil.getAudioFiles(true).get(0);
-			new SoundEffect(path.toUri().toString());
+			new SoundEffect(path.toUri().toString()).isPlaying();
 		} catch (Exception ex) {
 			return false;
 		}

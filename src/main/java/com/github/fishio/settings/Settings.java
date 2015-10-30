@@ -17,6 +17,9 @@ import com.github.fishio.logging.LogLevel;
  * When the game stops working after an addition to the settings, simply remove the settings.yml file
  */
 public final class Settings {
+	private static final String NOT_FOUND = "Setting '%s' not found";
+	private static final String CHANGED_TO = " changed to ";
+
 	private static final Settings INSTANCE = new Settings();
 	
 	private Log logger = Log.getLogger();
@@ -65,7 +68,7 @@ public final class Settings {
 	public SimpleDoubleProperty getSliderProperty(String setting) {
 		SimpleDoubleProperty s = sliderSettings.get(setting);
 		if (s == null) {
-			logger.log(LogLevel.ERROR, "Setting '" + setting + "' not found!");
+			logger.log(LogLevel.ERROR, String.format(NOT_FOUND, setting));
 			s = new SimpleDoubleProperty(Double.NaN);
 			
 			sliderSettings.put(setting, s);
@@ -83,7 +86,7 @@ public final class Settings {
 	public SimpleDoubleProperty getDoubleProperty(String setting) {
 		SimpleDoubleProperty s = doubleSettings.get(setting);
 		if (s == null) {
-			logger.log(LogLevel.ERROR, "Setting '" + setting + "' not found!");
+			logger.log(LogLevel.ERROR, String.format(NOT_FOUND, setting));
 			s = new SimpleDoubleProperty(Double.NaN);
 			
 			doubleSettings.put(setting, s);
@@ -101,7 +104,7 @@ public final class Settings {
 	public SimpleIntegerProperty getIntegerProperty(String setting) {
 		SimpleIntegerProperty s = integerSettings.get(setting);
 		if (s == null) {
-			logger.log(LogLevel.ERROR, "Setting '" + setting + "' not found!");
+			logger.log(LogLevel.ERROR, String.format(NOT_FOUND, setting));
 			s = new SimpleIntegerProperty(Integer.MIN_VALUE);
 			
 			integerSettings.put(setting, s);
@@ -119,7 +122,7 @@ public final class Settings {
 	public SimpleBooleanProperty getBooleanProperty(String setting) {
 		SimpleBooleanProperty s = booleanSettings.get(setting);
 		if (s == null) {
-			logger.log(LogLevel.ERROR, "Setting '" + setting + "' not found!");
+			logger.log(LogLevel.ERROR, String.format(NOT_FOUND, setting));
 			s = new SimpleBooleanProperty();
 			
 			booleanSettings.put(setting, s);
@@ -206,7 +209,7 @@ public final class Settings {
 	 */
 	public void setDouble(String setting, double newValue) {
 		getDoubleProperty(setting).setValue(newValue);
-		logger.log(LogLevel.DEBUG, setting + " changed to " + newValue);
+		logger.log(LogLevel.DEBUG, setting + CHANGED_TO + newValue);
 	}
 	
 	/**
@@ -218,7 +221,7 @@ public final class Settings {
 	 */
 	public void setSlider(String setting, double newValue) {
 		getSliderProperty(setting).setValue(newValue);
-		logger.log(LogLevel.DEBUG, setting + " changed to " + newValue);
+		logger.log(LogLevel.DEBUG, setting + CHANGED_TO + newValue);
 	}
 	
 	/**
@@ -230,7 +233,7 @@ public final class Settings {
 	 */
 	public void setBoolean(String setting, boolean newValue) {
 		getBooleanProperty(setting).setValue(newValue);
-		logger.log(LogLevel.DEBUG, setting + " changed to " + newValue);
+		logger.log(LogLevel.DEBUG, setting + CHANGED_TO + newValue);
 	}
 	
 	/**
@@ -242,7 +245,7 @@ public final class Settings {
 	 */
 	public void setInteger(String setting, int newValue) {
 		getIntegerProperty(setting).setValue(newValue);
-		logger.log(LogLevel.DEBUG, setting + " changed to " + newValue);
+		logger.log(LogLevel.DEBUG, setting + CHANGED_TO + newValue);
 	}
 	
 	/**
@@ -254,7 +257,7 @@ public final class Settings {
 	 */
 	public void setKey(String setting, KeyCode newValue) {
 		keySettings.put(setting, newValue);
-		logger.log(LogLevel.DEBUG, setting + " changed to " + newValue.getName());		
+		logger.log(LogLevel.DEBUG, setting + CHANGED_TO + newValue.getName());		
 	}
 	
 	/**
