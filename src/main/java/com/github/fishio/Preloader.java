@@ -49,7 +49,7 @@ public final class Preloader {
 		Log.getLogger().log(LogLevel.DEBUG, "[Preloader] Preloading screens...");
 		
 		//Order matters here. We first load the mainMenu, since that screen will be shown directly after
-		//the spash screen.
+		//the splash screen.
 		MultiThreadedUtility.submitTask(() -> loadScreen("mainMenu"), false);
 		MultiThreadedUtility.submitTask(() -> loadScreen("highScoreScreen"), false);
 		MultiThreadedUtility.submitTask(() -> loadScreen("singlePlayer"), false);
@@ -225,6 +225,9 @@ public final class Preloader {
 			//Set the controller as userdata for the scene.
 			scene.getProperties().put("Controller", controller);
 			
+			//Set css file
+			scene.getStylesheets().add("/com/github/fishio/css/main.css");
+			
 			//Initialize the controller
 			try {
 				controller.init(scene);
@@ -236,7 +239,7 @@ public final class Preloader {
 			//Add the scene
 			synchronized (SCREENS) {
 				SCREENS.put(filename, scene);
-			}
+			}			
 			
 			return scene;
 		} catch (IOException e) {
