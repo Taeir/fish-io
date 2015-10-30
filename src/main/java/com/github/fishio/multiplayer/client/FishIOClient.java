@@ -295,8 +295,6 @@ public final class FishIOClient implements Runnable {
 		//Remove the settings
 		this.settings = null;
 		
-		//TODO #169 Show message to client?
-		
 		//Switch back to main menu
 		Util.onJavaFX(() -> Preloader.switchTo("mainMenu", 1000));
 	}

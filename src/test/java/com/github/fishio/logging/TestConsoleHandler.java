@@ -17,8 +17,6 @@ public class TestConsoleHandler extends TestIHandler {
 
 	private ConsoleHandler handler;
 	
-	//TODO add factory methods for get and set methods
-	
 	/**
 	 * Set up Mockito and handler.
 	 */

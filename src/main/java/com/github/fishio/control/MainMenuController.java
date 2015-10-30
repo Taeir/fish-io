@@ -79,17 +79,6 @@ public class MainMenuController implements ScreenController {
 	}
 
 	/**
-	 * Load a custom/story level
-	 * This Method is called when pressing the menu button.
-	 */
-	@FXML
-	public void loadLevel() {
-		AudioEngine.getInstance().playButtonSound();
-		
-		//TODO (not now)
-	}
-
-	/**
 	 * Show the highscore screen.
 	 * This Method is called when pressing the menu button.
 	 */
@@ -122,8 +111,6 @@ public class MainMenuController implements ScreenController {
 		logger.log(LogLevel.INFO, "Player Pressed the Settings Button.");
 		Preloader.switchTo("settingsScreen", 400);
 		AudioEngine.getInstance().playButtonSound();
-		
-		//TODO (not now)
 	}
 
 	/**

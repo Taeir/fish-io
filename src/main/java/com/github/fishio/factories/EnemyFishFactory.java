@@ -101,7 +101,6 @@ public class EnemyFishFactory {
 		int size = random.nextInt(maxSize - minSize + 1) + minSize;
 		String spriteString = getRandomSprite();
 		Sprite sprite = SpriteStore.getSpriteOrLoad(spriteString);
-		//TODO use setSize() instead of width/height calculations
 		double ratio = sprite.getWidth() / sprite.getHeight();
 		double enemyFishWidth = Math.sqrt(size * ratio);
 		double enemyFishHeight = size / enemyFishWidth;
@@ -136,8 +135,6 @@ public class EnemyFishFactory {
 		EnemyFish eFish = new EnemyFish(
 					new CollisionMask(position, enemyFishWidth, enemyFishHeight, sprite), spriteString, vx, vy);
 		
-		//TODO Check for decent properties
-		//eFish.checkProperties()
 		return eFish;
 	}
 
