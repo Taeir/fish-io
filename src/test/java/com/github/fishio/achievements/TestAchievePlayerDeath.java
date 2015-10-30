@@ -1,6 +1,7 @@
 package com.github.fishio.achievements;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -39,7 +40,6 @@ public class TestAchievePlayerDeath {
 		when(sppf.getPlayer()).thenReturn(pf);
 		when(sppf.playerProperty()).thenReturn(sop);
 		PlayerDeathObserver pdo = new PlayerDeathObserver(sppf);
-		pdo.setCounter(0);
 		return pdo;
 	}
 	
@@ -108,4 +108,42 @@ public class TestAchievePlayerDeath {
 		dko.setCounter(0);
 		assertEquals(0, AchievementManager.PLAYER_DEATH.getLevel());
 	}
+
+	/**
+	 * This method tests whether the
+	 * {@link AchievementObserver#unattachAchievement(Achievement)} method
+	 * actually works correctly.
+	 */
+	@Test
+	public void testUnattachAchievement() {
+		PlayerDeathObserver dko = getDeathObserver();
+		dko.unattachAchievement(AchievementManager.PLAYER_DEATH);
+		assertTrue(dko.getAchievements().isEmpty());
+	}
+
+	/**
+	 * This method tests whether the
+	 * {@link AchievementObserver#attachAchievement(Achievement)} method
+	 * actually works correctly when attaching the same Achievement twice.
+	 */
+	@Test
+	public void testAttachAchievementTwice() {
+		PlayerDeathObserver dko = getDeathObserver();
+		dko.attachAchievement(AchievementManager.PLAYER_DEATH);
+		assertEquals(1, dko.getAchievements().size());
+	}
+
+	/**
+	 * The method tests whether the {@link Subject#detach(AchievementObserver)}
+	 * method works when trying to detach a subject from an observer.
+	 * 
+	 */
+	@Test
+	public void testDetach() {
+		PlayerDeathObserver dko = getDeathObserver();
+		Subject playerFish = dko.getSubject();
+		playerFish.detach(dko);
+		assertEquals(0, playerFish.getObservers().size());
+	}
+
 }
