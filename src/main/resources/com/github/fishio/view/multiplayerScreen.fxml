@@ -30,21 +30,21 @@
               <children>
                 <Label prefWidth="223.0" text="Join existing multiplayer game" />
                 <TextField fx:id="joinIP" prefWidth="200.0"  promptText="Fill in IP address"/>
-                <Button fx:id="joinGame" contentDisplay="TOP" minWidth="-Infinity" mnemonicParsing="false" prefWidth="100" text="Join Game" onAction="#joinGame"/>
+                <Button contentDisplay="TOP" minWidth="-Infinity" mnemonicParsing="false" prefWidth="100" text="Join Game" onAction="#joinGame"/>
               </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
               <children>
                 <Label prefWidth="223.0" text="Create new multiplayer game" />
                 <TextField fx:id="createGamePort" prefWidth="200.0" text="25565" promptText="Fill in port"/>
-                <Button fx:id="hostGame" mnemonicParsing="false" text="Host Game" onAction="#hostGame" prefWidth="100"/>
+                <Button mnemonicParsing="false" text="Host Game" onAction="#hostGame" prefWidth="100"/>
               </children>
             </HBox>
           </children>
         </VBox>
       </children>
     </VBox>
-    <Button fx:id="btnBackToMenu" mnemonicParsing="false" onAction="#backToMenu" text="Back to menu" StackPane.alignment="BOTTOM_CENTER">
+    <Button mnemonicParsing="false" onAction="#backToMenu" text="Back to menu" StackPane.alignment="BOTTOM_CENTER">
       <StackPane.margin>
         <Insets bottom="40.0" />
       </StackPane.margin>

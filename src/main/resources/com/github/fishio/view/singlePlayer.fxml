@@ -73,15 +73,15 @@
                   <Insets left="10.0" />
                </padding>
             </Label>
-            <HBox fx:id="imageBox" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0">
                <children>
-                  <ImageView fx:id="popupImage" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
-                  <ImageView fx:id="popUpLVL" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <HBox.margin>
                         <Insets left="-105.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Label fx:id="pupupDescription" maxWidth="210.0" text="Achievement description is supposed to be displayed here." wrapText="true">
+                  <Label maxWidth="210.0" text="Achievement description is supposed to be displayed here." wrapText="true">
                      <font>
                         <Font name="System Italic" size="14.0" />
                      </font>

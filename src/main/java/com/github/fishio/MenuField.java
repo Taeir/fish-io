@@ -27,7 +27,7 @@ public class MenuField extends PlayingField {
 		
 		this.gameThread = new GameThread(this);
 		
-		new EnemyFishSpawner(this, MAX_ENEMIES);
+		setEnemyFishSpawner(new EnemyFishSpawner(this, MAX_ENEMIES));
 	}
 
 	@Override

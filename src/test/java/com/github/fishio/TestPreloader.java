@@ -27,6 +27,7 @@ import com.github.fishio.test.util.TestUtil;
  * Test for the {@link Preloader} class.
  */
 public class TestPreloader extends SlimGuiTest {
+	private static final String TEST_SCREEN = "testScreen";
 	private static final String DEFAULT_NAME = "banana";
 	private static final String DEFAULT_IMAGE = "AlphaDataTest.png";
 	private static HashMap<String, Image> images;
@@ -157,7 +158,7 @@ public class TestPreloader extends SlimGuiTest {
 	 */
 	@Test
 	public void testLoadScreenLoadController() {
-		Preloader.loadScreen("testScreen");
+		Preloader.loadScreen(TEST_SCREEN);
 		verify(TestUtil.getMockHandler()).output(LogLevel.INFO, "Controller loaded");
 	}
 	
@@ -185,7 +186,7 @@ public class TestPreloader extends SlimGuiTest {
 	 */
 	@Test
 	public void testLoadScreenLoad() {
-		Scene scene = Preloader.loadScreen("testScreen");
+		Scene scene = Preloader.loadScreen(TEST_SCREEN);
 		assertTrue(scene.getRoot() instanceof StackPane);
 		assertTrue(scene.getRoot().getChildrenUnmodifiable().isEmpty());
 	}
@@ -195,9 +196,9 @@ public class TestPreloader extends SlimGuiTest {
 	 */
 	@Test
 	public void testLoadScreenLoadWait() {
-		MultiThreadedUtility.submitTask(() -> Preloader.loadScreen("testScreen"), false);
-		Scene scene = Preloader.loadScreen("testScreen");
-		assertEquals(screens.get("testScreen"), scene);
+		MultiThreadedUtility.submitTask(() -> Preloader.loadScreen(TEST_SCREEN), false);
+		Scene scene = Preloader.loadScreen(TEST_SCREEN);
+		assertEquals(screens.get(TEST_SCREEN), scene);
 	}
 	
 	/**
