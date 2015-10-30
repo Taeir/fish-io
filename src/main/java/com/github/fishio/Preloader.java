@@ -49,7 +49,7 @@ public final class Preloader {
 		Log.getLogger().log(LogLevel.DEBUG, "[Preloader] Preloading screens...");
 		
 		//Order matters here. We first load the mainMenu, since that screen will be shown directly after
-		//the spash screen.
+		//the splash screen.
 		MultiThreadedUtility.submitTask(() -> loadScreen("mainMenu"), false);
 		MultiThreadedUtility.submitTask(() -> loadScreen("highScoreScreen"), false);
 		MultiThreadedUtility.submitTask(() -> loadScreen("singlePlayer"), false);
@@ -65,7 +65,6 @@ public final class Preloader {
 	 */
 	public static void preloadImages() {
 		Log.getLogger().log(LogLevel.DEBUG, "[Preloader] Preloading images...");
-		
 		//Load the background and the logo (short tasks)
 		MultiThreadedUtility.submitTask(() -> tryPreLoad("background.png"), true);
 		MultiThreadedUtility.submitTask(() -> tryPreLoad("logo.png"), true);
@@ -91,7 +90,7 @@ public final class Preloader {
 	 * @param file
 	 * 		the file of the image.
 	 */
-	private static void tryPreLoad(String file) {
+	protected static void tryPreLoad(String file) {
 		synchronized (IMAGES) {
 			if (IMAGES.containsKey(file)) {
 				return;
@@ -226,6 +225,9 @@ public final class Preloader {
 			//Set the controller as userdata for the scene.
 			scene.getProperties().put("Controller", controller);
 			
+			//Set css file
+			scene.getStylesheets().add("/com/github/fishio/css/main.css");
+			
 			//Initialize the controller
 			try {
 				controller.init(scene);
@@ -237,7 +239,7 @@ public final class Preloader {
 			//Add the scene
 			synchronized (SCREENS) {
 				SCREENS.put(filename, scene);
-			}
+			}			
 			
 			return scene;
 		} catch (IOException e) {
@@ -401,7 +403,7 @@ public final class Preloader {
 			getController(current).onSwitchAway();
 		}		
 	}
-	
+
 	/**
 	 * Sets the screen with the given name to the given scene.
 	 * 
@@ -416,5 +418,19 @@ public final class Preloader {
 		synchronized (SCREENS) {
 			SCREENS.put(name, scene);
 		}
+	}
+
+	/**
+	 * @return the screens
+	 */
+	static HashMap<String, Scene> getScreens() {
+		return SCREENS;
+	}
+
+	/**
+	 * @return the images
+	 */
+	static HashMap<String, Image> getImages() {
+		return IMAGES;
 	}
 }

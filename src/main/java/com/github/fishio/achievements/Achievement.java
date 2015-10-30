@@ -16,7 +16,7 @@ public abstract class Achievement {
 	 * Constructor for an Achievement.
 	 * 
 	 * @param name
-	 *            The name or title of the Achievement
+	 *            The name or title of the Achievement.
 	 * @param level
 	 *            The level of achievement that is obtained. Level 0 means not
 	 *            obtained yet.
@@ -91,23 +91,11 @@ public abstract class Achievement {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
+	public boolean equals(Object other) {
+		if (other instanceof Achievement) {
+			Achievement that = (Achievement) other;
+			return (that.getName().equals(this.getName()) && that.getLevel() == this.getLevel());
 		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		Achievement other = (Achievement) obj;
-		if (!achievement.equals(other.achievement)) {
-			return false;
-		}
-		if (getLevel() != other.getLevel()) {
-			return false;
-		}
-		return true;
+		return false;
 	}
 }

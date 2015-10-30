@@ -3,6 +3,7 @@ package com.github.fishio;
 import java.io.File;
 import java.io.IOException;
 
+import com.github.fishio.achievements.AchievementIO;
 import com.github.fishio.audio.AudioEngine;
 import com.github.fishio.logging.ConsoleHandler;
 import com.github.fishio.logging.Log;
@@ -80,6 +81,7 @@ public final class FishIO extends Application {
 		AudioEngine.getInstance().startBackgroundMusicWhenLoaded();
 		
 		HighScore.init();
+		AchievementIO.load();
 	}
 	
 	@Override
@@ -116,6 +118,8 @@ public final class FishIO extends Application {
 			
 			//Save the settings
 			settings.save();
+			AchievementIO.save();
+			HighScore.save();
 		} finally {
 			//Unregister logger handlers
 			log.removeAllHandlers();

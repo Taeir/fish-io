@@ -7,7 +7,10 @@ import com.github.fishio.SinglePlayerPlayingField;
 import com.github.fishio.Util;
 import com.github.fishio.achievements.AchievementManager;
 import com.github.fishio.achievements.EnemyKillObserver;
+import com.github.fishio.achievements.HitWallObserver;
+import com.github.fishio.achievements.LivesConsumptionObserver;
 import com.github.fishio.achievements.PlayerDeathObserver;
+import com.github.fishio.achievements.PlayerScoreObserver;
 import com.github.fishio.audio.AudioEngine;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.logging.Log;
@@ -115,6 +118,9 @@ public class SinglePlayerController implements ScreenController {
 		//Create observers for the achievements
 		new PlayerDeathObserver(playingField);
 		new EnemyKillObserver(playingField);
+		new HitWallObserver(playingField);
+		new LivesConsumptionObserver(playingField);
+		new PlayerScoreObserver(playingField);
 		
 		AudioEngine.getInstance().getMuteStateProperty().addListener((o, oVal, nVal) -> {
 			if (nVal.intValue() == AudioEngine.NO_MUTE) {
@@ -154,6 +160,29 @@ public class SinglePlayerController implements ScreenController {
 				showAchievePopup(img, "Survival of the fittest!", nVal.intValue());
 			});
 		});
+
+		AchievementManager.HIT_WALL.getLevelProperty().addListener((o, oVal, nVal) -> {
+			Util.onJavaFX(() -> {
+				Image img = new Image("/sprites/chieveLarge/Achieve3.png");
+				showAchievePopup(img, "Thinking out of the box!", nVal.intValue());
+
+			});
+		});
+
+		AchievementManager.LIVES_CONSUMPTION.getLevelProperty().addListener((o, oVal, nVal) -> {
+			Util.onJavaFX(() -> {
+				Image img = new Image("/sprites/chieveLarge/Achieve5.png");
+				showAchievePopup(img, "King of resurection!", nVal.intValue());
+			});
+		});
+
+		AchievementManager.PLAYER_SCORE.getLevelProperty().addListener((o, oVal, nVal) -> {
+			Util.onJavaFX(() -> {
+				Image img = new Image("/sprites/chieveLarge/Achieve7.png");
+				showAchievePopup(img, "Aiming for the high scores!", nVal.intValue());
+
+			});
+		});
 	}
 	
 	@Override
@@ -181,7 +210,10 @@ public class SinglePlayerController implements ScreenController {
 		if (gameThread.isRunning()) {
 			try {
 				playingField.stopGameAndWait();
-			} catch (InterruptedException ex) { }
+			} catch (InterruptedException ex) { 
+				logger.log(LogLevel.ERROR, "Error on pausing the game!");
+				logger.log(LogLevel.DEBUG, ex);
+			}
 			getPauseButton().setText(UNPAUSE_TEXT);
 			
 			logger.log(LogLevel.INFO, "Player paused the game.");
@@ -215,6 +247,10 @@ public class SinglePlayerController implements ScreenController {
 	 *            the level of the achievement that has to be displayed.
 	 */
 	public void showAchievePopup(Image image, String description, int level) {
+		if (level == 0) {
+			return;
+		}
+		
 		int in = 2000;
 		int out = 1000;
 		int duration = 5000;
@@ -224,7 +260,7 @@ public class SinglePlayerController implements ScreenController {
 		ImageView popUpLVL = (ImageView) list.get(1);
 		Label label = (Label) list.get(2);
 		
-		popUpLVL.setImage(Preloader.getImageOrLoad("/sprites/ChieveLvls/AchieveLVL" + level + ".png"));
+		popUpLVL.setImage(Preloader.getImageOrLoad("/sprites/ChieveLvls/AchieveLvl" + level + ".png"));
 		img.setImage(image);
 		label.setText(description);
 		
