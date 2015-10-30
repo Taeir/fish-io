@@ -7,8 +7,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.Random;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -16,11 +14,7 @@ import org.mockito.Mockito;
 import com.github.fishio.factories.PowerUpSpawner;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.gui.SlimGuiTest;
-import com.github.fishio.power_ups.ExtraLifePowerUp;
-import com.github.fishio.power_ups.FreezePowerUp;
 import com.github.fishio.power_ups.PowerUp;
-import com.github.fishio.power_ups.SuperSpeedPowerUp;
-import com.github.fishio.settings.Settings;
 
 /**
  * Tests the PowerUpSpawer class.

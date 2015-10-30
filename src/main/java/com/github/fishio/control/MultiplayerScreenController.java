@@ -17,7 +17,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 /**
@@ -45,15 +44,6 @@ public class MultiplayerScreenController implements ScreenController {
 			gameStartListener.changed(sop, sop.get(), sop.get());
 		}
 	};
-	
-	@FXML
-	private Button btnBackToMenu;
-	
-	@FXML
-	private Button hostGame;
-	
-	@FXML
-	private Button joinGame;
 	
 	@FXML
 	private TextField joinIP;
