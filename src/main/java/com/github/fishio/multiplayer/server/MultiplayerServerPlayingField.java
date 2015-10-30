@@ -2,18 +2,18 @@ package com.github.fishio.multiplayer.server;
 
 import java.util.Optional;
 
-import javafx.scene.canvas.Canvas;
-
 import com.github.fishio.CollisionMask;
-import com.github.fishio.Sprite;
 import com.github.fishio.PlayerFish;
 import com.github.fishio.Preloader;
+import com.github.fishio.Sprite;
 import com.github.fishio.SpriteStore;
 import com.github.fishio.Vec2d;
 import com.github.fishio.game.GameThread;
 import com.github.fishio.logging.LogLevel;
 import com.github.fishio.multiplayer.MultiplayerPlayingField;
 import com.github.fishio.multiplayer.RepeatingFishMessageSender;
+
+import javafx.scene.canvas.Canvas;
 
 /**
  * PlayingField for server side multiplayer.
@@ -102,9 +102,10 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 	 */
 	public PlayerFish createClientPlayer() {
 		Sprite sprite = SpriteStore.getSpriteOrLoad(PlayerFish.SPRITE_LOCATION);
+
 		CollisionMask cm = new CollisionMask(new Vec2d(startX, startY), 60, 30, sprite);
 		PlayerFish tbr = new PlayerFish(cm, sprite);
-		
+
 		//TODO #168 Make setting for this "spawn invincibility"
 		tbr.setInvincible(System.currentTimeMillis() + SPAWN_INVINCIBILITY);
 		

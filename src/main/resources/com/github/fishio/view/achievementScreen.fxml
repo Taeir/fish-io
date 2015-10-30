@@ -217,7 +217,7 @@
                                                                <graphic>
                                                                   <ImageView fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/ChieveIconLvls/AchieveIconsLvl5.png" />
+                                                                        <Image url="@../../../../Sprites/ChieveIconLvls/AchieveIconLvl5.png" />
                                                                      </image>
                                                                   </ImageView>
                                                                </graphic>
@@ -398,7 +398,7 @@
                                                                <graphic>
                                                                   <ImageView fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/ChieveIconLvls/AchieveIconsLvl5.png" />
+                                                                        <Image url="@../../../../Sprites/ChieveIconLvls/AchieveIconLvl5.png" />
                                                                      </image>
                                                                   </ImageView>
                                                                </graphic>
@@ -445,6 +445,7 @@
                                                 </ImageView>
                                              </graphic>
                                           </Label>
+                                          <ImageView fx:id="achieveLVLIcon3" fitHeight="150.0" fitWidth="200.0" layoutX="10.0" pickOnBounds="true" preserveRatio="true" />
                                        </children>
                                        <padding>
                                           <Insets left="50.0" />
@@ -591,7 +592,7 @@
                                                                <graphic>
                                                                   <ImageView fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/ChieveIconLvls/AchieveIconsLvl5.png" />
+                                                                        <Image url="@../../../../Sprites/ChieveIconLvls/AchieveIconLvl5.png" />
                                                                      </image>
                                                                   </ImageView>
                                                                </graphic>
@@ -784,7 +785,7 @@
                                                                <graphic>
                                                                   <ImageView fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/ChieveIconLvls/AchieveIconsLvl5.png" />
+                                                                        <Image url="@../../../../Sprites/ChieveIconLvls/AchieveIconLvl5.png" />
                                                                      </image>
                                                                   </ImageView>
                                                                </graphic>
@@ -819,15 +820,18 @@
                                  <items>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="77.0" prefWidth="720">
                                        <children>
-                                          <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="10.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../../../Sprites/chieveLarge/Achieve7.png" />
-                                             </image>
-                                             <viewport>
-                                                <Rectangle2D minX="50.0" />
-                                             </viewport>
-                                          </ImageView>
-                                          <Label fx:id="bigachieve7" layoutX="10.0" />
+                                          <Label fx:id="bigachieve7" layoutX="10.0">
+                                             <graphic>
+                                                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../../../../Sprites/chieveLarge/Achieve7.png" />
+                                                   </image>
+                                                   <viewport>
+                                                      <Rectangle2D minX="50.0" />
+                                                   </viewport>
+                                                </ImageView>
+                                             </graphic></Label>
+                                          <ImageView fx:id="achieveLVLIcon7" fitHeight="150.0" fitWidth="200.0" layoutX="10.0" pickOnBounds="true" preserveRatio="true" />
                                        </children>
                                        <padding>
                                           <Insets left="50.0" />
@@ -974,7 +978,7 @@
                                                                <graphic>
                                                                   <ImageView pickOnBounds="true" preserveRatio="true">
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/ChieveIconLvls/AchieveIconsLvl5.png" />
+                                                                        <Image url="@../../../../Sprites/ChieveIconLvls/AchieveIconLvl5.png" />
                                                                      </image>
                                                                   </ImageView>
                                                                </graphic>
@@ -1164,7 +1168,7 @@
                                                                <graphic>
                                                                   <ImageView fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/ChieveIconLvls/AchieveIconsLvl5.png" />
+                                                                        <Image url="@../../../../Sprites/ChieveIconLvls/AchieveIconLvl5.png" />
                                                                      </image>
                                                                   </ImageView>
                                                                </graphic>
@@ -1199,18 +1203,15 @@
                                  <items>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="77.0" prefWidth="210.0">
                                        <children>
-                                          <Label layoutX="10.0">
-                                             <graphic>
-                                                <ImageView fx:id="bigachieve5" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../../../../Sprites/chieveLarge/Achieve5.png" />
-                                                   </image>
-                                                   <viewport>
-                                                      <Rectangle2D minX="50.0" />
-                                                   </viewport>
-                                                </ImageView>
-                                             </graphic>
-                                          </Label>
+                                          <ImageView fx:id="bigachieve5" fitHeight="150.0" fitWidth="200.0" layoutX="10.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../../Sprites/chieveLarge/Achieve5.png" />
+                                             </image>
+                                             <viewport>
+                                                <Rectangle2D />
+                                             </viewport>
+                                          </ImageView>
+                                          <ImageView fx:id="achieveLVLIcon5" fitHeight="150.0" fitWidth="200.0" layoutX="10.0" pickOnBounds="true" preserveRatio="true" />
                                        </children>
                                        <padding>
                                           <Insets left="50.0" />
@@ -1357,7 +1358,7 @@
                                                                <graphic>
                                                                   <ImageView fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                                                      <image>
-                                                                        <Image url="@../../../../Sprites/ChieveIconLvls/AchieveIconsLvl5.png" />
+                                                                        <Image url="@../../../../sprites/ChieveIconLvls/AchieveIconLvl5.png" />
                                                                      </image>
                                                                   </ImageView>
                                                                </graphic>

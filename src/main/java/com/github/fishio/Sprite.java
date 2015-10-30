@@ -21,6 +21,7 @@ public class Sprite extends Image {
 		
 		this.pixelData = buildPixelData();
 		this.alphaRatio = calculateAlphaRatio();
+
 	}
 	
 	/**
@@ -45,11 +46,11 @@ public class Sprite extends Image {
 		return res;
 	}
 	
+
 	/**
-	 * Calculates the alpha ration of this image.
+	 * Calculates the alpha ratio of this image.
 	 * 
-	 * @return
-	 * 		the ratio between opaque and non-opaque pixels.
+	 * @return the ratio between opaque and non-opaque pixels.
 	 */
 	private double calculateAlphaRatio() {
 		int res = 0;
@@ -65,8 +66,7 @@ public class Sprite extends Image {
 	}
 	
 	/**
-	 * @return
-	 * 		the alpha ration of this image.
+	 * @return the alpha ratio of this image.
 	 */
 	public double getAlphaRatio() {
 		return this.alphaRatio;
@@ -80,4 +80,5 @@ public class Sprite extends Image {
 	public boolean[][] getPixelData() {
 		return this.pixelData;
 	}
+
 }
