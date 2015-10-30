@@ -75,8 +75,6 @@ public class SinglePlayerController implements ScreenController {
 		//Update fields to initial values.
 		updateScoreDisplay(newPlayer.scoreProperty().get());
 		updateLivesDisplay(newPlayer.getLives());
-		
-		//TODO add listener to deathProperty of fish?
 	};
 	
 	@FXML
@@ -98,15 +96,11 @@ public class SinglePlayerController implements ScreenController {
 	private Button btnPause;
 	@FXML
 	private Button btnMute;
-	@FXML
-	private Button btnMenu;
 	
 	@FXML
 	private Button btnDSRevive;
 	@FXML
 	private Button btnDSRestart;
-	@FXML
-	private Button btnDSMenu;
 	
 	@Override
 	public void init(Scene scene) {
@@ -146,6 +140,10 @@ public class SinglePlayerController implements ScreenController {
 	 */
 	private void registerAchievementPopups() {
 		AchievementManager.ENEMY_KILL.getLevelProperty().addListener((o, oVal, nVal) -> {
+			if (nVal.intValue() <= 0) {
+				return;
+			}
+			
 			Util.onJavaFX(() -> {
 				Image img = new Image("/sprites/chieveLarge/Achieve1.png");
 				showAchievePopup(img, "Glutton!", nVal.intValue());
@@ -154,9 +152,12 @@ public class SinglePlayerController implements ScreenController {
 		
 		AchievementManager.PLAYER_DEATH.getLevelProperty().addListener((o, oVal, nVal) -> {
 			Util.onJavaFX(() -> {
+				if (nVal.intValue() <= 0) {
+					return;
+				}
+				
 				Image img = new Image("/sprites/chieveLarge/Achieve2.png");
 				showAchievePopup(img, "Survival of the fittest!", nVal.intValue());
-
 			});
 		});
 
@@ -532,9 +533,7 @@ public class SinglePlayerController implements ScreenController {
 	protected void initFXMLForTest() {
 		this.btnPause = new Button();
 		this.btnMute = new Button();
-		this.btnMenu = new Button();
-		
-		this.btnDSMenu = new Button();
+
 		this.btnDSRestart = new Button();
 		this.btnDSRevive = new Button();
 		
@@ -550,6 +549,7 @@ public class SinglePlayerController implements ScreenController {
 		this.achievePopup.getChildren().add(new HBox());
 		
 		HBox achieves = new HBox();
+		achieves.getChildren().add(new ImageView());
 		achieves.getChildren().add(new ImageView());
 		achieves.getChildren().add(new Label());
 		this.achievePopup.getChildren().add(achieves);

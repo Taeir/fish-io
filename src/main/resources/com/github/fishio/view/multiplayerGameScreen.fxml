@@ -40,7 +40,7 @@
                </font>
             </Label>
             <Label fx:id="endScore" text="score: 0 points" />
-            <Button fx:id="btnDSRevive" minWidth="100.0" mnemonicParsing="false" onAction="#onRevive" text="Revive" />
+            <Button minWidth="100.0" mnemonicParsing="false" onAction="#onRevive" text="Revive" />
             <Button fx:id="btnDSEnd" minWidth="100.0" mnemonicParsing="false" onAction="#onEnd" text="Disconnect" />
          </children>
       </VBox>
