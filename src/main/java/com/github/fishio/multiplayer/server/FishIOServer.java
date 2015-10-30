@@ -223,8 +223,6 @@ public final class FishIOServer implements Runnable {
 		mspf.stopGame();
 		mspf.clear();
 		
-		//TODO #169 show a message to the user?
-		
 		//Log that we have stopped
 		Log.getLogger().log(LogLevel.INFO, "[Server] Server stopped");
 		

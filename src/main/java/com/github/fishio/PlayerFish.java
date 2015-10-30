@@ -171,7 +171,6 @@ public class PlayerFish extends Entity implements IEatable, Subject {
 			return;
 		}
 		
-		//TODO Move this to game thread.
 		getBoundingArea().setRotation(getBehaviour()); //update rotation;
 		
 		//Only render if the fish has a sprite

@@ -79,7 +79,6 @@ public class HelpScreenController implements ScreenController {
 		map.put(KeyCode.S, new Vec2d(249, 275));
 		map.put(KeyCode.A, new Vec2d(169, 275));
 		map.put(KeyCode.D, new Vec2d(334, 275));
-		//TODO map more keys when allowing key changes
 		return map;
 	}
 

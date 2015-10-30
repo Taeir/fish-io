@@ -10,7 +10,6 @@ import java.util.List;
  *
  */
 public class LivesConsumptionObserver implements AchievementObserver {
-	//TODO TODO TODO
 	private List<Achievement> achievements = new ArrayList<>();
 	private Subject playerFish;
 	private int livesconsumptioncounter = 0;

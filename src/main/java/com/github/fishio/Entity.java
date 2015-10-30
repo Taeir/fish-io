@@ -136,9 +136,7 @@ public abstract class Entity implements ICollidable, IDrawable, Subject, Seriali
 	}
 	
 	@Override
-	public void drawDeath(GraphicsContext gc) {
-		//TODO animations
-	}
+	public void drawDeath(GraphicsContext gc) { }
 	
 	@Override
 	public void render(GraphicsContext gc) {

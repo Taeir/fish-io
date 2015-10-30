@@ -54,7 +54,6 @@ public class EnemyFish extends Entity implements IEatable {
 			return;
 		}
 				
-		//TODO Move this to game thread.
 		getBoundingArea().setRotation(getBehaviour());	//update rotation
 		
 		//Only render if we have a sprite.

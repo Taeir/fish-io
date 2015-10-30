@@ -106,7 +106,6 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 		CollisionMask cm = new CollisionMask(new Vec2d(startX, startY), 60, 30, sprite);
 		PlayerFish tbr = new PlayerFish(cm, sprite);
 
-		//TODO #168 Make setting for this "spawn invincibility"
 		tbr.setInvincible(System.currentTimeMillis() + SPAWN_INVINCIBILITY);
 		
 		add(tbr);
@@ -123,7 +122,6 @@ public class MultiplayerServerPlayingField extends MultiplayerPlayingField {
 
 		PlayerFish nplayer = new PlayerFish(cm, Preloader.loadScreen("multiplayerGameScreen"), sprite);
 		
-		//TODO #168 Make setting for this "spawn invincibility"
 		nplayer.setInvincible(System.currentTimeMillis() + SPAWN_INVINCIBILITY);
 		
 		setOwnPlayer(nplayer);

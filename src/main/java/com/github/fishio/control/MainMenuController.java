@@ -85,8 +85,6 @@ public class MainMenuController implements ScreenController {
 	@FXML
 	public void loadLevel() {
 		AudioEngine.getInstance().playButtonSound();
-		
-		//TODO (not now)
 	}
 
 	/**
@@ -122,8 +120,6 @@ public class MainMenuController implements ScreenController {
 		logger.log(LogLevel.INFO, "Player Pressed the Settings Button.");
 		Preloader.switchTo("settingsScreen", 400);
 		AudioEngine.getInstance().playButtonSound();
-		
-		//TODO (not now)
 	}
 
 	/**

@@ -47,7 +47,6 @@ public class RandomBehaviour implements IMoveBehaviour, Serializable {
 	 */
 	@Override
 	public void preMove() {
-		//TODO #167 Use random so multiplayer can have client prediction
 		if (Math.random() < directionChangeChance) {
 			//Only change one direction
 			if (Math.random() <= 0.5) {
