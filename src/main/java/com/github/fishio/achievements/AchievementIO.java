@@ -94,4 +94,22 @@ public final class AchievementIO {
 		}
 		return val.intValue();
 	}
+
+	/**
+	 * Set the file for the achievements. This method should only be used for
+	 * testing.
+	 * 
+	 * @param newFile
+	 *            The new file.
+	 */
+	protected static void setAchievementFile(File newFile) {
+		achievementFile = newFile;
+	}
+
+	/**
+	 * @return The hashmap containing all the achievements.
+	 */
+	public static HashMap<String, Integer> getAll() {
+		return achievemap;
+	}
 }
