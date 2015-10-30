@@ -39,7 +39,6 @@ public class TestAchievePlayerDeath {
 		when(sppf.getPlayer()).thenReturn(pf);
 		when(sppf.playerProperty()).thenReturn(sop);
 		PlayerDeathObserver pdo = new PlayerDeathObserver(sppf);
-		pdo.setCounter(0);
 		return pdo;
 	}
 	

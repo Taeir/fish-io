@@ -39,7 +39,6 @@ public class TestAchieveEnemyKill {
 		when(sppf.playerProperty()).thenReturn(sop);
 		EnemyKillObserver eko = new EnemyKillObserver(sppf);
 		eko.attachAchievement(AchievementManager.ENEMY_KILL);
-		eko.setCounter(0);
 		return eko;
 	}
 	
