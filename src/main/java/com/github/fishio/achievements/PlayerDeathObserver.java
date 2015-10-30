@@ -83,4 +83,13 @@ public class PlayerDeathObserver implements AchievementObserver {
 		return achievements;
 	}
 
+	/**
+	 * Returns the subject of the observer. For testing purposes only.
+	 * 
+	 * @return The subject of the observer.
+	 */
+	public Subject getSubject() {
+		return playerFish;
+	}
+
 }

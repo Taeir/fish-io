@@ -133,4 +133,17 @@ public class TestAchievePlayerDeath {
 		assertEquals(1, dko.getAchievements().size());
 	}
 
+	/**
+	 * The method tests whether the {@link Subject#detach(AchievementObserver)}
+	 * method works when trying to detach a subject from an observer.
+	 * 
+	 */
+	@Test
+	public void testDetach() {
+		PlayerDeathObserver dko = getDeathObserver();
+		Subject playerFish = dko.getSubject();
+		playerFish.detach(dko);
+		assertEquals(0, playerFish.getObservers().size());
+	}
+
 }
