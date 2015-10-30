@@ -1,9 +1,12 @@
 package com.github.fishio.achievements;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
+
+import javafx.beans.property.SimpleIntegerProperty;
 
 /**
  * This test class tests the Achievement class.
@@ -83,6 +86,16 @@ public abstract class TestAchievement {
 	}
 	
 	/**
+	 * Test the {@link Achievement#getLevelProperty()} method.
+	 */
+	@Test
+	public void testGetLevelProperty() {
+		Achievement a = newAchievement("test", 5);
+		SimpleIntegerProperty levelProperty = new SimpleIntegerProperty(5);
+		assertEquals(a.getLevelProperty(), levelProperty.get());
+	}
+
+	/**
 	 * Test equals with itself.
 	 */
 	@Test
@@ -104,7 +117,7 @@ public abstract class TestAchievement {
 	 */
 	@Test
 	public void testEqualsOtherClass() {
-		assertNotEquals(new Double(1.0), newAchievement());
+		assertFalse(newAchievement().equals(new Double(1.0)));
 	}
 	
 	/**
