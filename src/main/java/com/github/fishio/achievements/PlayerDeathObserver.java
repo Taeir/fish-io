@@ -82,4 +82,5 @@ public class PlayerDeathObserver implements AchievementObserver {
 	public List<Achievement> getAchievements() {
 		return achievements;
 	}
+
 }
